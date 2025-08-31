@@ -1,0 +1,29 @@
+{
+  "name": "9bar",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A pnpm workspace for 9bar",
+  "packageManager": "pnpm@10.15.0",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Marcus Rodrigues",
+    "url": "https://mrodrigues.me"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "pnpm": ">=10.0.0",
+    "npm": "pnpm",
+    "yarn": "pnpm",
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "web": "pnpm --filter @9bar/web dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}
