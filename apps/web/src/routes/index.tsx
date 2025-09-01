@@ -34,15 +34,22 @@ function Home() {
 	const state = Route.useLoaderData();
 
 	return (
-		<button
-			type="button"
-			onClick={() => {
-				updateCount({ data: 1 }).then(() => {
-					router.invalidate();
-				});
-			}}
-		>
-			Add 1 to {state}?
-		</button>
+		<div className="p-8 space-y-4">
+			<h1 className="text-4xl font-bold">Welcome to 9bar</h1>
+			<p className="text-lg text-gray-600">
+				This text is rendered using Geist Sans font from Vercel.
+			</p>
+			<button
+				type="button"
+				className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+				onClick={() => {
+					updateCount({ data: 1 }).then(() => {
+						router.invalidate();
+					});
+				}}
+			>
+				Add 1 to {state}?
+			</button>
+		</div>
 	);
 }

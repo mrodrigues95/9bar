@@ -5,6 +5,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import css from "../styles/globals.css?url";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -20,6 +21,7 @@ export const Route = createRootRoute({
 				title: "TanStack Start Starter",
 			},
 		],
+		links: [{ rel: "stylesheet", href: css }],
 	}),
 	component: RootComponent,
 });
@@ -38,7 +40,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 			<head>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="antialiased font-geist">
 				{children}
 				<Scripts />
 			</body>
