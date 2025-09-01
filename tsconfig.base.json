@@ -29,6 +29,6 @@
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"useDefineForClassFields": true,
 		"composite": true,
-    "types": ["node"]
+		"types": ["node"]
 	}
 }
