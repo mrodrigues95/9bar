@@ -6,7 +6,7 @@
 	"description": "Frontend web application for 9bar",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && tsc --noEmit",
+		"build": "tsc -b && vite build",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

@@ -21,7 +21,8 @@
 		"node": ">=22.0.0"
 	},
 	"scripts": {
-		"web": "pnpm --filter @9bar/web dev",
+		"web": "pnpm --filter @9bar/web",
+		"toolkit": "pnpm --filter @9bar/toolkit",
 		"lint": "biome check .",
 		"lint:fix": "biome check --fix .",
 		"format": "biome format --write .",
