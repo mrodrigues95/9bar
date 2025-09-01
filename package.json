@@ -27,11 +27,13 @@
 		"format": "biome format --write .",
 		"format:check": "biome format --check .",
 		"check": "biome check .",
-        "lint:ci": "biome ci .",
+		"lint:ci": "biome ci .",
 		"typecheck": "pnpm -r typecheck"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.2",
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
 		"@types/node": "^24.3.0",
 		"typescript": "^5.6.2"
 	}
