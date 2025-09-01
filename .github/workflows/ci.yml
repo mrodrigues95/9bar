@@ -5,6 +5,11 @@ on:
     branches: ["main"]
   pull_request:
     types: [opened, synchronize]
+
+# Cancel jobs when the PR is updated.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
  
 jobs:
   lint:
