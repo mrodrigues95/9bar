@@ -27,6 +27,7 @@
 		"format": "biome format --write .",
 		"format:check": "biome format --check .",
 		"check": "biome check .",
+        "lint:ci": "biome ci .",
 		"typecheck": "pnpm -r typecheck"
 	},
 	"devDependencies": {
