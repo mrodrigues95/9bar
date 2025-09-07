@@ -20,6 +20,15 @@
 			"correctness": {
 				"noUnusedVariables": "error",
 				"noUnusedImports": "error"
+			},
+			"nursery": {
+				"useSortedClasses": {
+					"level": "on",
+					"fix": "safe",
+					"options": {
+						"functions": ["tv"]
+					}
+				}
 			}
 		}
 	},

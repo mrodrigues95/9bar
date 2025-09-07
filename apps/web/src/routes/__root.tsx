@@ -40,7 +40,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="antialiased font-geist">
+			<body className="font-geist antialiased">
 				{children}
 				<Scripts />
 			</body>
