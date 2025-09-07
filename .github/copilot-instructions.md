@@ -21,7 +21,7 @@ The project uses TanStack Start for the frontend framework and Storybook for com
 ## Key Dependencies
 - React 19.x
 - TanStack Router for routing
-- TailwindCSS 4.x for styling
+- TailwindCSS 4.x for styling with React Aria Components
 - Vite for building
 - Storybook for component development
 

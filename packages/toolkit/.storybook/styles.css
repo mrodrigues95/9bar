@@ -1,3 +1,5 @@
 @import "tailwindcss";
 
 @plugin "@tailwindcss/forms";
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";

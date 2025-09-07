@@ -23,11 +23,8 @@
 	"scripts": {
 		"web": "pnpm --filter @9bar/web",
 		"toolkit": "pnpm --filter @9bar/toolkit",
-		"lint": "biome check .",
-		"lint:fix": "biome check --fix .",
-		"format": "biome format --write .",
-		"format:check": "biome format --check .",
 		"check": "biome check .",
+		"check:fix": "biome check --fix .",
 		"lint:ci": "biome ci .",
 		"typecheck": "pnpm -r typecheck"
 	},
