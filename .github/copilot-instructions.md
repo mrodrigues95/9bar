@@ -21,7 +21,9 @@ The project uses TanStack Start for the frontend framework and Storybook for com
 ## Key Dependencies
 - React 19.x
 - TanStack Router for routing
-- TailwindCSS 4.x for styling with React Aria Components
+- TanStack Form for form management
+- React Aria Components for accessible UI primitives
+- TailwindCSS 4.x for styling
 - Vite for building
 - Storybook for component development
 
@@ -56,6 +58,7 @@ The web app uses TanStack Router with file-based routing:
 - Primitive components in [`packages/toolkit/src/`](../packages/toolkit/src/)
 - Storybook configuration in [`packages/toolkit/.storybook/`](../packages/toolkit/.storybook/)
 - Uses TailwindCSS with React Aria Components
+- Uses TanStack Form for form components
 
 ### Accessibility
 - Ensure compliance with **WCAG 2.1** AA level minimum, AAA whenever feasible.
@@ -75,6 +78,7 @@ The web app uses TanStack Router with file-based routing:
 5. Use TypeScript for all new code
 6. Follow the Biome formatting rules
 7. Write descriptive commit messages following conventional commits
+8. Do not create README files unless explicitly asked
 
 ## License
 This project is licensed under GPL-3.0-or-later as specified in [LICENSE](../LICENSE).
