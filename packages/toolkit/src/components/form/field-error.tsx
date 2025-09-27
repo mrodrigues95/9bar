@@ -6,7 +6,7 @@ import {
 import { tv } from "tailwind-variants";
 
 const fieldErrorVariants = tv({
-	base: ["block text-red-600 text-sm", "data-[disabled]:opacity-50"],
+	base: ["block text-red-500 text-sm", "data-[disabled]:opacity-50"],
 });
 
 export interface FieldErrorProps extends AriaFieldErrorProps {}

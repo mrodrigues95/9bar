@@ -7,7 +7,7 @@ import {
 import { tv } from "tailwind-variants";
 
 const formVariants = tv({
-	base: "space-y-6",
+	base: "space-y-3",
 });
 
 export interface FormProps<TFormData>
