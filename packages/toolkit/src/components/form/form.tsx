@@ -1,10 +1,10 @@
-import { useForm } from "@tanstack/react-form";
 import type { FormEvent, ReactNode } from "react";
 import {
 	Form as AriaForm,
 	type FormProps as AriaFormProps,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
+import { useAppForm } from "./hooks/form";
 
 const formVariants = tv({
 	base: "space-y-3",
@@ -25,7 +25,7 @@ export const Form = <TFormData extends Record<string, unknown>>({
 	defaultValues,
 	...props
 }: FormProps<TFormData>) => {
-	const form = useForm({
+	const form = useAppForm({
 		...(defaultValues && { defaultValues }),
 		onSubmit: async ({ value }: { value: TFormData }) => {
 			if (onSubmit) {

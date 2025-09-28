@@ -6,7 +6,7 @@ import { tv } from "tailwind-variants";
 
 const labelVariants = tv({
 	base: [
-		"block font-medium text-slate-900 text-sm select-none",
+		"block select-none font-medium text-slate-900 text-sm",
 		"data-[disabled]:opacity-50",
 	],
 });

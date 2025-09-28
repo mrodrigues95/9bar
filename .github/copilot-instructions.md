@@ -70,6 +70,9 @@ The web app uses TanStack Router with file-based routing:
     - Semantic HTML for clear structure.
     - Tools like **Lighthouse** for audits.
 
+### Typescript
+- When creating generic types or interfaces, always prefix with `T` (e.g. `TUser`, `TResponse`).
+
 ## When Suggesting Changes
 1. Maintain the existing monorepo structure
 2. Use the established TailwindCSS patterns

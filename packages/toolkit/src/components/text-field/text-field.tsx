@@ -5,10 +5,10 @@ import {
 	type ValidationResult,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Description, type DescriptionProps } from "../form/description";
-import { FieldError, type FieldErrorProps } from "../form/field-error";
-import { Input, type InputProps } from "../form/input";
-import { Label, type LabelProps } from "../form/label";
+import { Description, type DescriptionProps } from "../field/description";
+import { FieldError, type FieldErrorProps } from "../field/field-error";
+import { Input, type InputProps } from "../field/input";
+import { Label, type LabelProps } from "../field/label";
 
 const textFieldVariants = tv({
 	base: "flex flex-col gap-1.5",
