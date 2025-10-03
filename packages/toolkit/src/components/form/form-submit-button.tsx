@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from "../button/button";
-import { useFormContext } from "./hooks/form-context";
+import { useFormContext } from "./utils/form-context";
 
 export interface FormSubmitButtonProps extends Omit<ButtonProps, "type"> {
 	children: React.ReactNode;

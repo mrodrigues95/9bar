@@ -1,54 +1,25 @@
-import type { FormEvent, ReactNode } from "react";
 import {
 	Form as AriaForm,
 	type FormProps as AriaFormProps,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { useAppForm } from "./hooks/form";
 
 const formVariants = tv({
 	base: "space-y-3",
 });
 
-export interface FormProps<TFormData>
-	extends Omit<AriaFormProps, "children" | "onSubmit"> {
-	children?: ReactNode | ((form: unknown) => ReactNode);
-	onSubmit?: (values: TFormData) => void | Promise<void>;
-	onFormSubmit?: (event: FormEvent<HTMLFormElement>) => void;
-	defaultValues?: TFormData;
-}
+export interface FormProps extends AriaFormProps {}
 
-export const Form = <TFormData extends Record<string, unknown>>({
-	children,
-	onSubmit,
-	onFormSubmit,
-	defaultValues,
-	...props
-}: FormProps<TFormData>) => {
-	const form = useAppForm({
-		...(defaultValues && { defaultValues }),
-		onSubmit: async ({ value }: { value: TFormData }) => {
-			if (onSubmit) {
-				await onSubmit(value);
-			}
-		},
-	});
-
+export const Form = (props: FormProps) => {
 	return (
 		<AriaForm
 			{...props}
 			className={formVariants({ className: props.className })}
 			onSubmit={(e) => {
-				if (onFormSubmit) {
-					onFormSubmit(e);
-				} else {
-					e.preventDefault();
-					e.stopPropagation();
-					form.handleSubmit();
-				}
+				e.preventDefault();
+				e.stopPropagation();
+				props.onSubmit?.(e);
 			}}
-		>
-			{typeof children === "function" ? children(form) : children}
-		</AriaForm>
+		/>
 	);
 };
