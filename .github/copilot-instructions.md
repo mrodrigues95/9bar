@@ -70,6 +70,9 @@ The web app uses TanStack Router with file-based routing:
     - Semantic HTML for clear structure.
     - Tools like **Lighthouse** for audits.
 
+### JavaScript
+- Always prefer arrow functions
+
 ### Typescript
 - When creating generic types or interfaces, always prefix with `T` (e.g. `TUser`, `TResponse`).
 
@@ -82,6 +85,7 @@ The web app uses TanStack Router with file-based routing:
 6. Follow the Biome formatting rules
 7. Write descriptive commit messages following conventional commits
 8. Do not create README files unless explicitly asked
+9. Check for existing components in the toolkit and preferably reuse them when working in the web app
 
 ## License
 This project is licensed under GPL-3.0-or-later as specified in [LICENSE](../LICENSE).

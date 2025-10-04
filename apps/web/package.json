@@ -10,6 +10,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@9bar/toolkit": "workspace:*",
 		"@tailwindcss/vite": "^4.1.12",
 		"@tanstack/react-router": "^1.131.31",
 		"@tanstack/react-router-devtools": "^1.131.31",
