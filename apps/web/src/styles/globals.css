@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 @import "tailwindcss";
 
+@source "../../../../packages/toolkit/src/**/*.{js,ts,jsx,tsx}";
+
+@plugin "@tailwindcss/forms";
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";
+
 @theme {
     --font-geist: 'Geist', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
