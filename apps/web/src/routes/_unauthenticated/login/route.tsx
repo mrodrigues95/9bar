@@ -1,5 +1,6 @@
 import { Button, Form, TextField } from "@9bar/toolkit";
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "../../../components";
 
 const Login = () => {
 	return (
@@ -13,21 +14,23 @@ const Login = () => {
 					autoComplete="email"
 					isRequired
 				/>
-				<TextField
-					name="password"
-					type="password"
-					label="Password"
-					autoComplete="current-password"
-					isRequired
-				/>
+				<div className="relative">
+					<TextField
+						name="password"
+						type="password"
+						label="Password"
+						autoComplete="current-password"
+						isRequired
+					/>
+					<Link to="/" className="absolute top-0 right-0 p-0 font-normal">
+						Forgot password?
+					</Link>
+				</div>
 				<Button type="submit" variant="solid" size="md" className="w-full">
 					Sign in to account
 				</Button>
 			</Form>
-			<Button size="xs" className="mx-auto mt-2.5 block w-max">
-				Forgot password?
-			</Button>
-			<hr className="my-8 w-full border border-slate-200" />
+			<hr className="mx-auto my-6 w-1/2 border border-slate-200" />
 			<div>
 				<Button variant="outline" className="w-full" size="md">
 					<svg
@@ -35,8 +38,6 @@ const Login = () => {
 						width="100"
 						height="100"
 						viewBox="0 0 24 24"
-						stroke="currentColor"
-						fill="currentColor"
 						aria-hidden="true"
 						className="size-4"
 					>

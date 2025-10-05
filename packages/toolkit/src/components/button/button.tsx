@@ -6,10 +6,10 @@ import {
 import { tv, type VariantProps } from "tailwind-variants";
 import { focusRing } from "../../utils/classes";
 
-const buttonVariants = tv({
+export const buttonVariants = tv({
 	extend: focusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-1 rounded-md font-semibold text-sm transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-semibold text-sm transition duration-150",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
 	variants: {

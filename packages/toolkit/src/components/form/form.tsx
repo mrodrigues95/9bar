@@ -5,7 +5,7 @@ import {
 import { tv } from "tailwind-variants";
 
 const formVariants = tv({
-	base: "space-y-3",
+	base: "space-y-4",
 });
 
 export interface FormProps extends AriaFormProps {}

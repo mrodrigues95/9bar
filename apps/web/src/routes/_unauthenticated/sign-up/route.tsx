@@ -9,7 +9,7 @@ const SignUp = () => {
 				<TextField
 					name="name"
 					label="Name"
-					inputProps={{ placeholder: "you@example.com", maxLength: 70 }}
+					inputProps={{ maxLength: 70 }}
 					isRequired
 				/>
 				<TextField

@@ -4,8 +4,34 @@ import {
 	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import css from "../styles/globals.css?url";
+
+const RootComponent = () => {
+	return (
+		<RootDocument>
+			<div className="flex min-h-screen flex-col">
+				<Suspense>
+					<Outlet />
+				</Suspense>
+			</div>
+		</RootDocument>
+	);
+};
+
+const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
+	return (
+		<html lang="en">
+			<head>
+				<HeadContent />
+			</head>
+			<body className="font-geist antialiased">
+				{children}
+				<Scripts />
+			</body>
+		</html>
+	);
+};
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -25,25 +51,3 @@ export const Route = createRootRoute({
 	}),
 	component: RootComponent,
 });
-
-function RootComponent() {
-	return (
-		<RootDocument>
-			<Outlet />
-		</RootDocument>
-	);
-}
-
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
-	return (
-		<html lang="en">
-			<head>
-				<HeadContent />
-			</head>
-			<body className="font-geist antialiased">
-				{children}
-				<Scripts />
-			</body>
-		</html>
-	);
-}

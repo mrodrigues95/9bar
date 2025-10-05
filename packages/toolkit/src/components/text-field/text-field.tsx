@@ -11,7 +11,7 @@ import { Input, type InputProps } from "../field/input";
 import { Label, type LabelProps } from "../field/label";
 
 const textFieldVariants = tv({
-	base: "flex flex-col gap-1.5",
+	base: "flex flex-col gap-2",
 });
 
 export interface TextFieldProps extends AriaTextFieldProps {

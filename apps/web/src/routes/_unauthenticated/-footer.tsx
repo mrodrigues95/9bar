@@ -1,5 +1,6 @@
-import { Button } from "@9bar/toolkit";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { useChildMatches } from "@tanstack/react-router";
+import { Link } from "../../components";
 
 interface SegmentMap {
 	text: string;
@@ -13,7 +14,7 @@ const segmentMap: Record<string, SegmentMap> = {
 		linkText: "Create an account",
 		linkTo: "/sign-up",
 	},
-	"/signup": {
+	"/sign-up": {
 		text: "Already have an account?",
 		linkText: "Sign in",
 		linkTo: "/login",
@@ -30,11 +31,17 @@ export const Footer = () => {
 	}
 
 	return (
-		<footer className="flex shrink-0 flex-col items-center justify-center gap-4 sm:flex-row">
-			<span className="font-medium">{segment.text}</span>
-			<Button variant="outline" size="md">
+		<footer className="flex shrink-0 flex-col items-center justify-center gap-2 sm:flex-row">
+			<span className="text-sm">{segment.text}</span>
+			<Link
+				to={segment.linkTo}
+				search={(prev) => prev}
+				size="sm"
+				className="p-0"
+			>
 				{segment.linkText}
-			</Button>
+				<ArrowRightIcon className="size-4" />
+			</Link>
 		</footer>
 	);
 };
