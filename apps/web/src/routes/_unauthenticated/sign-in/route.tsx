@@ -1,11 +1,13 @@
-import { Button, Form, TextField } from "@9bar/toolkit";
+import { Button, Form, Heading, TextField } from "@9bar/toolkit";
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "../../../components";
 
-const Login = () => {
+const SignIn = () => {
 	return (
 		<>
-			<h1 className="mb-8 text-center font-bold text-3xl">Sign In</h1>
+			<Heading as="h1" variant="heading" className="mb-8 text-center">
+				Sign In
+			</Heading>
 			<Form className="w-full">
 				<TextField
 					name="email"
@@ -50,6 +52,6 @@ const Login = () => {
 	);
 };
 
-export const Route = createFileRoute("/_unauthenticated/login")({
-	component: Login,
+export const Route = createFileRoute("/_unauthenticated/sign-in")({
+	component: SignIn,
 });

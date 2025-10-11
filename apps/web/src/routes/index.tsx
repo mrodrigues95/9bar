@@ -1,4 +1,5 @@
 import * as fs from "node:fs";
+import { Heading, Text } from "@9bar/toolkit";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
@@ -35,10 +36,12 @@ function Home() {
 
 	return (
 		<div className="space-y-4 p-8">
-			<h1 className="font-bold text-4xl">Welcome to 9bar</h1>
-			<p className="text-gray-600 text-lg">
+			<Heading as="h1" variant="heading">
+				Welcome to 9bar
+			</Heading>
+			<Text as="p" variant="body-lg" className="text-gray-600">
 				This text is rendered using Geist Sans font from Vercel.
-			</p>
+			</Text>
 			<button
 				type="button"
 				className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"

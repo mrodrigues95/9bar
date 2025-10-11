@@ -1,15 +1,17 @@
+import { Text } from "@9bar/toolkit";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { useChildMatches } from "@tanstack/react-router";
+import { useLocation } from "@tanstack/react-router";
 import { Link } from "../../components";
+import type { FileRouteTypes } from "../../routeTree.gen";
 
-interface SegmentMap {
+interface TSegmentMap {
 	text: string;
 	linkText: string;
-	linkTo: string;
+	linkTo: FileRouteTypes["to"];
 }
 
-const segmentMap: Record<string, SegmentMap> = {
-	"/login": {
+const segmentMap: Partial<Record<FileRouteTypes["to"], TSegmentMap>> = {
+	"/sign-in": {
 		text: "New to 9bar?",
 		linkText: "Create an account",
 		linkTo: "/sign-up",
@@ -17,14 +19,13 @@ const segmentMap: Record<string, SegmentMap> = {
 	"/sign-up": {
 		text: "Already have an account?",
 		linkText: "Sign in",
-		linkTo: "/login",
+		linkTo: "/sign-in",
 	},
 };
 
 export const Footer = () => {
-	const matches = useChildMatches();
-	const match = matches.find((match) => !!segmentMap[match.pathname]);
-	const segment = segmentMap[match?.pathname || ""];
+	const location = useLocation();
+	const segment = segmentMap[location.pathname as FileRouteTypes["to"]];
 
 	if (!segment) {
 		return null;
@@ -32,13 +33,10 @@ export const Footer = () => {
 
 	return (
 		<footer className="flex shrink-0 flex-col items-center justify-center gap-2 sm:flex-row">
-			<span className="text-sm">{segment.text}</span>
-			<Link
-				to={segment.linkTo}
-				search={(prev) => prev}
-				size="sm"
-				className="p-0"
-			>
+			<Text as="span" variant="body-sm" className="leading-none">
+				{segment.text}
+			</Text>
+			<Link to={segment.linkTo} size="sm" className="p-0">
 				{segment.linkText}
 				<ArrowRightIcon className="size-4" />
 			</Link>

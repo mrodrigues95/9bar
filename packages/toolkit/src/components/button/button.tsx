@@ -9,7 +9,7 @@ import { focusRing } from "../../utils/classes";
 export const buttonVariants = tv({
 	extend: focusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-semibold text-sm transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm transition duration-150",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
 	variants: {
