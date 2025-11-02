@@ -13,7 +13,9 @@ export const linkVariants = tv({
 
 export interface LinkProps
 	extends AriaLinkProps,
-		VariantProps<typeof linkVariants> {}
+		VariantProps<typeof linkVariants> {
+	"aria-current"?: "page" | "step" | "location" | "date" | "time" | "true";
+}
 
 export const Link = ({ variant, size, ...props }: LinkProps) => {
 	return (

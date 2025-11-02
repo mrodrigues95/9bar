@@ -1,3 +1,4 @@
+export * from "./components/avatar/avatar";
 export * from "./components/button/button";
 export * from "./components/field/description";
 export * from "./components/field/field-error";

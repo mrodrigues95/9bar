@@ -1,18 +1,18 @@
 # Copilot Instructions for 9bar
 
 ## Project Overview
-9bar is a monorepo built with pnpm workspaces containing a React web application and design system toolkit. 
-The project uses TanStack Start for the frontend framework and Storybook for component development.
+9bar is a web application that allows users to track and manage their espressos and coffee brewing routines.
+It is a monorepo built with pnpm workspaces containing a React web application and design system toolkit.
 
 ## Architecture
 - **Monorepo Structure**: Uses [pnpm-workspace.yaml](../pnpm-workspace.yaml) to manage packages
 - **Apps**: 
-  - [`apps/web`](../apps/web) - Main web application using TanStack Start
+  - [`apps/web`](../apps/web) - Main web application for the frontend using TanStack Start
 - **Packages**:
   - [`packages/toolkit`](../packages/toolkit) - Design system and primitive UI components using Storybook
 
 ## Tech Stack
-- **Framework**: TanStack Start (React-based)
+- **Framework**: TanStack Start
 - **Styling**: TailwindCSS v4
 - **Build Tool**: Vite
 - **Package Manager**: pnpm (>=10.0.0)
