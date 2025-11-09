@@ -3,6 +3,7 @@ import { Avatar } from "./avatar";
 
 const meta = {
 	component: Avatar,
+	title: "Avatar",
 	parameters: {
 		layout: "centered",
 		controls: { include: ["src", "alt", "name", "size", "color", "radius"] },

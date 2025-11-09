@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Heading } from "./heading";
 
 const meta = {
-	title: "Components/Heading",
+	title: "Heading",
 	component: Heading,
 } satisfies Meta<typeof Heading>;
 

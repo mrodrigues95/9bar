@@ -1,3 +1,4 @@
+export * from "./components/alert/alert";
 export * from "./components/avatar/avatar";
 export * from "./components/button/button";
 export * from "./components/field/description";
@@ -6,6 +7,7 @@ export * from "./components/field/input";
 export * from "./components/field/label";
 export * from "./components/form/form";
 export * from "./components/heading/heading";
+export * from "./components/icon-button/icon-button";
 export * from "./components/link/link";
 export * from "./components/text/text";
 export * from "./components/text-field/text-field";
