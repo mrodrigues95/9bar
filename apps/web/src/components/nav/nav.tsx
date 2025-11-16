@@ -5,7 +5,7 @@ import { ProfileMenu } from "./profile-menu";
 
 const links: Array<{ to: FileRouteTypes["to"]; label: string }> = [
 	{ to: "/home", label: "Home" },
-	{ to: "/recipe", label: "Recipe" },
+	{ to: "/recipes", label: "Recipes" },
 	{ to: "/profile", label: "Profile" },
 ];
 

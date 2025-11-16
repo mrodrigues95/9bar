@@ -1,7 +1,7 @@
 import { Heading, Text } from "@9bar/toolkit";
 import { createFileRoute } from "@tanstack/react-router";
 
-const ProfilePage = () => {
+const Profile = () => {
 	return (
 		<div className="space-y-4">
 			<Heading as="h1" variant="title">
@@ -16,5 +16,5 @@ const ProfilePage = () => {
 };
 
 export const Route = createFileRoute("/_authenticated/profile")({
-	component: ProfilePage,
+	component: Profile,
 });

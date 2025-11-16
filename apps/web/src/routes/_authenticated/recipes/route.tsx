@@ -1,7 +1,7 @@
 import { Heading, Text } from "@9bar/toolkit";
 import { createFileRoute } from "@tanstack/react-router";
 
-const RecipePage = () => {
+const Recipe = () => {
 	return (
 		<div className="space-y-4">
 			<Heading as="h1" variant="title">
@@ -15,6 +15,6 @@ const RecipePage = () => {
 	);
 };
 
-export const Route = createFileRoute("/_authenticated/recipe")({
-	component: RecipePage,
+export const Route = createFileRoute("/_authenticated/recipes")({
+	component: Recipe,
 });
