@@ -185,29 +185,13 @@ const AlertDescription = ({
 };
 
 const alertActionVariants = tv({
-	base: "self-center",
+	base: "self-center [&>*]:bg-inherit [&>*]:p-0 [&>*]:hover:bg-inherit",
 	variants: {
 		variant: {
-			success: [
-				"[&>*]:bg-green-100 [&>*]:text-green-900",
-				"[&>*]:pressed:bg-green-300/75",
-				"[&>*]:hover:bg-green-200 [&>*]:hover:text-green-950",
-			],
-			danger: [
-				"[&>*]:bg-red-100 [&>*]:text-red-900",
-				"[&>*]:pressed:bg-red-300/75",
-				"[&>*]:hover:bg-red-200 [&>*]:hover:text-red-950",
-			],
-			warning: [
-				"[&>*]:bg-yellow-100 [&>*]:text-yellow-900",
-				"[&>*]:pressed:bg-yellow-300/75",
-				"[&>*]:hover:bg-yellow-200 [&>*]:hover:text-yellow-950",
-			],
-			info: [
-				"[&>*]:bg-blue-100 [&>*]:text-blue-900",
-				"[&>*]:pressed:bg-blue-300/75",
-				"[&>*]:hover:bg-blue-200 [&>*]:hover:text-blue-950",
-			],
+			success: ["[&>*]:text-green-900", "[&>*]:hover:text-green-950"],
+			danger: ["[&>*]:text-red-900", "[&>*]:hover:text-red-950"],
+			warning: ["[&>*]:text-yellow-900", "[&>*]:hover:text-yellow-950"],
+			info: ["[&>*]:text-blue-900", "[&>*]:hover:text-blue-950"],
 		},
 	},
 	defaultVariants: {

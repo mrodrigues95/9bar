@@ -2,6 +2,7 @@ import { UserGroupIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../button/button";
 import { IconButton } from "../icon-button/icon-button";
+import { Link } from "../link/link";
 import { Alert } from "./alert";
 
 const meta = {
@@ -146,7 +147,7 @@ export const WithButtons: Story = {
 					</Alert.Description>
 				</Alert.Content>
 				<Alert.Action>
-					<Button variant="ghost">Learn More</Button>
+					<Link size="sm">Learn More</Link>
 				</Alert.Action>
 			</Alert>
 			<Alert variant="danger">

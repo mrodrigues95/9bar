@@ -23,6 +23,7 @@ export const Nav = () => {
 										<Link
 											to={to}
 											variant="ghost"
+											size="sm"
 											activeProps={{
 												variant: "default",
 												"aria-current": "page",

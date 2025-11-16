@@ -1,5 +1,7 @@
-import { Heading, Text } from "@9bar/toolkit";
+import { Alert, Heading } from "@9bar/toolkit";
+import { BeakerIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "src/components";
 
 const Home = () => {
 	return (
@@ -7,10 +9,20 @@ const Home = () => {
 			<Heading as="h1" variant="title">
 				9bar
 			</Heading>
-			<Text as="p" variant="body-lg">
-				Welcome to your home page. This is where you can view your dashboard and
-				recent activity.
-			</Text>
+			<Alert variant="info">
+				<Alert.Indicator>
+					<BeakerIcon />
+				</Alert.Indicator>
+				<Alert.Content>
+					<Alert.Title>Set your machine & grinder</Alert.Title>
+					<Alert.Description>
+						Get tailored recommendations based on your setup.
+					</Alert.Description>
+				</Alert.Content>
+				<Alert.Action>
+					<Link to="/profile">Set up now</Link>
+				</Alert.Action>
+			</Alert>
 		</div>
 	);
 };
