@@ -1,4 +1,4 @@
-import { HeartIcon } from "@heroicons/react/24/solid";
+import { UserIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IconButton } from "./icon-button";
 
@@ -15,8 +15,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		"aria-label": "Like",
-		children: <HeartIcon />,
-		size: "sm",
+		"aria-label": "User",
+		children: <UserIcon />,
+		size: "md",
+		variant: "ghost",
 	},
 };

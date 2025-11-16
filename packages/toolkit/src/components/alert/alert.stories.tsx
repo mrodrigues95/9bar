@@ -1,6 +1,6 @@
 import { UserGroupIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-// import { Button } from "../button/button";
+import { Button } from "../button/button";
 import { IconButton } from "../icon-button/icon-button";
 import { Alert } from "./alert";
 
@@ -106,28 +106,65 @@ export const WithoutIndicator: Story = {
 	),
 };
 
-export const WithCustomContent: Story = {
+export const WithButtons: Story = {
 	render: () => (
-		<Alert variant="success">
-			<Alert.Indicator />
-			<Alert.Content>
-				<Alert.Title>Storage Almost Full</Alert.Title>
-				<Alert.Description>
-					You're using 90% of your available storage. Consider upgrading your
-					plan.
-				</Alert.Description>
-			</Alert.Content>
-			{/* <Button className="self-center text-yellow-700 bg-yellow-100 hover:bg-yellow-200 hover:text-yellow-900 pressed:bg-yellow-300">
-				Upgrade Plan
-			</Button> */}
-			<IconButton
-				aria-label="Close"
-				variant="ghost"
-				size="sm"
-				// className="text-yellow-700 bg-yellow-100 hover:bg-yellow-200 hover:text-yellow-900 pressed:bg-yellow-300"
-			>
-				<XMarkIcon />
-			</IconButton>
-		</Alert>
+		<div className="flex flex-col gap-4">
+			<Alert variant="success">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>Storage Almost Full</Alert.Title>
+					<Alert.Description>
+						You're using 90% of your available storage. Consider upgrading your
+						plan.
+					</Alert.Description>
+				</Alert.Content>
+				<Alert.Action>
+					<IconButton aria-label="Close" variant="ghost" size="sm">
+						<XMarkIcon />
+					</IconButton>
+				</Alert.Action>
+			</Alert>
+			<Alert variant="warning">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>Storage Almost Full</Alert.Title>
+					<Alert.Description>
+						You're using 90% of your available storage. Consider upgrading your
+						plan.
+					</Alert.Description>
+				</Alert.Content>
+				<Alert.Action>
+					<Button variant="ghost">Upgrade Plan</Button>
+				</Alert.Action>
+			</Alert>
+			<Alert variant="info">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>New Feature Available</Alert.Title>
+					<Alert.Description>
+						Check out our new dashboard with enhanced analytics.
+					</Alert.Description>
+				</Alert.Content>
+				<Alert.Action>
+					<Button variant="ghost">Learn More</Button>
+				</Alert.Action>
+			</Alert>
+			<Alert variant="danger">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>Delete Account</Alert.Title>
+					<Alert.Description>
+						Are you sure you want to delete your account? This action cannot be
+						undone.
+					</Alert.Description>
+				</Alert.Content>
+				<Alert.Action>
+					<Button variant="ghost">Cancel</Button>
+				</Alert.Action>
+				<Alert.Action>
+					<Button variant="ghost">Delete</Button>
+				</Alert.Action>
+			</Alert>
+		</div>
 	),
 };

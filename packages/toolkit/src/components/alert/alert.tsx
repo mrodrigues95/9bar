@@ -184,9 +184,51 @@ const AlertDescription = ({
 	);
 };
 
+const alertActionVariants = tv({
+	base: "self-center",
+	variants: {
+		variant: {
+			success: [
+				"[&>*]:bg-green-100 [&>*]:text-green-900",
+				"[&>*]:pressed:bg-green-300/75",
+				"[&>*]:hover:bg-green-200 [&>*]:hover:text-green-950",
+			],
+			danger: [
+				"[&>*]:bg-red-100 [&>*]:text-red-900",
+				"[&>*]:pressed:bg-red-300/75",
+				"[&>*]:hover:bg-red-200 [&>*]:hover:text-red-950",
+			],
+			warning: [
+				"[&>*]:bg-yellow-100 [&>*]:text-yellow-900",
+				"[&>*]:pressed:bg-yellow-300/75",
+				"[&>*]:hover:bg-yellow-200 [&>*]:hover:text-yellow-950",
+			],
+			info: [
+				"[&>*]:bg-blue-100 [&>*]:text-blue-900",
+				"[&>*]:pressed:bg-blue-300/75",
+				"[&>*]:hover:bg-blue-200 [&>*]:hover:text-blue-950",
+			],
+		},
+	},
+	defaultVariants: {
+		variant: "info",
+	},
+});
+
+const AlertAction = ({
+	className,
+	...props
+}: HTMLAttributes<HTMLDivElement>) => {
+	const { variant } = useAlert();
+	return (
+		<div className={alertActionVariants({ variant, className })} {...props} />
+	);
+};
+
 export const Alert = Object.assign(AlertRoot, {
 	Indicator: AlertIndicator,
 	Content: AlertContent,
 	Title: AlertTitle,
 	Description: AlertDescription,
+	Action: AlertAction,
 });

@@ -6,12 +6,12 @@ import {
 import { tv, type VariantProps } from "tailwind-variants";
 import { buttonVariants } from "../button/button";
 
-// TODO: Convert this to slots, switch the icon sizing method to use size prop properly (e.g. size-4, size-6, etc)
-// TODO: Add ghost variant with no bg or ring on focus
 export const iconButtonVariants = tv({
 	extend: buttonVariants,
+	base: "relative",
 	variants: {
 		size: {
+			xs: "size-4",
 			sm: "size-6",
 			md: "size-8",
 			lg: "size-10",
@@ -19,6 +19,21 @@ export const iconButtonVariants = tv({
 	},
 	defaultVariants: {
 		variant: "default",
+		size: "md",
+	},
+});
+
+const iconButtonContainerVariants = tv({
+	base: "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2",
+	variants: {
+		size: {
+			xs: "[&>*:first-child]:size-2.5",
+			sm: "[&>*:first-child]:size-4",
+			md: "[&>*:first-child]:size-5",
+			lg: "[&>*:first-child]:size-6",
+		},
+	},
+	defaultVariants: {
 		size: "md",
 	},
 });
@@ -35,15 +50,15 @@ export const IconButton = ({
 	size,
 	children,
 	...props
-}: IconButtonProps) => (
-	<AriaButton
-		{...props}
-		className={composeRenderProps(props.className, (className, renderProps) =>
-			iconButtonVariants({ ...renderProps, variant, size, className }),
-		)}
-	>
-		<span className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 [&>*:first-child]:h-full [&>*:first-child]:w-full">
-			{children}
-		</span>
-	</AriaButton>
-);
+}: IconButtonProps) => {
+	return (
+		<AriaButton
+			{...props}
+			className={composeRenderProps(props.className, (className, renderProps) =>
+				iconButtonVariants({ ...renderProps, variant, size, className }),
+			)}
+		>
+			<span className={iconButtonContainerVariants({ size })}>{children}</span>
+		</AriaButton>
+	);
+};
