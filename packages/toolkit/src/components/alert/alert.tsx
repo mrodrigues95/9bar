@@ -37,28 +37,28 @@ const useAlert = () => {
 
 const alertVariants = tv({
 	slots: {
-		root: "relative flex items-start gap-3 rounded-md border p-3",
-		indicator: "size-5 flex-shrink-0",
+		root: "relative flex items-start gap-2 rounded-xl border p-3",
+		indicator: "size-4 flex-shrink-0",
 		content: "flex flex-1 flex-col gap-1",
-		title: "font-semibold text-sm leading-4.5",
-		description: "text-sm",
+		title: "font-medium text-slate-900 text-sm leading-4.5",
+		description: "text-slate-700 text-sm",
 	},
 	variants: {
 		variant: {
 			success: {
-				root: "border-green-200 bg-green-50 text-green-900",
+				root: "border-green-200 bg-green-50/75",
 				indicator: "text-green-600",
 			},
 			danger: {
-				root: "border-red-200 bg-red-50 text-red-900",
+				root: "border-red-200 bg-red-50/75",
 				indicator: "text-red-600",
 			},
 			warning: {
-				root: "border-yellow-200 bg-yellow-50 text-yellow-900",
+				root: "border-yellow-200 bg-yellow-50/75",
 				indicator: "text-yellow-600",
 			},
 			info: {
-				root: "border-blue-200 bg-blue-50 text-blue-900",
+				root: "border-blue-200 bg-blue-50/75",
 				indicator: "text-blue-600",
 			},
 		},
@@ -205,7 +205,11 @@ const AlertAction = ({
 }: HTMLAttributes<HTMLDivElement>) => {
 	const { variant } = useAlert();
 	return (
-		<div className={alertActionVariants({ variant, className })} {...props} />
+		<div
+			data-slot="alert-action"
+			className={alertActionVariants({ variant, className })}
+			{...props}
+		/>
 	);
 };
 

@@ -15,7 +15,9 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
-	args: {},
+	args: {
+		size: "sm",
+	},
 };
 
 export const Variants: Story = {

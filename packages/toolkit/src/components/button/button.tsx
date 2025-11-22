@@ -9,7 +9,7 @@ import { focusRing } from "../../utils/classes";
 export const buttonVariants = tv({
 	extend: focusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm outline-none transition duration-150",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
 	variants: {
@@ -35,7 +35,7 @@ export const buttonVariants = tv({
 				"pressed:bg-red-200",
 			],
 			outline: [
-				"border border-slate-200 bg-transparent text-slate-700 shadow-sm",
+				"border border-slate-300 bg-transparent text-slate-700 shadow-xs",
 				"hover:bg-slate-100 hover:text-slate-900",
 				"pressed:bg-slate-200",
 			],
