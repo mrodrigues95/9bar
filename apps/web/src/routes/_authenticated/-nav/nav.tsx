@@ -1,6 +1,6 @@
-import type { FileRouteTypes } from "../../routeTree.gen";
-import { Link } from "../link/link";
-import { Logo } from "../logo/logo";
+import { Link } from "../../../components/link/link";
+import { Logo } from "../../../components/logo/logo";
+import type { FileRouteTypes } from "../../../routeTree.gen";
 import { ProfileMenu } from "./profile-menu";
 
 const links: Array<{ to: FileRouteTypes["to"]; label: string }> = [

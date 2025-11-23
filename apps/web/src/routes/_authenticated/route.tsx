@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { Nav } from "src/components/nav/nav";
+import { Nav } from "./-nav/nav";
 
 const AuthenticatedLayout = () => {
 	return (
