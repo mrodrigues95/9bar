@@ -1,6 +1,7 @@
 export * from "./components/alert/alert";
 export * from "./components/avatar/avatar";
 export * from "./components/button/button";
+export * from "./components/card/card";
 export * from "./components/field/description";
 export * from "./components/field/field-error";
 export * from "./components/field/input";

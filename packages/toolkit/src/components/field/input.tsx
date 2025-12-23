@@ -3,7 +3,7 @@ import {
 	type InputProps as AriaInputProps,
 	composeRenderProps,
 } from "react-aria-components";
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 import { focusRing } from "../../utils/classes";
 
 const inputVariants = tv({
@@ -25,13 +25,15 @@ const inputVariants = tv({
 	},
 });
 
-export interface InputProps extends AriaInputProps {}
+export interface InputProps
+	extends AriaInputProps,
+		VariantProps<typeof inputVariants> {}
 
-export const Input = (props: InputProps) => (
+export const Input = ({ density, ...props }: InputProps) => (
 	<AriaInput
 		{...props}
 		className={composeRenderProps(props.className, (className, renderProps) =>
-			inputVariants({ ...renderProps, className }),
+			inputVariants({ ...renderProps, density, className }),
 		)}
 	/>
 );

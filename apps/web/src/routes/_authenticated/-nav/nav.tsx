@@ -11,7 +11,7 @@ const links: Array<{ to: FileRouteTypes["to"]; label: string }> = [
 
 export const Nav = () => {
 	return (
-		<header className="border-slate-200 border-b bg-white">
+		<header className="border-neutral-200 border-b bg-white">
 			<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between">
 					<div className="flex flex-1 items-center gap-10">
