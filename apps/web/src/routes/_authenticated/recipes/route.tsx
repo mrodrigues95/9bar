@@ -1,13 +1,9 @@
 import { Button, Card, Heading, Text } from "@9bar/toolkit";
-import {
-	ChevronLeftIcon,
-	ChevronRightIcon,
-	PlusIcon,
-} from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
+import { Pagination } from "../../../components/pagination/pagination";
 
 // TODO: Break this off into smaller components.
-// TODO: Implement pagination component, adjust styles.
 // TODO: Implement recipe list item component.
 // TODO: Setup mock data.
 const Recipe = () => {
@@ -63,49 +59,7 @@ const Recipe = () => {
 					</ul>
 				</Card.Panel>
 				<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 px-4 pt-4">
-					<Text variant="caption">
-						Showing <span className="font-medium text-slate-950">1</span> to{" "}
-						<span className="font-medium text-slate-950">10</span> of{" "}
-						<span className="font-medium text-slate-950">59</span> recipes
-					</Text>
-					<nav aria-label="Pagination">
-						<ul className="flex items-center gap-px">
-							<li>
-								<button
-									type="button"
-									aria-label="Go to previous page"
-									className="relative inset-ring inset-ring-gray-300 inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:inset-ring-gray-700 dark:hover:bg-white/5"
-									tabIndex={-1}
-									disabled
-								>
-									<ChevronLeftIcon className="size-2.5" />
-								</button>
-							</li>
-							<li>
-								<button
-									type="button"
-									aria-label="Page 1"
-									className="relative inset-ring inset-ring-gray-300 inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:inset-ring-gray-700 dark:hover:bg-white/5"
-									aria-current="page"
-								>
-									1
-								</button>
-							</li>
-							<li>
-								<span>...</span>
-							</li>
-							<li>
-								<button
-									type="button"
-									aria-label="Go to next page"
-									className="relative inset-ring inset-ring-gray-300 inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:inset-ring-gray-700 dark:hover:bg-white/5"
-									tabIndex={0}
-								>
-									<ChevronRightIcon className="size-2.5" />
-								</button>
-							</li>
-						</ul>
-					</nav>
+					<Pagination />
 				</Card.Footer>
 			</Card>
 		</div>

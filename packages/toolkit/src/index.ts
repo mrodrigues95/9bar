@@ -10,5 +10,6 @@ export * from "./components/form/form";
 export * from "./components/heading/heading";
 export * from "./components/icon-button/icon-button";
 export * from "./components/link/link";
+export * from "./components/pagination/pagination";
 export * from "./components/text/text";
 export * from "./components/text-field/text-field";
