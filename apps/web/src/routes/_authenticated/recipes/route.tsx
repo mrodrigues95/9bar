@@ -24,7 +24,7 @@ const Recipe = () => {
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost">Quick Log</Button>
-						<Button variant="solidBlue">
+						<Button>
 							<PlusIcon className="size-4" />
 							Create Recipe
 						</Button>

@@ -14,10 +14,12 @@ const paginationVariants = tv({
 		nav: "",
 		content: "flex flex-row items-center gap-1",
 		item: "",
-		button: ["size-7 text-slate-700 transition-none", "disabled:opacity-50"],
+		button: [
+			"size-7 px-2 py-0 text-slate-700 transition-none",
+			"disabled:opacity-50",
+		],
 		ellipsis:
 			"flex size-7 items-center justify-center text-slate-700 data-[disabled]:opacity-50",
-		icon: "",
 	},
 	variants: {},
 });
@@ -158,15 +160,13 @@ export const PaginationFirst = ({
 	className,
 	...props
 }: PaginationFirstProps) => {
-	const styles = paginationVariants();
-
 	return (
 		<PaginationButton
 			aria-label={ariaLabel}
 			{...(className ? { className } : {})}
 			{...props}
 		>
-			<ChevronDoubleLeftIcon className={styles.icon()} />
+			<ChevronDoubleLeftIcon />
 		</PaginationButton>
 	);
 };
@@ -179,15 +179,13 @@ export const PaginationLast = ({
 	className,
 	...props
 }: PaginationLastProps) => {
-	const styles = paginationVariants();
-
 	return (
 		<PaginationButton
 			aria-label={ariaLabel}
 			{...(className ? { className } : {})}
 			{...props}
 		>
-			<ChevronDoubleRightIcon className={styles.icon()} />
+			<ChevronDoubleRightIcon />
 		</PaginationButton>
 	);
 };
