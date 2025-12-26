@@ -2,10 +2,8 @@ import { Button, Card, Heading, Text } from "@9bar/toolkit";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
 import { Pagination } from "../../../components/pagination/pagination";
+import { RecipeList } from "./-recipe-list";
 
-// TODO: Break this off into smaller components.
-// TODO: Implement recipe list item component.
-// TODO: Setup mock data.
 const Recipe = () => {
 	return (
 		<div className="space-y-4">
@@ -31,32 +29,7 @@ const Recipe = () => {
 					</div>
 				</Card.Header>
 				<Card.Panel className="px-4">
-					<ul className="divide-y divide-slate-950/10">
-						<li className="flex items-center justify-between py-1.5">
-							<div className="flex flex-col">
-								<Text variant="body-sm">
-									La Marzocco Linea Mini · Eureka Atom
-								</Text>
-								<Text variant="body-sm" className="font-medium text-slate-950">
-									Slow Bloom
-								</Text>
-								<Text variant="body-sm">18g → 36g · 22s</Text>
-							</div>
-							<div>actions here</div>
-						</li>
-						<li className="flex items-center justify-between py-1.5 last:pb-0">
-							<div className="flex flex-col">
-								<Text variant="body-sm">
-									La Marzocco Linea Mini · Eureka Atom
-								</Text>
-								<Text variant="body-sm" className="font-medium text-slate-950">
-									Slow Bloom
-								</Text>
-								<Text variant="body-sm">18g → 36g · 22s</Text>
-							</div>
-							<div>actions here</div>
-						</li>
-					</ul>
+					<RecipeList />
 				</Card.Panel>
 				<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 px-4 pt-4">
 					<Pagination />

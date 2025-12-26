@@ -9,7 +9,7 @@ import { focusRing } from "../../utils/classes";
 export const buttonVariants = tv({
 	extend: focusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm outline-none transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm ring-0 transition duration-150",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
 	variants: {
@@ -25,13 +25,13 @@ export const buttonVariants = tv({
 				"pressed:bg-slate-600",
 			],
 			solidBlue: [
-				"bg-blue-700 text-white",
-				"hover:bg-blue-900",
-				"pressed:bg-blue-950",
+				"bg-blue-900 text-white",
+				"hover:bg-blue-700",
+				"pressed:bg-blue-600",
 			],
 			danger: [
 				"text-red-600 hover:bg-red-100",
-				"focus-visible:bg-red-100 focus-visible:ring-red-600",
+				"focus-visible:bg-red-100",
 				"pressed:bg-red-200",
 			],
 			outline: [
@@ -47,7 +47,7 @@ export const buttonVariants = tv({
 			link: [
 				"text-slate-900 underline-offset-4",
 				"hover:underline",
-				"focus-visible:underline focus-visible:ring-0 focus-visible:ring-offset-0",
+				"focus-visible:underline focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
 			],
 		},
 		size: {
