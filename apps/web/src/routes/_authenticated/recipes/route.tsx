@@ -10,7 +10,7 @@ const Recipe = () => {
 			<Heading as="h1" variant="title">
 				Recipes
 			</Heading>
-			<Card className="gap-2.5 py-4">
+			<Card className="gap-2.5 py-4" render={<section />}>
 				<Card.Header className="flex flex-row items-center justify-between px-4">
 					<div className="flex flex-col gap-0.5">
 						<Heading as="h2" variant="section">
@@ -21,9 +21,9 @@ const Recipe = () => {
 						</Text>
 					</div>
 					<div className="flex gap-2">
-						<Button variant="ghost">Quick Log</Button>
-						<Button>
-							<PlusIcon className="size-4" />
+						<Button variant="outline">Quick Log</Button>
+						<Button variant="solid">
+							<PlusIcon />
 							Create Recipe
 						</Button>
 					</div>

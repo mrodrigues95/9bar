@@ -5,8 +5,8 @@ import {
 	XCircleIcon,
 } from "@heroicons/react/24/outline";
 import {
+	type ComponentProps,
 	createContext,
-	type HTMLAttributes,
 	type ReactNode,
 	useContext,
 	useEffect,
@@ -76,7 +76,7 @@ const defaultIcons = {
 };
 
 export interface AlertProps
-	extends HTMLAttributes<HTMLDivElement>,
+	extends ComponentProps<"div">,
 		VariantProps<typeof alertVariants> {}
 
 const AlertRoot = ({
@@ -116,7 +116,7 @@ const AlertRoot = ({
 	);
 };
 
-export interface AlertIndicatorProps extends HTMLAttributes<HTMLDivElement> {
+export interface AlertIndicatorProps extends ComponentProps<"div"> {
 	children?: ReactNode;
 }
 
@@ -136,20 +136,14 @@ const AlertIndicator = ({
 	);
 };
 
-const AlertContent = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLDivElement>) => {
+const AlertContent = ({ className, ...props }: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	const styles = alertVariants({ variant });
 
 	return <div className={styles.content({ className })} {...props} />;
 };
 
-const AlertTitle = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLSpanElement>) => {
+const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	const { titleId, variant, setHasTitle } = useAlert();
 	const styles = alertVariants({ variant });
 
@@ -163,10 +157,7 @@ const AlertTitle = ({
 	);
 };
 
-const AlertDescription = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLParagraphElement>) => {
+const AlertDescription = ({ className, ...props }: ComponentProps<"p">) => {
 	const { descriptionId, variant, setHasDescription } = useAlert();
 	const styles = alertVariants({ variant });
 
@@ -199,10 +190,7 @@ const alertActionVariants = tv({
 	},
 });
 
-const AlertAction = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLDivElement>) => {
+const AlertAction = ({ className, ...props }: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	return (
 		<div

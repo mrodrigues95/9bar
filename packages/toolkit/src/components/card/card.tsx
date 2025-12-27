@@ -1,4 +1,6 @@
-import type { HTMLAttributes } from "react";
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import type { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const cardVariants = tv({
@@ -21,44 +23,39 @@ const cardVariants = tv({
 });
 
 export interface CardProps
-	extends HTMLAttributes<HTMLDivElement>,
+	extends useRender.ComponentProps<"div">,
 		VariantProps<typeof cardVariants> {}
 
-const CardRoot = ({ variant, className, ...props }: CardProps) => {
+const CardRoot = ({ variant, className, render, ...props }: CardProps) => {
 	const styles = cardVariants({ variant });
-	return <div className={styles.root({ className })} {...props} />;
+	return useRender({
+		defaultTagName: "div",
+		render: render ?? <div />,
+		props: mergeProps<"div">({ className: styles.root({ className }) }, props),
+	});
 };
 
-const CardHeader = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLDivElement>) => {
+const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return <div className={styles.header({ className })} {...props} />;
 };
 
-const CardTitle = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
+const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return <div className={styles.title({ className })} {...props} />;
 };
 
-const CardDescription = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLParagraphElement>) => {
+const CardDescription = ({ className, ...props }: ComponentProps<"p">) => {
 	const styles = cardVariants();
 	return <p className={styles.description({ className })} {...props} />;
 };
 
-const CardPanel = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
+const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return <div className={styles.panel({ className })} {...props} />;
 };
 
-const CardFooter = ({
-	className,
-	...props
-}: HTMLAttributes<HTMLDivElement>) => {
+const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return <div className={styles.footer({ className })} {...props} />;
 };
