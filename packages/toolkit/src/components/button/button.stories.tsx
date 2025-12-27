@@ -1,3 +1,4 @@
+import { PlusIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "./button";
 
@@ -20,17 +21,45 @@ export const Primary: Story = {
 	},
 };
 
+export const WithIcon: Story = {
+	args: {
+		size: "sm",
+	},
+	render: (props) => (
+		<Button {...props}>
+			<PlusIcon />
+			Create
+		</Button>
+	),
+};
+
 export const Variants: Story = {
-	args: {},
-	render: () => (
+	args: {
+		isDisabled: false,
+	},
+	render: (props) => (
 		<div className="flex items-center space-x-2">
-			<Button variant="ghost">Ghost</Button>
-			<Button variant="danger">Danger</Button>
-			<Button variant="default">Default</Button>
-			<Button variant="outline">Outline</Button>
-			<Button variant="solid">Solid</Button>
-			<Button variant="solidBlue">Solid Blue</Button>
-			<Button variant="link">Link</Button>
+			<Button variant="ghost" {...props}>
+				Ghost
+			</Button>
+			<Button variant="danger" {...props}>
+				Danger
+			</Button>
+			<Button variant="default" {...props}>
+				Default
+			</Button>
+			<Button variant="outline" {...props}>
+				Outline
+			</Button>
+			<Button variant="solid" {...props}>
+				Solid
+			</Button>
+			<Button variant="solidBlue" {...props}>
+				Solid Blue
+			</Button>
+			<Button variant="link" {...props}>
+				Link
+			</Button>
 		</div>
 	),
 };

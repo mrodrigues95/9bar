@@ -9,7 +9,8 @@ import { focusRing } from "../../utils/classes";
 export const buttonVariants = tv({
 	extend: focusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-md font-medium text-sm ring-0 transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-lg font-medium text-sm ring-0 transition duration-150",
+		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
 	variants: {
@@ -20,14 +21,14 @@ export const buttonVariants = tv({
 				"pressed:bg-slate-300",
 			],
 			solid: [
-				"bg-slate-900 text-white",
+				"bg-slate-900 text-white shadow-xs",
 				"hover:bg-slate-700",
 				"pressed:bg-slate-600",
 			],
 			solidBlue: [
-				"bg-blue-900 text-white",
-				"hover:bg-blue-700",
-				"pressed:bg-blue-600",
+				"bg-blue-900 text-white shadow-xs",
+				"hover:bg-blue-800",
+				"pressed:bg-blue-700",
 			],
 			danger: [
 				"text-red-600 hover:bg-red-100",
@@ -51,10 +52,10 @@ export const buttonVariants = tv({
 			],
 		},
 		size: {
-			xs: "px-2 py-1 text-xs",
-			sm: "px-2.5 py-1 text-sm",
-			md: "px-3 py-2 text-base",
-			lg: "px-4 py-2 text-lg",
+			xs: "px-2 py-1 text-xs [&_svg]:size-3",
+			sm: "px-2.5 py-1 text-sm [&_svg]:size-4",
+			md: "px-3 py-2 text-base [&_svg]:size-5",
+			lg: "px-4 py-2 text-lg [&_svg]:size-6",
 		},
 	},
 	defaultVariants: {
