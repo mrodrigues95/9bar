@@ -5,7 +5,7 @@ import {
 import { tv, type VariantProps } from "tailwind-variants";
 
 const textVariants = tv({
-	base: "text-slate-500",
+	base: "",
 	variants: {
 		variant: {
 			body: "text-base leading-normal",
@@ -15,24 +15,36 @@ const textVariants = tv({
 			label: "font-medium text-sm leading-none",
 			detail: "font-medium text-xs leading-none",
 		},
+		color: {
+			muted: "text-slate-500",
+			primary: "text-slate-950",
+			secondary: "text-slate-700",
+		},
 	},
 	defaultVariants: {
 		variant: "body",
+		color: "muted",
 	},
 });
 
 export interface TextProps
-	extends Omit<AriaTextProps, "elementType">,
+	extends Omit<AriaTextProps, "elementType" | "color">,
 		VariantProps<typeof textVariants> {
 	as?: string;
 }
 
-export const Text = ({ as = "p", variant, className, ...props }: TextProps) => {
+export const Text = ({
+	as = "p",
+	variant,
+	color,
+	className,
+	...props
+}: TextProps) => {
 	return (
 		<AriaText
 			{...props}
 			elementType={as}
-			className={textVariants({ variant, className })}
+			className={textVariants({ variant, color, className })}
 		/>
 	);
 };

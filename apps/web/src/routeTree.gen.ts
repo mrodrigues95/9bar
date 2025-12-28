@@ -17,6 +17,7 @@ import { Route as UnauthenticatedSignInRouteRouteImport } from './routes/_unauth
 import { Route as AuthenticatedRecipesRouteRouteImport } from './routes/_authenticated/recipes/route'
 import { Route as AuthenticatedProfileRouteRouteImport } from './routes/_authenticated/profile/route'
 import { Route as AuthenticatedHomeRouteRouteImport } from './routes/_authenticated/home/route'
+import { Route as AuthenticatedRecipesRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/route'
 
 const UnauthenticatedRouteRoute = UnauthenticatedRouteRouteImport.update({
   id: '/_unauthenticated',
@@ -60,6 +61,12 @@ const AuthenticatedHomeRouteRoute = AuthenticatedHomeRouteRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRecipesRecipeIdRouteRoute =
+  AuthenticatedRecipesRecipeIdRouteRouteImport.update({
+    id: '/recipes_/$recipeId',
+    path: '/recipes/$recipeId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/recipes': typeof AuthenticatedRecipesRouteRoute
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
+  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesByTo {
   '/recipes': typeof AuthenticatedRecipesRouteRoute
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
+  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,12 +96,27 @@ export interface FileRoutesById {
   '/_authenticated/recipes': typeof AuthenticatedRecipesRouteRoute
   '/_unauthenticated/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/_unauthenticated/sign-up': typeof UnauthenticatedSignUpRouteRoute
+  '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home' | '/profile' | '/recipes' | '/sign-in' | '/sign-up'
+  fullPaths:
+    | '/'
+    | '/home'
+    | '/profile'
+    | '/recipes'
+    | '/sign-in'
+    | '/sign-up'
+    | '/recipes/$recipeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home' | '/profile' | '/recipes' | '/sign-in' | '/sign-up'
+  to:
+    | '/'
+    | '/home'
+    | '/profile'
+    | '/recipes'
+    | '/sign-in'
+    | '/sign-up'
+    | '/recipes/$recipeId'
   id:
     | '__root__'
     | '/'
@@ -103,6 +127,7 @@ export interface FileRouteTypes {
     | '/_authenticated/recipes'
     | '/_unauthenticated/sign-in'
     | '/_unauthenticated/sign-up'
+    | '/_authenticated/recipes_/$recipeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -169,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/recipes_/$recipeId': {
+      id: '/_authenticated/recipes_/$recipeId'
+      path: '/recipes/$recipeId'
+      fullPath: '/recipes/$recipeId'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -176,12 +208,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRouteRoute: typeof AuthenticatedHomeRouteRoute
   AuthenticatedProfileRouteRoute: typeof AuthenticatedProfileRouteRoute
   AuthenticatedRecipesRouteRoute: typeof AuthenticatedRecipesRouteRoute
+  AuthenticatedRecipesRecipeIdRouteRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRouteRoute: AuthenticatedHomeRouteRoute,
   AuthenticatedProfileRouteRoute: AuthenticatedProfileRouteRoute,
   AuthenticatedRecipesRouteRoute: AuthenticatedRecipesRouteRoute,
+  AuthenticatedRecipesRecipeIdRouteRoute:
+    AuthenticatedRecipesRecipeIdRouteRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -63,7 +63,7 @@ export const RealWorldExample: Story = {
 	render: () => (
 		<div className="mx-auto max-w-2xl space-y-6 p-8">
 			<div className="space-y-2">
-				<Text as="p" variant="body-lg">
+				<Text as="p" variant="body-lg" color="primary">
 					Welcome to our platform! We're excited to have you here.
 				</Text>
 				<Text as="p" variant="body">
@@ -75,7 +75,9 @@ export const RealWorldExample: Story = {
 
 			<div className="rounded-lg border border-gray-200 p-6">
 				<div className="mb-4 flex items-center justify-between">
-					<Text variant="label">Product Name</Text>
+					<Text variant="label" color="primary">
+						Product Name
+					</Text>
 					<Text variant="detail">SKU: 12345</Text>
 				</div>
 				<Text as="p" variant="body-sm" className="text-slate-600">

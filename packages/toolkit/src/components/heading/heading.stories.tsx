@@ -42,10 +42,10 @@ export const SemanticLevels: Story = {
 			<Heading as="h4" variant="section">
 				h4 - Minor heading
 			</Heading>
-			<Heading as="h5" variant="label">
+			<Heading as="h5" variant="subsection">
 				h5 - Small heading
 			</Heading>
-			<Heading as="h6" variant="label">
+			<Heading as="h6" variant="subsection">
 				h6 - Smallest heading
 			</Heading>
 		</div>

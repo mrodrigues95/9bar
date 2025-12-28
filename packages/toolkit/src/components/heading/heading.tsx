@@ -11,7 +11,7 @@ const headingVariants = tv({
 			title: "font-semibold text-xl leading-tight sm:text-2xl",
 			subtitle: "font-medium text-lg leading-normal sm:text-xl",
 			section: "font-semibold text-base leading-normal",
-			label: "font-medium text-sm leading-normal",
+			subsection: "font-medium text-sm leading-normal",
 		},
 	},
 	defaultVariants: {
