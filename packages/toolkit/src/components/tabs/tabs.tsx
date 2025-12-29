@@ -92,11 +92,11 @@ const TabsContext = createContext<TabsContextValue>({
 
 export interface TabsPropsExtended extends TabsProps, TabsVariantProps {}
 
-export function Tabs({
+export const Tabs = ({
 	variant = "underline",
 	orientation = "horizontal",
 	...props
-}: TabsPropsExtended) {
+}: TabsPropsExtended) => {
 	const styles = tabsVariants({ variant, orientation });
 
 	return (
@@ -110,9 +110,9 @@ export function Tabs({
 			/>
 		</TabsContext.Provider>
 	);
-}
+};
 
-export function TabList<T extends object>(props: TabListProps<T>) {
+export const TabList = <T extends object>(props: TabListProps<T>) => {
 	const { variant, orientation } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation });
 
@@ -124,9 +124,9 @@ export function TabList<T extends object>(props: TabListProps<T>) {
 			)}
 		/>
 	);
-}
+};
 
-export function Tab(props: TabProps) {
+export const Tab = (props: TabProps) => {
 	const { variant, orientation } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation });
 
@@ -150,9 +150,9 @@ export function Tab(props: TabProps) {
 			))}
 		</AriaTab>
 	);
-}
+};
 
-export function TabPanels<T extends object>(props: TabPanelsProps<T>) {
+export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 	const { variant, orientation } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation });
 
@@ -162,9 +162,9 @@ export function TabPanels<T extends object>(props: TabPanelsProps<T>) {
 			className={styles.panels({ className: props.className })}
 		/>
 	);
-}
+};
 
-export function TabPanel(props: TabPanelProps) {
+export const TabPanel = (props: TabPanelProps) => {
 	const { variant, orientation } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation });
 
@@ -177,4 +177,4 @@ export function TabPanel(props: TabPanelProps) {
 			)}
 		/>
 	);
-}
+};
