@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
 import {
+	Tab as AriaTab,
+	TabList as AriaTabList,
+	TabPanel as AriaTabPanel,
+	TabPanels as AriaTabPanels,
+	Tabs as AriaTabs,
 	composeRenderProps,
-	Tab as ReactAriaTab,
-	TabList as ReactAriaTabList,
-	TabPanel as ReactAriaTabPanel,
-	TabPanels as ReactAriaTabPanels,
-	Tabs as ReactAriaTabs,
 	SelectionIndicator,
 	type TabListProps,
 	type TabPanelProps,
@@ -101,7 +101,7 @@ export function Tabs({
 
 	return (
 		<TabsContext.Provider value={{ variant, orientation }}>
-			<ReactAriaTabs
+			<AriaTabs
 				orientation={orientation}
 				{...props}
 				className={composeRenderProps(props.className, (className) =>
@@ -117,7 +117,7 @@ export function TabList<T extends object>(props: TabListProps<T>) {
 	const styles = tabsVariants({ variant, orientation });
 
 	return (
-		<ReactAriaTabList
+		<AriaTabList
 			{...props}
 			className={composeRenderProps(props.className, (className) =>
 				styles.list({ className }),
@@ -131,7 +131,7 @@ export function Tab(props: TabProps) {
 	const styles = tabsVariants({ variant, orientation });
 
 	return (
-		<ReactAriaTab
+		<AriaTab
 			{...props}
 			className={composeRenderProps(
 				props.className,
@@ -148,7 +148,7 @@ export function Tab(props: TabProps) {
 					<SelectionIndicator className={styles.indicator()} />
 				</>
 			))}
-		</ReactAriaTab>
+		</AriaTab>
 	);
 }
 
@@ -157,7 +157,7 @@ export function TabPanels<T extends object>(props: TabPanelsProps<T>) {
 	const styles = tabsVariants({ variant, orientation });
 
 	return (
-		<ReactAriaTabPanels
+		<AriaTabPanels
 			{...props}
 			className={styles.panels({ className: props.className })}
 		/>
@@ -169,7 +169,7 @@ export function TabPanel(props: TabPanelProps) {
 	const styles = tabsVariants({ variant, orientation });
 
 	return (
-		<ReactAriaTabPanel
+		<AriaTabPanel
 			{...props}
 			className={composeRenderProps(
 				props.className,
