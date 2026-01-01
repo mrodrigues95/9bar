@@ -6,18 +6,23 @@ import {
 	MenuItem,
 	MenuSeparator,
 	MenuTrigger,
+	Tab,
+	TabList,
+	TabPanel,
+	TabPanels,
+	Tabs,
 	Text,
 } from "@9bar/toolkit";
 import {
-	ArrowLeftIcon,
 	ChevronDownIcon,
 	FingerPrintIcon,
 	PencilIcon,
-	SquaresPlusIcon,
+	PlusIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "../../../../components";
+import { Breadcrumb, Breadcrumbs, Pagination } from "../../../../components";
+import type { FileRouteTypes } from "../../../../routeTree.gen";
 
 const RecipeNotes = () => {
 	return (
@@ -92,16 +97,13 @@ const RecipeStats = () => {
 
 const RecipeName = () => {
 	return (
-		<div className="flex items-center gap-2.5">
-			<FingerPrintIcon className="w-8" />
-			<div className="flex-1">
-				<Heading variant="subtitle" as="p">
-					Rancilio Silvia
-				</Heading>
-				<Text as="p" variant="body-sm">
-					Eureka Mignon
-				</Text>
-			</div>
+		<div>
+			<Heading variant="subtitle" as="p">
+				Rancilio Silvia
+			</Heading>
+			<Text as="p" variant="body-sm">
+				Eureka Mignon
+			</Text>
 		</div>
 	);
 };
@@ -110,51 +112,96 @@ const Recipe = () => {
 	// const { recipeId } = Route.useParams();
 
 	return (
-		<section className="flex flex-col gap-2">
-			<Link
-				variant="link"
-				to="/recipes"
-				className="w-fit text-slate-500 hover:text-slate-900 focus-visible:text-slate-900"
-			>
-				<ArrowLeftIcon />
-				Go back
-			</Link>
-			<Card>
-				<Card.Header className="flex flex-row items-center justify-between gap-4">
-					<Heading as="h1" variant="title">
-						Recipe Name Here
-					</Heading>
-					<MenuTrigger>
-						<Button variant="outline">
-							Actions
-							<ChevronDownIcon />
-						</Button>
-						<Menu>
-							<MenuItem onAction={() => alert("rename")}>
-								<PencilIcon className="size-3" />
-								Edit
-							</MenuItem>
-							<MenuItem onAction={() => alert("rename")}>
-								<SquaresPlusIcon className="size-3" />
-								Log
-							</MenuItem>
-							<MenuSeparator />
-							<MenuItem onAction={() => alert("delete")} variant="danger">
-								<TrashIcon className="size-3" />
-								Delete
-							</MenuItem>
-						</Menu>
-					</MenuTrigger>
-				</Card.Header>
-				<Card.Panel className="gap-4">
-					<RecipeName />
-					<RecipeStats />
-					<RecipeDetails />
-					<RecipeNotes />
-					<p>todo: implement log section here with pagination</p>
-				</Card.Panel>
-			</Card>
-		</section>
+		<>
+			<nav aria-label="Recipe navigation" className="mb-6">
+				<Breadcrumbs
+					items={
+						[
+							{ id: "recipes", label: "Recipes", to: "/recipes" },
+							{ id: "recipe-id", label: "Recipe Name Here" },
+						] satisfies Array<{
+							id: string;
+							label: string;
+							to?: FileRouteTypes["to"];
+						}>
+					}
+				>
+					{(item) => (
+						<Breadcrumb key={item.id} {...(item.to ? { to: item.to } : {})}>
+							{item.label}
+						</Breadcrumb>
+					)}
+				</Breadcrumbs>
+			</nav>
+			<div className="flex flex-col gap-2">
+				<Heading as="h1" variant="title">
+					Recipe Name Here
+				</Heading>
+				<Tabs color="blue">
+					<TabList aria-label="Manage this recipe">
+						<Tab id="overview">
+							<FingerPrintIcon />
+							Overview
+						</Tab>
+						<Tab id="logs">
+							<PencilIcon />
+							Logs
+						</Tab>
+					</TabList>
+					<TabPanels>
+						<TabPanel id="overview" className="px-0">
+							<Card>
+								<Card.Header className="flex flex-row items-center justify-between gap-4">
+									<RecipeName />
+									<MenuTrigger>
+										<Button variant="outline">
+											Actions
+											<ChevronDownIcon />
+										</Button>
+										<Menu>
+											<MenuItem onAction={() => alert("rename")}>
+												<PencilIcon className="size-3" />
+												Edit
+											</MenuItem>
+											<MenuSeparator />
+											<MenuItem
+												onAction={() => alert("delete")}
+												variant="danger"
+											>
+												<TrashIcon className="size-3" />
+												Delete
+											</MenuItem>
+										</Menu>
+									</MenuTrigger>
+								</Card.Header>
+								<Card.Panel className="gap-4">
+									<RecipeStats />
+									<RecipeDetails />
+									<RecipeNotes />
+								</Card.Panel>
+							</Card>
+						</TabPanel>
+						<TabPanel id="logs" className="px-0">
+							<Card>
+								<Card.Header className="flex flex-row items-center justify-between gap-4">
+									<Heading variant="subtitle" as="p">
+										Logs
+									</Heading>
+									<Button variant="solid" onPress={() => alert("new log")}>
+										<PlusIcon />
+										New Log
+									</Button>
+								</Card.Header>
+								<Card.Panel className="gap-4">foo</Card.Panel>
+								<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
+									<Pagination />
+								</Card.Footer>
+							</Card>
+						</TabPanel>
+					</TabPanels>
+				</Tabs>
+			</div>
+		</>
 	);
 };
 

@@ -16,7 +16,7 @@ import { Link } from "../../../components";
 
 const RecipeListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 	return (
-		<li className="flex items-center justify-between py-1.5">
+		<li className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
 			<div className="flex flex-col">
 				<Text
 					variant="body-sm"

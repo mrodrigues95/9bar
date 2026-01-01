@@ -12,13 +12,16 @@
 	"dependencies": {
 		"@9bar/toolkit": "workspace:*",
 		"@heroicons/react": "^2.2.0",
+		"@react-aria/optimize-locales-plugin": "^1.1.5",
 		"@tailwindcss/vite": "^4.1.12",
 		"@tanstack/react-router": "^1.131.31",
 		"@tanstack/react-router-devtools": "^1.131.31",
 		"@tanstack/react-start": "^1.131.31",
 		"geist": "^1.4.2",
 		"react": "^19.0.0",
+		"react-aria-components": "^1.14.0",
 		"react-dom": "^19.0.0",
+		"tailwind-variants": "^3.2.2",
 		"tailwindcss": "^4.1.12"
 	},
 	"devDependencies": {

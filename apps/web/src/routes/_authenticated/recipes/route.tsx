@@ -10,8 +10,8 @@ const Recipe = () => {
 			<Heading as="h1" variant="title">
 				Recipes
 			</Heading>
-			<Card className="gap-2.5 py-4" render={<section />}>
-				<Card.Header className="flex flex-row items-center justify-between px-4">
+			<Card render={<section />}>
+				<Card.Header className="flex flex-row items-center justify-between">
 					<div className="flex flex-col gap-0.5">
 						<Heading as="h2" variant="section">
 							Your private recipes
@@ -28,10 +28,10 @@ const Recipe = () => {
 						</Button>
 					</div>
 				</Card.Header>
-				<Card.Panel className="px-4">
+				<Card.Panel>
 					<RecipeList />
 				</Card.Panel>
-				<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 px-4 pt-4">
+				<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
 					<Pagination />
 				</Card.Footer>
 			</Card>

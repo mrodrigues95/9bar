@@ -7,6 +7,15 @@ import { Card } from "./card";
 const meta = {
 	component: Card,
 	title: "Card",
+	parameters: {
+		controls: { include: ["variant"] },
+	},
+	argTypes: {
+		variant: {
+			control: "select",
+			options: ["default"],
+		},
+	},
 } satisfies Meta<typeof Card>;
 
 export default meta;

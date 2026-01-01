@@ -1,4 +1,5 @@
-import { tv } from "tailwind-variants";
+import { composeRenderProps } from "react-aria-components";
+import { cn, tv } from "tailwind-variants";
 
 export const focusRing = tv({
 	base: [
@@ -12,3 +13,10 @@ export const focusRing = tv({
 		},
 	},
 });
+
+export const composeTailwindRenderProps = <T>(
+	className: string | ((v: T) => string) | undefined,
+	tw: string,
+): string | ((v: T) => string) => {
+	return composeRenderProps(className, (className) => cn(tw, className) ?? "");
+};
