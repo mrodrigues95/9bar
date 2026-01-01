@@ -8,32 +8,20 @@ import { buttonVariants } from "../button/button";
 
 export const iconButtonVariants = tv({
 	extend: buttonVariants,
-	base: "relative",
+	base: [
+		"relative",
+		"[&_svg]:-translate-x-1/2 [&_svg]:-translate-y-1/2 [&_svg]:absolute [&_svg]:top-1/2 [&_svg]:left-1/2",
+	],
 	variants: {
 		size: {
-			xs: "size-4",
-			sm: "size-6",
-			md: "size-8",
-			lg: "size-10",
+			xs: "size-4 [&_svg]:size-2.5",
+			sm: "size-6 [&_svg]:size-4",
+			md: "size-8 [&_svg]:size-5",
+			lg: "size-10 [&_svg]:size-6",
 		},
 	},
 	defaultVariants: {
 		variant: "default",
-		size: "md",
-	},
-});
-
-const iconButtonContainerVariants = tv({
-	base: "-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2",
-	variants: {
-		size: {
-			xs: "[&>*:first-child]:size-2.5",
-			sm: "[&>*:first-child]:size-4",
-			md: "[&>*:first-child]:size-5",
-			lg: "[&>*:first-child]:size-6",
-		},
-	},
-	defaultVariants: {
 		size: "md",
 	},
 });
@@ -58,7 +46,7 @@ export const IconButton = ({
 				iconButtonVariants({ ...renderProps, variant, size, className }),
 			)}
 		>
-			<span className={iconButtonContainerVariants({ size })}>{children}</span>
+			{children}
 		</AriaButton>
 	);
 };
