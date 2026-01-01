@@ -85,3 +85,18 @@ export const DynamicCollection: Story = {
 		);
 	},
 };
+
+export const WithLinks: Story = {
+	args: {},
+	render: (props) => (
+		<MenuTrigger>
+			<IconButton aria-label="Actions">
+				<EllipsisHorizontalIcon />
+			</IconButton>
+			<Menu {...props}>
+				<MenuItem href="/docs">Docs</MenuItem>
+				<MenuItem href="/particles">Particles</MenuItem>
+			</Menu>
+		</MenuTrigger>
+	),
+};
