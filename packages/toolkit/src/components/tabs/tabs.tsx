@@ -36,8 +36,7 @@ const tabsVariants = tv({
 		variant: {
 			underline: {
 				list: "gap-x-0.5 overflow-visible border-slate-950/10 bg-transparent",
-				indicator: "z-10 h-0.5 w-full bg-slate-950",
-				tab: "selected:text-slate-950",
+				indicator: "z-10 h-0.5 w-full",
 			},
 		},
 		orientation: {
@@ -49,6 +48,16 @@ const tabsVariants = tv({
 				root: "flex-row",
 				list: "flex-col items-start",
 				tab: "w-full justify-start",
+			},
+		},
+		color: {
+			default: {
+				tab: "selected:text-slate-900",
+				indicator: "bg-slate-900",
+			},
+			blue: {
+				tab: "selected:text-blue-900",
+				indicator: "bg-blue-900",
 			},
 		},
 	},
@@ -74,6 +83,7 @@ const tabsVariants = tv({
 	defaultVariants: {
 		variant: "underline",
 		orientation: "horizontal",
+		color: "default",
 	},
 });
 
@@ -83,11 +93,13 @@ interface TabsContextValue {
 	// TODO: Add a `pill` variant.
 	variant: "underline";
 	orientation: "horizontal" | "vertical";
+	color: "default" | "blue";
 }
 
 const TabsContext = createContext<TabsContextValue>({
 	variant: "underline",
 	orientation: "horizontal",
+	color: "default",
 });
 
 export interface TabsPropsExtended extends TabsProps, TabsVariantProps {}
@@ -95,12 +107,13 @@ export interface TabsPropsExtended extends TabsProps, TabsVariantProps {}
 export const Tabs = ({
 	variant = "underline",
 	orientation = "horizontal",
+	color = "default",
 	...props
 }: TabsPropsExtended) => {
-	const styles = tabsVariants({ variant, orientation });
+	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
-		<TabsContext.Provider value={{ variant, orientation }}>
+		<TabsContext.Provider value={{ variant, orientation, color }}>
 			<AriaTabs
 				orientation={orientation}
 				{...props}
@@ -113,8 +126,8 @@ export const Tabs = ({
 };
 
 export const TabList = <T extends object>(props: TabListProps<T>) => {
-	const { variant, orientation } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation });
+	const { variant, orientation, color } = useContext(TabsContext);
+	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
 		<AriaTabList
@@ -127,8 +140,8 @@ export const TabList = <T extends object>(props: TabListProps<T>) => {
 };
 
 export const Tab = (props: TabProps) => {
-	const { variant, orientation } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation });
+	const { variant, orientation, color } = useContext(TabsContext);
+	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
 		<AriaTab
@@ -153,8 +166,8 @@ export const Tab = (props: TabProps) => {
 };
 
 export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
-	const { variant, orientation } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation });
+	const { variant, orientation, color } = useContext(TabsContext);
+	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
 		<AriaTabPanels
@@ -165,8 +178,8 @@ export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 };
 
 export const TabPanel = (props: TabPanelProps) => {
-	const { variant, orientation } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation });
+	const { variant, orientation, color } = useContext(TabsContext);
+	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
 		<AriaTabPanel
