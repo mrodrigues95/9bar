@@ -56,6 +56,7 @@ export const Divider = ({
 }: DividerProps) => {
 	return (
 		<AriaSeparator
+			data-slot="divider"
 			{...props}
 			orientation={orientation === "vertical" ? "vertical" : "horizontal"}
 			className={dividerVariants({ orientation, variant, className })}

@@ -23,6 +23,7 @@ import { Popover, type PopoverProps } from "../popover/popover";
 export const Menu = <T extends object>(props: AriaMenuProps<T>) => {
 	return (
 		<AriaMenu
+			data-slot="menu"
 			{...props}
 			className={
 				cn(
@@ -65,6 +66,7 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 
 	return (
 		<AriaMenuItem
+			data-slot="menu-item"
 			{...props}
 			{...(textValue ? { textValue } : {})}
 			className={composeRenderProps(props.className, (className, renderProps) =>
@@ -96,6 +98,7 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 export const MenuSeparator = (props: AriaSeparatorProps) => {
 	return (
 		<Separator
+			data-slot="menu-separator"
 			{...props}
 			className={cn("mx-2 my-1 h-px bg-slate-300", props.className) ?? ""}
 		/>
@@ -109,6 +112,7 @@ export interface MenuSectionProps<T> extends AriaMenuSectionProps<T> {
 export const MenuSection = <T extends object>(props: MenuSectionProps<T>) => {
 	return (
 		<AriaMenuSection
+			data-slot="menu-section"
 			{...props}
 			className={
 				cn(

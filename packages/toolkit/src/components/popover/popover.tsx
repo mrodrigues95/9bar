@@ -33,6 +33,7 @@ export const Popover = ({
 	return (
 		<AriaPopover
 			offset={showArrow ? 12 : 8}
+			data-slot="popover"
 			{...props}
 			className={composeRenderProps(className, (className, renderProps) =>
 				popoverVariants({ ...renderProps, className }),

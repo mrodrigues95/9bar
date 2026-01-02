@@ -117,6 +117,7 @@ export const Tabs = ({
 			<AriaTabs
 				orientation={orientation}
 				{...props}
+				data-slot="tabs"
 				className={composeRenderProps(props.className, (className) =>
 					styles.root({ className }),
 				)}
@@ -131,6 +132,7 @@ export const TabList = <T extends object>(props: TabListProps<T>) => {
 
 	return (
 		<AriaTabList
+			data-slot="tabs-list"
 			{...props}
 			className={composeRenderProps(props.className, (className) =>
 				styles.list({ className }),
@@ -145,6 +147,7 @@ export const Tab = (props: TabProps) => {
 
 	return (
 		<AriaTab
+			data-slot="tabs-tab"
 			{...props}
 			className={composeRenderProps(
 				props.className,
@@ -171,6 +174,7 @@ export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 
 	return (
 		<AriaTabPanels
+			data-slot="tabs-panels"
 			{...props}
 			className={styles.panels({ className: props.className })}
 		/>
@@ -183,6 +187,7 @@ export const TabPanel = (props: TabPanelProps) => {
 
 	return (
 		<AriaTabPanel
+			data-slot="tabs-panel"
 			{...props}
 			className={composeRenderProps(
 				props.className,

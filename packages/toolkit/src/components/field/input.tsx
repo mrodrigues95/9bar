@@ -31,6 +31,7 @@ export interface InputProps
 
 export const Input = ({ density, ...props }: InputProps) => (
 	<AriaInput
+		data-slot="input"
 		{...props}
 		className={composeRenderProps(props.className, (className, renderProps) =>
 			inputVariants({ ...renderProps, density, className }),

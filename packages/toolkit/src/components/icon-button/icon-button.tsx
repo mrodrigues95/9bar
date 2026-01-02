@@ -41,6 +41,7 @@ export const IconButton = ({
 }: IconButtonProps) => {
 	return (
 		<AriaButton
+			data-slot="icon-button"
 			{...props}
 			className={composeRenderProps(props.className, (className, renderProps) =>
 				iconButtonVariants({ ...renderProps, variant, size, className }),

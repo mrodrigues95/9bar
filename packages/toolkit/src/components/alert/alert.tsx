@@ -105,6 +105,7 @@ const AlertRoot = ({
 		>
 			<div
 				role="alert"
+				data-slot="alert"
 				aria-labelledby={hasTitle ? titleId : undefined}
 				aria-describedby={hasDescription ? descriptionId : undefined}
 				className={styles.root({ className })}
@@ -130,7 +131,11 @@ const AlertIndicator = ({
 	const DefaultIcon = defaultIcons[variant];
 
 	return (
-		<div className={styles.indicator({ className })} {...props}>
+		<div
+			data-slot="alert-indicator"
+			className={styles.indicator({ className })}
+			{...props}
+		>
 			{children ?? <DefaultIcon />}
 		</div>
 	);
@@ -140,7 +145,13 @@ const AlertContent = ({ className, ...props }: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	const styles = alertVariants({ variant });
 
-	return <div className={styles.content({ className })} {...props} />;
+	return (
+		<div
+			data-slot="alert-content"
+			className={styles.content({ className })}
+			{...props}
+		/>
+	);
 };
 
 const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
@@ -153,7 +164,12 @@ const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	}, [setHasTitle]);
 
 	return (
-		<span id={titleId} className={styles.title({ className })} {...props} />
+		<span
+			id={titleId}
+			data-slot="alert-title"
+			className={styles.title({ className })}
+			{...props}
+		/>
 	);
 };
 
@@ -169,6 +185,7 @@ const AlertDescription = ({ className, ...props }: ComponentProps<"p">) => {
 	return (
 		<p
 			id={descriptionId}
+			data-slot="alert-description"
 			className={styles.description({ className })}
 			{...props}
 		/>

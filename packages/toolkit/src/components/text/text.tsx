@@ -42,6 +42,7 @@ export const Text = ({
 }: TextProps) => {
 	return (
 		<AriaText
+			data-slot="text"
 			{...props}
 			elementType={as}
 			className={textVariants({ variant, color, className })}

@@ -9,8 +9,9 @@ export interface DescriptionProps extends TextProps {}
 
 export const Description = (props: DescriptionProps) => (
 	<Text
-		{...props}
 		slot="description"
+		data-slot="description"
+		{...props}
 		className={descriptionVariants({ className: props.className })}
 	/>
 );

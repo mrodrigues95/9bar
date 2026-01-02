@@ -16,6 +16,7 @@ export const Breadcrumbs = <T extends object>({
 }: BreadcrumbsProps<T>) => {
 	return (
 		<AriaBreadcrumbs
+			data-slot="breadcrumbs"
 			{...props}
 			className={
 				cn(
@@ -32,6 +33,7 @@ export interface BreadcrumbProps extends AriaBreadCrumbProps {}
 export const Breadcrumb = ({ className, ...props }: BreadcrumbProps) => {
 	return (
 		<AriaBreadcrumb
+			data-slot="breadcrumb"
 			{...props}
 			className={composeTailwindRenderProps(
 				className,

@@ -42,6 +42,7 @@ export const TextField = ({
 	return (
 		<AriaTextField
 			{...(isRequired !== undefined && { isRequired })}
+			data-slot="text-field"
 			{...props}
 			className={composeRenderProps(
 				props.className,

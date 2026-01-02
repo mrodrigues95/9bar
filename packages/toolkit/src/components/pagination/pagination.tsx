@@ -38,6 +38,7 @@ export const Pagination = ({
 	return (
 		<nav
 			aria-label={ariaLabel}
+			data-slot="pagination"
 			className={styles.nav({ className })}
 			{...props}
 		>
@@ -57,7 +58,11 @@ export const PaginationContent = ({
 }: PaginationContentProps) => {
 	const styles = paginationVariants();
 	return (
-		<ul className={styles.content({ className })} {...props}>
+		<ul
+			data-slot="pagination-content"
+			className={styles.content({ className })}
+			{...props}
+		>
 			{children}
 		</ul>
 	);
@@ -74,7 +79,11 @@ export const PaginationItem = ({
 }: PaginationItemProps) => {
 	const styles = paginationVariants();
 	return (
-		<li className={styles.item({ className })} {...props}>
+		<li
+			data-slot="pagination-item"
+			className={styles.item({ className })}
+			{...props}
+		>
 			{children}
 		</li>
 	);
@@ -86,6 +95,7 @@ export interface PaginationButtonProps
 	isActive?: boolean;
 }
 
+// TODO: add `data-slot` to non-slot like components, test this one overrides correctly.
 export const PaginationButton = ({
 	isActive = false,
 	children,
@@ -96,6 +106,7 @@ export const PaginationButton = ({
 
 	return (
 		<Button
+			data-slot="pagination-button"
 			{...(isActive
 				? { "aria-current": "page" as const, variant: "outline" }
 				: { variant: "ghost" })}
@@ -205,6 +216,7 @@ export const PaginationEllipsis = ({
 	const styles = paginationVariants();
 	return (
 		<span
+			data-slot="pagination-ellipsis"
 			className={styles.ellipsis({ className })}
 			aria-hidden="true"
 			data-disabled={isDisabled || undefined}

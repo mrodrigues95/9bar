@@ -13,6 +13,7 @@ export interface FormProps extends AriaFormProps {}
 export const Form = (props: FormProps) => {
 	return (
 		<AriaForm
+			data-slot="form"
 			{...props}
 			className={formVariants({ className: props.className })}
 			onSubmit={(e) => {

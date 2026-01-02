@@ -13,6 +13,7 @@ export interface FieldErrorProps extends AriaFieldErrorProps {}
 
 export const FieldError = (props: FieldErrorProps) => (
 	<AriaFieldError
+		data-slot="field-error"
 		{...props}
 		className={composeRenderProps(props.className, (className) =>
 			fieldErrorVariants({ className }),

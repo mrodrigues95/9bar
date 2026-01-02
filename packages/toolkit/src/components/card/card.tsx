@@ -31,33 +31,70 @@ const CardRoot = ({ variant, className, render, ...props }: CardProps) => {
 	return useRender({
 		defaultTagName: "div",
 		render: render ?? <div />,
-		props: mergeProps<"div">({ className: styles.root({ className }) }, props),
+		props: mergeProps<"div">(
+			{
+				className: styles.root({ className }),
+				// https://github.com/mui/base-ui/issues/3545
+				["data-slot" as string]: "card",
+			},
+			props,
+		),
 	});
 };
 
 const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return <div className={styles.header({ className })} {...props} />;
+	return (
+		<div
+			data-slot="card-header"
+			className={styles.header({ className })}
+			{...props}
+		/>
+	);
 };
 
 const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return <div className={styles.title({ className })} {...props} />;
+	return (
+		<div
+			data-slot="card-title"
+			className={styles.title({ className })}
+			{...props}
+		/>
+	);
 };
 
 const CardDescription = ({ className, ...props }: ComponentProps<"p">) => {
 	const styles = cardVariants();
-	return <p className={styles.description({ className })} {...props} />;
+	return (
+		<p
+			data-slot="card-description"
+			className={styles.description({ className })}
+			{...props}
+		/>
+	);
 };
 
 const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return <div className={styles.panel({ className })} {...props} />;
+	return (
+		<div
+			data-slot="card-panel"
+			className={styles.panel({ className })}
+			{...props}
+		/>
+	);
 };
 
 const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return <div className={styles.footer({ className })} {...props} />;
+	return (
+		<div
+			data-slot="card-footer"
+			className={styles.footer({ className })}
+			{...props}
+		/>
+	);
 };
 
 export const Card = Object.assign(CardRoot, {

@@ -20,6 +20,7 @@ export interface LinkProps
 export const Link = ({ variant, size, ...props }: LinkProps) => {
 	return (
 		<AriaLink
+			data-slot="link"
 			{...props}
 			className={composeRenderProps(props.className, (className, renderProps) =>
 				linkVariants({ ...renderProps, variant, size, className }),

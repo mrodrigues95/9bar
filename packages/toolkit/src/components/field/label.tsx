@@ -15,6 +15,7 @@ export interface LabelProps extends AriaLabelProps {}
 
 export const Label = (props: LabelProps) => (
 	<AriaLabel
+		data-slot="label"
 		{...props}
 		className={labelVariants({ className: props.className })}
 	/>

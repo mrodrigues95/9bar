@@ -70,6 +70,7 @@ export interface ButtonProps
 
 export const Button = ({ variant, size, ...props }: ButtonProps) => (
 	<AriaButton
+		data-slot="button"
 		{...props}
 		className={composeRenderProps(props.className, (className, renderProps) =>
 			buttonVariants({ ...renderProps, variant, size, className }),

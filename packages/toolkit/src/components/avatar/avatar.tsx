@@ -123,21 +123,24 @@ export const Avatar = ({
 	const initials = getInitials(name);
 
 	return (
-		<div className={styles.root()}>
+		<div className={styles.root()} data-slot="avatar">
 			{showImage && (
 				<img
 					src={src}
 					alt={alt || name || "Avatar"}
+					data-slot="avatar-image"
 					className={styles.image()}
 					onError={() => setError(true)}
 					onLoad={() => setError(false)}
 				/>
 			)}
 			{!showImage && initials && (
-				<span className={styles.fallback()}>{initials}</span>
+				<span data-slot="avatar-fallback" className={styles.fallback()}>
+					{initials}
+				</span>
 			)}
 			{!showImage && !initials && (
-				<span className={styles.placeholder()}>
+				<span data-slot="avatar-placeholder" className={styles.placeholder()}>
 					{placeholder || <UserIcon className="size-1/2" title={alt || ""} />}
 				</span>
 			)}

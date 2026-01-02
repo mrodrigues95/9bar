@@ -33,6 +33,7 @@ export const Heading = ({
 }: HeadingProps) => {
 	return (
 		<Text
+			data-slot="heading"
 			{...props}
 			elementType={as}
 			className={headingVariants({ variant, className })}
