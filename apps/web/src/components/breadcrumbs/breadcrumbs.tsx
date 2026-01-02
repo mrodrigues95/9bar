@@ -5,19 +5,28 @@ import {
 	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
 } from "@9bar/toolkit";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import type { RegisteredRouter } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { cn } from "tailwind-variants";
 import { Link, type LinkProps } from "../link/link";
 
-export type BreadcrumbProps = LinkProps & {
+export type BreadcrumbProps<
+	TRouter extends RegisteredRouter = RegisteredRouter,
+	TOptions = unknown,
+> = LinkProps<TRouter, TOptions> & {
 	breadcrumbProps?: Omit<ToolkitBreadcrumbProps, "children">;
 };
 
-// TODO: Fix type safety on `LinkProps` since `to` is being inferred as a generic string.
-export const Breadcrumb = ({
+export function Breadcrumb<TRouter extends RegisteredRouter, TOptions>(
+	props: BreadcrumbProps<TRouter, TOptions>,
+): ReactNode;
+export function Breadcrumb({
 	breadcrumbProps,
+	children,
 	className,
-	...props
-}: BreadcrumbProps) => {
+	to,
+	activeOptions,
+}: BreadcrumbProps): ReactNode {
 	return (
 		<ToolkitBreadcrumb
 			{...breadcrumbProps}
@@ -28,8 +37,8 @@ export const Breadcrumb = ({
 			{({ isCurrent }) => (
 				<>
 					<Link
-						{...props}
-						activeOptions={{ exact: true, ...props.activeOptions }}
+						to={to}
+						activeOptions={{ exact: true, ...activeOptions }}
 						className={
 							cn(
 								"p-0 text-muted",
@@ -39,13 +48,15 @@ export const Breadcrumb = ({
 								className,
 							) ?? ""
 						}
-					/>
+					>
+						{children}
+					</Link>
 					{!isCurrent && <ChevronRightIcon className="size-3 text-muted" />}
 				</>
 			)}
 		</ToolkitBreadcrumb>
 	);
-};
+}
 
 interface BreadcrumbsProps<T extends object>
 	extends ToolkitBreadcrumbsProps<T> {}

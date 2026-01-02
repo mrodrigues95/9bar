@@ -121,7 +121,11 @@ const Recipe = () => {
 					items={
 						[
 							{ id: "recipes", label: "Recipes", to: "/recipes" },
-							{ id: "recipe-id", label: "Recipe Name Here" },
+							{
+								id: "recipe-id",
+								label: "Recipe Name Here",
+								to: "/recipes/$recipeId",
+							},
 						] satisfies Array<{
 							id: string;
 							label: string;
@@ -130,7 +134,7 @@ const Recipe = () => {
 					}
 				>
 					{(item) => (
-						<Breadcrumb key={item.id} {...(item.to ? { to: item.to } : {})}>
+						<Breadcrumb key={item.id} to={item.to}>
 							{item.label}
 						</Breadcrumb>
 					)}
