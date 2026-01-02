@@ -79,7 +79,7 @@ export interface AlertProps
 	extends ComponentProps<"div">,
 		VariantProps<typeof alertVariants> {}
 
-const AlertRoot = ({
+export const Alert = ({
 	variant = "info",
 	className,
 	children,
@@ -121,7 +121,7 @@ export interface AlertIndicatorProps extends ComponentProps<"div"> {
 	children?: ReactNode;
 }
 
-const AlertIndicator = ({
+export const AlertIndicator = ({
 	className,
 	children,
 	...props
@@ -141,7 +141,10 @@ const AlertIndicator = ({
 	);
 };
 
-const AlertContent = ({ className, ...props }: ComponentProps<"div">) => {
+export const AlertContent = ({
+	className,
+	...props
+}: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	const styles = alertVariants({ variant });
 
@@ -154,7 +157,7 @@ const AlertContent = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
-const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
+export const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	const { titleId, variant, setHasTitle } = useAlert();
 	const styles = alertVariants({ variant });
 
@@ -173,7 +176,10 @@ const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	);
 };
 
-const AlertDescription = ({ className, ...props }: ComponentProps<"p">) => {
+export const AlertDescription = ({
+	className,
+	...props
+}: ComponentProps<"p">) => {
 	const { descriptionId, variant, setHasDescription } = useAlert();
 	const styles = alertVariants({ variant });
 
@@ -207,7 +213,7 @@ const alertActionVariants = tv({
 	},
 });
 
-const AlertAction = ({ className, ...props }: ComponentProps<"div">) => {
+export const AlertAction = ({ className, ...props }: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	return (
 		<div
@@ -217,11 +223,3 @@ const AlertAction = ({ className, ...props }: ComponentProps<"div">) => {
 		/>
 	);
 };
-
-export const Alert = Object.assign(AlertRoot, {
-	Indicator: AlertIndicator,
-	Content: AlertContent,
-	Title: AlertTitle,
-	Description: AlertDescription,
-	Action: AlertAction,
-});

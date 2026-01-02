@@ -3,7 +3,14 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../button/button";
 import { IconButton } from "../icon-button/icon-button";
 import { Link } from "../link/link";
-import { Alert } from "./alert";
+import {
+	Alert,
+	AlertAction,
+	AlertContent,
+	AlertDescription,
+	AlertIndicator,
+	AlertTitle,
+} from "./alert";
 
 const meta = {
 	component: Alert,
@@ -21,34 +28,32 @@ export const AllVariants: Story = {
 	render: () => (
 		<div className="flex flex-col gap-4">
 			<Alert variant="info">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Information</Alert.Title>
-					<Alert.Description>
-						This is an informational message.
-					</Alert.Description>
-				</Alert.Content>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Information</AlertTitle>
+					<AlertDescription>This is an informational message.</AlertDescription>
+				</AlertContent>
 			</Alert>
 			<Alert variant="success">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Success</Alert.Title>
-					<Alert.Description>Your action was successful.</Alert.Description>
-				</Alert.Content>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Success</AlertTitle>
+					<AlertDescription>Your action was successful.</AlertDescription>
+				</AlertContent>
 			</Alert>
 			<Alert variant="warning">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Warning</Alert.Title>
-					<Alert.Description>Please proceed with caution.</Alert.Description>
-				</Alert.Content>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Warning</AlertTitle>
+					<AlertDescription>Please proceed with caution.</AlertDescription>
+				</AlertContent>
 			</Alert>
 			<Alert variant="danger">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Error</Alert.Title>
-					<Alert.Description>An error has occurred.</Alert.Description>
-				</Alert.Content>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Error</AlertTitle>
+					<AlertDescription>An error has occurred.</AlertDescription>
+				</AlertContent>
 			</Alert>
 		</div>
 	),
@@ -57,10 +62,10 @@ export const AllVariants: Story = {
 export const TitleOnly: Story = {
 	render: () => (
 		<Alert variant="success">
-			<Alert.Indicator />
-			<Alert.Content>
-				<Alert.Title>Operation completed successfully</Alert.Title>
-			</Alert.Content>
+			<AlertIndicator />
+			<AlertContent>
+				<AlertTitle>Operation completed successfully</AlertTitle>
+			</AlertContent>
 		</Alert>
 	),
 };
@@ -68,12 +73,12 @@ export const TitleOnly: Story = {
 export const DescriptionOnly: Story = {
 	render: () => (
 		<Alert variant="info">
-			<Alert.Indicator />
-			<Alert.Content>
-				<Alert.Description>
+			<AlertIndicator />
+			<AlertContent>
+				<AlertDescription>
 					This alert only contains a description without a title.
-				</Alert.Description>
-			</Alert.Content>
+				</AlertDescription>
+			</AlertContent>
 		</Alert>
 	),
 };
@@ -81,15 +86,15 @@ export const DescriptionOnly: Story = {
 export const CustomIcon: Story = {
 	render: () => (
 		<Alert variant="success">
-			<Alert.Indicator>
+			<AlertIndicator>
 				<UserGroupIcon />
-			</Alert.Indicator>
-			<Alert.Content>
-				<Alert.Title>Team Invitation</Alert.Title>
-				<Alert.Description>
+			</AlertIndicator>
+			<AlertContent>
+				<AlertTitle>Team Invitation</AlertTitle>
+				<AlertDescription>
 					You've been invited to join the team workspace.
-				</Alert.Description>
-			</Alert.Content>
+				</AlertDescription>
+			</AlertContent>
 		</Alert>
 	),
 };
@@ -97,12 +102,12 @@ export const CustomIcon: Story = {
 export const WithoutIndicator: Story = {
 	render: () => (
 		<Alert variant="info">
-			<Alert.Content>
-				<Alert.Title>Simple Alert</Alert.Title>
-				<Alert.Description>
+			<AlertContent>
+				<AlertTitle>Simple Alert</AlertTitle>
+				<AlertDescription>
 					This alert doesn't use an indicator icon.
-				</Alert.Description>
-			</Alert.Content>
+				</AlertDescription>
+			</AlertContent>
 		</Alert>
 	),
 };
@@ -111,60 +116,60 @@ export const WithButtons: Story = {
 	render: () => (
 		<div className="flex flex-col gap-4">
 			<Alert variant="success">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Storage Almost Full</Alert.Title>
-					<Alert.Description>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Storage Almost Full</AlertTitle>
+					<AlertDescription>
 						You're using 90% of your available storage. Consider upgrading your
 						plan.
-					</Alert.Description>
-				</Alert.Content>
-				<Alert.Action>
+					</AlertDescription>
+				</AlertContent>
+				<AlertAction>
 					<IconButton aria-label="Close" variant="ghost" size="sm">
 						<XMarkIcon />
 					</IconButton>
-				</Alert.Action>
+				</AlertAction>
 			</Alert>
 			<Alert variant="warning">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Storage Almost Full</Alert.Title>
-					<Alert.Description>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Storage Almost Full</AlertTitle>
+					<AlertDescription>
 						You're using 90% of your available storage. Consider upgrading your
 						plan.
-					</Alert.Description>
-				</Alert.Content>
-				<Alert.Action>
+					</AlertDescription>
+				</AlertContent>
+				<AlertAction>
 					<Button variant="ghost">Upgrade Plan</Button>
-				</Alert.Action>
+				</AlertAction>
 			</Alert>
 			<Alert variant="info">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>New Feature Available</Alert.Title>
-					<Alert.Description>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>New Feature Available</AlertTitle>
+					<AlertDescription>
 						Check out our new dashboard with enhanced analytics.
-					</Alert.Description>
-				</Alert.Content>
-				<Alert.Action>
+					</AlertDescription>
+				</AlertContent>
+				<AlertAction>
 					<Link size="sm">Learn More</Link>
-				</Alert.Action>
+				</AlertAction>
 			</Alert>
 			<Alert variant="danger">
-				<Alert.Indicator />
-				<Alert.Content>
-					<Alert.Title>Delete Account</Alert.Title>
-					<Alert.Description>
+				<AlertIndicator />
+				<AlertContent>
+					<AlertTitle>Delete Account</AlertTitle>
+					<AlertDescription>
 						Are you sure you want to delete your account? This action cannot be
 						undone.
-					</Alert.Description>
-				</Alert.Content>
-				<Alert.Action>
+					</AlertDescription>
+				</AlertContent>
+				<AlertAction>
 					<Button variant="ghost">Cancel</Button>
-				</Alert.Action>
-				<Alert.Action>
+				</AlertAction>
+				<AlertAction>
 					<Button variant="ghost">Delete</Button>
-				</Alert.Action>
+				</AlertAction>
 			</Alert>
 		</div>
 	),

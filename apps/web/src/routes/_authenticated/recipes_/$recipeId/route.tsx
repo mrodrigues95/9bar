@@ -1,6 +1,9 @@
 import {
 	Button,
 	Card,
+	CardFooter,
+	CardHeader,
+	CardPanel,
 	Heading,
 	Menu,
 	MenuItem,
@@ -151,7 +154,7 @@ const Recipe = () => {
 					<TabPanels>
 						<TabPanel id="overview" className="px-0">
 							<Card>
-								<Card.Header className="flex flex-row items-center justify-between gap-4">
+								<CardHeader className="flex flex-row items-center justify-between gap-4">
 									<RecipeName />
 									<MenuTrigger>
 										<Button variant="outline">
@@ -173,17 +176,17 @@ const Recipe = () => {
 											</MenuItem>
 										</Menu>
 									</MenuTrigger>
-								</Card.Header>
-								<Card.Panel className="gap-4">
+								</CardHeader>
+								<CardPanel className="gap-4">
 									<RecipeStats />
 									<RecipeDetails />
 									<RecipeNotes />
-								</Card.Panel>
+								</CardPanel>
 							</Card>
 						</TabPanel>
 						<TabPanel id="logs" className="px-0">
 							<Card>
-								<Card.Header className="flex flex-row items-center justify-between gap-4">
+								<CardHeader className="flex flex-row items-center justify-between gap-4">
 									<Heading variant="subtitle" as="p">
 										Logs
 									</Heading>
@@ -191,11 +194,11 @@ const Recipe = () => {
 										<PlusIcon />
 										New Log
 									</Button>
-								</Card.Header>
-								<Card.Panel className="gap-4">foo</Card.Panel>
-								<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
+								</CardHeader>
+								<CardPanel className="gap-4">foo</CardPanel>
+								<CardFooter className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
 									<Pagination />
-								</Card.Footer>
+								</CardFooter>
 							</Card>
 						</TabPanel>
 					</TabPanels>

@@ -1,4 +1,12 @@
-import { Button, Card, Heading, Text } from "@9bar/toolkit";
+import {
+	Button,
+	Card,
+	CardFooter,
+	CardHeader,
+	CardPanel,
+	Heading,
+	Text,
+} from "@9bar/toolkit";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
 import { Pagination } from "../../../components/pagination/pagination";
@@ -11,7 +19,7 @@ const Recipe = () => {
 				Recipes
 			</Heading>
 			<Card render={<section />}>
-				<Card.Header className="flex flex-row items-center justify-between">
+				<CardHeader className="flex flex-row items-center justify-between">
 					<div className="flex flex-col gap-0.5">
 						<Heading as="h2" variant="section">
 							Your private recipes
@@ -27,13 +35,13 @@ const Recipe = () => {
 							Create Recipe
 						</Button>
 					</div>
-				</Card.Header>
-				<Card.Panel>
+				</CardHeader>
+				<CardPanel>
 					<RecipeList />
-				</Card.Panel>
-				<Card.Footer className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
+				</CardPanel>
+				<CardFooter className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
 					<Pagination />
-				</Card.Footer>
+				</CardFooter>
 			</Card>
 		</div>
 	);

@@ -26,7 +26,7 @@ export interface CardProps
 	extends useRender.ComponentProps<"div">,
 		VariantProps<typeof cardVariants> {}
 
-const CardRoot = ({ variant, className, render, ...props }: CardProps) => {
+export const Card = ({ variant, className, render, ...props }: CardProps) => {
 	const styles = cardVariants({ variant });
 	return useRender({
 		defaultTagName: "div",
@@ -42,7 +42,7 @@ const CardRoot = ({ variant, className, render, ...props }: CardProps) => {
 	});
 };
 
-const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return (
 		<div
@@ -53,7 +53,7 @@ const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
-const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return (
 		<div
@@ -64,7 +64,10 @@ const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
-const CardDescription = ({ className, ...props }: ComponentProps<"p">) => {
+export const CardDescription = ({
+	className,
+	...props
+}: ComponentProps<"p">) => {
 	const styles = cardVariants();
 	return (
 		<p
@@ -75,7 +78,7 @@ const CardDescription = ({ className, ...props }: ComponentProps<"p">) => {
 	);
 };
 
-const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return (
 		<div
@@ -86,7 +89,7 @@ const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
-const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
 	const styles = cardVariants();
 	return (
 		<div
@@ -96,11 +99,3 @@ const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
 		/>
 	);
 };
-
-export const Card = Object.assign(CardRoot, {
-	Header: CardHeader,
-	Title: CardTitle,
-	Description: CardDescription,
-	Panel: CardPanel,
-	Footer: CardFooter,
-});

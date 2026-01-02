@@ -1,4 +1,12 @@
-import { Alert, Heading } from "@9bar/toolkit";
+import {
+	Alert,
+	AlertAction,
+	AlertContent,
+	AlertDescription,
+	AlertIndicator,
+	AlertTitle,
+	Heading,
+} from "@9bar/toolkit";
 import { BeakerIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "src/components";
@@ -10,18 +18,18 @@ const Home = () => {
 				9bar
 			</Heading>
 			<Alert variant="info">
-				<Alert.Indicator>
+				<AlertIndicator>
 					<BeakerIcon />
-				</Alert.Indicator>
-				<Alert.Content>
-					<Alert.Title>Set your machine & grinder</Alert.Title>
-					<Alert.Description>
+				</AlertIndicator>
+				<AlertContent>
+					<AlertTitle>Set your machine & grinder</AlertTitle>
+					<AlertDescription>
 						Get tailored recommendations based on your setup.
-					</Alert.Description>
-				</Alert.Content>
-				<Alert.Action>
+					</AlertDescription>
+				</AlertContent>
+				<AlertAction>
 					<Link to="/profile">Set up now</Link>
-				</Alert.Action>
+				</AlertAction>
 			</Alert>
 		</div>
 	);
