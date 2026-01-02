@@ -5,7 +5,7 @@ import {
 import { tv, type VariantProps } from "tailwind-variants";
 
 const dividerVariants = tv({
-	base: "shrink-0 border-slate-950/10 bg-slate-950/10",
+	base: "shrink-0 border-border bg-border",
 	variants: {
 		orientation: {
 			horizontal: "h-px self-stretch",

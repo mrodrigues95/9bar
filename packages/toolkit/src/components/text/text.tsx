@@ -16,9 +16,9 @@ const textVariants = tv({
 			detail: "font-medium text-xs leading-none",
 		},
 		color: {
-			muted: "text-slate-500",
-			primary: "text-slate-950",
-			secondary: "text-slate-700",
+			muted: "text-muted",
+			primary: "text-primary",
+			secondary: "text-secondary",
 		},
 	},
 	defaultVariants: {

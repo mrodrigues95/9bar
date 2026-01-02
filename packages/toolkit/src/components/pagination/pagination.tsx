@@ -15,11 +15,13 @@ const paginationVariants = tv({
 		content: "flex flex-row items-center gap-1",
 		item: "",
 		button: [
-			"size-7 px-2 py-0 text-slate-700 transition-none",
+			"size-7 px-2 py-0 text-muted transition-none",
 			"disabled:opacity-50",
 		],
-		ellipsis:
-			"flex size-7 items-center justify-center text-slate-700 data-[disabled]:opacity-50",
+		ellipsis: [
+			"flex size-7 items-center justify-center text-muted",
+			"data-[disabled]:opacity-50",
+		],
 	},
 	variants: {},
 });
@@ -95,7 +97,6 @@ export interface PaginationButtonProps
 	isActive?: boolean;
 }
 
-// TODO: add `data-slot` to non-slot like components, test this one overrides correctly.
 export const PaginationButton = ({
 	isActive = false,
 	children,

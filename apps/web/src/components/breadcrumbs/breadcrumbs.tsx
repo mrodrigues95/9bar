@@ -32,7 +32,7 @@ export const Breadcrumb = ({
 						activeOptions={{ exact: true, ...props.activeOptions }}
 						className={
 							cn(
-								"p-0 text-slate-500",
+								"p-0 text-muted",
 								"hover:text-slate-900",
 								"focus-visible:text-slate-900",
 								"current:text-slate-900 current:disabled:opacity-100",
@@ -40,7 +40,7 @@ export const Breadcrumb = ({
 							) ?? ""
 						}
 					/>
-					{!isCurrent && <ChevronRightIcon className="size-3 text-slate-500" />}
+					{!isCurrent && <ChevronRightIcon className="size-3 text-muted" />}
 				</>
 			)}
 		</ToolkitBreadcrumb>

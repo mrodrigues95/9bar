@@ -39,7 +39,7 @@ const Recipe = () => {
 				<CardPanel>
 					<RecipeList />
 				</CardPanel>
-				<CardFooter className="flex flex-row items-center justify-between border-t border-t-slate-950/10 pt-6">
+				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
 					<Pagination />
 				</CardFooter>
 			</Card>

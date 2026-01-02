@@ -52,7 +52,7 @@ const WithEllipsisBreadcrumb = ({ children }: BreadcrumbProps) => (
 						href="#"
 						className={
 							cn(
-								"text-slate-500",
+								"text-muted",
 								"hover:text-slate-900",
 								"focus-visible:text-slate-900",
 								"current:text-slate-900 current:disabled:opacity-100",
@@ -62,9 +62,7 @@ const WithEllipsisBreadcrumb = ({ children }: BreadcrumbProps) => (
 						{children}
 					</Link>
 				)}
-				{!props.isCurrent && (
-					<ChevronRightIcon className="size-3 text-slate-500" />
-				)}
+				{!props.isCurrent && <ChevronRightIcon className="size-3 text-muted" />}
 			</>
 		)}
 	</Breadcrumb>

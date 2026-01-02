@@ -85,7 +85,7 @@ const recipes = [
 
 export const RecipeList = () => {
 	return (
-		<ul className="divide-y divide-slate-950/10">
+		<ul className="divide-y divide-border">
 			{recipes.map((recipe) => (
 				<RecipeListItem key={recipe.id} recipe={recipe} />
 			))}

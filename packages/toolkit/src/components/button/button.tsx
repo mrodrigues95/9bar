@@ -16,13 +16,13 @@ export const buttonVariants = tv({
 	variants: {
 		variant: {
 			default: [
-				"bg-slate-100 text-slate-700",
+				"bg-slate-100 text-secondary",
 				"hover:bg-slate-200 hover:text-slate-900",
 				"pressed:bg-slate-300",
 			],
 			solid: [
 				"bg-slate-900 text-white shadow-xs",
-				"hover:bg-slate-700",
+				"hover:bg-secondary",
 				"pressed:bg-slate-600",
 			],
 			solidBlue: [
@@ -31,17 +31,17 @@ export const buttonVariants = tv({
 				"pressed:bg-blue-700",
 			],
 			danger: [
-				"text-red-600 hover:bg-red-100",
+				"text-red-700 hover:bg-red-100",
 				"focus-visible:bg-red-100",
 				"pressed:bg-red-200",
 			],
 			outline: [
-				"border border-slate-300 bg-transparent text-slate-700 shadow-xs",
+				"border border-slate-300 bg-transparent text-secondary shadow-xs",
 				"hover:bg-slate-100 hover:text-slate-900",
 				"pressed:bg-slate-200",
 			],
 			ghost: [
-				"bg-transparent text-slate-500",
+				"bg-transparent text-muted",
 				"hover:bg-slate-100 hover:text-slate-900",
 				"pressed:bg-slate-200",
 			],

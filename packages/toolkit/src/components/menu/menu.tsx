@@ -46,8 +46,8 @@ const menuItemStyles = tv({
 	],
 	variants: {
 		variant: {
-			default: ["text-slate-900"],
-			danger: ["text-red-700"],
+			default: ["text-primary"],
+			danger: ["text-destructive-fg"],
 		},
 	},
 	defaultVariants: {
@@ -122,7 +122,7 @@ export const MenuSection = <T extends object>(props: MenuSectionProps<T>) => {
 			}
 		>
 			{props.title && (
-				<Header className="px-2 py-1.5 font-medium text-slate-500 text-xs">
+				<Header className="px-2 py-1.5 font-medium text-muted text-xs">
 					{props.title}
 				</Header>
 			)}

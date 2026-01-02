@@ -33,7 +33,7 @@ const avatarVariants = tv({
 		color: {
 			slate: {
 				root: "bg-slate-100",
-				fallback: "text-slate-700",
+				fallback: "text-secondary",
 				placeholder: "text-slate-400",
 			},
 			sky: {

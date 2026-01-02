@@ -5,10 +5,10 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const cardVariants = tv({
 	slots: {
-		root: "relative flex flex-col gap-6 rounded-lg border border-slate-950/10 bg-white py-6 shadow-xs outline-none",
+		root: "relative flex flex-col gap-6 rounded-lg border border-border bg-white py-6 shadow-xs outline-none",
 		header: "flex flex-col gap-1.5 px-6",
-		title: "font-semibold text-lg text-slate-950 leading-none",
-		description: "text-slate-500 text-sm",
+		title: "font-semibold text-lg text-primary leading-none",
+		description: "text-muted text-sm",
 		panel: "flex flex-col px-6",
 		footer: "flex items-center gap-2 px-6",
 	},

@@ -35,7 +35,7 @@ const tabsVariants = tv({
 	variants: {
 		variant: {
 			underline: {
-				list: "gap-x-0.5 overflow-visible border-slate-950/10 bg-transparent",
+				list: "gap-x-0.5 overflow-visible border-border bg-transparent",
 				indicator: "z-10 h-0.5 w-full",
 			},
 		},

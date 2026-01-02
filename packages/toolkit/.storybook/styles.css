@@ -3,3 +3,13 @@
 @plugin "@tailwindcss/forms";
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
+
+/* TODO: Unify these variables a bit more with the current <Button /> styles. */
+@theme inline {
+  --color-border: color-mix(in oklab, var(--color-slate-950) 10%, transparent);
+  --color-primary: var(--color-slate-950);
+  --color-secondary: var(--color-slate-700);
+  --color-muted: var(--color-slate-500);
+  --color-destructive-fg: var(--color-red-700);
+  --color-ring: var(--color-blue-500);
+}

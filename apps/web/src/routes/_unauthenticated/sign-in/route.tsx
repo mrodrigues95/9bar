@@ -32,7 +32,7 @@ const SignIn = () => {
 					Sign in to account
 				</Button>
 			</Form>
-			<hr className="mx-auto my-6 w-1/2 border border-slate-200" />
+			<hr className="mx-auto my-6 w-1/2 border border-border" />
 			<div>
 				<Button variant="outline" className="w-full" size="md">
 					<svg

@@ -38,7 +38,7 @@ export const Default: Story = {
 				</CardDescription>
 			</CardHeader>
 			<CardPanel>
-				<p className="text-slate-700 text-sm">
+				<p className="text-secondary text-sm">
 					This is the main content area of the card. You can place any content
 					here.
 				</p>
@@ -63,7 +63,7 @@ export const WithoutFooter: Story = {
 				<CardDescription>This card has no footer.</CardDescription>
 			</CardHeader>
 			<CardPanel>
-				<p className="text-slate-700 text-sm">
+				<p className="text-secondary text-sm">
 					Cards are flexible. You can use only the slots you need.
 				</p>
 			</CardPanel>
@@ -75,7 +75,7 @@ export const WithoutHeader: Story = {
 	render: () => (
 		<Card>
 			<CardPanel>
-				<p className="text-slate-700 text-sm">
+				<p className="text-secondary text-sm">
 					This card doesn't have a header, just content in the panel.
 				</p>
 			</CardPanel>

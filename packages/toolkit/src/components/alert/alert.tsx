@@ -41,7 +41,7 @@ const alertVariants = tv({
 		indicator: "size-4 flex-shrink-0",
 		content: "flex flex-1 flex-col gap-1",
 		title: "font-medium text-slate-900 text-sm leading-4.5",
-		description: "text-slate-700 text-sm",
+		description: "text-secondary text-sm",
 	},
 	variants: {
 		variant: {

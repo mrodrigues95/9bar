@@ -14,7 +14,7 @@ import {
 import { type ReactNode, useState } from "react";
 
 const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => {
-	return <span className="font-medium text-slate-900">{children}</span>;
+	return <span className="font-medium text-primary">{children}</span>;
 };
 
 const PaginationSummary = ({

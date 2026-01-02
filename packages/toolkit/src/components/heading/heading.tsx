@@ -2,7 +2,7 @@ import { Text, type TextProps } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const headingVariants = tv({
-	base: "text-slate-950",
+	base: "text-primary",
 	variants: {
 		variant: {
 			heading:

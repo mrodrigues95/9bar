@@ -190,15 +190,15 @@ export const WithContent: Story = {
 				<div className="rounded-md border border-gray-200 p-4 dark:border-gray-700">
 					<p className="text-gray-600 text-sm">
 						Showing{" "}
-						<span className="font-medium text-slate-950 dark:text-slate-50">
+						<span className="font-medium text-primary dark:text-slate-50">
 							{startItem}
 						</span>{" "}
 						to{" "}
-						<span className="font-medium text-slate-950 dark:text-slate-50">
+						<span className="font-medium text-primary dark:text-slate-50">
 							{endItem}
 						</span>{" "}
 						of{" "}
-						<span className="font-medium text-slate-950 dark:text-slate-50">
+						<span className="font-medium text-primary dark:text-slate-50">
 							{totalItems}
 						</span>{" "}
 						items
