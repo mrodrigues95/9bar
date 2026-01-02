@@ -11,5 +11,8 @@
   --color-secondary: var(--color-slate-700);
   --color-muted: var(--color-slate-500);
   --color-destructive-fg: var(--color-red-700);
-  --color-ring: var(--color-blue-500);
+  --color-ring: var(--color-blue-200);
+  --color-ring-fg: var(--color-blue-500);
+  --color-ring-destructive: var(--color-red-200);
+  --color-ring-destructive-fg: var(--color-red-500);
 }

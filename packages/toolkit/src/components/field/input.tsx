@@ -10,8 +10,8 @@ const inputVariants = tv({
 	extend: focusRing,
 	base: [
 		"relative block w-full rounded-md border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none transition duration-150",
-		"focus:border-blue-500 focus:ring-4 focus:ring-blue-200",
-		"invalid:border-red-500 invalid:focus:border-red-400 invalid:focus:ring-4 invalid:focus:ring-red-200 invalid:focus:ring-red-200",
+		"focus:border-ring-fg focus:ring-4 focus:ring-ring",
+		"invalid:border-ring-destructive-fg invalid:focus:border-ring-destructive-fg invalid:focus:ring-4 invalid:focus:ring-ring-destructive",
 		"disabled:bg-slate-50 disabled:text-slate-400 disabled:shadow-none",
 	],
 	variants: {

@@ -2,7 +2,7 @@ import { composeRenderProps } from "react-aria-components";
 import { cn, tv } from "tailwind-variants";
 
 export const focusRing = tv({
-	base: ["outline outline-ring outline-offset-2", "focus-visible:outline-2"],
+	base: ["outline outline-ring-fg outline-offset-2", "focus-visible:outline-2"],
 	variants: {
 		isFocusVisible: {
 			false: "outline-0",
