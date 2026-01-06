@@ -1,5 +1,6 @@
 export * from "./components/alert/alert";
 export * from "./components/avatar/avatar";
+export * from "./components/badge/badge";
 export * from "./components/breadcrumbs/breadcrumbs";
 export * from "./components/button/button";
 export * from "./components/card/card";

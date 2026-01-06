@@ -4,7 +4,7 @@
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
-/* TODO: Unify these variables a bit more with the current <Button /> styles. */
+/* TODO: Unify these variables a bit more with the current <Button />, <Badge /> and <Alert /> styles. */
 @theme inline {
   --color-border: color-mix(in oklab, var(--color-slate-950) 10%, transparent);
   --color-primary: var(--color-slate-950);

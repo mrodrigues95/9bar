@@ -15,22 +15,10 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {
+export const Default: Story = {
 	args: {
 		size: "sm",
 	},
-};
-
-export const WithIcon: Story = {
-	args: {
-		size: "sm",
-	},
-	render: (props) => (
-		<Button {...props}>
-			<PlusIcon />
-			Create
-		</Button>
-	),
 };
 
 export const Variants: Story = {
@@ -61,5 +49,17 @@ export const Variants: Story = {
 				Link
 			</Button>
 		</div>
+	),
+};
+
+export const WithIcon: Story = {
+	args: {
+		size: "sm",
+	},
+	render: (props) => (
+		<Button {...props}>
+			<PlusIcon />
+			Create
+		</Button>
 	),
 };

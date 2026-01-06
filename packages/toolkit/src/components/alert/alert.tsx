@@ -40,26 +40,26 @@ const alertVariants = tv({
 		root: "relative flex items-start gap-2 rounded-xl border p-3",
 		indicator: "size-4 flex-shrink-0",
 		content: "flex flex-1 flex-col gap-1",
-		title: "font-medium text-slate-900 text-sm leading-4.5",
+		title: "font-medium text-primary text-sm leading-4.5",
 		description: "text-secondary text-sm",
 	},
 	variants: {
 		variant: {
 			success: {
-				root: "border-green-200 bg-green-50/75",
-				indicator: "text-green-600",
+				root: "border-green-200 bg-green-50",
+				indicator: "text-green-700",
 			},
 			danger: {
-				root: "border-red-200 bg-red-50/75",
-				indicator: "text-red-600",
+				root: "border-red-200 bg-red-50",
+				indicator: "text-red-700",
 			},
 			warning: {
-				root: "border-yellow-200 bg-yellow-50/75",
-				indicator: "text-yellow-600",
+				root: "border-yellow-200 bg-yellow-50",
+				indicator: "text-yellow-700",
 			},
 			info: {
-				root: "border-blue-200 bg-blue-50/75",
-				indicator: "text-blue-600",
+				root: "border-blue-200 bg-blue-50",
+				indicator: "text-blue-700",
 			},
 		},
 	},
