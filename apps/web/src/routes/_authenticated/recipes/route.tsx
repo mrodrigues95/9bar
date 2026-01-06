@@ -10,7 +10,7 @@ import {
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
 import { Pagination } from "../../../components/pagination/pagination";
-import { RecipeList } from "./-recipe-list";
+import { RecipesList } from "./-recipes-list";
 
 const Recipe = () => {
 	return (
@@ -28,16 +28,14 @@ const Recipe = () => {
 							Create, edit, and track your favorite brewing methods.
 						</Text>
 					</div>
-					<div className="flex gap-2">
-						<Button variant="outline">Quick Log</Button>
-						<Button variant="solid">
-							<PlusIcon />
-							Create Recipe
-						</Button>
-					</div>
+					<Button variant="solid">
+						<PlusIcon />
+						{/* TODO: Link to create recipe route */}
+						Create Recipe
+					</Button>
 				</CardHeader>
 				<CardPanel>
-					<RecipeList />
+					<RecipesList />
 				</CardPanel>
 				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
 					<Pagination />

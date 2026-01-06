@@ -1,4 +1,5 @@
 import {
+	Badge,
 	IconButton,
 	Menu,
 	MenuItem,
@@ -7,16 +8,18 @@ import {
 	Text,
 } from "@9bar/toolkit";
 import {
+	ArrowRightIcon,
+	ArrowsRightLeftIcon,
 	EllipsisVerticalIcon,
 	FingerPrintIcon,
-	PencilIcon,
+	PaperClipIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "../../../components";
+import { List, ListItem, MenuItemLink } from "../../../components";
 
-const RecipeListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
+const RecipesListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 	return (
-		<li className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
+		<ListItem className="justify-between">
 			<div className="flex flex-col">
 				<Text
 					variant="body-sm"
@@ -35,19 +38,34 @@ const RecipeListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 					{recipe.dose} → {recipe.yield} · {recipe.brewTime}
 				</Text>
 			</div>
-			<div className="flex items-center gap-0.5">
-				<Link to="/recipes/$recipeId" params={{ recipeId: recipe.id }}>
-					View recipe
-				</Link>
+			<div className="flex items-center gap-1">
+				<Badge variant={recipe.isQuickLog ? "warning" : "success"} size="xs">
+					{recipe.isQuickLog ? "Quick Log" : "Recipe"}
+				</Badge>
 				<MenuTrigger>
 					<IconButton aria-label="Actions" size="sm" variant="ghost">
 						<EllipsisVerticalIcon />
 					</IconButton>
 					<Menu>
-						<MenuItem onAction={() => alert("rename")}>
-							<PencilIcon className="size-3" />
-							Edit
-						</MenuItem>
+						<MenuItemLink
+							to="/recipes/$recipeId"
+							params={{ recipeId: recipe.id }}
+						>
+							<ArrowRightIcon className="size-3" />
+							View
+						</MenuItemLink>
+						{recipe.isQuickLog && (
+							<MenuItem onAction={() => alert("rename")}>
+								<ArrowsRightLeftIcon className="size-3" />
+								Convert to Recipe
+							</MenuItem>
+						)}
+						{recipe.isQuickLog && (
+							<MenuItem onAction={() => alert("rename")}>
+								<PaperClipIcon className="size-3" />
+								Attach to Recipe
+							</MenuItem>
+						)}
 						<MenuSeparator />
 						<MenuItem onAction={() => alert("delete")} variant="danger">
 							<TrashIcon className="size-3" />
@@ -56,7 +74,7 @@ const RecipeListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 					</Menu>
 				</MenuTrigger>
 			</div>
-		</li>
+		</ListItem>
 	);
 };
 
@@ -70,6 +88,11 @@ const recipes = [
 		dose: "18g",
 		yield: "36g",
 		beans: 'Kicking Horse Coffee - "Three Sisters"',
+		temperature: "205°F",
+		pressure: "9 bar",
+		notes: "Fruity and bright with floral notes.",
+		isQuickLog: false,
+		quickLogs: [],
 	},
 	{
 		id: "2",
@@ -80,15 +103,20 @@ const recipes = [
 		dose: "20g",
 		yield: "40g",
 		beans: "Stumptown - Hair Bender",
+		temperature: "200°F",
+		pressure: "9 bar",
+		notes: "Rich and chocolatey with a smooth finish.",
+		isQuickLog: true,
+		quickLogs: [],
 	},
 ];
 
-export const RecipeList = () => {
+export const RecipesList = () => {
 	return (
-		<ul className="divide-y divide-border">
+		<List>
 			{recipes.map((recipe) => (
-				<RecipeListItem key={recipe.id} recipe={recipe} />
+				<RecipesListItem key={recipe.id} recipe={recipe} />
 			))}
-		</ul>
+		</List>
 	);
 };
