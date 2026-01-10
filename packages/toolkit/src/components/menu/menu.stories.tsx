@@ -5,6 +5,7 @@ import {
 	Menu,
 	MenuItem,
 	MenuSection,
+	MenuSectionHeader,
 	MenuSeparator,
 	MenuTrigger,
 	SubmenuTrigger,
@@ -46,12 +47,19 @@ export const Default: Story = {
 				</SubmenuTrigger>
 				<MenuSeparator />
 				<MenuSection
-					title="View Options"
+					title={<MenuSectionHeader title="View Options" />}
 					selectionMode="multiple"
 					defaultSelectedKeys={["files"]}
 				>
 					<MenuItem id="files">Show files</MenuItem>
 					<MenuItem id="folders">Show folders</MenuItem>
+				</MenuSection>
+				<MenuSeparator />
+				<MenuSection
+					aria-label="Miscellaneous Options"
+					selectionMode="multiple"
+				>
+					<MenuItem id="inspect">Inspect</MenuItem>
 				</MenuSection>
 			</Menu>
 		</MenuTrigger>

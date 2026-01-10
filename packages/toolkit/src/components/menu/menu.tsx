@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { Children, type ReactElement } from "react";
+import { Children, type ReactElement, type ReactNode } from "react";
 import {
 	Menu as AriaMenu,
 	MenuItem as AriaMenuItem,
@@ -9,15 +9,19 @@ import {
 	type MenuSectionProps as AriaMenuSectionProps,
 	MenuTrigger as AriaMenuTrigger,
 	type MenuTriggerProps as AriaMenuTriggerProps,
-	type SeparatorProps as AriaSeparatorProps,
 	SubmenuTrigger as AriaSubmenuTrigger,
 	type SubmenuTriggerProps as AriaSubmenuTriggerProps,
 	Collection,
 	composeRenderProps,
-	Header,
-	Separator,
 } from "react-aria-components";
-import { cn, tv, type VariantProps } from "tailwind-variants";
+import { cn, type VariantProps } from "tailwind-variants";
+import {
+	ListboxSectionHeader,
+	type ListboxSectionHeaderProps,
+	ListboxSeparator,
+	type ListboxSeparatorProps,
+	listboxItemVariants,
+} from "../listbox/listbox";
 import { Popover, type PopoverProps } from "../popover/popover";
 
 export const Menu = <T extends object>(props: AriaMenuProps<T>) => {
@@ -35,29 +39,9 @@ export const Menu = <T extends object>(props: AriaMenuProps<T>) => {
 	);
 };
 
-// TODO: Reuse these styles for the ListBoxItem component.
-const menuItemStyles = tv({
-	base: [
-		"group flex cursor-default select-none items-center gap-1.5 rounded-sm px-2 py-1 font-normal text-sm outline-none [&[href]]:cursor-pointer",
-		"disabled:pointer-events-none disabled:opacity-50",
-		"hover:bg-slate-100",
-		"pressed:bg-slate-200",
-		"focus:bg-slate-100",
-	],
-	variants: {
-		variant: {
-			default: ["text-primary"],
-			danger: ["text-destructive-fg"],
-		},
-	},
-	defaultVariants: {
-		variant: "default",
-	},
-});
-
 export interface MenuItemProps
 	extends AriaMenuItemProps,
-		VariantProps<typeof menuItemStyles> {}
+		VariantProps<typeof listboxItemVariants> {}
 
 export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 	const textValue =
@@ -69,8 +53,10 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 			data-slot="menu-item"
 			{...props}
 			{...(textValue ? { textValue } : {})}
-			className={composeRenderProps(props.className, (className, renderProps) =>
-				menuItemStyles({ ...renderProps, variant, className }),
+			className={composeRenderProps(
+				cn(props.className, "gap-1.5"),
+				(className, renderProps) =>
+					listboxItemVariants({ ...renderProps, variant, className }),
 			)}
 		>
 			{composeRenderProps(
@@ -85,9 +71,7 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 						<span className="flex flex-1 items-center gap-2 truncate group-selected:font-semibold">
 							{children}
 						</span>
-						{hasSubmenu && (
-							<ChevronRightIcon className="absolute right-2 size-3.5" />
-						)}
+						{hasSubmenu && <ChevronRightIcon className="size-3.5" />}
 					</>
 				),
 			)}
@@ -95,40 +79,34 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 	);
 };
 
-export const MenuSeparator = (props: AriaSeparatorProps) => {
-	return (
-		<Separator
-			data-slot="menu-separator"
-			{...props}
-			className={cn("mx-2 my-1 h-px bg-slate-300", props.className) ?? ""}
-		/>
-	);
+export interface MenuSeparatorProps extends ListboxSeparatorProps {}
+
+export const MenuSeparator = (props: MenuSeparatorProps) => {
+	return <ListboxSeparator data-slot="menu-separator" {...props} />;
 };
 
 export interface MenuSectionProps<T> extends AriaMenuSectionProps<T> {
-	title?: string;
+	title?: ReactNode;
 }
 
-export const MenuSection = <T extends object>(props: MenuSectionProps<T>) => {
+export const MenuSection = <T extends object>({
+	title,
+	items,
+	children,
+	...props
+}: MenuSectionProps<T>) => {
 	return (
-		<AriaMenuSection
-			data-slot="menu-section"
-			{...props}
-			className={
-				cn(
-					"first:-mt-[5px] after:block after:h-[5px] after:content-['']",
-					props.className,
-				) ?? ""
-			}
-		>
-			{props.title && (
-				<Header className="px-2 py-1.5 font-medium text-muted text-xs">
-					{props.title}
-				</Header>
-			)}
-			<Collection items={props.items ?? []}>{props.children}</Collection>
+		<AriaMenuSection data-slot="menu-section" {...props}>
+			{title}
+			<Collection items={items ?? []}>{children}</Collection>
 		</AriaMenuSection>
 	);
+};
+
+export interface MenuSectionHeaderProps extends ListboxSectionHeaderProps {}
+
+export const MenuSectionHeader = (props: MenuSectionHeaderProps) => {
+	return <ListboxSectionHeader data-slot="menu-section-header" {...props} />;
 };
 
 export interface MenuTriggerProps extends AriaMenuTriggerProps {

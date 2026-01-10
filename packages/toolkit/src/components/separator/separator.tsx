@@ -4,8 +4,8 @@ import {
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 
-const dividerVariants = tv({
-	base: "shrink-0 border-border bg-border",
+const separatorVariants = tv({
+	base: "shrink-0 border-none bg-border",
 	variants: {
 		orientation: {
 			horizontal: "h-px self-stretch",
@@ -44,22 +44,22 @@ const dividerVariants = tv({
 	},
 });
 
-export interface DividerProps
+export interface SeparatorProps
 	extends Omit<AriaSeparatorProps, "orientation">,
-		VariantProps<typeof dividerVariants> {}
+		VariantProps<typeof separatorVariants> {}
 
-export const Divider = ({
+export const Separator = ({
 	orientation,
 	variant,
 	className,
 	...props
-}: DividerProps) => {
+}: SeparatorProps) => {
 	return (
 		<AriaSeparator
 			data-slot="divider"
 			{...props}
 			orientation={orientation === "vertical" ? "vertical" : "horizontal"}
-			className={dividerVariants({ orientation, variant, className })}
+			className={separatorVariants({ orientation, variant, className })}
 		/>
 	);
 };

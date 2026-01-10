@@ -1,6 +1,5 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import type { ComponentProps } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const cardVariants = tv({
@@ -42,60 +41,97 @@ export const Card = ({ variant, className, render, ...props }: CardProps) => {
 	});
 };
 
-export const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardHeader = ({
+	className,
+	render,
+	...props
+}: useRender.ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return (
-		<div
-			data-slot="card-header"
-			className={styles.header({ className })}
-			{...props}
-		/>
-	);
+	return useRender({
+		defaultTagName: "div",
+		render: render ?? <div />,
+		props: mergeProps<"div">(
+			{
+				className: styles.header({ className }),
+				["data-slot" as string]: "card-header",
+			},
+			props,
+		),
+	});
 };
 
-export const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardTitle = ({
+	className,
+	render,
+	...props
+}: useRender.ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return (
-		<div
-			data-slot="card-title"
-			className={styles.title({ className })}
-			{...props}
-		/>
-	);
+	return useRender({
+		defaultTagName: "div",
+		render: render ?? <div />,
+		props: mergeProps<"div">(
+			{
+				className: styles.title({ className }),
+				["data-slot" as string]: "card-title",
+			},
+			props,
+		),
+	});
 };
 
 export const CardDescription = ({
 	className,
+	render,
 	...props
-}: ComponentProps<"p">) => {
+}: useRender.ComponentProps<"p">) => {
 	const styles = cardVariants();
-	return (
-		<p
-			data-slot="card-description"
-			className={styles.description({ className })}
-			{...props}
-		/>
-	);
+	return useRender({
+		defaultTagName: "p",
+		render: render ?? <p />,
+		props: mergeProps<"p">(
+			{
+				className: styles.description({ className }),
+				["data-slot" as string]: "card-description",
+			},
+			props,
+		),
+	});
 };
 
-export const CardPanel = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardPanel = ({
+	className,
+	render,
+	...props
+}: useRender.ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return (
-		<div
-			data-slot="card-panel"
-			className={styles.panel({ className })}
-			{...props}
-		/>
-	);
+	return useRender({
+		defaultTagName: "div",
+		render: render ?? <div />,
+		props: mergeProps<"div">(
+			{
+				className: styles.panel({ className }),
+				["data-slot" as string]: "card-panel",
+			},
+			props,
+		),
+	});
 };
 
-export const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
+export const CardFooter = ({
+	className,
+	render,
+	...props
+}: useRender.ComponentProps<"div">) => {
 	const styles = cardVariants();
-	return (
-		<div
-			data-slot="card-footer"
-			className={styles.footer({ className })}
-			{...props}
-		/>
-	);
+	return useRender({
+		defaultTagName: "div",
+		render: render ?? <div />,
+		props: mergeProps<"div">(
+			{
+				className: styles.footer({ className }),
+				["data-slot" as string]: "card-footer",
+			},
+			props,
+		),
+	});
 };
