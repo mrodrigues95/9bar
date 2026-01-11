@@ -1,22 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import z from "zod";
 import { Button } from "../button/button";
-import { TextField } from "../text-field/text-field";
+import { SelectItem } from "../select/select";
+import { SelectField } from "./fields/select-field";
+import { TextField } from "./fields/text-field";
 import { Form } from "./form";
 import { useAppForm, withForm } from "./utils/form";
 
 const meta = {
 	component: Form,
 	title: "Form",
-	parameters: {},
+	parameters: { controls: { disable: true } },
 } satisfies Meta<typeof Form>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const HTMLValidation: Story = {
-	render: () => (
+	render: (props) => (
 		<Form
+			{...props}
 			onSubmit={(e) => {
 				e.preventDefault();
 				const formData = new FormData(e.currentTarget);
@@ -25,28 +28,30 @@ export const HTMLValidation: Story = {
 			}}
 		>
 			<TextField
+				isRequired
 				label="Email"
 				description="Enter a valid email address"
-				isRequired
 				inputProps={{
 					name: "email",
 					type: "email",
+					autoComplete: "email",
 				}}
 			/>
 			<TextField
+				isRequired
 				label="Password"
 				description="Minimum 8 characters"
-				isRequired
 				inputProps={{
 					name: "password",
 					type: "password",
 					minLength: 8,
+					autoComplete: "current-password",
 				}}
 			/>
 			<TextField
+				isRequired
 				label="Age"
 				description="Must be between 18 and 120"
-				isRequired
 				inputProps={{
 					name: "age",
 					type: "number",
@@ -54,6 +59,20 @@ export const HTMLValidation: Story = {
 					max: 120,
 				}}
 			/>
+			<SelectField
+				isRequired
+				label="Preferred Contact Method"
+				description="How would you like to be contacted?"
+				name="contactMethod"
+				placeholder="Choose a method..."
+				items={[
+					{ id: "email", name: "Email" },
+					{ id: "phone", name: "Phone" },
+					{ id: "sms", name: "SMS" },
+				]}
+			>
+				{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+			</SelectField>
 			<Button type="submit" variant="solid">
 				Submit
 			</Button>
@@ -73,6 +92,7 @@ export const ComposedForm: Story = {
 				lastName: "",
 				email: "",
 				age: "",
+				country: "",
 			},
 			validators: {
 				onChange: ({ value }) => {
@@ -102,6 +122,10 @@ export const ComposedForm: Story = {
 						errors.fields.email = "Please enter a valid email";
 					}
 
+					if (!value.country) {
+						errors.fields.country = "Country is required";
+					}
+
 					return errors;
 				},
 			},
@@ -120,7 +144,7 @@ export const ComposedForm: Story = {
 				<form.AppForm>
 					<form.AppField name="firstName">
 						{(field) => (
-							<field.TextField
+							<field.Input
 								label="First Name"
 								description="Enter your first name"
 								isRequired
@@ -129,7 +153,7 @@ export const ComposedForm: Story = {
 					</form.AppField>
 					<form.AppField name="lastName">
 						{(field) => (
-							<field.TextField
+							<field.Input
 								label="Last Name"
 								description="Enter your last name"
 								isRequired
@@ -138,7 +162,7 @@ export const ComposedForm: Story = {
 					</form.AppField>
 					<form.AppField name="age">
 						{(field) => (
-							<field.TextField
+							<field.Input
 								label="Age"
 								description="Must be 18 or older"
 								isRequired
@@ -146,9 +170,28 @@ export const ComposedForm: Story = {
 							/>
 						)}
 					</form.AppField>
+					<form.AppField name="country">
+						{(field) => (
+							<field.Select
+								label="Country"
+								description="Select your country"
+								isRequired
+								placeholder="Choose a country..."
+								items={[
+									{ id: "us", name: "United States" },
+									{ id: "ca", name: "Canada" },
+									{ id: "uk", name: "United Kingdom" },
+									{ id: "au", name: "Australia" },
+									{ id: "de", name: "Germany" },
+								]}
+							>
+								{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+							</field.Select>
+						)}
+					</form.AppField>
 					<form.AppField name="email">
 						{(field) => (
-							<field.TextField
+							<field.Input
 								label="Email"
 								description="Enter a valid email address"
 								isRequired
@@ -172,6 +215,7 @@ const schema = z.object({
 	password: z
 		.string()
 		.min(8, "[Zod] Password must be at least 8 characters long"),
+	role: z.string().min(1, "[Zod] Please select a role"),
 });
 
 export const WithZodValidation: Story = {
@@ -181,6 +225,7 @@ export const WithZodValidation: Story = {
 				username: "",
 				email: "",
 				password: "",
+				role: "",
 			},
 			validators: {
 				onChange: schema,
@@ -199,31 +244,49 @@ export const WithZodValidation: Story = {
 			>
 				<form.AppField name="username">
 					{(field) => (
-						<field.TextField
+						<field.Input
 							label="Username"
 							description="Choose a unique username"
+							inputProps={{ autoComplete: "username" }}
 							isRequired
 						/>
 					)}
 				</form.AppField>
 				<form.AppField name="email">
 					{(field) => (
-						<field.TextField
+						<field.Input
 							label="Email"
 							description="Enter a valid email address"
 							isRequired
-							inputProps={{ type: "email" }}
+							inputProps={{ type: "email", autoComplete: "email" }}
 						/>
 					)}
 				</form.AppField>
 				<form.AppField name="password">
 					{(field) => (
-						<field.TextField
+						<field.Input
 							label="Password"
 							description="Minimum 8 characters"
 							isRequired
-							inputProps={{ type: "password" }}
+							inputProps={{ type: "password", autoComplete: "new-password" }}
 						/>
+					)}
+				</form.AppField>
+				<form.AppField name="role">
+					{(field) => (
+						<field.Select
+							label="Role"
+							description="Select your account type"
+							isRequired
+							placeholder="Choose a role..."
+							items={[
+								{ id: "user", name: "User" },
+								{ id: "admin", name: "Administrator" },
+								{ id: "moderator", name: "Moderator" },
+							]}
+						>
+							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+						</field.Select>
 					)}
 				</form.AppField>
 				<form.AppForm>
@@ -239,6 +302,7 @@ const ContactFormComponent = withForm({
 		name: "",
 		email: "",
 		subject: "",
+		topic: "",
 		message: "",
 	},
 	props: {
@@ -254,7 +318,7 @@ const ContactFormComponent = withForm({
 						onChange: ({ value }) => (!value ? "Name is required" : undefined),
 					}}
 				>
-					{(field) => <field.TextField label="Full Name" isRequired />}
+					{(field) => <field.Input label="Full Name" isRequired />}
 				</form.AppField>
 				<form.AppField
 					name="email"
@@ -273,7 +337,7 @@ const ContactFormComponent = withForm({
 					}}
 				>
 					{(field) => (
-						<field.TextField
+						<field.Input
 							label="Email"
 							isRequired
 							inputProps={{ type: "email" }}
@@ -287,7 +351,30 @@ const ContactFormComponent = withForm({
 							!value ? "Subject is required" : undefined,
 					}}
 				>
-					{(field) => <field.TextField label="Subject" isRequired />}
+					{(field) => <field.Input label="Subject" isRequired />}
+				</form.AppField>
+				<form.AppField
+					name="topic"
+					validators={{
+						onChange: ({ value }) => (!value ? "Topic is required" : undefined),
+					}}
+				>
+					{(field) => (
+						<field.Select
+							label="Topic"
+							description="What is your inquiry about?"
+							isRequired
+							placeholder="Select a topic..."
+							items={[
+								{ id: "general", name: "General Inquiry" },
+								{ id: "support", name: "Technical Support" },
+								{ id: "billing", name: "Billing" },
+								{ id: "feedback", name: "Feedback" },
+							]}
+						>
+							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+						</field.Select>
+					)}
 				</form.AppField>
 				<form.AppField
 					name="message"
@@ -297,7 +384,7 @@ const ContactFormComponent = withForm({
 					}}
 				>
 					{(field) => (
-						<field.TextField
+						<field.Input
 							label="Message"
 							description="Tell us how we can help"
 							isRequired
@@ -325,6 +412,7 @@ export const ReusableContactForm: Story = {
 				name: "",
 				email: "",
 				subject: "",
+				topic: "",
 				message: "",
 			},
 			onSubmit: async ({ value }) => {

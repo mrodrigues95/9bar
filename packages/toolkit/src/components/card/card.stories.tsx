@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../button/button";
+import { TextField } from "../form/fields/text-field";
 import { Form } from "../form/form";
-import { TextField } from "../text-field/text-field";
 import {
 	Card,
 	CardDescription,

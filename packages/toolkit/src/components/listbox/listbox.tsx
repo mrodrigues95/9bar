@@ -15,10 +15,10 @@ import { cn, tv, type VariantProps } from "tailwind-variants";
 import { composeTailwindRenderProps } from "../../utils/classes";
 import { Separator, type SeparatorProps } from "../separator/separator";
 
-export interface ListboxProps<T>
+export interface ListboxProps<T extends object>
 	extends Omit<AriaListBoxProps<T>, "layout" | "orientation"> {}
 
-export const ListBox = <T extends object>({
+export const Listbox = <T extends object>({
 	children,
 	...props
 }: ListboxProps<T>) => {
@@ -55,17 +55,17 @@ export const listboxItemVariants = tv({
 	},
 });
 
-export interface ListboxItemProps
-	extends AriaListBoxItemProps,
+export interface ListboxItemProps<T extends object>
+	extends AriaListBoxItemProps<T>,
 		VariantProps<typeof listboxItemVariants> {
 	startContent?: ReactNode;
 }
 
-export const ListboxItem = ({
+export const ListboxItem = <T extends object>({
 	variant,
 	startContent,
 	...props
-}: ListboxItemProps) => {
+}: ListboxItemProps<T>) => {
 	const textValue =
 		props.textValue ||
 		(typeof props.children === "string" ? props.children : undefined);
@@ -92,7 +92,8 @@ export const ListboxItem = ({
 	);
 };
 
-export interface ListboxSectionProps<T> extends AriaListBoxSectionProps<T> {
+export interface ListboxSectionProps<T extends object>
+	extends AriaListBoxSectionProps<T> {
 	title?: ReactNode;
 }
 

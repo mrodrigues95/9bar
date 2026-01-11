@@ -4,14 +4,19 @@ import {
 	composeRenderProps,
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
-import { focusRing } from "../../utils/classes";
 
-const inputVariants = tv({
-	extend: focusRing,
+export const inputFocusRing = tv({
 	base: [
-		"relative block w-full rounded-md border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none transition duration-150",
+		"outline-none transition duration-150",
 		"focus:border-ring-fg focus:ring-4 focus:ring-ring",
 		"invalid:border-ring-destructive-fg invalid:focus:border-ring-destructive-fg invalid:focus:ring-4 invalid:focus:ring-ring-destructive",
+	],
+});
+
+export const inputVariants = tv({
+	extend: inputFocusRing,
+	base: [
+		"relative block w-full rounded-md border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none",
 		"disabled:bg-slate-50 disabled:text-slate-400 disabled:shadow-none",
 	],
 	variants: {

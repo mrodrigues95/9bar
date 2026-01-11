@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Selection } from "react-aria-components";
 import { Text } from "../text/text";
 import {
-	ListBox,
+	Listbox,
 	ListboxItem,
 	ListboxSection,
 	ListboxSectionHeader,
@@ -12,17 +12,17 @@ import {
 } from "./listbox";
 
 const meta = {
-	component: ListBox,
-	title: "ListBox",
+	component: Listbox,
+	title: "Listbox",
 	parameters: { layout: "padded", controls: { disable: true } },
-} satisfies Meta<typeof ListBox>;
+} satisfies Meta<typeof Listbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
 	render: () => (
-		<ListBox aria-label="Favorite animal" selectionMode="single">
+		<Listbox aria-label="Favorite animal" selectionMode="single">
 			<ListboxItem id="aardvark">Aardvark</ListboxItem>
 			<ListboxItem id="cat">Cat</ListboxItem>
 			<ListboxItem id="dog">Dog</ListboxItem>
@@ -32,7 +32,7 @@ export const Basic: Story = {
 			<ListboxItem id="snake">Snake</ListboxItem>
 			<ListboxItem id="turtle">Turtle</ListboxItem>
 			<ListboxItem id="wombat">Wombat</ListboxItem>
-		</ListBox>
+		</Listbox>
 	),
 };
 
@@ -51,16 +51,16 @@ export const DynamicContent: Story = {
 		];
 
 		return (
-			<ListBox aria-label="Animals" items={options} selectionMode="single">
+			<Listbox aria-label="Animals" items={options} selectionMode="single">
 				{(item) => <ListboxItem id={item.id}>{item.name}</ListboxItem>}
-			</ListBox>
+			</Listbox>
 		);
 	},
 };
 
 export const WithDescriptions: Story = {
 	render: () => (
-		<ListBox aria-label="Permissions" selectionMode="single">
+		<Listbox aria-label="Permissions" selectionMode="single">
 			<ListboxItem
 				id="read"
 				textValue="Read"
@@ -97,13 +97,13 @@ export const WithDescriptions: Story = {
 					Full access
 				</Text>
 			</ListboxItem>
-		</ListBox>
+		</Listbox>
 	),
 };
 
 export const Sections: Story = {
 	render: () => (
-		<ListBox aria-label="Sandwich contents" selectionMode="multiple">
+		<Listbox aria-label="Sandwich contents" selectionMode="multiple">
 			<ListboxSection title={<ListboxSectionHeader title="Veggies" />}>
 				<ListboxItem id="lettuce">Lettuce</ListboxItem>
 				<ListboxItem id="tomato">Tomato</ListboxItem>
@@ -125,7 +125,7 @@ export const Sections: Story = {
 			>
 				{(item) => <ListboxItem id={item.id}>{item.name}</ListboxItem>}
 			</ListboxSection>
-		</ListBox>
+		</Listbox>
 	),
 };
 
@@ -135,7 +135,7 @@ export const MultipleSelection: Story = {
 
 		return (
 			<div className="space-y-4">
-				<ListBox
+				<Listbox
 					aria-label="Sandwich contents"
 					selectionMode="multiple"
 					selectedKeys={selected}
@@ -149,7 +149,7 @@ export const MultipleSelection: Story = {
 					</ListboxItem>
 					<ListboxItem id="egg">Egg Salad</ListboxItem>
 					<ListboxItem id="ham">Ham</ListboxItem>
-				</ListBox>
+				</Listbox>
 				<p className="text-gray-600 text-sm">
 					Current selection:{" "}
 					{selected === "all" ? "all" : [...selected].join(", ")}
@@ -161,11 +161,11 @@ export const MultipleSelection: Story = {
 
 export const EmptyState: Story = {
 	render: () => (
-		<ListBox
+		<Listbox
 			aria-label="Search results"
 			renderEmptyState={() => "No results found."}
 		>
 			{[]}
-		</ListBox>
+		</Listbox>
 	),
 };
