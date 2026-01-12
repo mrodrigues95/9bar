@@ -85,7 +85,7 @@ interface FormErrors<TFormValues> {
 }
 
 export const ComposedForm: Story = {
-	render: () => {
+	render: (props) => {
 		const form = useAppForm({
 			defaultValues: {
 				firstName: "",
@@ -136,6 +136,7 @@ export const ComposedForm: Story = {
 
 		return (
 			<Form
+				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
 					form.handleSubmit();
@@ -219,7 +220,7 @@ const schema = z.object({
 });
 
 export const WithZodValidation: Story = {
-	render: () => {
+	render: (props) => {
 		const form = useAppForm({
 			defaultValues: {
 				username: "",
@@ -237,6 +238,7 @@ export const WithZodValidation: Story = {
 
 		return (
 			<Form
+				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
 					form.handleSubmit();
@@ -406,7 +408,7 @@ const ContactFormComponent = withForm({
 });
 
 export const ReusableContactForm: Story = {
-	render: () => {
+	render: (props) => {
 		const form = useAppForm({
 			defaultValues: {
 				name: "",
@@ -422,6 +424,7 @@ export const ReusableContactForm: Story = {
 
 		return (
 			<Form
+				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
 					form.handleSubmit();

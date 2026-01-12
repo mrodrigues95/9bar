@@ -19,6 +19,7 @@ import {
 } from "../../select/select";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
+import { fieldVariants } from "./text-field";
 
 export interface SelectFieldProps<T extends object>
 	extends Omit<SelectProps<T>, "children"> {
@@ -58,6 +59,7 @@ export const SelectField = <T extends object>({
 		<Select
 			data-slot="select-field"
 			{...props}
+			className={composeTailwindRenderProps(props.className, fieldVariants())}
 			{...(isRequired !== undefined && { isRequired })}
 		>
 			{label && (

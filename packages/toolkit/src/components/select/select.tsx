@@ -5,7 +5,6 @@ import {
 	type SelectProps as AriaSelectProps,
 	SelectValue as AriaSelectValue,
 	type SelectValueProps as AriaSelectValueProps,
-	// SelectionMode
 } from "react-aria-components";
 import { composeTailwindRenderProps } from "../../utils/classes";
 import { Button, type ButtonProps } from "../button/button";

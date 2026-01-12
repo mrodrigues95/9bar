@@ -13,8 +13,8 @@ import { Label, type LabelProps } from "../../field/label";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
-const textFieldVariants = tv({
-	base: "flex flex-col gap-2",
+export const fieldVariants = tv({
+	base: "flex flex-col gap-1",
 });
 
 export interface TextFieldProps extends AriaTextFieldProps {
@@ -49,7 +49,7 @@ export const TextField = ({
 			{...props}
 			className={composeRenderProps(
 				props.className,
-				(className, _renderProps) => textFieldVariants({ className }),
+				(className, _renderProps) => fieldVariants({ className }),
 			)}
 		>
 			{label && (
