@@ -10,7 +10,9 @@ export const inputFocusRing = tv({
 		"outline-none transition duration-150",
 		"focus:border-ring-fg focus:ring-4 focus:ring-ring",
 		"invalid:border-ring-destructive-fg invalid:focus:border-ring-destructive-fg invalid:focus:ring-4 invalid:focus:ring-ring-destructive",
+		"group-focus:border-ring-fg group-focus:ring-4 group-focus:ring-ring",
 		"group-invalid:border-ring-destructive-fg group-invalid:focus:border-ring-destructive-fg group-invalid:focus:ring-4 group-invalid:focus:ring-ring-destructive",
+		"group-invalid:group-focus:border-ring-destructive-fg group-invalid:group-focus:ring-4 group-invalid:group-focus:ring-ring-destructive",
 	],
 });
 

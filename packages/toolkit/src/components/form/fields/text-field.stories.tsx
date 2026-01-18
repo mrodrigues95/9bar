@@ -30,6 +30,7 @@ export const WithDescription: Story = {
 	args: {
 		...Primary.args,
 		description: "Name must be at least 8 characters long.",
+		isDisabled: false,
 	},
 };
 

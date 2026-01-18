@@ -5,10 +5,7 @@ import {
 import { tv } from "tailwind-variants";
 
 const labelVariants = tv({
-	base: [
-		"block select-none font-medium text-slate-900 text-sm",
-		"data-[disabled]:opacity-50",
-	],
+	base: ["block select-none font-medium text-primary text-sm"],
 });
 
 export interface LabelProps extends AriaLabelProps {}

@@ -16,11 +16,13 @@ export const Form = (props: FormProps) => {
 			data-slot="form"
 			{...props}
 			className={formVariants({ className: props.className })}
-			onSubmit={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				props.onSubmit?.(e);
-			}}
+			{...(!props.action && {
+				onSubmit: (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					props.onSubmit?.(e);
+				},
+			})}
 		/>
 	);
 };

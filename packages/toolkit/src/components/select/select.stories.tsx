@@ -20,7 +20,9 @@ const meta = {
 	component: Select,
 	title: "Select",
 	parameters: {
-		controls: { include: ["placeholder", "isDisabled", "selectionMode"] },
+		controls: {
+			include: ["placeholder", "isDisabled", "selectionMode"],
+		},
 	},
 } satisfies Meta<typeof Select>;
 

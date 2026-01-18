@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import z from "zod";
 import { Button } from "../button/button";
+import { Checkbox } from "../checkbox/checkbox";
 import { SelectItem } from "../select/select";
+import { CheckboxGroupField } from "./fields/checkbox-group-field";
 import { SelectField } from "./fields/select-field";
 import { TextField } from "./fields/text-field";
 import { Form } from "./form";
@@ -73,6 +75,16 @@ export const HTMLValidation: Story = {
 			>
 				{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 			</SelectField>
+			<CheckboxGroupField
+				label="Communication Preferences"
+				description="Select how you'd like to receive updates"
+				name="preferences"
+				isRequired
+			>
+				<Checkbox value="email">Email notifications</Checkbox>
+				<Checkbox value="sms">SMS alerts</Checkbox>
+				<Checkbox value="newsletter">Monthly newsletter</Checkbox>
+			</CheckboxGroupField>
 			<Button type="submit" variant="solid">
 				Submit
 			</Button>
@@ -80,6 +92,7 @@ export const HTMLValidation: Story = {
 	),
 };
 
+// TODO: Add inputFocusRing styles to checkboxes for error border styles.
 interface FormErrors<TFormValues> {
 	fields: { [K in keyof TFormValues]?: string };
 }
@@ -93,6 +106,8 @@ export const ComposedForm: Story = {
 				email: "",
 				age: "",
 				country: "",
+				newsletter: [] as Array<string>,
+				acceptTerms: false,
 			},
 			validators: {
 				onChange: ({ value }) => {
@@ -124,6 +139,10 @@ export const ComposedForm: Story = {
 
 					if (!value.country) {
 						errors.fields.country = "Country is required";
+					}
+
+					if (!value.newsletter?.length) {
+						errors.fields.newsletter = "You must subscribe to receive updates";
 					}
 
 					return errors;
@@ -200,6 +219,17 @@ export const ComposedForm: Story = {
 							/>
 						)}
 					</form.AppField>
+					<form.AppField name="newsletter">
+						{(field) => (
+							<field.CheckboxGroup
+								label="Newsletter"
+								description="Receive updates about new features"
+								isRequired
+							>
+								<Checkbox value="subscribe">Subscribe to newsletter</Checkbox>
+							</field.CheckboxGroup>
+						)}
+					</form.AppField>
 					<form.SubmitButton variant="solid">Submit</form.SubmitButton>
 				</form.AppForm>
 			</Form>
@@ -217,6 +247,10 @@ const schema = z.object({
 		.string()
 		.min(8, "[Zod] Password must be at least 8 characters long"),
 	role: z.string().min(1, "[Zod] Please select a role"),
+	preferences: z
+		.array(z.string())
+		.min(2, "[Zod] Please select at least 2 preferences")
+		.max(3, "[Zod] You can only select up to 3 preferences"),
 });
 
 export const WithZodValidation: Story = {
@@ -227,6 +261,7 @@ export const WithZodValidation: Story = {
 				email: "",
 				password: "",
 				role: "",
+				preferences: [] as Array<string>,
 			},
 			validators: {
 				onChange: schema,
@@ -291,6 +326,20 @@ export const WithZodValidation: Story = {
 						</field.Select>
 					)}
 				</form.AppField>
+				<form.AppField name="preferences">
+					{(field) => (
+						<field.CheckboxGroup
+							label="Preferences"
+							description="Select between 2 and 3 options"
+							isRequired
+						>
+							<Checkbox value="notifications">Email Notifications</Checkbox>
+							<Checkbox value="newsletter">Weekly Newsletter</Checkbox>
+							<Checkbox value="updates">Product Updates</Checkbox>
+							<Checkbox value="promotions">Special Promotions</Checkbox>
+						</field.CheckboxGroup>
+					)}
+				</form.AppField>
 				<form.AppForm>
 					<form.SubmitButton variant="solid">Register</form.SubmitButton>
 				</form.AppForm>
@@ -306,6 +355,7 @@ const ContactFormComponent = withForm({
 		subject: "",
 		topic: "",
 		message: "",
+		notifications: [] as Array<string>,
 	},
 	props: {
 		title: "Contact Us",
@@ -392,9 +442,27 @@ const ContactFormComponent = withForm({
 							isRequired
 							inputProps={{
 								placeholder: "Tell us how we can help...",
-								className: "h-24",
 							}}
 						/>
+					)}
+				</form.AppField>
+				<form.AppField
+					name="notifications"
+					validators={{
+						onChange: ({ value }) =>
+							!value.length ? "Notification preference is required" : undefined,
+					}}
+				>
+					{(field) => (
+						<field.CheckboxGroup
+							label="Notifications"
+							description="We'll email you a copy for your records"
+							isRequired
+						>
+							<Checkbox value="sendCopy">
+								Send me a copy of this message
+							</Checkbox>
+						</field.CheckboxGroup>
 					)}
 				</form.AppField>
 				<form.AppForm>
@@ -416,6 +484,7 @@ export const ReusableContactForm: Story = {
 				subject: "",
 				topic: "",
 				message: "",
+				notifications: [] as Array<string>,
 			},
 			onSubmit: async ({ value }) => {
 				alert(`Contact form submitted: ${JSON.stringify(value, null, 2)}`);

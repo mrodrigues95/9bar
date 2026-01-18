@@ -1,4 +1,6 @@
 import { createFormHook } from "@tanstack/react-form";
+import { FormCheckboxField } from "../fields/checkbox-field";
+import { FormCheckboxGroupField } from "../fields/checkbox-group-field";
 import { FormSelectField } from "../fields/select-field";
 import { FormTextField } from "../fields/text-field";
 import { FormSubmitButton } from "../form-submit-button";
@@ -10,6 +12,8 @@ export const { useAppForm, withForm } = createFormHook({
 	fieldComponents: {
 		Input: FormTextField,
 		Select: FormSelectField,
+		Checkbox: FormCheckboxField,
+		CheckboxGroup: FormCheckboxGroupField,
 	},
 	formComponents: {
 		SubmitButton: FormSubmitButton,

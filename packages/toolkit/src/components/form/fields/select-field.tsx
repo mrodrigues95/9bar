@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Key, ValidationResult } from "react-aria-components";
 import { composeTailwindRenderProps } from "../../../utils/classes";
 import { Description, type DescriptionProps } from "../../field/description";
+import { fieldVariants } from "../../field/field";
 import { FieldError, type FieldErrorProps } from "../../field/field-error";
 import { inputFocusRing } from "../../field/input";
 import { Label, type LabelProps } from "../../field/label";
@@ -19,7 +20,6 @@ import {
 } from "../../select/select";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
-import { fieldVariants } from "./text-field";
 
 export interface SelectFieldProps<T extends object>
 	extends Omit<SelectProps<T>, "children"> {
@@ -51,10 +51,6 @@ export const SelectField = <T extends object>({
 	selectValueProps,
 	...props
 }: SelectFieldProps<T>) => {
-	const commonProps = {
-		...(props.isDisabled && { "data-disabled": props.isDisabled }),
-	};
-
 	return (
 		<Select
 			data-slot="select-field"
@@ -63,7 +59,7 @@ export const SelectField = <T extends object>({
 			{...(isRequired !== undefined && { isRequired })}
 		>
 			{label && (
-				<Label {...commonProps} data-slot="select-field-label" {...labelProps}>
+				<Label data-slot="select-field-label" {...labelProps}>
 					{label} {isRequired && <i aria-hidden="true">*</i>}
 				</Label>
 			)}
@@ -83,19 +79,11 @@ export const SelectField = <T extends object>({
 				<ChevronDownIcon />
 			</SelectTrigger>
 			{description && (
-				<Description
-					{...commonProps}
-					data-slot="select-field-description"
-					{...descriptionProps}
-				>
+				<Description data-slot="select-field-description" {...descriptionProps}>
 					{description}
 				</Description>
 			)}
-			<FieldError
-				{...commonProps}
-				data-slot="select-field-error"
-				{...fieldErrorProps}
-			>
+			<FieldError data-slot="select-field-error" {...fieldErrorProps}>
 				{errorMessage}
 			</FieldError>
 			<SelectPopover data-slot="select-field-popover">

@@ -1,94 +1,80 @@
 import { useStore } from "@tanstack/react-form";
+import type { ReactNode } from "react";
+import type { ValidationResult } from "react-aria-components";
 import {
-	TextField as AriaTextField,
-	type TextFieldProps as AriaTextFieldProps,
-	composeRenderProps,
-	type ValidationResult,
-} from "react-aria-components";
+	CheckboxGroup,
+	type CheckboxGroupProps,
+} from "../../checkbox-group/checkbox-group";
 import { Description, type DescriptionProps } from "../../field/description";
-import { fieldVariants } from "../../field/field";
 import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { Input, type InputProps } from "../../field/input";
 import { Label, type LabelProps } from "../../field/label";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
-export interface TextFieldProps extends AriaTextFieldProps {
-	label?: string;
+export interface CheckboxGroupFieldProps
+	extends Omit<CheckboxGroupProps, "children"> {
+	children: ReactNode;
+	label: string;
 	description?: string;
 	errorMessage?: string | ((validation: ValidationResult) => string);
 	labelProps?: LabelProps;
-	inputProps?: InputProps;
 	descriptionProps?: DescriptionProps;
 	fieldErrorProps?: FieldErrorProps;
 }
 
-export const TextField = ({
+// TODO: Remove required asteriks from labels (?)
+// TODO: Unify input focus ring styles with lower level components across all fields.
+export const CheckboxGroupField = ({
 	label,
 	description,
 	errorMessage,
 	isRequired,
 	labelProps,
-	inputProps,
 	descriptionProps,
 	fieldErrorProps,
+	children,
 	...props
-}: TextFieldProps) => {
+}: CheckboxGroupFieldProps) => {
 	return (
-		<AriaTextField
+		<CheckboxGroup
 			{...(isRequired !== undefined && { isRequired })}
-			data-slot="text-field"
+			data-slot="checkbox-group-field"
 			{...props}
-			className={composeRenderProps(
-				props.className,
-				(className, _renderProps) => fieldVariants({ className }),
-			)}
 		>
-			{label && (
-				<Label {...labelProps}>
-					{label} {isRequired && <i aria-hidden="true">*</i>}
-				</Label>
-			)}
-			<Input {...inputProps} />
+			<Label {...labelProps}>
+				{label} {isRequired && <i aria-hidden="true">*</i>}
+			</Label>
+			{children}
 			{description && (
 				<Description {...descriptionProps}>{description}</Description>
 			)}
 			<FieldError {...fieldErrorProps}>{errorMessage}</FieldError>
-		</AriaTextField>
+		</CheckboxGroup>
 	);
 };
 
-export interface FormTextFieldProps extends Omit<TextFieldProps, "label"> {
-	label: string;
+export interface FormCheckboxGroupFieldProps extends CheckboxGroupFieldProps {
 	formatErrors?: TErrorFormatter;
 }
 
-export const FormTextField = ({
+export const FormCheckboxGroupField = ({
 	label,
-	description,
-	isRequired,
-	inputProps,
 	formatErrors = defaultErrorFormatter,
 	...props
-}: FormTextFieldProps) => {
-	const field = useFieldContext<string>();
+}: FormCheckboxGroupFieldProps) => {
+	const field = useFieldContext<Array<string>>();
 	const errors = useStore(field.store, (state) => state.meta.errors);
 	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
 
 	return (
-		<TextField
+		<CheckboxGroupField
 			{...props}
 			label={label}
-			{...(description && { description })}
-			{...(isRequired && { isRequired })}
 			{...(errorMessage && { errorMessage })}
-			inputProps={{
-				...inputProps,
-				name: field.name,
-				value: field.state.value,
-				onBlur: field.handleBlur,
-				onChange: (e) => field.handleChange(e.target.value),
-			}}
+			value={field.state.value}
+			name={field.name}
+			onChange={field.handleChange}
+			onBlur={field.handleBlur}
 		/>
 	);
 };
