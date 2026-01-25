@@ -42,7 +42,7 @@ export const SelectField = <T extends object>({
 	label,
 	description,
 	errorMessage,
-	isRequired,
+
 	labelProps,
 	descriptionProps,
 	fieldErrorProps,
@@ -55,11 +55,10 @@ export const SelectField = <T extends object>({
 			data-slot="select-field"
 			{...props}
 			className={composeTailwindRenderProps(props.className, fieldVariants())}
-			{...(isRequired !== undefined && { isRequired })}
 		>
 			{label && (
 				<Label data-slot="select-field-label" {...labelProps}>
-					{label} {isRequired && <i aria-hidden="true">*</i>}
+					{label}
 				</Label>
 			)}
 			<SelectTrigger data-slot="select-field-trigger" {...selectTriggerProps}>

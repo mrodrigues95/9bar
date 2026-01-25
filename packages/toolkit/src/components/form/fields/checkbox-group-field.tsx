@@ -22,12 +22,10 @@ export interface CheckboxGroupFieldProps
 	fieldErrorProps?: FieldErrorProps;
 }
 
-// TODO: Remove required asteriks from labels (?)
 export const CheckboxGroupField = ({
 	label,
 	description,
 	errorMessage,
-	isRequired,
 	labelProps,
 	descriptionProps,
 	fieldErrorProps,
@@ -35,14 +33,8 @@ export const CheckboxGroupField = ({
 	...props
 }: CheckboxGroupFieldProps) => {
 	return (
-		<CheckboxGroup
-			{...(isRequired !== undefined && { isRequired })}
-			data-slot="checkbox-group-field"
-			{...props}
-		>
-			<Label {...labelProps}>
-				{label} {isRequired && <i aria-hidden="true">*</i>}
-			</Label>
+		<CheckboxGroup data-slot="checkbox-group-field" {...props}>
+			<Label {...labelProps}>{label}</Label>
 			{children}
 			{description && (
 				<Description {...descriptionProps}>{description}</Description>

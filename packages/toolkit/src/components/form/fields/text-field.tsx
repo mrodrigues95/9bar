@@ -27,7 +27,6 @@ export const TextField = ({
 	label,
 	description,
 	errorMessage,
-	isRequired,
 	labelProps,
 	inputProps,
 	descriptionProps,
@@ -36,7 +35,6 @@ export const TextField = ({
 }: TextFieldProps) => {
 	return (
 		<AriaTextField
-			{...(isRequired !== undefined && { isRequired })}
 			data-slot="text-field"
 			{...props}
 			className={composeRenderProps(
@@ -44,11 +42,7 @@ export const TextField = ({
 				(className, _renderProps) => fieldVariants({ className }),
 			)}
 		>
-			{label && (
-				<Label {...labelProps}>
-					{label} {isRequired && <i aria-hidden="true">*</i>}
-				</Label>
-			)}
+			{label && <Label {...labelProps}>{label}</Label>}
 			<Input {...inputProps} />
 			{description && (
 				<Description {...descriptionProps}>{description}</Description>
