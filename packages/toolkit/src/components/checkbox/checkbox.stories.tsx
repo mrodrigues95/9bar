@@ -13,7 +13,9 @@ const meta = {
 	title: "Checkbox",
 	args: { children: "Press me!" },
 	parameters: {
-		controls: { include: ["isDisabled", "isReadOnly", "isIndeterminate"] },
+		controls: {
+			include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
+		},
 	},
 } satisfies Meta<typeof Checkbox>;
 

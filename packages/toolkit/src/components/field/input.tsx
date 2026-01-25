@@ -5,22 +5,65 @@ import {
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 
+const prefixClasses = (prefix: string, classes: string) =>
+	classes
+		.split(" ")
+		.map((cls) => `${prefix}:${cls}`)
+		.join(" ");
+
+const inputStateClasses = {
+	focusRing: {
+		base: "ring-4",
+		valid: "border-ring-fg ring-ring",
+	},
+	disabled: "bg-slate-50 opacity-50 shadow-none",
+} as const;
+
 export const inputFocusRing = tv({
 	base: [
-		"outline-none transition duration-150",
-		"focus:border-ring-fg focus:ring-4 focus:ring-ring",
-		"invalid:border-ring-destructive-fg invalid:focus:border-ring-destructive-fg invalid:focus:ring-4 invalid:focus:ring-ring-destructive",
-		"group-focus:border-ring-fg group-focus:ring-4 group-focus:ring-ring",
-		"group-invalid:border-ring-destructive-fg group-invalid:focus:border-ring-destructive-fg group-invalid:focus:ring-4 group-invalid:focus:ring-ring-destructive",
-		"group-invalid:group-focus:border-ring-destructive-fg group-invalid:group-focus:ring-4 group-invalid:group-focus:ring-ring-destructive",
+		"transition",
+		"data-[invalid]:border-ring-destructive-fg data-[invalid]:ring-ring-destructive",
 	],
+	variants: {
+		variant: {
+			focusable: [
+				prefixClasses("data-[focused]", inputStateClasses.focusRing.base),
+				prefixClasses(
+					"not-data-[invalid]:data-[focused]",
+					inputStateClasses.focusRing.valid,
+				),
+			],
+			indicator: [
+				prefixClasses("data-[focus-visible]", inputStateClasses.focusRing.base),
+				prefixClasses(
+					"not-data-[invalid]:data-[focus-visible]",
+					inputStateClasses.focusRing.valid,
+				),
+			],
+		},
+	},
+	defaultVariants: {
+		variant: "focusable",
+	},
+});
+
+export const inputDisabled = tv({
+	variants: {
+		variant: {
+			focusable: [prefixClasses("disabled", inputStateClasses.disabled)],
+			indicator: [prefixClasses("data-[disabled]", inputStateClasses.disabled)],
+		},
+	},
+	defaultVariants: {
+		variant: "focusable",
+	},
 });
 
 export const inputVariants = tv({
 	extend: inputFocusRing,
 	base: [
-		"relative block w-full rounded-md border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none",
-		"disabled:bg-slate-50 disabled:text-slate-400 disabled:shadow-none",
+		"relative block w-full rounded-lg border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none",
+		inputDisabled(),
 	],
 	variants: {
 		density: {
@@ -29,7 +72,7 @@ export const inputVariants = tv({
 		},
 	},
 	defaultVariants: {
-		density: "loose",
+		density: "compact",
 	},
 });
 

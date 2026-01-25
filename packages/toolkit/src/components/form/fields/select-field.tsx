@@ -6,7 +6,6 @@ import { composeTailwindRenderProps } from "../../../utils/classes";
 import { Description, type DescriptionProps } from "../../field/description";
 import { fieldVariants } from "../../field/field";
 import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { inputFocusRing } from "../../field/input";
 import { Label, type LabelProps } from "../../field/label";
 import {
 	Select,
@@ -63,14 +62,7 @@ export const SelectField = <T extends object>({
 					{label} {isRequired && <i aria-hidden="true">*</i>}
 				</Label>
 			)}
-			<SelectTrigger
-				data-slot="select-field-trigger"
-				{...selectTriggerProps}
-				className={composeTailwindRenderProps(
-					selectTriggerProps?.className,
-					inputFocusRing(),
-				)}
-			>
+			<SelectTrigger data-slot="select-field-trigger" {...selectTriggerProps}>
 				<SelectValue<T> data-slot="select-field-value" {...selectValueProps}>
 					{renderValue ??
 						(({ selectedText, defaultChildren }) =>

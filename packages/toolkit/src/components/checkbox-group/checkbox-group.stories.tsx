@@ -9,7 +9,7 @@ const meta = {
 	title: "Checkbox Group",
 	parameters: {
 		controls: {
-			include: ["isDisabled", "isReadOnly"],
+			include: ["isDisabled", "isReadOnly", "isInvalid"],
 		},
 	},
 } satisfies Meta<typeof CheckboxGroup>;

@@ -14,7 +14,6 @@ import {
 	type TabsProps,
 } from "react-aria-components";
 import { cn, tv, type VariantProps } from "tailwind-variants";
-import { focusRing } from "../../utils/classes";
 import { buttonVariants } from "../button/button";
 
 const tabsVariants = tv({
@@ -23,14 +22,16 @@ const tabsVariants = tv({
 		list: "relative z-0 flex h-fit items-center justify-center gap-x-0.5 [scrollbar-width:none]",
 		tab: [
 			buttonVariants({ variant: "ghost", size: "sm" }),
-			"outline-offset-[-2.5px]",
 			"group motion-safe:transition-[translate,width,height]",
+			"focus-visible:ring-offset-0",
 		],
 		indicator:
-			"absolute z-50 transition-[width,translate] duration-200 ease-in-out",
+			"absolute z-50 transition-[width,translate] duration-150 ease-in-out",
 		panels: "relative w-full flex-1",
-		panel:
-			"exiting:absolute exiting:top-0 exiting:left-0 exiting:w-full w-full flex-1 p-4 transition",
+		panel: [
+			"w-full flex-1 p-4 outline-none transition",
+			"exiting:absolute exiting:top-0 exiting:left-0 exiting:w-full",
+		],
 	},
 	variants: {
 		variant: {
@@ -151,11 +152,7 @@ export const Tab = (props: TabProps) => {
 			{...props}
 			className={composeRenderProps(
 				props.className,
-				(className, renderProps) =>
-					cn(
-						focusRing({ isFocusVisible: renderProps.isFocusVisible }),
-						styles.tab({ className }),
-					) ?? "",
+				(className) => cn(styles.tab({ className })) ?? "",
 			)}
 		>
 			{composeRenderProps(props.children, (children) => (
@@ -191,7 +188,7 @@ export const TabPanel = (props: TabPanelProps) => {
 			{...props}
 			className={composeRenderProps(
 				props.className,
-				(className) => cn(styles.panel({ className }), focusRing()) ?? "",
+				(className) => cn(styles.panel({ className })) ?? "",
 			)}
 		/>
 	);

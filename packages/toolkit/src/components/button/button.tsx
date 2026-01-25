@@ -4,12 +4,18 @@ import {
 	composeRenderProps,
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
-import { focusRing } from "../../utils/classes";
+
+export const buttonFocusRing = tv({
+	base: [
+		"transition",
+		"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-white",
+	],
+});
 
 export const buttonVariants = tv({
-	extend: focusRing,
+	extend: buttonFocusRing,
 	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-lg font-medium text-sm ring-0 transition duration-150",
+		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-lg font-medium text-sm outline-none",
 		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
 		"disabled:pointer-events-none disabled:opacity-50",
 	],
@@ -48,7 +54,7 @@ export const buttonVariants = tv({
 			link: [
 				"text-slate-900 underline-offset-4",
 				"hover:underline",
-				"focus-visible:underline focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+				"focus-visible:underline",
 			],
 		},
 		size: {

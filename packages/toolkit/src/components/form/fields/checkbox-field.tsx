@@ -8,8 +8,6 @@ import {
 import { cn } from "tailwind-variants";
 import {
 	Checkbox,
-	CheckboxIcon,
-	CheckboxIndicator,
 	type CheckboxProps,
 	CheckboxRoot,
 	type CheckboxRootProps,
@@ -17,7 +15,6 @@ import {
 import { Description, type DescriptionProps } from "../../field/description";
 import { fieldVariants } from "../../field/field";
 import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { inputFocusRing } from "../../field/input";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
@@ -70,14 +67,6 @@ export const CheckboxField = ({
 			<Checkbox
 				{...(ids ? { "aria-describedby": ids } : {})}
 				data-slot="checkbox-field-label"
-				indicator={(renderProps) => (
-					<CheckboxIndicator
-						className={inputFocusRing()}
-						renderProps={renderProps}
-					>
-						<CheckboxIcon {...renderProps} />
-					</CheckboxIndicator>
-				)}
 				{...props}
 			>
 				{label}

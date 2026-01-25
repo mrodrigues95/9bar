@@ -7,23 +7,22 @@ import {
 	composeRenderProps,
 } from "react-aria-components";
 import { cn, tv } from "tailwind-variants";
-import { focusRing } from "../../utils/classes";
+import { inputDisabled, inputFocusRing } from "../field/input";
 
 export const checkboxVariants = tv({
 	slots: {
 		root: [
 			"flex flex-col items-start gap-0.5",
-			"has-[:disabled]:opacity-50",
 			'[&>[data-slot$="description"]]:ml-6.5',
 			'[&>[data-slot$="error"]]:ml-6.5',
 		],
 		label: [
 			"group relative flex shrink-0 select-none items-center justify-center gap-2 font-normal text-sm",
-			"disabled:pointer-events-none disabled:opacity-50",
+			"disabled:pointer-events-none",
 		],
 		indicator: [
-			"inline-flex size-4.5 shrink-0 items-center justify-center rounded-[0.3125rem] border border-border bg-white text-primary shadow-xs transition",
-			"data-[focus-visible=false]:data-[invalid=false]:hover:border-primary/25",
+			"inline-flex size-4.5 shrink-0 items-center justify-center rounded-[0.3125rem] border border-border bg-white text-primary shadow-xs",
+			"not-data-[invalid]:not-data-[focus-visible]:hover:border-primary/25",
 			"selected:bg-primary selected:text-white",
 		],
 	},
@@ -80,17 +79,22 @@ export const CheckboxIndicator = ({
 	...props
 }: CheckboxIndicatorProps) => {
 	const { indicator } = checkboxVariants();
-	const { isSelected, isIndeterminate, isInvalid, isFocusVisible } =
+	const { isSelected, isIndeterminate, isInvalid, isFocusVisible, isDisabled } =
 		renderProps ?? {};
 
 	return (
 		<div
 			data-slot="checkbox-indicator"
+			data-disabled={isDisabled ? "true" : undefined}
 			data-selected={isSelected || isIndeterminate || undefined}
-			data-focus-visible={isFocusVisible ? "true" : "false"}
-			data-invalid={isInvalid ? "true" : "false"}
+			data-focus-visible={isFocusVisible ? "true" : undefined}
+			data-invalid={isInvalid ? "true" : undefined}
 			{...props}
-			className={cn(focusRing({ isFocusVisible }), indicator({ className }))}
+			className={cn(
+				indicator({ className }),
+				inputFocusRing({ variant: "indicator" }),
+				inputDisabled({ variant: "indicator" }),
+			)}
 		>
 			{children}
 		</div>

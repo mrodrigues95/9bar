@@ -1,13 +1,17 @@
+import { useContext } from "react";
 import {
 	ListBox as AriaListBox,
 	type ListBoxProps as AriaListBoxProps,
 	Select as AriaSelect,
 	type SelectProps as AriaSelectProps,
+	SelectStateContext as AriaSelectStateContext,
 	SelectValue as AriaSelectValue,
 	type SelectValueProps as AriaSelectValueProps,
 } from "react-aria-components";
+import { cn } from "tailwind-variants";
 import { composeTailwindRenderProps } from "../../utils/classes";
 import { Button, type ButtonProps } from "../button/button";
+import { inputDisabled, inputFocusRing } from "../field/input";
 import {
 	ListboxItem,
 	type ListboxItemProps,
@@ -44,14 +48,25 @@ export const Select = <T extends object>({
 export interface SelectTriggerProps extends ButtonProps {}
 
 export const SelectTrigger = (props: SelectTriggerProps) => {
+	const context = useContext(AriaSelectStateContext);
 	return (
 		<Button
 			data-slot="select-trigger"
 			variant="outline"
+			data-invalid={
+				context?.displayValidation.isInvalid ||
+				context?.realtimeValidation.isInvalid ||
+				undefined
+			}
 			{...props}
 			className={composeTailwindRenderProps(
 				props.className,
-				"min-w-40 cursor-default text-start",
+				cn(
+					inputFocusRing({ variant: "indicator" }),
+					inputDisabled(),
+					"min-w-40 cursor-default text-start",
+					"focus-visible:ring-offset-0",
+				) ?? "",
 			)}
 		/>
 	);

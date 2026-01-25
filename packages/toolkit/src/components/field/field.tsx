@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 export const fieldVariants = tv({
-	base: ["flex flex-col gap-1", "data-[disabled]:opacity-50"],
+	base: ["flex flex-col gap-1"],
 });
 
 export interface FieldProps extends ComponentProps<"div"> {}

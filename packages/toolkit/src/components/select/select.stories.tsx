@@ -21,7 +21,7 @@ const meta = {
 	title: "Select",
 	parameters: {
 		controls: {
-			include: ["placeholder", "isDisabled", "selectionMode"],
+			include: ["placeholder", "isDisabled", "isInvalid", "selectionMode"],
 		},
 	},
 } satisfies Meta<typeof Select>;
@@ -30,6 +30,7 @@ export default meta;
 
 type Story = StoryObj<typeof Select>;
 
+// TODO: Invalid styles not applying since data-invalid not being set on the trigger.
 export const Basic: Story = {
 	render: (props) => (
 		<Select aria-label="Favorite Animal" {...props}>

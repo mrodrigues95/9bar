@@ -23,7 +23,6 @@ export interface CheckboxGroupFieldProps
 }
 
 // TODO: Remove required asteriks from labels (?)
-// TODO: Unify input focus ring styles with lower level components across all fields.
 export const CheckboxGroupField = ({
 	label,
 	description,

@@ -1,15 +1,5 @@
 import { composeRenderProps } from "react-aria-components";
-import { cn, tv } from "tailwind-variants";
-
-export const focusRing = tv({
-	base: ["outline outline-ring-fg outline-offset-2", "focus-visible:outline-2"],
-	variants: {
-		isFocusVisible: {
-			false: "outline-0",
-			true: "outline-2",
-		},
-	},
-});
+import { cn } from "tailwind-variants";
 
 export const composeTailwindRenderProps = <T>(
 	className: string | ((v: T) => string) | undefined,
