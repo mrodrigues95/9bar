@@ -5,20 +5,6 @@ import {
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";
 
-const prefixClasses = (prefix: string, classes: string) =>
-	classes
-		.split(" ")
-		.map((cls) => `${prefix}:${cls}`)
-		.join(" ");
-
-const inputStateClasses = {
-	focusRing: {
-		base: "ring-4",
-		valid: "border-ring-fg ring-ring",
-	},
-	disabled: "bg-slate-50 opacity-50 shadow-none",
-} as const;
-
 export const inputFocusRing = tv({
 	base: [
 		"transition",
@@ -27,18 +13,14 @@ export const inputFocusRing = tv({
 	variants: {
 		variant: {
 			focusable: [
-				prefixClasses("data-[focused]", inputStateClasses.focusRing.base),
-				prefixClasses(
-					"not-data-[invalid]:data-[focused]",
-					inputStateClasses.focusRing.valid,
-				),
+				"data-[focused]:ring-4",
+				"not-data-[invalid]:data-[focused]:border-ring-fg",
+				"not-data-[invalid]:data-[focused]:ring-ring",
 			],
 			indicator: [
-				prefixClasses("data-[focus-visible]", inputStateClasses.focusRing.base),
-				prefixClasses(
-					"not-data-[invalid]:data-[focus-visible]",
-					inputStateClasses.focusRing.valid,
-				),
+				"data-[focus-visible]:ring-4",
+				"not-data-[invalid]:data-[focus-visible]:border-ring-fg",
+				"not-data-[invalid]:data-[focus-visible]:ring-ring",
 			],
 		},
 	},
@@ -50,8 +32,16 @@ export const inputFocusRing = tv({
 export const inputDisabled = tv({
 	variants: {
 		variant: {
-			focusable: [prefixClasses("disabled", inputStateClasses.disabled)],
-			indicator: [prefixClasses("data-[disabled]", inputStateClasses.disabled)],
+			focusable: [
+				"disabled:bg-slate-50",
+				"disabled:opacity-50",
+				"disabled:shadow-none",
+			],
+			indicator: [
+				"data-[disabled]:bg-slate-50",
+				"data-[disabled]:opacity-50",
+				"data-[disabled]:shadow-none",
+			],
 		},
 	},
 	defaultVariants: {
@@ -72,7 +62,7 @@ export const inputVariants = tv({
 		},
 	},
 	defaultVariants: {
-		density: "compact",
+		density: "loose",
 	},
 });
 

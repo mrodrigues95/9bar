@@ -49,7 +49,6 @@ export interface FormCheckboxGroupFieldProps extends CheckboxGroupFieldProps {
 }
 
 export const FormCheckboxGroupField = ({
-	label,
 	formatErrors = defaultErrorFormatter,
 	...props
 }: FormCheckboxGroupFieldProps) => {
@@ -60,8 +59,7 @@ export const FormCheckboxGroupField = ({
 	return (
 		<CheckboxGroupField
 			{...props}
-			label={label}
-			{...(errorMessage && { errorMessage })}
+			{...(errorMessage && { errorMessage, isInvalid: true })}
 			value={field.state.value}
 			name={field.name}
 			onChange={field.handleChange}

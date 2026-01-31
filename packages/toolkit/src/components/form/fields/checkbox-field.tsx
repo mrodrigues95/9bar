@@ -96,7 +96,6 @@ export interface FormCheckboxFieldProps
 }
 
 export const FormCheckboxField = ({
-	label,
 	formatErrors = defaultErrorFormatter,
 	...props
 }: FormCheckboxFieldProps) => {
@@ -107,7 +106,6 @@ export const FormCheckboxField = ({
 	return (
 		<CheckboxField
 			{...props}
-			label={label}
 			{...(errorMessage && { errorMessage, isInvalid: true })}
 			isSelected={field.state.value}
 			onChange={(isSelected) => field.handleChange(isSelected)}

@@ -3,7 +3,7 @@ import { CheckboxField } from "./checkbox-field";
 
 const meta = {
 	component: CheckboxField,
-	title: "CheckboxField",
+	title: "Form/CheckboxField",
 	parameters: {
 		controls: {
 			include: [

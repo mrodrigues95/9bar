@@ -12,7 +12,7 @@ const items = [
 
 const meta = {
 	component: SelectField,
-	title: "SelectField",
+	title: "Form/SelectField",
 	parameters: {
 		controls: {
 			include: [

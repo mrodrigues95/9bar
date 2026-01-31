@@ -93,9 +93,6 @@ export interface FormSelectFieldProps<T extends object>
 }
 
 export function FormSelectField<T extends object>({
-	label,
-	description,
-	isRequired,
 	formatErrors = defaultErrorFormatter,
 	...props
 }: FormSelectFieldProps<T>) {
@@ -106,10 +103,7 @@ export function FormSelectField<T extends object>({
 	return (
 		<SelectField
 			{...props}
-			label={label}
-			{...(description && { description })}
-			{...(isRequired && { isRequired })}
-			{...(errorMessage && { errorMessage })}
+			{...(errorMessage && { errorMessage, isInvalid: true })}
 			name={field.name}
 			value={field.state.value}
 			onBlur={field.handleBlur}

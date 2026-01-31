@@ -6,6 +6,7 @@ import { SelectItem } from "../select/select";
 import { CheckboxGroupField } from "./fields/checkbox-group-field";
 import { SelectField } from "./fields/select-field";
 import { TextField } from "./fields/text-field";
+import { TextareaField } from "./fields/textarea-field";
 import { Form } from "./form";
 import { useAppForm, withForm } from "./utils/form";
 
@@ -61,6 +62,16 @@ export const HTMLValidation: Story = {
 					max: 120,
 				}}
 			/>
+			<TextareaField
+				isRequired
+				label="Bio"
+				description="Tell us a little about yourself"
+				textareaProps={{
+					name: "bio",
+					minLength: 10,
+					maxLength: 500,
+				}}
+			/>
 			<SelectField
 				isRequired
 				label="Preferred Contact Method"
@@ -92,7 +103,6 @@ export const HTMLValidation: Story = {
 	),
 };
 
-// TODO: Add inputFocusRing styles to checkboxes for error border styles.
 interface FormErrors<TFormValues> {
 	fields: { [K in keyof TFormValues]?: string };
 }
@@ -105,6 +115,7 @@ export const ComposedForm: Story = {
 				lastName: "",
 				email: "",
 				age: "",
+				bio: "",
 				country: "",
 				newsletter: [] as Array<string>,
 				acceptTerms: false,
@@ -135,6 +146,12 @@ export const ComposedForm: Story = {
 						errors.fields.email = "Email is required";
 					} else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
 						errors.fields.email = "Please enter a valid email";
+					}
+
+					if (!value.bio) {
+						errors.fields.bio = "Bio is required";
+					} else if (value.bio.length < 10) {
+						errors.fields.bio = "Bio must be at least 10 characters";
 					}
 
 					if (!value.country) {
@@ -187,6 +204,16 @@ export const ComposedForm: Story = {
 								description="Must be 18 or older"
 								isRequired
 								inputProps={{ type: "number", min: 18, max: 120 }}
+							/>
+						)}
+					</form.AppField>
+					<form.AppField name="bio">
+						{(field) => (
+							<field.Textarea
+								label="Bio"
+								description="Tell us about yourself (min 10 characters)"
+								isRequired
+								textareaProps={{ minLength: 10 }}
 							/>
 						)}
 					</form.AppField>
@@ -246,6 +273,10 @@ const schema = z.object({
 	password: z
 		.string()
 		.min(8, "[Zod] Password must be at least 8 characters long"),
+	bio: z
+		.string()
+		.min(20, "[Zod] Bio must be at least 20 characters")
+		.max(500, "[Zod] Bio cannot exceed 500 characters"),
 	role: z.string().min(1, "[Zod] Please select a role"),
 	preferences: z
 		.array(z.string())
@@ -260,6 +291,7 @@ export const WithZodValidation: Story = {
 				username: "",
 				email: "",
 				password: "",
+				bio: "",
 				role: "",
 				preferences: [] as Array<string>,
 			},
@@ -306,6 +338,15 @@ export const WithZodValidation: Story = {
 							description="Minimum 8 characters"
 							isRequired
 							inputProps={{ type: "password", autoComplete: "new-password" }}
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="bio">
+					{(field) => (
+						<field.Textarea
+							label="Bio"
+							description="Tell us about yourself (20-500 characters)"
+							isRequired
 						/>
 					)}
 				</form.AppField>
@@ -436,11 +477,11 @@ const ContactFormComponent = withForm({
 					}}
 				>
 					{(field) => (
-						<field.Input
+						<field.Textarea
 							label="Message"
 							description="Tell us how we can help"
 							isRequired
-							inputProps={{
+							textareaProps={{
 								placeholder: "Tell us how we can help...",
 							}}
 						/>

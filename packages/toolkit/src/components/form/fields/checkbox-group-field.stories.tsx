@@ -4,7 +4,7 @@ import { CheckboxGroupField } from "./checkbox-group-field";
 
 const meta = {
 	component: CheckboxGroupField,
-	title: "CheckboxGroupField",
+	title: "Form/CheckboxGroupField",
 	parameters: {
 		controls: {
 			include: [

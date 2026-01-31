@@ -58,9 +58,6 @@ export interface FormTextFieldProps extends Omit<TextFieldProps, "label"> {
 }
 
 export const FormTextField = ({
-	label,
-	description,
-	isRequired,
 	inputProps,
 	formatErrors = defaultErrorFormatter,
 	...props
@@ -72,10 +69,7 @@ export const FormTextField = ({
 	return (
 		<TextField
 			{...props}
-			label={label}
-			{...(description && { description })}
-			{...(isRequired && { isRequired })}
-			{...(errorMessage && { errorMessage })}
+			{...(errorMessage && { errorMessage, isInvalid: true })}
 			inputProps={{
 				...inputProps,
 				name: field.name,
