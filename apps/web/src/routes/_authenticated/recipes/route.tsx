@@ -1,5 +1,4 @@
 import {
-	Button,
 	Card,
 	CardFooter,
 	CardHeader,
@@ -9,6 +8,7 @@ import {
 } from "@9bar/toolkit";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
 import { RecipesList } from "./-recipes-list";
 
@@ -28,11 +28,10 @@ const Recipe = () => {
 							Create, edit, and track your favorite brewing methods.
 						</Text>
 					</div>
-					<Button variant="solid">
+					<Link variant="solid" to="/recipes/new">
 						<PlusIcon />
-						{/* TODO: Link to create recipe route */}
 						Create Recipe
-					</Button>
+					</Link>
 				</CardHeader>
 				<CardPanel>
 					<RecipesList />
@@ -46,5 +45,6 @@ const Recipe = () => {
 };
 
 export const Route = createFileRoute("/_authenticated/recipes")({
+	staticData: { breadcrumb: { label: "Recipes" } },
 	component: Recipe,
 });

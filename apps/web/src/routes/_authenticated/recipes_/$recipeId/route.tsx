@@ -8,45 +8,15 @@ import {
 } from "@9bar/toolkit";
 import { DocumentIcon, FingerPrintIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
-import { Breadcrumb, Breadcrumbs } from "../../../../components";
-import type { FileRouteTypes } from "../../../../routeTree.gen";
-import { RecipeLogs } from "./-recipe-logs/-recipe-logs";
-import { RecipeOverview } from "./-recipe-overview/-recipe-overview";
-
-const RecipeBreadcrumbs = () => {
-	return (
-		<nav aria-label="Recipe navigation" className="mb-6">
-			<Breadcrumbs
-				items={
-					[
-						{ id: "recipes", label: "Recipes", to: "/recipes" },
-						{
-							id: "recipe-id",
-							label: "Recipe Name Here",
-							to: "/recipes/$recipeId",
-						},
-					] satisfies Array<{
-						id: string;
-						label: string;
-						to?: FileRouteTypes["to"];
-					}>
-				}
-			>
-				{(item) => (
-					<Breadcrumb key={item.id} to={item.to}>
-						{item.label}
-					</Breadcrumb>
-				)}
-			</Breadcrumbs>
-		</nav>
-	);
-};
+import { AppBreadcrumbs } from "../../../../components";
+import { RecipeLogs } from "./-recipe-logs/recipe-logs";
+import { RecipeOverview } from "./-recipe-overview/recipe-overview";
 
 const Recipe = () => {
 	// TODO: Convert individual tabs to routes.
 	return (
 		<>
-			<RecipeBreadcrumbs />
+			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<div className="flex flex-col gap-2">
 				<Heading as="h1" variant="title">
 					Recipe Name Here
@@ -77,5 +47,11 @@ const Recipe = () => {
 };
 
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
+	staticData: {
+		breadcrumb: {
+			parent: "/_authenticated/recipes",
+			label: () => "Recipe Name Here",
+		},
+	},
 	component: Recipe,
 });

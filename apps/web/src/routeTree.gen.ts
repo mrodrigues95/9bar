@@ -17,6 +17,7 @@ import { Route as UnauthenticatedSignInRouteRouteImport } from './routes/_unauth
 import { Route as AuthenticatedRecipesRouteRouteImport } from './routes/_authenticated/recipes/route'
 import { Route as AuthenticatedProfileRouteRouteImport } from './routes/_authenticated/profile/route'
 import { Route as AuthenticatedHomeRouteRouteImport } from './routes/_authenticated/home/route'
+import { Route as AuthenticatedRecipesNewRouteRouteImport } from './routes/_authenticated/recipes_/new/route'
 import { Route as AuthenticatedRecipesRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/route'
 
 const UnauthenticatedRouteRoute = UnauthenticatedRouteRouteImport.update({
@@ -61,6 +62,12 @@ const AuthenticatedHomeRouteRoute = AuthenticatedHomeRouteRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRecipesNewRouteRoute =
+  AuthenticatedRecipesNewRouteRouteImport.update({
+    id: '/recipes_/new',
+    path: '/recipes/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRecipesRecipeIdRouteRoute =
   AuthenticatedRecipesRecipeIdRouteRouteImport.update({
     id: '/recipes_/$recipeId',
@@ -76,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/recipes/new': typeof AuthenticatedRecipesNewRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,6 +93,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/recipes/new': typeof AuthenticatedRecipesNewRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,6 +106,7 @@ export interface FileRoutesById {
   '/_unauthenticated/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/_unauthenticated/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/_authenticated/recipes_/new': typeof AuthenticatedRecipesNewRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/recipes/$recipeId'
+    | '/recipes/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/recipes/$recipeId'
+    | '/recipes/new'
   id:
     | '__root__'
     | '/'
@@ -128,6 +140,7 @@ export interface FileRouteTypes {
     | '/_unauthenticated/sign-in'
     | '/_unauthenticated/sign-up'
     | '/_authenticated/recipes_/$recipeId'
+    | '/_authenticated/recipes_/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/recipes_/new': {
+      id: '/_authenticated/recipes_/new'
+      path: '/recipes/new'
+      fullPath: '/recipes/new'
+      preLoaderRoute: typeof AuthenticatedRecipesNewRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/recipes_/$recipeId': {
       id: '/_authenticated/recipes_/$recipeId'
       path: '/recipes/$recipeId'
@@ -209,6 +229,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRouteRoute: typeof AuthenticatedProfileRouteRoute
   AuthenticatedRecipesRouteRoute: typeof AuthenticatedRecipesRouteRoute
   AuthenticatedRecipesRecipeIdRouteRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+  AuthenticatedRecipesNewRouteRoute: typeof AuthenticatedRecipesNewRouteRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -217,6 +238,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRecipesRouteRoute: AuthenticatedRecipesRouteRoute,
   AuthenticatedRecipesRecipeIdRouteRoute:
     AuthenticatedRecipesRecipeIdRouteRoute,
+  AuthenticatedRecipesNewRouteRoute: AuthenticatedRecipesNewRouteRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

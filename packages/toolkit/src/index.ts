@@ -20,6 +20,7 @@ export * from "./components/link/link";
 export * from "./components/menu/menu";
 export * from "./components/pagination/pagination";
 export * from "./components/popover/popover";
+export * from "./components/select/select";
 export * from "./components/separator/separator";
 export * from "./components/tabs/tabs";
 export * from "./components/text/text";

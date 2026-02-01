@@ -1,3 +1,4 @@
+export * from "./breadcrumbs/app-breadcrumbs";
 export * from "./breadcrumbs/breadcrumbs";
 export * from "./link/link";
 export * from "./list/list";

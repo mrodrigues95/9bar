@@ -1,4 +1,8 @@
-import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import {
+	type AnyRouteMatch,
+	createRouter as createTanStackRouter,
+} from "@tanstack/react-router";
+import type { FileRouteTypes } from "./routeTree.gen";
 import { routeTree } from "./routeTree.gen";
 
 export function createRouter() {
@@ -16,5 +20,16 @@ export function createRouter() {
 declare module "@tanstack/react-router" {
 	interface Register {
 		router: ReturnType<typeof createRouter>;
+	}
+}
+
+declare module "@tanstack/react-router" {
+	interface StaticDataRouteOption {
+		breadcrumb?: {
+			/** The label for this route's breadcrumb. */
+			label?: string | ((match: AnyRouteMatch) => string | undefined);
+			/** The route id of the logical parent for breadcrumb hierarchy (for pathless routes). */
+			parent?: FileRouteTypes["id"];
+		};
 	}
 }
