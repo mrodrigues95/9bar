@@ -13,6 +13,8 @@ import { RecipeLogs } from "./-recipe-logs/recipe-logs";
 import { RecipeOverview } from "./-recipe-overview/recipe-overview";
 
 const Recipe = () => {
+	const { recipeId } = Route.useParams();
+
 	// TODO: Convert individual tabs to routes.
 	return (
 		<>
@@ -34,7 +36,7 @@ const Recipe = () => {
 					</TabList>
 					<TabPanels>
 						<TabPanel id="overview" className="px-0">
-							<RecipeOverview />
+							<RecipeOverview recipeId={recipeId} />
 						</TabPanel>
 						<TabPanel id="logs" className="px-0">
 							<RecipeLogs />

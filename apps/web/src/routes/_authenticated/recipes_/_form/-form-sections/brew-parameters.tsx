@@ -1,8 +1,8 @@
 import { withForm } from "@9bar/toolkit";
-import { FormSection, newRecipeFormOpts } from "./form-section";
+import { FormSection, recipeFormOpts } from "./form-section";
 
 export const BrewParametersFormSection = withForm({
-	...newRecipeFormOpts,
+	...recipeFormOpts,
 	render: function Render({ form }) {
 		return (
 			<FormSection title="Brew Parameters">

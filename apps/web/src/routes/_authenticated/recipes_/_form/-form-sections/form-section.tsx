@@ -3,7 +3,7 @@ import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "tailwind-variants";
 
-export const newRecipeFormOpts = formOptions({
+export const recipeFormOpts = formOptions({
 	defaultValues: {
 		name: "",
 		grindSize: "",

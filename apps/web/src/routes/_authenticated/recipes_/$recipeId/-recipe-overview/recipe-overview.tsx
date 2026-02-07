@@ -15,6 +15,7 @@ import {
 	PencilIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
+import { useNavigate } from "@tanstack/react-router";
 
 const RecipeNotes = () => {
 	return (
@@ -100,7 +101,9 @@ const RecipeName = () => {
 	);
 };
 
-export const RecipeOverview = () => {
+export const RecipeOverview = ({ recipeId }: { recipeId: string }) => {
+	const navigate = useNavigate();
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -111,7 +114,14 @@ export const RecipeOverview = () => {
 						<ChevronDownIcon />
 					</Button>
 					<Menu>
-						<MenuItem onAction={() => alert("rename")}>
+						<MenuItem
+							onAction={() =>
+								navigate({
+									to: "/recipes/$recipeId/edit",
+									params: { recipeId },
+								})
+							}
+						>
 							<PencilIcon className="size-3" />
 							Edit
 						</MenuItem>
