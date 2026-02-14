@@ -7,13 +7,14 @@ import {
 	Tabs,
 } from "@9bar/toolkit";
 import { DocumentIcon, FingerPrintIcon } from "@heroicons/react/24/solid";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { AppBreadcrumbs } from "../../../../components";
+import { recipes } from "../../../../utils/data";
 import { RecipeLogs } from "./-recipe-logs/recipe-logs";
 import { RecipeOverview } from "./-recipe-overview/recipe-overview";
 
 const Recipe = () => {
-	const { recipeId } = Route.useParams();
+	const recipe = Route.useLoaderData();
 
 	// TODO: Convert individual tabs to routes.
 	return (
@@ -21,10 +22,10 @@ const Recipe = () => {
 			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<div className="flex flex-col gap-2">
 				<Heading as="h1" variant="title">
-					Recipe Name Here
+					{recipe.name}
 				</Heading>
 				<Tabs color="blue">
-					<TabList aria-label="Manage <recipe_name_here>">
+					<TabList aria-label={`Manage ${recipe.name}`}>
 						<Tab id="overview">
 							<FingerPrintIcon />
 							Overview
@@ -36,7 +37,7 @@ const Recipe = () => {
 					</TabList>
 					<TabPanels>
 						<TabPanel id="overview" className="px-0">
-							<RecipeOverview recipeId={recipeId} />
+							<RecipeOverview recipeId={recipe.id} />
 						</TabPanel>
 						<TabPanel id="logs" className="px-0">
 							<RecipeLogs />
@@ -51,9 +52,17 @@ const Recipe = () => {
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 	staticData: {
 		breadcrumb: {
-			parent: "/_authenticated/recipes",
-			label: () => "Recipe Name Here",
+			parentRouteId: "/_authenticated/recipes",
 		},
+	},
+	loader: ({ params }) => {
+		const recipe = recipes.find((r) => r.id === params.recipeId);
+
+		if (!recipe || recipe.isQuickLog) {
+			throw redirect({ to: "/recipes" });
+		}
+
+		return { ...recipe, breadcrumb: { label: recipe.name } };
 	},
 	component: Recipe,
 });

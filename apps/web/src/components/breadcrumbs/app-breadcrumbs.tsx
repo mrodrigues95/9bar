@@ -1,7 +1,29 @@
-import type { AnyRouteMatch, RegisteredRouter } from "@tanstack/react-router";
+import type {
+	AnyRouteMatch,
+	FileRouteTypes,
+	RegisteredRouter,
+	StaticDataRouteOption,
+} from "@tanstack/react-router";
 import { useMatches, useRouter } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
 import { Breadcrumb, Breadcrumbs } from "../breadcrumbs/breadcrumbs";
+
+interface RouterBreadcrumb {
+	/**
+	 * The static label for this route's breadcrumb.
+	 *
+	 * This can be overriden by returning a `breadcrumb` string from the route's loader, which is useful for dynamic breadcrumb labels.
+	 */
+	label?: string;
+	/** The route id of the logical parent for breadcrumb hierarchy (for pathless routes). */
+	parentRouteId?: FileRouteTypes["id"];
+}
+
+declare module "@tanstack/react-router" {
+	interface StaticDataRouteOption {
+		breadcrumb?: RouterBreadcrumb;
+	}
+}
 
 interface TAppBreadcrumb {
 	id: string;
@@ -11,77 +33,62 @@ interface TAppBreadcrumb {
 
 type TRoutesById = RegisteredRouter["routesById"];
 
-const getParentBreadcrumbs = (
-	routeId: keyof TRoutesById,
-	routesById: TRoutesById,
-): Array<TAppBreadcrumb> => {
-	const route = routesById[routeId];
-	if (!route) {
-		return [];
-	}
-
-	const { breadcrumb } = route.options?.staticData ?? {};
-	const parentId = breadcrumb?.parent;
-
-	const parentBreadcrumbs = parentId
-		? getParentBreadcrumbs(parentId, routesById)
-		: [];
-
-	if (!breadcrumb?.label) {
-		return parentBreadcrumbs;
-	}
-
-	// For parent routes, we can only use string labels (no match context).
-	const label =
-		typeof breadcrumb.label === "string" ? breadcrumb.label : undefined;
-	if (!label) {
-		return parentBreadcrumbs;
-	}
-
-	return [
-		...parentBreadcrumbs,
-		{
-			id: routeId,
-			pathname: route.fullPath,
-			label,
-		},
-	];
+const getRouteStaticData = (
+	route: TRoutesById[keyof TRoutesById],
+): StaticDataRouteOption | undefined => {
+	return route.options?.staticData;
 };
 
-const buildBreadcrumbs = (
+const getLoaderBreadcrumb = (
+	match?: AnyRouteMatch,
+): RouterBreadcrumb | null => {
+	const data = match?.loaderData;
+	return typeof data?.breadcrumb?.label === "string" ? data.breadcrumb : null;
+};
+
+const resolvePathlessParentBreadcrumbs = (
+	match: AnyRouteMatch,
 	matches: AnyRouteMatch[],
 	routesById: TRoutesById,
+	seen: Set<string>,
 ) => {
 	const breadcrumbs: Array<TAppBreadcrumb> = [];
+	const parentId = match.staticData?.breadcrumb?.parentRouteId;
+	if (!parentId) {
+		return breadcrumbs;
+	}
 
-	for (const match of matches) {
-		const breadcrumb = match.staticData?.breadcrumb;
-		const parentId = breadcrumb?.parent;
+	const ancestors: Array<TAppBreadcrumb> = [];
+	const visited = new Set<string>();
+	let currentId: keyof TRoutesById | undefined = parentId;
 
-		// Resolve parent breadcrumbs first (if not already added)
-		if (parentId) {
-			const parentBreadcrumbs = getParentBreadcrumbs(parentId, routesById);
-			for (const parent of parentBreadcrumbs) {
-				if (!breadcrumbs.some((b) => b.id === parent.id)) {
-					breadcrumbs.push(parent);
-				}
-			}
+	while (currentId && !visited.has(currentId)) {
+		visited.add(currentId);
+		const route = routesById[currentId];
+		if (!route) {
+			break;
 		}
 
-		const label =
-			typeof breadcrumb?.label === "function"
-				? breadcrumb.label(match)
-				: breadcrumb?.label;
-		if (!label) {
-			continue;
-		}
+		const parentStaticData = getRouteStaticData(route);
+		const parentMatch = matches.find((m) => m.id === currentId);
+		const parentBreadcrumb =
+			getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
 
-		if (!breadcrumbs.some((b) => b.id === match.id)) {
-			breadcrumbs.push({
-				id: match.id,
-				pathname: match.pathname,
-				label,
+		if (parentBreadcrumb?.label) {
+			ancestors.push({
+				id: currentId,
+				pathname: parentMatch?.pathname ?? route.fullPath,
+				label: parentBreadcrumb.label,
 			});
+		}
+
+		currentId = parentStaticData?.breadcrumb?.parentRouteId;
+	}
+
+	for (const ancestor of ancestors.reverse()) {
+		if (!seen.has(ancestor.id)) {
+			seen.add(ancestor.id);
+			breadcrumbs.push(ancestor);
 		}
 	}
 
@@ -89,9 +96,44 @@ const buildBreadcrumbs = (
 };
 
 const useAppBreadcrumbs = () => {
-	const matches = useMatches();
-	const router = useRouter();
-	return buildBreadcrumbs(matches, router.routesById);
+	const { routesById } = useRouter();
+	return useMatches({
+		select: (matches) => {
+			const seen = new Set<string>();
+			const breadcrumbs: Array<TAppBreadcrumb> = [];
+
+			for (const match of matches) {
+				if (seen.has(match.id)) {
+					continue;
+				}
+
+				const ancestorBreadcrumbs = resolvePathlessParentBreadcrumbs(
+					match,
+					matches,
+					routesById,
+					seen,
+				);
+				if (ancestorBreadcrumbs.length) {
+					breadcrumbs.push(...ancestorBreadcrumbs);
+				}
+
+				const breadcrumb =
+					getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
+				if (!breadcrumb?.label) {
+					continue;
+				}
+
+				seen.add(match.id);
+				breadcrumbs.push({
+					id: match.id,
+					pathname: match.pathname,
+					label: breadcrumb.label,
+				});
+			}
+
+			return breadcrumbs;
+		},
+	});
 };
 
 interface AppBreadcrumbsProps extends ComponentProps<"nav"> {}

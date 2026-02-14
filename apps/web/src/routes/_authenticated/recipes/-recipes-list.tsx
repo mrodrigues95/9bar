@@ -16,8 +16,9 @@ import {
 	TrashIcon,
 } from "@heroicons/react/24/solid";
 import { List, ListItem, MenuItemLink } from "../../../components";
+import { recipes, type TRecipe } from "../../../utils/data";
 
-const RecipesListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
+const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 	return (
 		<ListItem className="justify-between">
 			<div className="flex flex-col">
@@ -47,13 +48,15 @@ const RecipesListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 						<EllipsisVerticalIcon />
 					</IconButton>
 					<Menu>
-						<MenuItemLink
-							to="/recipes/$recipeId"
-							params={{ recipeId: recipe.id }}
-						>
-							<ArrowRightIcon className="size-3" />
-							View
-						</MenuItemLink>
+						{!recipe.isQuickLog && (
+							<MenuItemLink
+								to="/recipes/$recipeId"
+								params={{ recipeId: recipe.id }}
+							>
+								<ArrowRightIcon className="size-3" />
+								View
+							</MenuItemLink>
+						)}
 						{recipe.isQuickLog && (
 							<MenuItem onAction={() => alert("rename")}>
 								<ArrowsRightLeftIcon className="size-3" />
@@ -77,39 +80,6 @@ const RecipesListItem = ({ recipe }: { recipe: (typeof recipes)[number] }) => {
 		</ListItem>
 	);
 };
-
-const recipes = [
-	{
-		id: "1",
-		name: "Ethiopian Yirgacheffe",
-		device: "Gaggia Classic Pro",
-		grinder: "Baratza Encore",
-		brewTime: "22s",
-		dose: "18g",
-		yield: "36g",
-		beans: 'Kicking Horse Coffee - "Three Sisters"',
-		temperature: "205°F",
-		pressure: "9 bar",
-		notes: "Fruity and bright with floral notes.",
-		isQuickLog: false,
-		quickLogs: [],
-	},
-	{
-		id: "2",
-		name: "Colombian Supremo",
-		device: "La Marzocco Linea Mini",
-		grinder: "Hario Skerton",
-		brewTime: "31s",
-		dose: "20g",
-		yield: "40g",
-		beans: "Stumptown - Hair Bender",
-		temperature: "200°F",
-		pressure: "9 bar",
-		notes: "Rich and chocolatey with a smooth finish.",
-		isQuickLog: true,
-		quickLogs: [],
-	},
-];
 
 export const RecipesList = () => {
 	return (
