@@ -1,4 +1,5 @@
 import { SelectItem, withForm } from "@9bar/toolkit";
+import { grinderOptions, machineOptions } from "../../../../../utils/data";
 import { FormSection, recipeFormOpts } from "./form-section";
 
 export const BasicInformationFormSection = withForm({
@@ -44,13 +45,7 @@ export const BasicInformationFormSection = withForm({
 							description="The grinder used to grind your coffee."
 							isRequired
 							placeholder="Select a grinder"
-							items={[
-								{ id: "comandante", name: "Comandante" },
-								{ id: "niche-zero", name: "Niche Zero" },
-								{ id: "baratza-sette", name: "Baratza Sette 270" },
-								{ id: "eureka-mignon", name: "Eureka Mignon" },
-								{ id: "other", name: "Other" },
-							]}
+							items={grinderOptions}
 						>
 							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 						</field.Select>
@@ -63,14 +58,7 @@ export const BasicInformationFormSection = withForm({
 							description="The espresso machine used for brewing."
 							isRequired
 							placeholder="Select a machine"
-							items={[
-								{ id: "la-pavoni", name: "La Pavoni" },
-								{ id: "gaggia-classic", name: "Gaggia Classic" },
-								{ id: "rancilio-silvia", name: "Rancilio Silvia" },
-								{ id: "breville-barista", name: "Breville Barista Express" },
-								{ id: "lelit-bianca", name: "Lelit Bianca" },
-								{ id: "other", name: "Other" },
-							]}
+							items={machineOptions}
 						>
 							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 						</field.Select>

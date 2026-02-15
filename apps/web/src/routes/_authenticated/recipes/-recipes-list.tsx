@@ -13,12 +13,24 @@ import {
 	EllipsisVerticalIcon,
 	FingerPrintIcon,
 	PaperClipIcon,
+	PencilIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
 import { List, ListItem, MenuItemLink } from "../../../components";
-import { recipes, type TRecipe } from "../../../utils/data";
+import {
+	grinderOptions,
+	machineOptions,
+	recipes,
+	type TRecipe,
+} from "../../../utils/data";
 
 const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
+	const machine = machineOptions.find((m) => m.id === recipe.machine);
+	const grinder = grinderOptions.find((g) => g.id === recipe.grinder);
+	if (!machine || !grinder) {
+		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
+	}
+
 	return (
 		<ListItem className="justify-between">
 			<div className="flex flex-col">
@@ -27,7 +39,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 					className="flex items-center gap-1 text-blue-950"
 				>
 					<FingerPrintIcon className="size-4" />
-					{recipe.device} · {recipe.grinder}
+					{machine.name} · {grinder.name}
 				</Text>
 				<Text variant="body-sm" className="font-medium" color="primary">
 					{recipe.name}
@@ -55,6 +67,15 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 							>
 								<ArrowRightIcon className="size-3" />
 								View
+							</MenuItemLink>
+						)}
+						{!recipe.isQuickLog && (
+							<MenuItemLink
+								to="/recipes/$recipeId/edit"
+								params={{ recipeId: recipe.id }}
+							>
+								<PencilIcon className="size-3" />
+								Edit
 							</MenuItemLink>
 						)}
 						{recipe.isQuickLog && (

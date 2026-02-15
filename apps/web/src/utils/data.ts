@@ -49,3 +49,20 @@ export const recipes: TRecipe[] = [
 		quickLogs: [],
 	},
 ];
+
+export const machineOptions = [
+	{ id: "la-pavoni", name: "La Pavoni" },
+	{ id: "gaggia-classic", name: "Gaggia Classic" },
+	{ id: "rancilio-silvia", name: "Rancilio Silvia" },
+	{ id: "breville-barista", name: "Breville Barista Express" },
+	{ id: "lelit-bianca", name: "Lelit Bianca" },
+	{ id: "other", name: "Other" },
+];
+
+export const grinderOptions = [
+	{ id: "comandante", name: "Comandante" },
+	{ id: "niche-zero", name: "Niche Zero" },
+	{ id: "baratza-sette", name: "Baratza Sette 270" },
+	{ id: "eureka-mignon", name: "Eureka Mignon" },
+	{ id: "other", name: "Other" },
+];
