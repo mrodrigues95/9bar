@@ -1,8 +1,9 @@
 export type TRecipe = {
 	id: string;
 	name: string;
-	device: string;
+	machine: string;
 	grinder: string;
+	grindSize: string;
 	brewTime: string;
 	dose: string;
 	yield: string;
@@ -17,30 +18,32 @@ export type TRecipe = {
 export const recipes: TRecipe[] = [
 	{
 		id: "1",
-		name: "Ethiopian Yirgacheffe",
-		device: "Gaggia Classic Pro",
-		grinder: "Baratza Encore",
-		brewTime: "22s",
-		dose: "18g",
-		yield: "36g",
-		beans: 'Kicking Horse Coffee - "Three Sisters"',
-		temperature: "205°F",
-		pressure: "9 bar",
-		notes: "Fruity and bright with floral notes.",
+		name: "Morning Espresso",
+		grindSize: "6",
+		grinder: "eureka-mignon",
+		machine: "rancilio-silvia",
+		dose: "18",
+		yield: "36",
+		brewTime: "28s",
+		beans: "Sunset Roast Espresso Blend",
+		temperature: "93°C",
+		pressure: "9",
 		isQuickLog: false,
+		notes: "Sweet caramel aroma, balanced acidity.",
 		quickLogs: [],
 	},
 	{
 		id: "2",
-		name: "Colombian Supremo",
-		device: "La Marzocco Linea Mini",
-		grinder: "Hario Skerton",
+		name: "Afternoon Delight",
+		machine: "gaggia-classic",
+		grinder: "eureka-mignon",
+		grindSize: "3",
 		brewTime: "31s",
-		dose: "20g",
-		yield: "40g",
+		dose: "20",
+		yield: "40",
 		beans: "Stumptown - Hair Bender",
 		temperature: "200°F",
-		pressure: "9 bar",
+		pressure: "9",
 		notes: "Rich and chocolatey with a smooth finish.",
 		isQuickLog: true,
 		quickLogs: [],

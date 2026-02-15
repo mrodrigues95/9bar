@@ -2,22 +2,26 @@ import { Card, CardHeader, CardPanel, CardTitle } from "@9bar/toolkit";
 import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "tailwind-variants";
+import type { TRecipe } from "../../../../../utils/data";
+
+const DEFAULT_RECIPE: Omit<TRecipe, "id"> = {
+	name: "",
+	grindSize: "",
+	grinder: "",
+	machine: "",
+	dose: "",
+	yield: "",
+	brewTime: "",
+	beans: "",
+	temperature: "",
+	pressure: "",
+	isQuickLog: false,
+	notes: "",
+	quickLogs: [],
+};
 
 export const recipeFormOpts = formOptions({
-	defaultValues: {
-		name: "",
-		grindSize: "",
-		grinder: "",
-		machine: "",
-		dose: "",
-		yield: "",
-		brewTime: "",
-		beans: "",
-		temperature: "",
-		pressure: "",
-		isQuickLog: false,
-		notes: "",
-	},
+	defaultValues: DEFAULT_RECIPE,
 });
 
 export const FormSection = ({
