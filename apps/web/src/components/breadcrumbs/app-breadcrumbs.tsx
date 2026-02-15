@@ -1,6 +1,5 @@
 import type {
 	AnyRouteMatch,
-	FileRouteTypes,
 	RegisteredRouter,
 	StaticDataRouteOption,
 } from "@tanstack/react-router";
@@ -8,15 +7,8 @@ import { useMatches, useRouter } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
 import { Breadcrumb, Breadcrumbs } from "../breadcrumbs/breadcrumbs";
 
-interface RouterBreadcrumb {
-	/**
-	 * The static label for this route's breadcrumb.
-	 *
-	 * This can be overriden by returning a `breadcrumb` string from the route's loader, which is useful for dynamic breadcrumb labels.
-	 */
+export interface RouterBreadcrumb {
 	label?: string;
-	/** The route id of the logical parent for breadcrumb hierarchy (for pathless routes). */
-	parentRouteId?: FileRouteTypes["id"];
 }
 
 declare module "@tanstack/react-router" {
@@ -39,56 +31,74 @@ const getRouteStaticData = (
 	return route.options?.staticData;
 };
 
+const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
+	!!value &&
+	typeof value === "object" &&
+	"label" in value &&
+	typeof value.label === "string";
+
 const getLoaderBreadcrumb = (
 	match?: AnyRouteMatch,
 ): RouterBreadcrumb | null => {
 	const data = match?.loaderData;
-	return typeof data?.breadcrumb?.label === "string" ? data.breadcrumb : null;
+	return isRouterBreadcrumb(data?.breadcrumb) ? data.breadcrumb : null;
 };
 
-const resolvePathlessParentBreadcrumbs = (
+/**
+ * Finds the logical parent routes for matches with the `_` suffix convention and
+ * injects their breadcrumbs into the trail.
+ *
+ * In TanStack Router, a folder suffixed with `_` (e.g., `recipes_/`) breaks out
+ * of the parent layout while sharing the same URL path. This function finds
+ * those suffixed segments and resolves the corresponding non-suffixed parent
+ * route to inject its breadcrumb.
+ *
+ * For example, `/_authenticated/recipes_/$recipeId` contains the segment
+ * `recipes_`, which resolves to the parent route `/_authenticated/recipes`.
+ * If that parent has a breadcrumb label, it gets injected into the trail.
+ */
+const resolveSuffixParentBreadcrumbs = (
 	match: AnyRouteMatch,
 	matches: AnyRouteMatch[],
 	routesById: TRoutesById,
 	seen: Set<string>,
 ) => {
 	const breadcrumbs: Array<TAppBreadcrumb> = [];
-	const parentId = match.staticData?.breadcrumb?.parentRouteId;
-	if (!parentId) {
-		return breadcrumbs;
-	}
+	const segments = match.id.split("/");
 
-	const ancestors: Array<TAppBreadcrumb> = [];
-	const visited = new Set<string>();
-	let currentId: keyof TRoutesById | undefined = parentId;
-
-	while (currentId && !visited.has(currentId)) {
-		visited.add(currentId);
-		const route = routesById[currentId];
-		if (!route) {
-			break;
+	for (let i = 0; i < segments.length; i++) {
+		const segment = segments[i];
+		if (!segment || segment.length <= 1 || !segment.endsWith("_")) {
+			continue;
 		}
 
+		// Build the parent route ID by replacing the suffixed segment with its
+		// non-suffixed counterpart (e.g., `recipes_` -> `recipes`).
+		const parentSegments = segments.slice(0, i + 1);
+		parentSegments[i] = segment.slice(0, -1);
+
+		const parentId = parentSegments.join("/") as keyof TRoutesById;
+		if (seen.has(parentId)) {
+			continue;
+		}
+
+		const route = routesById[parentId];
+		if (!route) {
+			continue;
+		}
+
+		const parentMatch = matches.find((m) => m.id === parentId);
 		const parentStaticData = getRouteStaticData(route);
-		const parentMatch = matches.find((m) => m.id === currentId);
 		const parentBreadcrumb =
 			getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
 
 		if (parentBreadcrumb?.label) {
-			ancestors.push({
-				id: currentId,
+			seen.add(parentId);
+			breadcrumbs.push({
+				id: parentId,
 				pathname: parentMatch?.pathname ?? route.fullPath,
 				label: parentBreadcrumb.label,
 			});
-		}
-
-		currentId = parentStaticData?.breadcrumb?.parentRouteId;
-	}
-
-	for (const ancestor of ancestors.reverse()) {
-		if (!seen.has(ancestor.id)) {
-			seen.add(ancestor.id);
-			breadcrumbs.push(ancestor);
 		}
 	}
 
@@ -107,15 +117,13 @@ const useAppBreadcrumbs = () => {
 					continue;
 				}
 
-				const ancestorBreadcrumbs = resolvePathlessParentBreadcrumbs(
+				const parentBreadcrumbs = resolveSuffixParentBreadcrumbs(
 					match,
 					matches,
 					routesById,
 					seen,
 				);
-				if (ancestorBreadcrumbs.length) {
-					breadcrumbs.push(...ancestorBreadcrumbs);
-				}
+				breadcrumbs.push(...parentBreadcrumbs);
 
 				const breadcrumb =
 					getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
@@ -156,3 +164,8 @@ export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 		</nav>
 	);
 };
+
+export const withBreadcrumb = <TData extends Record<string, unknown>>(
+	data: TData,
+	breadcrumb: RouterBreadcrumb,
+) => ({ ...data, breadcrumb });
