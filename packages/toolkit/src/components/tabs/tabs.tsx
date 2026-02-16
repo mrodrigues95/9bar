@@ -2,16 +2,16 @@ import { createContext, useContext } from "react";
 import {
 	Tab as AriaTab,
 	TabList as AriaTabList,
+	type TabListProps as AriaTabListProps,
 	TabPanel as AriaTabPanel,
+	type TabPanelProps as AriaTabPanelProps,
 	TabPanels as AriaTabPanels,
+	type TabPanelsProps as AriaTabPanelsProps,
+	type TabProps as AriaTabProps,
 	Tabs as AriaTabs,
+	type TabsProps as AriaTabsProps,
 	composeRenderProps,
 	SelectionIndicator,
-	type TabListProps,
-	type TabPanelProps,
-	type TabPanelsProps,
-	type TabProps,
-	type TabsProps,
 } from "react-aria-components";
 import { cn, tv, type VariantProps } from "tailwind-variants";
 import { buttonVariants } from "../button/button";
@@ -103,14 +103,14 @@ const TabsContext = createContext<TabsContextValue>({
 	color: "default",
 });
 
-export interface TabsPropsExtended extends TabsProps, TabsVariantProps {}
+export interface TabsProps extends AriaTabsProps, TabsVariantProps {}
 
 export const Tabs = ({
 	variant = "underline",
 	orientation = "horizontal",
 	color = "default",
 	...props
-}: TabsPropsExtended) => {
+}: TabsProps) => {
 	const styles = tabsVariants({ variant, orientation, color });
 
 	return (
@@ -127,6 +127,8 @@ export const Tabs = ({
 	);
 };
 
+export interface TabListProps<T extends object> extends AriaTabListProps<T> {}
+
 export const TabList = <T extends object>(props: TabListProps<T>) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });
@@ -141,6 +143,8 @@ export const TabList = <T extends object>(props: TabListProps<T>) => {
 		/>
 	);
 };
+
+export interface TabProps extends AriaTabProps {}
 
 export const Tab = (props: TabProps) => {
 	const { variant, orientation, color } = useContext(TabsContext);
@@ -165,6 +169,9 @@ export const Tab = (props: TabProps) => {
 	);
 };
 
+export interface TabPanelsProps<T extends object>
+	extends AriaTabPanelsProps<T> {}
+
 export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });
@@ -177,6 +184,8 @@ export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 		/>
 	);
 };
+
+export interface TabPanelProps extends AriaTabPanelProps {}
 
 export const TabPanel = (props: TabPanelProps) => {
 	const { variant, orientation, color } = useContext(TabsContext);

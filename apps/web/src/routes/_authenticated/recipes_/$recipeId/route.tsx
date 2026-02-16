@@ -1,22 +1,44 @@
-import {
-	Heading,
-	Tab,
-	TabList,
-	TabPanel,
-	TabPanels,
-	Tabs,
-} from "@9bar/toolkit";
+import { Heading, TabList, TabPanel, TabPanels, Tabs } from "@9bar/toolkit";
 import { DocumentIcon, FingerPrintIcon } from "@heroicons/react/24/solid";
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { AppBreadcrumbs, withBreadcrumb } from "../../../../components";
+import {
+	createFileRoute,
+	Outlet,
+	redirect,
+	useMatchRoute,
+} from "@tanstack/react-router";
+import type { Key } from "react-aria-components";
+import {
+	AppBreadcrumbs,
+	TabLink,
+	withBreadcrumb,
+} from "../../../../components";
 import { recipes } from "../../../../utils/data";
-import { RecipeLogs } from "./-recipe-logs/recipe-logs";
-import { RecipeOverview } from "./-recipe-overview/recipe-overview";
+import { objectKeys } from "../../../../utils/utils";
+
+const TABS = {
+	overview: "overview",
+	logs: "logs",
+} as const;
 
 const Recipe = () => {
 	const { recipe } = Route.useLoaderData();
+	const matchRoute = useMatchRoute();
+	const overviewMatch = matchRoute({
+		to: "/recipes/$recipeId/overview",
+		params: { recipeId: recipe.id },
+	});
+	const logsMatch = matchRoute({
+		to: "/recipes/$recipeId/logs",
+		params: { recipeId: recipe.id },
+	});
 
-	// TODO: Convert individual tabs to routes.
+	let tab: Key | null = null;
+	if (overviewMatch) {
+		tab = TABS.overview;
+	} else if (logsMatch) {
+		tab = TABS.logs;
+	}
+
 	return (
 		<>
 			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
@@ -24,24 +46,31 @@ const Recipe = () => {
 				<Heading as="h1" variant="title">
 					{recipe.name}
 				</Heading>
-				<Tabs color="blue">
+				<Tabs color="blue" selectedKey={tab}>
 					<TabList aria-label={`Manage ${recipe.name}`}>
-						<Tab id="overview">
+						<TabLink
+							id={TABS.overview}
+							to="/recipes/$recipeId/overview"
+							params={{ recipeId: recipe.id }}
+						>
 							<FingerPrintIcon />
 							Overview
-						</Tab>
-						<Tab id="logs">
+						</TabLink>
+						<TabLink
+							id={TABS.logs}
+							to="/recipes/$recipeId/logs"
+							params={{ recipeId: recipe.id }}
+						>
 							<DocumentIcon />
 							Logs
-						</Tab>
+						</TabLink>
 					</TabList>
 					<TabPanels>
-						<TabPanel id="overview" className="px-0">
-							<RecipeOverview recipeId={recipe.id} />
-						</TabPanel>
-						<TabPanel id="logs" className="px-0">
-							<RecipeLogs />
-						</TabPanel>
+						{objectKeys(TABS).map((key) => (
+							<TabPanel id={TABS[key]} key={key} className="px-0">
+								<Outlet />
+							</TabPanel>
+						))}
 					</TabPanels>
 				</Tabs>
 			</div>

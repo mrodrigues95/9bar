@@ -15,6 +15,7 @@ import {
 	PencilIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
+import { createFileRoute } from "@tanstack/react-router";
 import { MenuItemLink } from "../../../../../components";
 
 const RecipeNotes = () => {
@@ -101,7 +102,9 @@ const RecipeName = () => {
 	);
 };
 
-export const RecipeOverview = ({ recipeId }: { recipeId: string }) => {
+const RecipeOverview = () => {
+	const { recipeId } = Route.useParams();
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -132,3 +135,7 @@ export const RecipeOverview = ({ recipeId }: { recipeId: string }) => {
 		</Card>
 	);
 };
+
+export const Route = createFileRoute(
+	"/_authenticated/recipes_/$recipeId/overview",
+)({ component: RecipeOverview });

@@ -21,7 +21,10 @@ import { Route as AuthenticatedProfileRouteRouteImport } from './routes/_authent
 import { Route as AuthenticatedHomeRouteRouteImport } from './routes/_authenticated/home/route'
 import { Route as AuthenticatedRecipes_formRouteRouteImport } from './routes/_authenticated/recipes_/_form/route'
 import { Route as AuthenticatedRecipesRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/route'
+import { Route as AuthenticatedRecipesRecipeIdIndexRouteImport } from './routes/_authenticated/recipes_/$recipeId/index'
 import { Route as AuthenticatedRecipes_formNewRouteRouteImport } from './routes/_authenticated/recipes_/_form/new/route'
+import { Route as AuthenticatedRecipesRecipeIdOverviewRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/overview/route'
+import { Route as AuthenticatedRecipesRecipeIdLogsRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/logs/route'
 import { Route as AuthenticatedRecipes_formRecipeIdEditRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/edit/route'
 
 const AuthenticatedRecipesRouteImport = createFileRoute(
@@ -86,11 +89,29 @@ const AuthenticatedRecipesRecipeIdRouteRoute =
     path: '/recipes/$recipeId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRecipesRecipeIdIndexRoute =
+  AuthenticatedRecipesRecipeIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
+  } as any)
 const AuthenticatedRecipes_formNewRouteRoute =
   AuthenticatedRecipes_formNewRouteRouteImport.update({
     id: '/new',
     path: '/new',
     getParentRoute: () => AuthenticatedRecipes_formRouteRoute,
+  } as any)
+const AuthenticatedRecipesRecipeIdOverviewRouteRoute =
+  AuthenticatedRecipesRecipeIdOverviewRouteRouteImport.update({
+    id: '/overview',
+    path: '/overview',
+    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
+  } as any)
+const AuthenticatedRecipesRecipeIdLogsRouteRoute =
+  AuthenticatedRecipesRecipeIdLogsRouteRouteImport.update({
+    id: '/logs',
+    path: '/logs',
+    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
   } as any)
 const AuthenticatedRecipes_formRecipeIdEditRouteRoute =
   AuthenticatedRecipes_formRecipeIdEditRouteRouteImport.update({
@@ -106,8 +127,11 @@ export interface FileRoutesByFullPath {
   '/recipes': typeof AuthenticatedRecipes_formRouteRouteWithChildren
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
-  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
+  '/recipes/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRoute
+  '/recipes/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/recipes/new': typeof AuthenticatedRecipes_formNewRouteRoute
+  '/recipes/$recipeId/': typeof AuthenticatedRecipesRecipeIdIndexRoute
   '/recipes/$recipeId/edit': typeof AuthenticatedRecipes_formRecipeIdEditRouteRoute
 }
 export interface FileRoutesByTo {
@@ -117,8 +141,10 @@ export interface FileRoutesByTo {
   '/recipes': typeof AuthenticatedRecipes_formRouteRouteWithChildren
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
-  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/recipes/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRoute
+  '/recipes/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/recipes/new': typeof AuthenticatedRecipes_formNewRouteRoute
+  '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdIndexRoute
   '/recipes/$recipeId/edit': typeof AuthenticatedRecipes_formRecipeIdEditRouteRoute
 }
 export interface FileRoutesById {
@@ -131,10 +157,13 @@ export interface FileRoutesById {
   '/_authenticated/recipes': typeof AuthenticatedRecipesRouteRoute
   '/_unauthenticated/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/_unauthenticated/sign-up': typeof UnauthenticatedSignUpRouteRoute
-  '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRoute
+  '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
   '/_authenticated/recipes_': typeof AuthenticatedRecipesRouteWithChildren
   '/_authenticated/recipes_/_form': typeof AuthenticatedRecipes_formRouteRouteWithChildren
+  '/_authenticated/recipes_/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRoute
+  '/_authenticated/recipes_/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/_authenticated/recipes_/_form/new': typeof AuthenticatedRecipes_formNewRouteRoute
+  '/_authenticated/recipes_/$recipeId/': typeof AuthenticatedRecipesRecipeIdIndexRoute
   '/_authenticated/recipes_/_form/$recipeId_/edit': typeof AuthenticatedRecipes_formRecipeIdEditRouteRoute
 }
 export interface FileRouteTypes {
@@ -147,7 +176,10 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/recipes/$recipeId'
+    | '/recipes/$recipeId/logs'
+    | '/recipes/$recipeId/overview'
     | '/recipes/new'
+    | '/recipes/$recipeId/'
     | '/recipes/$recipeId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -157,8 +189,10 @@ export interface FileRouteTypes {
     | '/recipes'
     | '/sign-in'
     | '/sign-up'
-    | '/recipes/$recipeId'
+    | '/recipes/$recipeId/logs'
+    | '/recipes/$recipeId/overview'
     | '/recipes/new'
+    | '/recipes/$recipeId'
     | '/recipes/$recipeId/edit'
   id:
     | '__root__'
@@ -173,7 +207,10 @@ export interface FileRouteTypes {
     | '/_authenticated/recipes_/$recipeId'
     | '/_authenticated/recipes_'
     | '/_authenticated/recipes_/_form'
+    | '/_authenticated/recipes_/$recipeId/logs'
+    | '/_authenticated/recipes_/$recipeId/overview'
     | '/_authenticated/recipes_/_form/new'
+    | '/_authenticated/recipes_/$recipeId/'
     | '/_authenticated/recipes_/_form/$recipeId_/edit'
   fileRoutesById: FileRoutesById
 }
@@ -262,12 +299,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/recipes_/$recipeId/': {
+      id: '/_authenticated/recipes_/$recipeId/'
+      path: '/'
+      fullPath: '/recipes/$recipeId/'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+    }
     '/_authenticated/recipes_/_form/new': {
       id: '/_authenticated/recipes_/_form/new'
       path: '/new'
       fullPath: '/recipes/new'
       preLoaderRoute: typeof AuthenticatedRecipes_formNewRouteRouteImport
       parentRoute: typeof AuthenticatedRecipes_formRouteRoute
+    }
+    '/_authenticated/recipes_/$recipeId/overview': {
+      id: '/_authenticated/recipes_/$recipeId/overview'
+      path: '/overview'
+      fullPath: '/recipes/$recipeId/overview'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdOverviewRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+    }
+    '/_authenticated/recipes_/$recipeId/logs': {
+      id: '/_authenticated/recipes_/$recipeId/logs'
+      path: '/logs'
+      fullPath: '/recipes/$recipeId/logs'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdLogsRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
     }
     '/_authenticated/recipes_/_form/$recipeId_/edit': {
       id: '/_authenticated/recipes_/_form/$recipeId_/edit'
@@ -278,6 +336,27 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRecipesRecipeIdRouteRouteChildren {
+  AuthenticatedRecipesRecipeIdLogsRouteRoute: typeof AuthenticatedRecipesRecipeIdLogsRouteRoute
+  AuthenticatedRecipesRecipeIdOverviewRouteRoute: typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
+  AuthenticatedRecipesRecipeIdIndexRoute: typeof AuthenticatedRecipesRecipeIdIndexRoute
+}
+
+const AuthenticatedRecipesRecipeIdRouteRouteChildren: AuthenticatedRecipesRecipeIdRouteRouteChildren =
+  {
+    AuthenticatedRecipesRecipeIdLogsRouteRoute:
+      AuthenticatedRecipesRecipeIdLogsRouteRoute,
+    AuthenticatedRecipesRecipeIdOverviewRouteRoute:
+      AuthenticatedRecipesRecipeIdOverviewRouteRoute,
+    AuthenticatedRecipesRecipeIdIndexRoute:
+      AuthenticatedRecipesRecipeIdIndexRoute,
+  }
+
+const AuthenticatedRecipesRecipeIdRouteRouteWithChildren =
+  AuthenticatedRecipesRecipeIdRouteRoute._addFileChildren(
+    AuthenticatedRecipesRecipeIdRouteRouteChildren,
+  )
 
 interface AuthenticatedRecipes_formRouteRouteChildren {
   AuthenticatedRecipes_formNewRouteRoute: typeof AuthenticatedRecipes_formNewRouteRoute
@@ -313,7 +392,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRouteRoute: typeof AuthenticatedHomeRouteRoute
   AuthenticatedProfileRouteRoute: typeof AuthenticatedProfileRouteRoute
   AuthenticatedRecipesRouteRoute: typeof AuthenticatedRecipesRouteRoute
-  AuthenticatedRecipesRecipeIdRouteRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+  AuthenticatedRecipesRecipeIdRouteRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
   AuthenticatedRecipesRoute: typeof AuthenticatedRecipesRouteWithChildren
 }
 
@@ -322,7 +401,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRouteRoute: AuthenticatedProfileRouteRoute,
   AuthenticatedRecipesRouteRoute: AuthenticatedRecipesRouteRoute,
   AuthenticatedRecipesRecipeIdRouteRoute:
-    AuthenticatedRecipesRecipeIdRouteRoute,
+    AuthenticatedRecipesRecipeIdRouteRouteWithChildren,
   AuthenticatedRecipesRoute: AuthenticatedRecipesRouteWithChildren,
 }
 

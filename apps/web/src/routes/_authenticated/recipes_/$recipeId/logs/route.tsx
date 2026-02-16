@@ -19,20 +19,21 @@ import {
 	PlusIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { List, ListItem, Pagination } from "../../../../../components";
-
-const recipe = {
-	id: "1",
-	name: "Ethiopian Yirgacheffe",
-	device: "Gaggia Classic Pro",
-	grinder: "Baratza Encore",
-	brewTime: "22s",
-	dose: "18g",
-	yield: "36g",
-	beans: 'Kicking Horse Coffee - "Three Sisters"',
-};
+import { grinderOptions, machineOptions } from "../../../../../utils/data";
 
 export const RecipeLogs = () => {
+	const { recipe } = useLoaderData({
+		from: "/_authenticated/recipes_/$recipeId",
+	});
+
+	const machine = machineOptions.find((m) => m.id === recipe.machine);
+	const grinder = grinderOptions.find((g) => g.id === recipe.grinder);
+	if (!machine || !grinder) {
+		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
+	}
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between gap-4">
@@ -53,7 +54,7 @@ export const RecipeLogs = () => {
 								className="flex items-center gap-1 text-blue-950"
 							>
 								<FingerPrintIcon className="size-4" />
-								{recipe.device} · {recipe.grinder}
+								{machine.name} · {grinder.name}
 							</Text>
 							<Text variant="body-sm" className="font-medium" color="primary">
 								{recipe.name}
@@ -92,3 +93,7 @@ export const RecipeLogs = () => {
 		</Card>
 	);
 };
+
+export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/logs")(
+	{ component: RecipeLogs },
+);
