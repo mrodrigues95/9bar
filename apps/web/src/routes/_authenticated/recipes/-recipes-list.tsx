@@ -79,10 +79,14 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 							</MenuItemLink>
 						)}
 						{recipe.isQuickLog && (
-							<MenuItem onAction={() => alert("rename")}>
+							<MenuItemLink
+								to="/recipes/$recipeId/edit"
+								params={{ recipeId: recipe.id }}
+								search={{ convert: "log" }}
+							>
 								<ArrowsRightLeftIcon className="size-3" />
 								Convert to Recipe
-							</MenuItem>
+							</MenuItemLink>
 						)}
 						{recipe.isQuickLog && (
 							<MenuItem onAction={() => alert("rename")}>

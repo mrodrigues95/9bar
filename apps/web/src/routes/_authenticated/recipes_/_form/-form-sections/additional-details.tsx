@@ -1,9 +1,16 @@
 import { withForm } from "@9bar/toolkit";
+import { useMatch } from "@tanstack/react-router";
 import { FormSection, recipeFormOpts } from "./form-section";
 
 export const AdditionalDetailsFormSection = withForm({
 	...recipeFormOpts,
 	render: function Render({ form }) {
+		const match = useMatch({
+			from: "/_authenticated/recipes_/_form/$recipeId_/edit",
+			shouldThrow: false,
+		});
+		const isEditing = !!match?.loaderData?.recipe;
+
 		return (
 			<FormSection
 				title="Additional Details"
@@ -14,6 +21,7 @@ export const AdditionalDetailsFormSection = withForm({
 						<field.Checkbox
 							label="Quick Log"
 							description="Mark this as a quick log for faster reference."
+							isDisabled={isEditing}
 						/>
 					)}
 				</form.AppField>

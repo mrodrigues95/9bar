@@ -1,5 +1,7 @@
 import { Form, Heading, Separator, Text, useAppForm } from "@9bar/toolkit";
 import { createFileRoute, useMatch, useNavigate } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { Link } from "../../../../components";
 import { AdditionalDetailsFormSection } from "./-form-sections/additional-details";
 import { BasicInformationFormSection } from "./-form-sections/basic-information";
@@ -7,24 +9,33 @@ import { BrewParametersFormSection } from "./-form-sections/brew-parameters";
 import { recipeFormOpts } from "./-form-sections/form-section";
 
 const RecipeFormLayout = () => {
+	const { convert } = Route.useSearch();
 	const navigate = useNavigate();
-	const match = useMatch({
+	const editMatch = useMatch({
 		from: "/_authenticated/recipes_/_form/$recipeId_/edit",
 		shouldThrow: false,
 	});
-	const recipe = match?.loaderData?.recipe;
+	const recipe = editMatch?.loaderData?.recipe;
 	const isEditing = !!recipe;
+	const isConverting = convert === "log";
 
 	const form = useAppForm({
 		...recipeFormOpts,
-		...(isEditing ? { defaultValues: { ...recipe } } : {}),
+		...(isEditing
+			? {
+					defaultValues: {
+						...recipe,
+						...(isConverting ? { isQuickLog: false } : {}),
+					},
+				}
+			: {}),
 		onSubmit: async ({ value }) => {
 			console.log("Recipe updated:", value);
 			navigate(
 				isEditing
 					? {
 							to: "/recipes/$recipeId",
-							params: { recipeId: match.params.recipeId },
+							params: { recipeId: editMatch.params.recipeId },
 						}
 					: { to: "/recipes" },
 			);
@@ -34,7 +45,11 @@ const RecipeFormLayout = () => {
 	return (
 		<section>
 			<Heading as="h1" variant="heading">
-				{isEditing ? "Edit Recipe" : "New Recipe"}
+				{isConverting
+					? "Convert to Recipe"
+					: isEditing
+						? "Edit Recipe"
+						: "New Recipe"}
 			</Heading>
 			<Text variant="body-sm">
 				Track your espresso recipe with detailed parameters and notes.
@@ -55,7 +70,7 @@ const RecipeFormLayout = () => {
 						{...(isEditing
 							? {
 									to: "/recipes/$recipeId",
-									params: { recipeId: match.params.recipeId },
+									params: { recipeId: editMatch.params.recipeId },
 								}
 							: { to: "/recipes" })}
 						variant="outline"
@@ -73,6 +88,11 @@ const RecipeFormLayout = () => {
 	);
 };
 
+const searchSchema = z.object({
+	convert: z.enum(["log"]).optional(),
+});
+
 export const Route = createFileRoute("/_authenticated/recipes_/_form")({
+	validateSearch: zodValidator(searchSchema),
 	component: RecipeFormLayout,
 });
