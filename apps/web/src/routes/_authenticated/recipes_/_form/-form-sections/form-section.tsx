@@ -15,9 +15,9 @@ const DEFAULT_RECIPE: Omit<TRecipe, "id"> = {
 	beans: "",
 	temperature: "",
 	pressure: "",
-	isQuickLog: false,
+	isStandalone: false,
 	notes: "",
-	quickLogs: [],
+	logs: [],
 };
 
 export const recipeFormOpts = formOptions({

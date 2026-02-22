@@ -1,5 +1,4 @@
 import {
-	Button,
 	Card,
 	CardFooter,
 	CardHeader,
@@ -20,7 +19,7 @@ import {
 	TrashIcon,
 } from "@heroicons/react/24/solid";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { List, ListItem, Pagination } from "../../../../../components";
+import { Link, List, ListItem, Pagination } from "../../../../../components";
 import { grinderOptions, machineOptions } from "../../../../../utils/data";
 
 export const RecipeLogs = () => {
@@ -40,10 +39,14 @@ export const RecipeLogs = () => {
 				<Heading variant="section" as="p">
 					Logs
 				</Heading>
-				<Button variant="solid" onPress={() => alert("new log")}>
+				<Link
+					to="/recipes/$recipeId/logs/new"
+					params={{ recipeId: recipe.id }}
+					variant="solid"
+				>
 					<PlusIcon />
 					New Log
-				</Button>
+				</Link>
 			</CardHeader>
 			<CardPanel className="gap-4">
 				<List>
@@ -95,5 +98,7 @@ export const RecipeLogs = () => {
 };
 
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/logs")(
-	{ component: RecipeLogs },
+	{
+		component: RecipeLogs,
+	},
 );

@@ -81,7 +81,7 @@ const Recipe = () => {
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 	loader: ({ params }) => {
 		const recipe = recipes.find((r) => r.id === params.recipeId);
-		if (!recipe || recipe.isQuickLog) {
+		if (!recipe || recipe.isStandalone) {
 			throw redirect({ to: "/recipes" });
 		}
 

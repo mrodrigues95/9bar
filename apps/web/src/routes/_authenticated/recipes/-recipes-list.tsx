@@ -52,15 +52,15 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 				</Text>
 			</div>
 			<div className="flex items-center gap-1">
-				<Badge variant={recipe.isQuickLog ? "warning" : "success"} size="xs">
-					{recipe.isQuickLog ? "Quick Log" : "Recipe"}
+				<Badge variant={recipe.isStandalone ? "warning" : "success"} size="xs">
+					{recipe.isStandalone ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
 					<IconButton aria-label="Actions" size="sm" variant="ghost">
 						<EllipsisVerticalIcon />
 					</IconButton>
 					<Menu>
-						{!recipe.isQuickLog && (
+						{!recipe.isStandalone && (
 							<MenuItemLink
 								to="/recipes/$recipeId"
 								params={{ recipeId: recipe.id }}
@@ -69,7 +69,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 								View
 							</MenuItemLink>
 						)}
-						{!recipe.isQuickLog && (
+						{!recipe.isStandalone && (
 							<MenuItemLink
 								to="/recipes/$recipeId/edit"
 								params={{ recipeId: recipe.id }}
@@ -78,7 +78,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 								Edit
 							</MenuItemLink>
 						)}
-						{recipe.isQuickLog && (
+						{recipe.isStandalone && (
 							<MenuItemLink
 								to="/recipes/$recipeId/edit"
 								params={{ recipeId: recipe.id }}
@@ -88,7 +88,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 								Convert to Recipe
 							</MenuItemLink>
 						)}
-						{recipe.isQuickLog && (
+						{recipe.isStandalone && (
 							<MenuItem onAction={() => alert("rename")}>
 								<PaperClipIcon className="size-3" />
 								Attach to Recipe

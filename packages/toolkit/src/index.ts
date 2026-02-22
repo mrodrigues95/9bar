@@ -11,6 +11,7 @@ export * from "./components/field/label";
 export * from "./components/form/fields/select-field";
 export * from "./components/form/fields/text-field";
 export * from "./components/form/form";
+export * from "./components/form/form-submit-button";
 export * from "./components/form/utils/errors";
 export * from "./components/form/utils/form";
 export * from "./components/form/utils/form-context";

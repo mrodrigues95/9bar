@@ -1,30 +1,26 @@
 import { withForm } from "@9bar/toolkit";
-import { useMatch } from "@tanstack/react-router";
 import { FormSection, recipeFormOpts } from "./form-section";
+import { useRecipeFormMode } from "./use-recipe-form-mode";
 
 export const AdditionalDetailsFormSection = withForm({
 	...recipeFormOpts,
 	render: function Render({ form }) {
-		const match = useMatch({
-			from: "/_authenticated/recipes_/_form/$recipeId_/edit",
-			shouldThrow: false,
-		});
-		const isEditing = !!match?.loaderData?.recipe;
-
+		const { isCreatingRecipe } = useRecipeFormMode();
 		return (
 			<FormSection
 				title="Additional Details"
 				panelProps={{ className: "flex" }}
 			>
-				<form.AppField name="isQuickLog">
-					{(field) => (
-						<field.Checkbox
-							label="Quick Log"
-							description="Mark this as a quick log for faster reference."
-							isDisabled={isEditing}
-						/>
-					)}
-				</form.AppField>
+				{isCreatingRecipe && (
+					<form.AppField name="isStandalone">
+						{(field) => (
+							<field.Checkbox
+								label="Log"
+								description="Mark this as a log for faster reference."
+							/>
+						)}
+					</form.AppField>
+				)}
 				<form.AppField name="notes">
 					{(field) => (
 						<field.Textarea

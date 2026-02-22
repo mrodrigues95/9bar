@@ -1,4 +1,37 @@
-export type TRecipe = {
+// export type TRecipe = {
+//     id: number;
+//     uuid: string;
+//     name: string | null;
+//     isStandalone: boolean;
+//     currentRevisionId: number;
+// };
+
+// export type TRecipeRevision = {
+//     id: number;
+//     recipeId: number;
+//     machine: string;
+//     grinder: string;
+//     grindSize: number;
+//     dose: number;
+//     yield: number;
+//     brewTimeSeconds: number;
+//     beans: string;
+//     temperature: number;
+//     temperatureUnit: "C" | "F";
+//     pressure: number;
+//     notes: string | null;
+//     createdAt: string;
+// };
+
+// export type TLog = {
+//     id: number;
+//     uuid: string;
+//     recipeId: number;
+//     recipeRevisionId: number;
+//     shotDateTime: string;
+// };
+
+export interface TRecipe {
 	id: string;
 	name: string;
 	machine: string;
@@ -11,11 +44,17 @@ export type TRecipe = {
 	temperature: string;
 	pressure: string;
 	notes: string;
-	isQuickLog: boolean;
-	quickLogs: string[];
-};
+	isStandalone: boolean;
+	logs: Array<TLog>;
+}
 
-export const recipes: TRecipe[] = [
+export interface TLog {
+	id: string;
+	recipeId: string;
+	createdAt: string;
+}
+
+export const recipes: Array<TRecipe> = [
 	{
 		id: "1",
 		name: "Morning Espresso",
@@ -28,9 +67,9 @@ export const recipes: TRecipe[] = [
 		beans: "Sunset Roast Espresso Blend",
 		temperature: "93°C",
 		pressure: "9",
-		isQuickLog: false,
+		isStandalone: false,
 		notes: "Sweet caramel aroma, balanced acidity.",
-		quickLogs: [],
+		logs: [],
 	},
 	{
 		id: "2",
@@ -45,8 +84,14 @@ export const recipes: TRecipe[] = [
 		temperature: "200°F",
 		pressure: "9",
 		notes: "Rich and chocolatey with a smooth finish.",
-		isQuickLog: true,
-		quickLogs: [],
+		isStandalone: true,
+		logs: [
+			{
+				id: "1",
+				recipeId: "2",
+				createdAt: "2024-06-01T14:30:00Z",
+			},
+		],
 	},
 ];
 
