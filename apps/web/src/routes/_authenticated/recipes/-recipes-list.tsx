@@ -69,15 +69,20 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 								View
 							</MenuItemLink>
 						)}
-						{!recipe.isStandalone && (
-							<MenuItemLink
-								to="/recipes/$recipeId/edit"
-								params={{ recipeId: recipe.id }}
-							>
-								<PencilIcon className="size-3" />
-								Edit
-							</MenuItemLink>
-						)}
+						<MenuItemLink
+							{...(recipe.isStandalone
+								? {
+										to: "/recipes/$recipeId/logs/$logId/edit",
+										params: { recipeId: recipe.id, logId: recipe.logs[0]?.id },
+									}
+								: {
+										to: "/recipes/$recipeId/edit",
+										params: { recipeId: recipe.id },
+									})}
+						>
+							<PencilIcon className="size-3" />
+							Edit
+						</MenuItemLink>
 						{recipe.isStandalone && (
 							<MenuItemLink
 								to="/recipes/$recipeId/edit"
