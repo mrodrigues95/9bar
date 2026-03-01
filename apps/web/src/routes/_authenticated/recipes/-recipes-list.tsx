@@ -18,15 +18,15 @@ import {
 } from "@heroicons/react/24/solid";
 import { List, ListItem, MenuItemLink } from "../../../components";
 import {
-	grinderOptions,
-	machineOptions,
+	GRINDER_OPTIONS,
+	MACHINE_OPTIONS,
 	recipes,
-	type TRecipe,
+	type TRecipeGraph,
 } from "../../../utils/data";
 
-const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
-	const machine = machineOptions.find((m) => m.id === recipe.machine);
-	const grinder = grinderOptions.find((g) => g.id === recipe.grinder);
+const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
+	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
+	const grinder = GRINDER_OPTIONS.find((g) => g.id === recipe.snapshot.grinder);
 	if (!machine || !grinder) {
 		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
 	}
@@ -41,14 +41,18 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipe }) => {
 					<FingerPrintIcon className="size-4" />
 					{machine.name} · {grinder.name}
 				</Text>
-				<Text variant="body-sm" className="font-medium" color="primary">
-					{recipe.name}
+				{!recipe.isStandalone && (
+					<Text variant="body-sm" className="font-medium" color="primary">
+						{recipe.name ?? "(Untitled)"}
+					</Text>
+				)}
+				<Text variant="body-sm" className="text-xs">
+					{recipe.snapshot.beans}
 				</Text>
 				<Text variant="body-sm" className="text-xs">
-					{recipe.beans}
-				</Text>
-				<Text variant="body-sm" className="text-xs">
-					{recipe.dose} → {recipe.yield} · {recipe.brewTime}
+					{recipe.snapshot.dose}g → {recipe.snapshot.yield}g ·{" "}
+					{recipe.snapshot.brewTime}
+					{recipe.snapshot.brewTimeUnit}
 				</Text>
 			</div>
 			<div className="flex items-center gap-1">

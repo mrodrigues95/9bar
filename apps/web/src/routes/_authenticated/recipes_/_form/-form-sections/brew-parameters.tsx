@@ -1,5 +1,15 @@
-import { withForm } from "@9bar/toolkit";
+import { SelectItem, withForm } from "@9bar/toolkit";
 import { FormSection, recipeFormOpts } from "./form-section";
+
+const BREW_TIME_UNIT_OPTIONS = [
+	{ id: "s", name: "Seconds (s)" },
+	{ id: "m", name: "Minutes (m)" },
+] as const;
+
+const TEMPERATURE_UNIT_OPTIONS = [
+	{ id: "C", name: "Celsius (°C)" },
+	{ id: "F", name: "Fahrenheit (°F)" },
+] as const;
 
 export const BrewParametersFormSection = withForm({
 	...recipeFormOpts,
@@ -32,8 +42,20 @@ export const BrewParametersFormSection = withForm({
 							label="Brew Time"
 							description="Total extraction time from first drip."
 							isRequired
-							inputProps={{ placeholder: "e.g., 25s or 0:25" }}
+							inputProps={{ type: "number", step: "0.1", min: "0" }}
 						/>
+					)}
+				</form.AppField>
+				<form.AppField name="brewTimeUnit">
+					{(field) => (
+						<field.Select
+							label="Brew Time Unit"
+							description="Unit for the brew time value."
+							isRequired
+							items={BREW_TIME_UNIT_OPTIONS}
+						>
+							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+						</field.Select>
 					)}
 				</form.AppField>
 				<form.AppField name="temperature">
@@ -41,8 +63,19 @@ export const BrewParametersFormSection = withForm({
 						<field.Input
 							label="Temperature"
 							description="Brew water temperature setting."
-							inputProps={{ placeholder: "e.g., 93°C or 200°F" }}
+							inputProps={{ type: "number", step: "0.1", min: "0" }}
 						/>
+					)}
+				</form.AppField>
+				<form.AppField name="temperatureUnit">
+					{(field) => (
+						<field.Select
+							label="Temperature Unit"
+							description="Unit for the temperature value."
+							items={TEMPERATURE_UNIT_OPTIONS}
+						>
+							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+						</field.Select>
 					)}
 				</form.AppField>
 				<form.AppField name="pressure">

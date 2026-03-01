@@ -44,10 +44,10 @@ const Recipe = () => {
 			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<div className="flex flex-col gap-2">
 				<Heading as="h1" variant="title">
-					{recipe.name}
+					{recipe.name ?? "(Untitled)"}
 				</Heading>
 				<Tabs color="blue" selectedKey={tab}>
-					<TabList aria-label={`Manage ${recipe.name}`}>
+					<TabList aria-label={`Manage ${recipe.name ?? "recipe"}`}>
 						<TabLink
 							id={TABS.overview}
 							to="/recipes/$recipeId/overview"
@@ -85,7 +85,7 @@ export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 			throw redirect({ to: "/recipes" });
 		}
 
-		return withBreadcrumb({ recipe }, { label: recipe.name });
+		return withBreadcrumb({ recipe }, { label: recipe.name ?? "(Untitled)" });
 	},
 	component: Recipe,
 });

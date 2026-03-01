@@ -20,15 +20,15 @@ import {
 } from "@heroicons/react/24/solid";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { Link, List, ListItem, Pagination } from "../../../../../components";
-import { grinderOptions, machineOptions } from "../../../../../utils/data";
+import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 
 export const RecipeLogs = () => {
 	const { recipe } = useLoaderData({
 		from: "/_authenticated/recipes_/$recipeId",
 	});
 
-	const machine = machineOptions.find((m) => m.id === recipe.machine);
-	const grinder = grinderOptions.find((g) => g.id === recipe.grinder);
+	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
+	const grinder = GRINDER_OPTIONS.find((g) => g.id === recipe.snapshot.grinder);
 	if (!machine || !grinder) {
 		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
 	}
@@ -60,13 +60,15 @@ export const RecipeLogs = () => {
 								{machine.name} · {grinder.name}
 							</Text>
 							<Text variant="body-sm" className="font-medium" color="primary">
-								{recipe.name}
+								{recipe.name ?? "(Untitled)"}
 							</Text>
 							<Text variant="body-sm" className="text-xs">
-								{recipe.beans}
+								{recipe.snapshot.beans}
 							</Text>
 							<Text variant="body-sm" className="text-xs">
-								{recipe.dose} → {recipe.yield} · {recipe.brewTime}
+								{recipe.snapshot.dose}g → {recipe.snapshot.yield}g ·{" "}
+								{recipe.snapshot.brewTime}
+								{recipe.snapshot.brewTimeUnit}
 							</Text>
 						</div>
 						<div className="flex items-center gap-0.5">

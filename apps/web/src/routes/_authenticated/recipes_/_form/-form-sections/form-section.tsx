@@ -2,22 +2,61 @@ import { Card, CardHeader, CardPanel, CardTitle } from "@9bar/toolkit";
 import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "tailwind-variants";
-import type { TRecipe } from "../../../../../utils/data";
+import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
 
-const DEFAULT_RECIPE: Omit<TRecipe, "id"> = {
+export interface TRecipeFormValues
+	extends Pick<TRecipeGraph, "isStandalone" | "name">,
+		Pick<
+			TRecipeSnapshot,
+			| "machine"
+			| "grinder"
+			| "grindSize"
+			| "dose"
+			| "yield"
+			| "brewTime"
+			| "brewTimeUnit"
+			| "beans"
+			| "temperature"
+			| "temperatureUnit"
+			| "pressure"
+			| "notes"
+		> {}
+
+const DEFAULT_RECIPE: TRecipeFormValues = {
 	name: "",
+	isStandalone: false,
 	grindSize: "",
 	grinder: "",
 	machine: "",
-	dose: "",
-	yield: "",
-	brewTime: "",
+	dose: 0,
+	yield: 0,
+	brewTime: 0,
+	brewTimeUnit: "s",
 	beans: "",
-	temperature: "",
-	pressure: "",
-	isStandalone: false,
+	temperature: 0,
+	temperatureUnit: "C",
+	pressure: 0,
 	notes: "",
-	logs: [],
+};
+
+export const recipeToFormValues = (recipe: TRecipeGraph): TRecipeFormValues => {
+	const { snapshot } = recipe;
+	return {
+		name: recipe.name ?? "",
+		isStandalone: recipe.isStandalone,
+		grindSize: snapshot.grindSize,
+		grinder: snapshot.grinder,
+		machine: snapshot.machine,
+		dose: snapshot.dose,
+		yield: snapshot.yield,
+		brewTime: snapshot.brewTime,
+		brewTimeUnit: snapshot.brewTimeUnit,
+		beans: snapshot.beans,
+		temperature: snapshot.temperature,
+		temperatureUnit: snapshot.temperatureUnit,
+		pressure: snapshot.pressure,
+		notes: snapshot.notes ?? "",
+	};
 };
 
 export const recipeFormOpts = formOptions({

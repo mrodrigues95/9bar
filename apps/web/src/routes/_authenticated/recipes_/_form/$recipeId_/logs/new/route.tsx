@@ -5,7 +5,10 @@ import {
 	useNavigate,
 	useRouteContext,
 } from "@tanstack/react-router";
-import { recipeFormOpts } from "../../../-form-sections/form-section";
+import {
+	recipeFormOpts,
+	recipeToFormValues,
+} from "../../../-form-sections/form-section";
 import { RecipeForm } from "../../../-form-sections/recipe-form";
 
 const NewLog = () => {
@@ -13,11 +16,17 @@ const NewLog = () => {
 		from: "/_authenticated/recipes_/_form/$recipeId_",
 	});
 	const navigate = useNavigate();
-	const { id: _, ...recipeDefaults } = recipe;
+	const { grindSize, grinder, machine, beans } = recipeToFormValues(recipe);
 
 	const form = useAppForm({
 		...recipeFormOpts,
-		defaultValues: recipeDefaults,
+		defaultValues: {
+			...recipeFormOpts.defaultValues,
+			grindSize,
+			grinder,
+			machine,
+			beans,
+		},
 		onSubmit: async ({ value }) => {
 			console.log("Log created:", value);
 			navigate({

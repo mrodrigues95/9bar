@@ -1,5 +1,5 @@
 import { SelectItem, withForm } from "@9bar/toolkit";
-import { grinderOptions, machineOptions } from "../../../../../utils/data";
+import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 import { FormSection, recipeFormOpts } from "./form-section";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
 
@@ -64,7 +64,7 @@ export const BasicInformationFormSection = withForm({
 							description="The grinder used to grind your coffee."
 							isRequired
 							placeholder="Select a grinder"
-							items={grinderOptions}
+							items={GRINDER_OPTIONS}
 							isDisabled={isDisabled}
 						>
 							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
@@ -78,7 +78,7 @@ export const BasicInformationFormSection = withForm({
 							description="The espresso machine used for brewing."
 							isRequired
 							placeholder="Select a machine"
-							items={machineOptions}
+							items={MACHINE_OPTIONS}
 							isDisabled={isDisabled}
 						>
 							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}

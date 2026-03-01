@@ -6,7 +6,10 @@ import {
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { recipeFormOpts } from "../../-form-sections/form-section";
+import {
+	recipeFormOpts,
+	recipeToFormValues,
+} from "../../-form-sections/form-section";
 import { RecipeForm } from "../../-form-sections/recipe-form";
 
 const EditRecipe = () => {
@@ -16,12 +19,11 @@ const EditRecipe = () => {
 	const { convert } = Route.useSearch();
 	const navigate = useNavigate();
 	const isConverting = convert === "log";
-	const { id: _, ...recipeDefaults } = recipe;
 
 	const form = useAppForm({
 		...recipeFormOpts,
 		defaultValues: {
-			...recipeDefaults,
+			...recipeToFormValues(recipe),
 			...(isConverting ? { isStandalone: false } : {}),
 		},
 		onSubmit: async ({ value }) => {
