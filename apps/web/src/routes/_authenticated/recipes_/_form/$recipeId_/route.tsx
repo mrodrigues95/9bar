@@ -5,7 +5,7 @@ export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_",
 )({
 	beforeLoad: ({ params }) => {
-		const recipe = recipes.find((r) => r.id === params.recipeId);
+		const recipe = recipes.find((r) => r.id === Number(params.recipeId));
 		if (!recipe) {
 			throw redirect({ to: "/recipes" });
 		}

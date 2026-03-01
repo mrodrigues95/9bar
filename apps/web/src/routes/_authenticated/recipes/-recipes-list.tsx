@@ -54,7 +54,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					<FingerPrintIcon className="size-4" />
 					{machine.name} · {grinder.name}
 				</Text>
-				{!recipe.isStandalone && (
+				{!recipe.isQuickBrew && (
 					<Text variant="body-sm" className="font-medium" color="primary">
 						{recipe.name ?? "(Untitled)"}
 					</Text>
@@ -67,55 +67,58 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					{recipe.snapshot.brewTime}
 					{recipe.snapshot.brewTimeUnit}
 				</Text>
-				{recipe.isStandalone && (
+				{recipe.isQuickBrew && (
 					<Text variant="body-sm" className="text-xs">
 						{formatShotAt(recipe.log.shotAt)}
 					</Text>
 				)}
 			</div>
 			<div className="flex items-center gap-1">
-				<Badge variant={recipe.isStandalone ? "warning" : "success"} size="xs">
-					{recipe.isStandalone ? "Log" : "Recipe"}
+				<Badge variant={recipe.isQuickBrew ? "warning" : "success"} size="xs">
+					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
 					<IconButton aria-label="Actions" size="sm" variant="ghost">
 						<EllipsisVerticalIcon />
 					</IconButton>
 					<Menu>
-						{!recipe.isStandalone && (
+						{!recipe.isQuickBrew && (
 							<MenuItemLink
 								to="/recipes/$recipeId"
-								params={{ recipeId: recipe.id }}
+								params={{ recipeId: String(recipe.id) }}
 							>
 								<ArrowRightIcon className="size-3" />
 								View
 							</MenuItemLink>
 						)}
 						<MenuItemLink
-							{...(recipe.isStandalone
+							{...(recipe.isQuickBrew
 								? {
 										to: "/recipes/$recipeId/logs/$logId/edit",
-										params: { recipeId: recipe.id, logId: recipe.log?.id },
+										params: {
+											recipeId: String(recipe.id),
+											logId: String(recipe.log.id),
+										},
 									}
 								: {
 										to: "/recipes/$recipeId/edit",
-										params: { recipeId: recipe.id },
+										params: { recipeId: String(recipe.id) },
 									})}
 						>
 							<PencilIcon className="size-3" />
 							Edit
 						</MenuItemLink>
-						{recipe.isStandalone && (
+						{recipe.isQuickBrew && (
 							<MenuItemLink
 								to="/recipes/$recipeId/edit"
-								params={{ recipeId: recipe.id }}
+								params={{ recipeId: String(recipe.id) }}
 								search={{ convert: "log" }}
 							>
 								<ArrowsRightLeftIcon className="size-3" />
 								Convert to Recipe
 							</MenuItemLink>
 						)}
-						{recipe.isStandalone && (
+						{recipe.isQuickBrew && (
 							<MenuItem onAction={() => alert("rename")}>
 								<PaperClipIcon className="size-3" />
 								Attach to Recipe

@@ -24,13 +24,13 @@ const EditRecipe = () => {
 		...recipeFormOpts,
 		defaultValues: {
 			...recipeToFormValues(recipe),
-			...(isConverting ? { isStandalone: false } : {}),
+			...(isConverting ? { isQuickBrew: false } : {}),
 		},
 		onSubmit: async ({ value }) => {
 			console.log("Recipe updated:", value);
 			navigate({
 				to: "/recipes/$recipeId",
-				params: { recipeId: recipe.id },
+				params: { recipeId: String(recipe.id) },
 			});
 		},
 	});

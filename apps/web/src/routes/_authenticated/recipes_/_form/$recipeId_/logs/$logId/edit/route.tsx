@@ -16,7 +16,7 @@ const EditLog = () => {
 		onSubmit: async ({ value }) => {
 			console.log("Log updated:", value);
 			navigate(
-				recipe.isStandalone
+				recipe.isQuickBrew
 					? { to: "/recipes" }
 					: {
 							to: "/recipes/$recipeId/logs",
@@ -34,7 +34,8 @@ export const Route = createFileRoute(
 )({
 	loader: ({ context, params }) => {
 		const log =
-			context.recipe.isStandalone && context.recipe.log.id === params.logId
+			context.recipe.isQuickBrew &&
+			context.recipe.log.id === Number(params.logId)
 				? context.recipe.log
 				: null;
 		if (!log) {

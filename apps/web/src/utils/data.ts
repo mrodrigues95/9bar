@@ -1,16 +1,17 @@
 export interface TRecipe {
-	id: string;
+	id: number;
 	uuid: string;
 	name: string | null;
-	isStandalone: boolean;
+	isQuickBrew: boolean;
 	recipeSnapshotId: string;
 	createdAt: string;
 	updatedAt: string;
 }
 
 export interface TRecipeSnapshot {
-	id: string;
-	recipeId: string;
+	id: number;
+	uuid: string;
+	recipeId: number;
 	machine: string;
 	grinder: string;
 	grindSize: string;
@@ -28,10 +29,10 @@ export interface TRecipeSnapshot {
 }
 
 export interface TLog {
-	id: string;
+	id: number;
 	uuid: string;
-	recipeId: string;
-	recipeSnapshotId: string;
+	recipeId: number;
+	recipeSnapshotId: number;
 	shotAt: string;
 	createdAt: string;
 	updatedAt: string;
@@ -40,26 +41,27 @@ export interface TLog {
 export interface TLogEntry
 	extends Omit<TLog, "recipeSnapshotId" | "recipeId"> {}
 
-interface TRecipeGraphBase
-	extends Omit<TRecipe, "recipeSnapshotId" | "isStandalone"> {
+export interface TRecipeGraphBase
+	extends Omit<TRecipe, "recipeSnapshotId" | "isQuickBrew"> {
 	snapshot: TRecipeSnapshot;
 }
 
 export type TRecipeGraph =
-	| (TRecipeGraphBase & { isStandalone: true; log: TLogEntry })
-	| (TRecipeGraphBase & { isStandalone: false; logs: Array<TLogEntry> });
+	| (TRecipeGraphBase & { isQuickBrew: true; log: TLogEntry })
+	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLogEntry> });
 
 export const recipes: Array<TRecipeGraph> = [
 	{
-		id: "1",
+		id: 1,
 		uuid: "uuid-1",
 		name: "Morning Espresso",
-		isStandalone: false,
+		isQuickBrew: false,
 		createdAt: "2024-01-01T08:00:00Z",
 		updatedAt: "2024-01-01T08:00:00Z",
 		snapshot: {
-			id: "1",
-			recipeId: "1",
+			id: 1,
+			uuid: "snapshot-uuid-1",
+			recipeId: 1,
 			grindSize: "6",
 			grinder: "eureka-mignon",
 			machine: "rancilio-silvia",
@@ -78,15 +80,16 @@ export const recipes: Array<TRecipeGraph> = [
 		logs: [],
 	},
 	{
-		id: "2",
+		id: 2,
 		uuid: "uuid-2",
 		name: "",
-		isStandalone: true,
+		isQuickBrew: true,
 		createdAt: "2024-06-01T14:00:00Z",
 		updatedAt: "2024-06-01T14:00:00Z",
 		snapshot: {
-			id: "2",
-			recipeId: "2",
+			id: 2,
+			uuid: "snapshot-uuid-2",
+			recipeId: 2,
 			machine: "gaggia-classic",
 			grinder: "eureka-mignon",
 			grindSize: "3",
@@ -103,7 +106,7 @@ export const recipes: Array<TRecipeGraph> = [
 			updatedAt: "2024-06-01T14:00:00Z",
 		},
 		log: {
-			id: "1",
+			id: 1,
 			uuid: "log-uuid-1",
 			shotAt: "2024-06-01T14:30:00Z",
 			createdAt: "2024-06-01T14:30:00Z",

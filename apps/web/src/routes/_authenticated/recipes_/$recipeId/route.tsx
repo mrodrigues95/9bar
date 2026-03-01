@@ -25,11 +25,11 @@ const Recipe = () => {
 	const matchRoute = useMatchRoute();
 	const overviewMatch = matchRoute({
 		to: "/recipes/$recipeId/overview",
-		params: { recipeId: recipe.id },
+		params: { recipeId: String(recipe.id) },
 	});
 	const logsMatch = matchRoute({
 		to: "/recipes/$recipeId/logs",
-		params: { recipeId: recipe.id },
+		params: { recipeId: String(recipe.id) },
 	});
 
 	let tab: Key | null = null;
@@ -51,7 +51,7 @@ const Recipe = () => {
 						<TabLink
 							id={TABS.overview}
 							to="/recipes/$recipeId/overview"
-							params={{ recipeId: recipe.id }}
+							params={{ recipeId: String(recipe.id) }}
 						>
 							<FingerPrintIcon />
 							Overview
@@ -59,7 +59,7 @@ const Recipe = () => {
 						<TabLink
 							id={TABS.logs}
 							to="/recipes/$recipeId/logs"
-							params={{ recipeId: recipe.id }}
+							params={{ recipeId: String(recipe.id) }}
 						>
 							<DocumentIcon />
 							Logs
@@ -80,8 +80,8 @@ const Recipe = () => {
 
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 	loader: ({ params }) => {
-		const recipe = recipes.find((r) => r.id === params.recipeId);
-		if (!recipe || recipe.isStandalone) {
+		const recipe = recipes.find((r) => r.id === Number(params.recipeId));
+		if (!recipe || recipe.isQuickBrew) {
 			throw redirect({ to: "/recipes" });
 		}
 

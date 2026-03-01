@@ -5,7 +5,7 @@ import { cn } from "tailwind-variants";
 import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
 
 export interface TRecipeFormValues
-	extends Pick<TRecipeGraph, "isStandalone" | "name">,
+	extends Pick<TRecipeGraph, "isQuickBrew" | "name">,
 		Pick<
 			TRecipeSnapshot,
 			| "machine"
@@ -24,7 +24,7 @@ export interface TRecipeFormValues
 
 const DEFAULT_RECIPE: TRecipeFormValues = {
 	name: "",
-	isStandalone: false,
+	isQuickBrew: false,
 	grindSize: "",
 	grinder: "",
 	machine: "",
@@ -43,7 +43,7 @@ export const recipeToFormValues = (recipe: TRecipeGraph): TRecipeFormValues => {
 	const { snapshot } = recipe;
 	return {
 		name: recipe.name ?? "",
-		isStandalone: recipe.isStandalone,
+		isQuickBrew: recipe.isQuickBrew,
 		grindSize: snapshot.grindSize,
 		grinder: snapshot.grinder,
 		machine: snapshot.machine,

@@ -1,4 +1,5 @@
 import { SelectItem, withForm } from "@9bar/toolkit";
+import { useStore } from "@tanstack/react-form";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 import { FormSection, recipeFormOpts } from "./form-section";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
@@ -12,11 +13,16 @@ export const BasicInformationFormSection = withForm({
 			isEditingLog,
 		} = useRecipeFormMode();
 
+		const isQuickBrew = useStore(
+			form.store,
+			(state) => state.values.isQuickBrew,
+		);
+
 		let isDisabled = false;
 		if (isCreatingLog) {
 			isDisabled = true;
 		} else if (isEditingLog) {
-			isDisabled = !editLogMatch?.context?.recipe?.isStandalone;
+			isDisabled = !editLogMatch?.context?.recipe?.isQuickBrew;
 		}
 
 		return (
@@ -29,8 +35,8 @@ export const BasicInformationFormSection = withForm({
 								description="Give your recipe a memorable name."
 								className="sm:col-span-2"
 								maxLength={100}
-								isDisabled={isDisabled}
-								isRequired
+								isDisabled={isDisabled || isQuickBrew}
+								isRequired={!isQuickBrew}
 							/>
 						)}
 					</form.AppField>

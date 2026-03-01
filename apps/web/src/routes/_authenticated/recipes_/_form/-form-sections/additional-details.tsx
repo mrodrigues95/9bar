@@ -12,11 +12,11 @@ export const AdditionalDetailsFormSection = withForm({
 				panelProps={{ className: "flex" }}
 			>
 				{isCreatingRecipe && (
-					<form.AppField name="isStandalone">
+					<form.AppField name="isQuickBrew">
 						{(field) => (
 							<field.Checkbox
-								label="Log"
-								description="Mark this as a log for faster reference."
+								label="Quick Brew"
+								description="Mark this as a quick brew without committing to a full recipe."
 							/>
 						)}
 					</form.AppField>

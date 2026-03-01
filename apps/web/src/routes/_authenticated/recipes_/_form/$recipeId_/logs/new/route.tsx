@@ -31,7 +31,7 @@ const NewLog = () => {
 			console.log("Log created:", value);
 			navigate({
 				to: "/recipes/$recipeId/logs",
-				params: { recipeId: recipe.id },
+				params: { recipeId: String(recipe.id) },
 			});
 		},
 	});
@@ -43,7 +43,7 @@ export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_/logs/new",
 )({
 	beforeLoad: ({ context }) => {
-		if (context.recipe.isStandalone) {
+		if (context.recipe.isQuickBrew) {
 			throw redirect({ to: "/recipes/new" });
 		}
 	},

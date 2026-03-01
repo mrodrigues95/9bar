@@ -32,7 +32,7 @@ export const RecipeForm = withForm({
 				<div className="flex items-center justify-end gap-2">
 					<Link
 						variant="outline"
-						{...(!recipe || (isEditingLog && recipe.isStandalone)
+						{...(!recipe || (isEditingLog && recipe.isQuickBrew)
 							? { to: "/recipes" }
 							: { to: "/recipes/$recipeId", params: { recipeId: recipe.id } })}
 					>

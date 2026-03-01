@@ -41,7 +41,7 @@ export const RecipeLogs = () => {
 				</Heading>
 				<Link
 					to="/recipes/$recipeId/logs/new"
-					params={{ recipeId: recipe.id }}
+					params={{ recipeId: String(recipe.id) }}
 					variant="solid"
 				>
 					<PlusIcon />
