@@ -16,6 +16,7 @@ import {
 	PencilIcon,
 	TrashIcon,
 } from "@heroicons/react/24/solid";
+import { parseAbsolute } from "@internationalized/date";
 import { List, ListItem, MenuItemLink } from "../../../components";
 import {
 	GRINDER_OPTIONS,
@@ -23,6 +24,18 @@ import {
 	recipes,
 	type TRecipeGraph,
 } from "../../../utils/data";
+
+const formatShotAt = (shotAt: string) => {
+	const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const date = parseAbsolute(shotAt, tz).toDate();
+	const datePart = new Intl.DateTimeFormat("en-US", {
+		dateStyle: "long",
+	}).format(date);
+	const timePart = new Intl.DateTimeFormat("en-US", {
+		timeStyle: "short",
+	}).format(date);
+	return `${datePart} @ ${timePart}`;
+};
 
 const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
@@ -54,6 +67,11 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					{recipe.snapshot.brewTime}
 					{recipe.snapshot.brewTimeUnit}
 				</Text>
+				{recipe.isStandalone && (
+					<Text variant="body-sm" className="text-xs">
+						{formatShotAt(recipe.log.shotAt)}
+					</Text>
+				)}
 			</div>
 			<div className="flex items-center gap-1">
 				<Badge variant={recipe.isStandalone ? "warning" : "success"} size="xs">
@@ -77,7 +95,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 							{...(recipe.isStandalone
 								? {
 										to: "/recipes/$recipeId/logs/$logId/edit",
-										params: { recipeId: recipe.id, logId: recipe.logs[0]?.id },
+										params: { recipeId: recipe.id, logId: recipe.log?.id },
 									}
 								: {
 										to: "/recipes/$recipeId/edit",

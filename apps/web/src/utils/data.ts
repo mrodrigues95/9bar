@@ -37,10 +37,17 @@ export interface TLog {
 	updatedAt: string;
 }
 
-export interface TRecipeGraph extends Omit<TRecipe, "recipeSnapshotId"> {
+export interface TLogEntry
+	extends Omit<TLog, "recipeSnapshotId" | "recipeId"> {}
+
+interface TRecipeGraphBase
+	extends Omit<TRecipe, "recipeSnapshotId" | "isStandalone"> {
 	snapshot: TRecipeSnapshot;
-	logs: Array<Omit<TLog, "recipeSnapshotId" | "recipeId">>;
 }
+
+export type TRecipeGraph =
+	| (TRecipeGraphBase & { isStandalone: true; log: TLogEntry })
+	| (TRecipeGraphBase & { isStandalone: false; logs: Array<TLogEntry> });
 
 export const recipes: Array<TRecipeGraph> = [
 	{
@@ -95,15 +102,13 @@ export const recipes: Array<TRecipeGraph> = [
 			createdAt: "2024-06-01T14:00:00Z",
 			updatedAt: "2024-06-01T14:00:00Z",
 		},
-		logs: [
-			{
-				id: "1",
-				uuid: "log-uuid-1",
-				shotAt: "2024-06-01T14:30:00Z",
-				createdAt: "2024-06-01T14:30:00Z",
-				updatedAt: "2024-06-01T14:30:00Z",
-			},
-		],
+		log: {
+			id: "1",
+			uuid: "log-uuid-1",
+			shotAt: "2024-06-01T14:30:00Z",
+			createdAt: "2024-06-01T14:30:00Z",
+			updatedAt: "2024-06-01T14:30:00Z",
+		},
 	},
 ];
 

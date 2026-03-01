@@ -33,7 +33,10 @@ export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_/logs/$logId/edit",
 )({
 	loader: ({ context, params }) => {
-		const log = context.recipe.logs.find((l) => l.id === params.logId);
+		const log =
+			context.recipe.isStandalone && context.recipe.log.id === params.logId
+				? context.recipe.log
+				: null;
 		if (!log) {
 			throw redirect({
 				to: "/recipes/$recipeId/logs",
