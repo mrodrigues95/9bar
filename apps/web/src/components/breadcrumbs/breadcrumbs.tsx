@@ -15,6 +15,7 @@ export type BreadcrumbProps<
 	TOptions = unknown,
 > = LinkProps<TRouter, TOptions> & {
 	breadcrumbProps?: Omit<ToolkitBreadcrumbProps, "children">;
+	isDisabled?: boolean;
 };
 
 export function Breadcrumb<TRouter extends RegisteredRouter, TOptions>(
@@ -26,6 +27,7 @@ export function Breadcrumb({
 	className,
 	to,
 	activeOptions,
+	isDisabled,
 }: BreadcrumbProps): ReactNode {
 	return (
 		<ToolkitBreadcrumb
@@ -38,6 +40,7 @@ export function Breadcrumb({
 				<>
 					<Link
 						to={to}
+						{...(isDisabled && { isDisabled: true })}
 						activeOptions={{ exact: true, ...activeOptions }}
 						className={
 							cn(

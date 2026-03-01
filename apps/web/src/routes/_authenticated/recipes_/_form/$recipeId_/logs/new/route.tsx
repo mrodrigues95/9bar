@@ -42,6 +42,7 @@ const NewLog = () => {
 export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_/logs/new",
 )({
+	staticData: { breadcrumb: { label: "New" } },
 	beforeLoad: ({ context }) => {
 		if (context.recipe.isQuickBrew) {
 			throw redirect({ to: "/recipes/new" });

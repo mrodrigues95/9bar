@@ -9,6 +9,7 @@ import { Breadcrumb, Breadcrumbs } from "../breadcrumbs/breadcrumbs";
 
 export interface RouterBreadcrumb {
 	label?: string;
+	disabled?: boolean;
 }
 
 declare module "@tanstack/react-router" {
@@ -21,6 +22,7 @@ interface TAppBreadcrumb {
 	id: string;
 	pathname: string;
 	label: string;
+	disabled?: boolean;
 }
 
 type TRoutesById = RegisteredRouter["routesById"];
@@ -98,6 +100,7 @@ const resolveSuffixParentBreadcrumbs = (
 				id: parentId,
 				pathname: parentMatch?.pathname ?? route.fullPath,
 				label: parentBreadcrumb.label,
+				...(parentBreadcrumb.disabled && { disabled: true }),
 			});
 		}
 	}
@@ -136,6 +139,7 @@ const useAppBreadcrumbs = () => {
 					id: match.id,
 					pathname: match.pathname,
 					label: breadcrumb.label,
+					...(breadcrumb.disabled === true && { disabled: true }),
 				});
 			}
 
@@ -156,7 +160,11 @@ export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 		<nav {...props}>
 			<Breadcrumbs items={breadcrumbs}>
 				{(item) => (
-					<Breadcrumb key={item.id} to={item.pathname}>
+					<Breadcrumb
+						key={item.id}
+						to={item.pathname}
+						{...(item.disabled === true && { isDisabled: true })}
+					>
 						{item.label}
 					</Breadcrumb>
 				)}

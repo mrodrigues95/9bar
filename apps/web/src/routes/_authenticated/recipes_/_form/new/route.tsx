@@ -18,5 +18,6 @@ const NewRecipe = () => {
 };
 
 export const Route = createFileRoute("/_authenticated/recipes_/_form/new")({
+	staticData: { breadcrumb: { label: "New" } },
 	component: NewRecipe,
 });

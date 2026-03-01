@@ -45,6 +45,7 @@ const searchSchema = z.object({
 export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_/edit",
 )({
+	staticData: { breadcrumb: { label: "Edit" } },
 	validateSearch: zodValidator(searchSchema),
 	component: EditRecipe,
 });

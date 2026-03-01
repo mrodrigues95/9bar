@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { withBreadcrumb } from "../../../../../components";
 import { recipes } from "../../../../../utils/data";
 
 export const Route = createFileRoute(
@@ -10,5 +11,14 @@ export const Route = createFileRoute(
 			throw redirect({ to: "/recipes" });
 		}
 		return { recipe };
+	},
+	loader: ({ context }) => {
+		return withBreadcrumb(
+			{},
+			{
+				label: context.recipe.name || "Untitled",
+				disabled: context.recipe.isQuickBrew,
+			},
+		);
 	},
 });

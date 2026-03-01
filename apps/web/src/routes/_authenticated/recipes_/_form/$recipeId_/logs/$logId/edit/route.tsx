@@ -32,6 +32,7 @@ const EditLog = () => {
 export const Route = createFileRoute(
 	"/_authenticated/recipes_/_form/$recipeId_/logs/$logId/edit",
 )({
+	staticData: { breadcrumb: { label: "Edit" } },
 	loader: ({ context, params }) => {
 		const log =
 			context.recipe.isQuickBrew &&

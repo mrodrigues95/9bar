@@ -1,5 +1,6 @@
 import { Heading, Text } from "@9bar/toolkit";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { AppBreadcrumbs } from "../../../../components";
 import { useRecipeFormMode } from "./-form-sections/use-recipe-form-mode";
 
 const RecipeFormLayout = () => {
@@ -16,6 +17,7 @@ const RecipeFormLayout = () => {
 
 	return (
 		<section>
+			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<Heading as="h1" variant="heading">
 				{title}
 			</Heading>
