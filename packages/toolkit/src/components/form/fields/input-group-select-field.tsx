@@ -35,7 +35,7 @@ export interface TInputGroupSelectFieldItem {
 }
 
 export interface TInputGroupSelectFieldValue {
-	inputValue: string;
+	inputValue: string | number;
 	selectValue: string;
 }
 
@@ -61,7 +61,7 @@ export interface InputGroupSelectFieldProps
 
 interface InputGroupSelectFieldInternalProps {
 	value: TInputGroupSelectFieldValue;
-	onInputChange: (value: string) => void;
+	onInputChange: (value: string | number) => void;
 	onSelectChange: (value: string) => void;
 	onBlur: () => void;
 	name?: string;
@@ -131,6 +131,7 @@ export const InputGroupSelectField = ({
 							data-slot="input-group-select-field-select-trigger"
 							variant="default"
 							size="xs"
+							className="min-w-auto"
 							{...selectTriggerProps}
 						>
 							<SelectValue data-slot="input-group-select-field-select-value" />

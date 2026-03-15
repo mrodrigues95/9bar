@@ -64,7 +64,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
 				cn(
 					inputFocusRing({ variant: "focusVisible" }),
 					inputDisabled(),
-					"not-in-data-[slot=input-group-addon]:min-w-40",
+					"not-in-data-[slot$=addon]:min-w-40",
 					"cursor-default text-start",
 					"focus-visible:ring-offset-0",
 				) ?? "",

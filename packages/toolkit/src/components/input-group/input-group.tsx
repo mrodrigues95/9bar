@@ -25,8 +25,8 @@ const inputGroupVariants = tv({
 			inputDisabled(),
 			inputContainer(),
 			"flex items-center gap-1",
-			"has-[[data-slot=input-group-addon]_[data-focused]]:ring-0",
-			"not-data-[invalid]:has-[[data-slot=input-group-addon]_[data-focused]]:border-border",
+			"has-[[data-slot$=addon]_[data-focused]]:ring-0",
+			"not-data-[invalid]:has-[[data-slot$=addon]_[data-focused]]:border-border",
 		],
 		input: [
 			inputText(),

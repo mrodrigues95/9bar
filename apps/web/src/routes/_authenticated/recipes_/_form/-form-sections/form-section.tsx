@@ -1,4 +1,10 @@
-import { Card, CardHeader, CardPanel, CardTitle } from "@9bar/toolkit";
+import {
+	Card,
+	CardHeader,
+	CardPanel,
+	CardTitle,
+	type TInputGroupSelectFieldValue,
+} from "@9bar/toolkit";
 import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "tailwind-variants";
@@ -13,14 +19,13 @@ export interface TRecipeFormValues
 			| "grindSize"
 			| "dose"
 			| "yield"
-			| "brewTime"
-			| "brewTimeUnit"
 			| "beans"
-			| "temperature"
-			| "temperatureUnit"
 			| "pressure"
 			| "notes"
-		> {}
+		> {
+	brewTime: TInputGroupSelectFieldValue;
+	temperature: TInputGroupSelectFieldValue;
+}
 
 const DEFAULT_RECIPE: TRecipeFormValues = {
 	name: "",
@@ -30,11 +35,9 @@ const DEFAULT_RECIPE: TRecipeFormValues = {
 	machine: "",
 	dose: 0,
 	yield: 0,
-	brewTime: 0,
-	brewTimeUnit: "s",
+	brewTime: { inputValue: 0, selectValue: "s" },
+	temperature: { inputValue: 0, selectValue: "C" },
 	beans: "",
-	temperature: 0,
-	temperatureUnit: "C",
 	pressure: 0,
 	notes: "",
 };
@@ -49,11 +52,15 @@ export const recipeToFormValues = (recipe: TRecipeGraph): TRecipeFormValues => {
 		machine: snapshot.machine,
 		dose: snapshot.dose,
 		yield: snapshot.yield,
-		brewTime: snapshot.brewTime,
-		brewTimeUnit: snapshot.brewTimeUnit,
+		brewTime: {
+			inputValue: snapshot.brewTime,
+			selectValue: snapshot.brewTimeUnit,
+		},
 		beans: snapshot.beans,
-		temperature: snapshot.temperature,
-		temperatureUnit: snapshot.temperatureUnit,
+		temperature: {
+			inputValue: snapshot.temperature,
+			selectValue: snapshot.temperatureUnit,
+		},
 		pressure: snapshot.pressure,
 		notes: snapshot.notes ?? "",
 	};
