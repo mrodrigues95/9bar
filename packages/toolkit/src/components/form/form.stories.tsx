@@ -273,6 +273,14 @@ const schema = z.object({
 	password: z
 		.string()
 		.min(8, "[Zod] Password must be at least 8 characters long"),
+	notificationFrequency: z
+		.object({
+			inputValue: z.string(),
+			selectValue: z.string(),
+		})
+		.refine(({ inputValue }) => !!inputValue && Number(inputValue) > 0, {
+			message: "[Zod] Brew time must be greater than 0",
+		}),
 	bio: z
 		.string()
 		.min(20, "[Zod] Bio must be at least 20 characters")
@@ -291,6 +299,7 @@ export const WithZodValidation: Story = {
 				username: "",
 				email: "",
 				password: "",
+				notificationFrequency: { inputValue: "", selectValue: "day" },
 				bio: "",
 				role: "",
 				preferences: [] as Array<string>,
@@ -310,6 +319,7 @@ export const WithZodValidation: Story = {
 					e.preventDefault();
 					form.handleSubmit();
 				}}
+				validationBehavior="aria"
 			>
 				<form.AppField name="username">
 					{(field) => (
@@ -338,6 +348,26 @@ export const WithZodValidation: Story = {
 							description="Minimum 8 characters"
 							isRequired
 							inputProps={{ type: "password", autoComplete: "new-password" }}
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="notificationFrequency">
+					{(field) => (
+						<field.InputGroupSelect
+							label="Email Frequency"
+							description="How often you want to receive email notifications"
+							items={[
+								{ id: "day", label: "Days (d)" },
+								{ id: "week", label: "Weeks (w)" },
+								{ id: "month", label: "Months (m)" },
+							]}
+							inputProps={{
+								type: "number",
+								step: "1",
+								min: "1",
+								"aria-label": "Email frequency value",
+							}}
+							selectProps={{ "aria-label": "Email frequency unit" }}
 						/>
 					)}
 				</form.AppField>

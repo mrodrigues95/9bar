@@ -62,9 +62,10 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
 			className={composeTailwindRenderProps(
 				props.className,
 				cn(
-					inputFocusRing({ variant: "indicator" }),
+					inputFocusRing({ variant: "focusVisible" }),
 					inputDisabled(),
-					"min-w-40 cursor-default text-start",
+					"not-in-data-[slot=input-group-addon]:min-w-40",
+					"cursor-default text-start",
 					"focus-visible:ring-offset-0",
 				) ?? "",
 			)}

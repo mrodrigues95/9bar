@@ -92,8 +92,8 @@ export const CheckboxIndicator = ({
 			{...props}
 			className={cn(
 				indicator({ className }),
-				inputFocusRing({ variant: "indicator" }),
-				inputDisabled({ variant: "indicator" }),
+				inputFocusRing({ variant: "focusVisible" }),
+				inputDisabled(),
 			)}
 		>
 			{children}

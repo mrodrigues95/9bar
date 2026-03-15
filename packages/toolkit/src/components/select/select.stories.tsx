@@ -30,7 +30,6 @@ export default meta;
 
 type Story = StoryObj<typeof Select>;
 
-// TODO: Invalid styles not applying since data-invalid not being set on the trigger.
 export const Basic: Story = {
 	render: (props) => (
 		<Select aria-label="Favorite Animal" {...props}>

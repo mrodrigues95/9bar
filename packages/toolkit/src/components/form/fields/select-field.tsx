@@ -42,7 +42,6 @@ export const SelectField = <T extends object>({
 	label,
 	description,
 	errorMessage,
-
 	labelProps,
 	descriptionProps,
 	fieldErrorProps,

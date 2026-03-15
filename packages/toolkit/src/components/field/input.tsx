@@ -12,53 +12,68 @@ export const inputFocusRing = tv({
 	],
 	variants: {
 		variant: {
-			focusable: [
+			focused: [
 				"data-[focused]:ring-4",
 				"not-data-[invalid]:data-[focused]:border-ring-fg",
 				"not-data-[invalid]:data-[focused]:ring-ring",
 			],
-			indicator: [
+			focusVisible: [
 				"data-[focus-visible]:ring-4",
 				"not-data-[invalid]:data-[focus-visible]:border-ring-fg",
 				"not-data-[invalid]:data-[focus-visible]:ring-ring",
 			],
+			focusWithin: [
+				"data-[focus-within]:ring-4",
+				"not-data-[invalid]:data-[focus-within]:border-ring-fg",
+				"not-data-[invalid]:data-[focus-within]:ring-ring",
+			],
 		},
 	},
 	defaultVariants: {
-		variant: "focusable",
+		variant: "focused",
 	},
 });
 
 export const inputDisabled = tv({
+	base: [
+		"[&:disabled,&[data-disabled]]:bg-slate-50",
+		"[&:disabled,&[data-disabled]]:opacity-50",
+		"[&:disabled,&[data-disabled]]:shadow-none",
+	],
+});
+
+export const inputText = tv({
+	base: ["text-slate-900 text-sm placeholder-slate-400"],
+});
+
+export const inputContainer = tv({
+	base: ["rounded-lg border border-border bg-white shadow-xs outline-none"],
+});
+
+export const inputDensity = tv({
 	variants: {
-		variant: {
-			focusable: [
-				"disabled:bg-slate-50",
-				"disabled:opacity-50",
-				"disabled:shadow-none",
-			],
-			indicator: [
-				"data-[disabled]:bg-slate-50",
-				"data-[disabled]:opacity-50",
-				"data-[disabled]:shadow-none",
-			],
+		density: {
+			loose: "px-2.5 py-1.5",
+			compact: "px-1.5 py-1",
 		},
 	},
 	defaultVariants: {
-		variant: "focusable",
+		density: "loose",
 	},
 });
 
 export const inputVariants = tv({
 	extend: inputFocusRing,
 	base: [
-		"relative block w-full rounded-lg border border-border bg-white text-slate-900 text-sm placeholder-slate-400 shadow-xs outline-none",
+		inputText(),
 		inputDisabled(),
+		inputContainer(),
+		"relative block w-full",
 	],
 	variants: {
 		density: {
-			loose: "px-2.5 py-1.5",
-			compact: "px-1.5 py-1",
+			loose: inputDensity({ density: "loose" }),
+			compact: inputDensity({ density: "compact" }),
 		},
 	},
 	defaultVariants: {

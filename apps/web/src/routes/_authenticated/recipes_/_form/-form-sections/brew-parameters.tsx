@@ -11,6 +11,7 @@ const TEMPERATURE_UNIT_OPTIONS = [
 	{ id: "F", name: "Fahrenheit (°F)" },
 ] as const;
 
+// TODO: implement input group for brew time (value + unit) and temperature (value + unit).
 export const BrewParametersFormSection = withForm({
 	...recipeFormOpts,
 	render: function Render({ form }) {

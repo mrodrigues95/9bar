@@ -77,7 +77,7 @@ const tabsVariants = tv({
 			class: {
 				list: "border-l px-1",
 				tab: "w-full justify-start",
-				indicator: "-left-[5.5px] bottom-0 h-full w-0.5",
+				indicator: "bottom-0 -left-[5.5px] h-full w-0.5",
 			},
 		},
 	],

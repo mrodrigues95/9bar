@@ -7,7 +7,7 @@ export const fieldVariants = tv({
 
 export interface FieldProps extends ComponentProps<"div"> {}
 
-export const Field = ({ children, className, ...props }: FieldProps) => {
+export const Field = ({ className, ...props }: FieldProps) => {
 	return (
 		<div
 			data-slot="field"

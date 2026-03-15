@@ -10,7 +10,7 @@ export const iconButtonVariants = tv({
 	extend: buttonVariants,
 	base: [
 		"relative",
-		"[&_svg]:-translate-x-1/2 [&_svg]:-translate-y-1/2 [&_svg]:absolute [&_svg]:top-1/2 [&_svg]:left-1/2",
+		"[&_svg]:absolute [&_svg]:top-1/2 [&_svg]:left-1/2 [&_svg]:-translate-x-1/2 [&_svg]:-translate-y-1/2",
 	],
 	variants: {
 		size: {
