@@ -34,9 +34,12 @@ export interface TInputGroupSelectFieldItem {
 	label: string;
 }
 
-export interface TInputGroupSelectFieldValue {
-	inputValue: string | number;
-	selectValue: string;
+export interface TInputGroupSelectFieldValue<
+	TInputValue extends string | number = string | number,
+	TSelectValue extends string = string,
+> {
+	inputValue: TInputValue;
+	selectValue: TSelectValue;
 }
 
 export interface InputGroupSelectFieldProps

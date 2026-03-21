@@ -21,6 +21,7 @@ export const RecipeForm = withForm({
 		return (
 			<Form
 				className="space-y-6"
+				validationBehavior="aria"
 				onSubmit={() => {
 					form.handleSubmit();
 				}}
