@@ -63,6 +63,7 @@ The `pnpm web` and `pnpm toolkit` shorthands are aliases for `pnpm --filter @9ba
 ## Development Guidelines
 
 - For accessibility guidelines, see [/.agents/a11y.md](.agents/a11y.md)
+- For TypeScript guidelines, see [./agents/typescript.md](.agents/typescript.md)
 
 ### Commit Messages
 
