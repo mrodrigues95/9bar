@@ -48,22 +48,11 @@ pnpm typecheck
 
 The `pnpm web` and `pnpm toolkit` shorthands are aliases for `pnpm --filter @9bar/web` and `pnpm --filter @9bar/toolkit` respectively. You can use them to run any script within a specific package (e.g. `pnpm web typecheck`).
 
-## Code Style
-
-### General
-
-- **Formatter:** Biome, configured in the root `biome.json`
-- **Indent style:** Tabs
-- **Quote style:** Double quotes
-- **Module system:** ESM everywhere (`"type": "module"`)
-- **TypeScript:** Strict mode with additional strictness flags (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`)
-- **Imports:** Auto-organized by Biome on save. Unused imports and variables are errors.
-- **Tailwind classes:** Must be sorted (enforced by Biome's `useSortedClasses` rule, configured for the `tv()` function from `tailwind-variants`)
-
 ## Development Guidelines
 
-- For accessibility guidelines, see [/.agents/a11y.md](.agents/a11y.md)
-- For TypeScript guidelines, see [./agents/typescript.md](.agents/typescript.md)
+- For general coding guidelines, see [.agents/general.md](.agents/general.md)
+- For accessibility guidelines, see [.agents/a11y.md](.agents/a11y.md)
+- For TypeScript guidelines, see [.agents/typescript.md](.agents/typescript.md)
 
 ### Commit Messages
 

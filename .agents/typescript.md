@@ -1,5 +1,9 @@
 # TypeScript Guidelines
 
+## Overview
+
+- Strict mode with additional strictness flags (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`)
+
 ## Functions
 
 - Use ES6 arrow functions over `function` declarations.
