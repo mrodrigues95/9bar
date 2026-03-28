@@ -8,6 +8,7 @@ export * from "./components/field/description";
 export * from "./components/field/field-error";
 export * from "./components/field/input";
 export * from "./components/field/label";
+export * from "./components/filter-bar/filter-bar";
 export * from "./components/form/fields/input-group-select-field";
 export * from "./components/form/fields/select-field";
 export * from "./components/form/fields/text-field";

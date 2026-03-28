@@ -27,12 +27,12 @@ export const buttonVariants = tv({
 				"pressed:bg-slate-300",
 			],
 			solid: [
-				"bg-slate-900 text-white shadow-xs",
+				"bg-slate-900 text-white shadow-sm",
 				"hover:bg-secondary",
 				"pressed:bg-slate-600",
 			],
 			solidBlue: [
-				"bg-blue-900 text-white shadow-xs",
+				"bg-blue-900 text-white shadow-sm",
 				"hover:bg-blue-800",
 				"pressed:bg-blue-700",
 			],
@@ -42,7 +42,7 @@ export const buttonVariants = tv({
 				"pressed:bg-red-200",
 			],
 			outline: [
-				"bg-transparent text-secondary shadow-xs ring-1 ring-border",
+				"bg-transparent text-secondary shadow-sm ring-1 ring-border",
 				"hover:bg-slate-100 hover:text-slate-900",
 				"pressed:bg-slate-200",
 			],
