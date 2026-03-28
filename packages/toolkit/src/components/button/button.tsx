@@ -42,7 +42,7 @@ export const buttonVariants = tv({
 				"pressed:bg-red-200",
 			],
 			outline: [
-				"bg-transparent text-secondary shadow-sm ring-1 ring-border",
+				"bg-white text-secondary shadow-sm ring-1 ring-border",
 				"hover:bg-slate-100 hover:text-slate-900",
 				"pressed:bg-slate-200",
 			],
