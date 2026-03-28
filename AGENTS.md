@@ -9,7 +9,7 @@ The codebase is a TypeScript monorepo with two packages:
 | Package | Path | Description |
 |---------|------|-------------|
 | `@9bar/web` | `apps/web/` | Full-stack web application built with TanStack Start, TanStack Router, and React 19 |
-| `@9bar/toolkit` | `packages/toolkit/` | Primitive design system built with React Aria Components, Tailwind Variants, and Storybook 9 |
+| `@9bar/toolkit` | `packages/toolkit/` | Primitive design system built with React Aria Components, Tailwind Variants, and Storybook 10 |
 
 Each package has its own `AGENTS.md` with package-specific architecture details, conventions, and commands.
 
@@ -86,7 +86,7 @@ Common scopes: `web`, `toolkit`, or both `web, toolkit`.
 │       │   ├── <component>/    # Component directories
 │       │   ├── form/           # Form system
 │       │   └── index.ts        # Barrel export
-│       ├── .storybook/         # Storybook 9 config
+│       ├── .storybook/         # Storybook 10 config
 │       ├── vite.config.ts
 │       ├── tsconfig.json
 │       └── package.json
