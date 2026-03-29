@@ -49,6 +49,7 @@ export interface InputGroupProps
 	extends AriaGroupProps,
 		VariantProps<typeof inputGroupVariants> {}
 
+/** A container that groups an input with addons such as icons, text, or inline selects into a single composite field. */
 export const InputGroup = ({ density, ...props }: InputGroupProps) => {
 	const styles = inputGroupVariants({ density });
 	return (
@@ -78,6 +79,7 @@ export const InputGroup = ({ density, ...props }: InputGroupProps) => {
 
 export interface InputGroupInputProps extends AriaInputProps {}
 
+/** The text input rendered inside an {@link InputGroup}. */
 export const InputGroupInput = (props: InputGroupInputProps) => {
 	const styles = inputGroupVariants();
 	return (
@@ -111,6 +113,7 @@ export interface InputGroupAddonProps
 	extends ComponentProps<"div">,
 		VariantProps<typeof inputGroupAddonVariants> {}
 
+/** A slot for supplementary content (icons, buttons, or inline selects) placed at the start or end of an {@link InputGroup}. */
 export const InputGroupAddon = ({
 	align = "start",
 	...props
@@ -155,6 +158,7 @@ export const InputGroupAddon = ({
 
 export interface InputGroupTextProps extends ComponentProps<"span"> {}
 
+/** A short inline text label (e.g. a currency symbol or unit) displayed inside an {@link InputGroupAddon}. */
 export const InputGroupText = (props: InputGroupTextProps) => {
 	const styles = inputGroupVariants();
 	return (

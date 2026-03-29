@@ -15,12 +15,14 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
+/** A button with default props, useful as a baseline for testing variant and size controls. */
 export const Default: Story = {
 	args: {
 		size: "sm",
 	},
 };
 
+/** Compares all available button variants side by side: `ghost`, `danger`, `default`, `outline`, `solid`, `solidBlue`, and `link`. */
 export const Variants: Story = {
 	args: {
 		isDisabled: false,
@@ -52,6 +54,7 @@ export const Variants: Story = {
 	),
 };
 
+/** A button with a leading icon, demonstrating how SVG icons are sized and aligned automatically. */
 export const WithIcon: Story = {
 	args: {
 		size: "sm",

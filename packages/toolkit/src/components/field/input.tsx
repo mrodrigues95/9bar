@@ -81,10 +81,12 @@ export const inputVariants = tv({
 	},
 });
 
+/** Props for the {@link Input} component. */
 export interface InputProps
 	extends AriaInputProps,
 		VariantProps<typeof inputVariants> {}
 
+/** A text input field for single-line user input. */
 export const Input = ({ density, ...props }: InputProps) => (
 	<AriaInput
 		data-slot="input"

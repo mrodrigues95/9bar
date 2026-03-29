@@ -15,7 +15,7 @@ const meta = {
 	title: "Empty",
 	parameters: {
 		controls: {
-			disable: true,
+			include: [],
 		},
 	},
 } satisfies Meta<typeof Empty>;
@@ -24,10 +24,11 @@ export default meta;
 
 type Story = StoryObj<typeof Empty>;
 
+/** A complete empty state with an icon, title, description, and action buttons, showing the standard composition pattern. */
 export const Default: Story = {
 	args: {},
-	render: () => (
-		<Empty>
+	render: (props) => (
+		<Empty {...props}>
 			<EmptyHeader>
 				<EmptyMedia>
 					<UserGroupIcon />

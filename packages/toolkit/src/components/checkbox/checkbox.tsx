@@ -28,8 +28,10 @@ export const checkboxVariants = tv({
 	},
 });
 
+/** Props for the {@link CheckboxRoot} component. */
 export interface CheckboxRootProps extends ComponentProps<"div"> {}
 
+/** A layout wrapper for a checkbox, its description, and its error message. */
 export const CheckboxRoot = ({ className, ...props }: CheckboxRootProps) => {
 	const { root } = checkboxVariants();
 	return (
@@ -37,10 +39,16 @@ export const CheckboxRoot = ({ className, ...props }: CheckboxRootProps) => {
 	);
 };
 
+/** Props for the {@link Checkbox} component. */
 export interface CheckboxProps extends AriaCheckboxProps {
+	/** A custom render function for the checkbox indicator. Receives the current render props (selected, indeterminate, etc.). */
 	indicator?: (renderProps: AriaCheckboxRenderProps) => ReactNode;
 }
 
+/**
+ * A checkbox allows a user to select a boolean value. Supports
+ * indeterminate state for partially selected groups.
+ */
 export const Checkbox = ({ indicator, ...props }: CheckboxProps) => {
 	const { label } = checkboxVariants();
 
@@ -67,11 +75,15 @@ export const Checkbox = ({ indicator, ...props }: CheckboxProps) => {
 	);
 };
 
+/** Props for the {@link CheckboxIndicator} component. */
 export interface CheckboxIndicatorProps extends ComponentProps<"div"> {
+	/** The current checkbox render props, used to derive visual state (selected, invalid, etc.). */
 	renderProps?: AriaCheckboxRenderProps;
+	/** The icon or content to display inside the indicator box. */
 	children: ReactNode;
 }
 
+/** The visual box of a checkbox that displays the check or indeterminate icon. */
 export const CheckboxIndicator = ({
 	renderProps,
 	children,
@@ -101,8 +113,10 @@ export const CheckboxIndicator = ({
 	);
 };
 
+/** Props for the {@link CheckboxIcon} component. */
 export interface CheckboxIconProps extends AriaCheckboxRenderProps {}
 
+/** Renders a check or minus icon based on the checkbox's selected and indeterminate state. */
 export const CheckboxIcon = ({
 	isIndeterminate,
 	isSelected,

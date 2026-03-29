@@ -17,7 +17,7 @@ const meta = {
 	component: Pagination,
 	title: "Pagination",
 	parameters: {
-		controls: { disable: true },
+		controls: { include: [] },
 	},
 } satisfies Meta<typeof Pagination>;
 
@@ -25,8 +25,9 @@ export default meta;
 
 type Story = StoryObj<typeof Pagination>;
 
+/** Full-featured pagination with first/last buttons, ellipsis collapsing, and interactive page selection. */
 export const Default: Story = {
-	render: () => {
+	render: (props) => {
 		const [page, setPage] = useState(6);
 		const totalPages = 20;
 
@@ -38,7 +39,7 @@ export const Default: Story = {
 		});
 
 		return (
-			<Pagination>
+			<Pagination {...props}>
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationFirst
@@ -91,14 +92,15 @@ export const Default: Story = {
 	},
 };
 
+/** A compact pagination bar with previous/next arrows and a small number of page buttons, plus a live page readout. */
 export const SimplePagination: Story = {
-	render: () => {
+	render: (props) => {
 		const [page, setPage] = useState(1);
 		const totalPages = 5;
 
 		return (
 			<div className="space-y-4">
-				<Pagination>
+				<Pagination {...props}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -131,9 +133,10 @@ export const SimplePagination: Story = {
 	},
 };
 
+/** Shows every pagination control in its disabled state to verify visual dimming. */
 export const DisabledState: Story = {
-	render: () => (
-		<Pagination>
+	render: (props) => (
+		<Pagination {...props}>
 			<PaginationContent>
 				<PaginationItem>
 					<PaginationPrevious isDisabled />
@@ -169,8 +172,9 @@ export const DisabledState: Story = {
 	),
 };
 
+/** Pairs pagination with a "Showing X to Y of Z items" summary to demonstrate a typical data-table footer. */
 export const WithContent: Story = {
-	render: () => {
+	render: (props) => {
 		const [page, setPage] = useState(1);
 		const totalItems = 59;
 		const itemsPerPage = 10;
@@ -204,7 +208,7 @@ export const WithContent: Story = {
 						items
 					</p>
 				</div>
-				<Pagination>
+				<Pagination {...props}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious

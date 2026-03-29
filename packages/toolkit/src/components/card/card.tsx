@@ -21,10 +21,12 @@ const cardVariants = tv({
 	},
 });
 
+/** Props for the {@link Card} component. */
 export interface CardProps
 	extends useRender.ComponentProps<"div">,
 		VariantProps<typeof cardVariants> {}
 
+/** A card groups related content and actions in a contained, visually distinct surface. */
 export const Card = ({ variant, className, render, ...props }: CardProps) => {
 	const styles = cardVariants({ variant });
 	return useRender({
@@ -41,6 +43,7 @@ export const Card = ({ variant, className, render, ...props }: CardProps) => {
 	});
 };
 
+/** The top section of a card, typically containing a title and description. */
 export const CardHeader = ({
 	className,
 	render,
@@ -60,6 +63,7 @@ export const CardHeader = ({
 	});
 };
 
+/** A heading for the card. */
 export const CardTitle = ({
 	className,
 	render,
@@ -79,6 +83,7 @@ export const CardTitle = ({
 	});
 };
 
+/** Supplementary text describing the card's purpose, displayed below the title. */
 export const CardDescription = ({
 	className,
 	render,
@@ -98,6 +103,7 @@ export const CardDescription = ({
 	});
 };
 
+/** The main content area of a card. */
 export const CardPanel = ({
 	className,
 	render,
@@ -117,6 +123,7 @@ export const CardPanel = ({
 	});
 };
 
+/** The bottom section of a card, typically containing action buttons. */
 export const CardFooter = ({
 	className,
 	render,

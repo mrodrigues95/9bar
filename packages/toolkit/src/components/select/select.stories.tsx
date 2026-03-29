@@ -30,6 +30,7 @@ export default meta;
 
 type Story = StoryObj<typeof Select>;
 
+/** A single-select dropdown with static items and no label. */
 export const Basic: Story = {
 	render: (props) => (
 		<Select aria-label="Favorite Animal" {...props}>
@@ -84,6 +85,7 @@ const ComposedSelect = <T extends object>({
 	);
 };
 
+/** Groups options under labelled section headers with dynamic data. */
 export const WithSections: Story = {
 	args: {},
 	render: (props) => {
@@ -131,6 +133,7 @@ export const WithSections: Story = {
 	},
 };
 
+/** Allows selecting multiple items with a custom render value that summarises the selection count. */
 export const MultipleSelection: Story = {
 	args: {
 		selectionMode: "multiple",

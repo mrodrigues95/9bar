@@ -7,9 +7,14 @@ import {
 import { cn } from "tailwind-variants";
 import { composeTailwindRenderProps } from "../../utils/classes";
 
+/** Props for the {@link Breadcrumbs} component. */
 export interface BreadcrumbsProps<T extends object>
 	extends AriaBreadCrumbsProps<T> {}
 
+/**
+ * Breadcrumbs display a hierarchy of links to the current page or resource
+ * in an application. They allow the user to navigate back to any ancestor.
+ */
 export const Breadcrumbs = <T extends object>({
 	className,
 	...props
@@ -28,8 +33,10 @@ export const Breadcrumbs = <T extends object>({
 	);
 };
 
+/** Props for the {@link Breadcrumb} component. */
 export interface BreadcrumbProps extends AriaBreadCrumbProps {}
 
+/** An individual item within a breadcrumb trail, representing a single navigation level. */
 export const Breadcrumb = ({ className, ...props }: BreadcrumbProps) => {
 	return (
 		<AriaBreadcrumb

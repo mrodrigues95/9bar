@@ -17,6 +17,7 @@ export interface LinkProps
 	"aria-current"?: "page" | "step" | "location" | "date" | "time" | "true";
 }
 
+/** A navigation element that allows a user to navigate to another page or resource. */
 export const Link = ({ variant, size, ...props }: LinkProps) => {
 	return (
 		<AriaLink

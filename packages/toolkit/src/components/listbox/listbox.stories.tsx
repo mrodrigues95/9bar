@@ -14,15 +14,16 @@ import {
 const meta = {
 	component: Listbox,
 	title: "Listbox",
-	parameters: { layout: "padded", controls: { disable: true } },
+	parameters: { layout: "padded", controls: { include: [] } },
 } satisfies Meta<typeof Listbox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A simple single-selection listbox with static items. */
 export const Basic: Story = {
-	render: () => (
-		<Listbox aria-label="Favorite animal" selectionMode="single">
+	render: (props) => (
+		<Listbox {...props} aria-label="Favorite animal" selectionMode="single">
 			<ListboxItem id="aardvark">Aardvark</ListboxItem>
 			<ListboxItem id="cat">Cat</ListboxItem>
 			<ListboxItem id="dog">Dog</ListboxItem>
@@ -36,8 +37,9 @@ export const Basic: Story = {
 	),
 };
 
+/** Renders items from an array using the `items` prop and a render function. */
 export const DynamicContent: Story = {
-	render: () => {
+	render: (props) => {
 		const options = [
 			{ id: 1, name: "Aardvark" },
 			{ id: 2, name: "Cat" },
@@ -51,16 +53,22 @@ export const DynamicContent: Story = {
 		];
 
 		return (
-			<Listbox aria-label="Animals" items={options} selectionMode="single">
+			<Listbox
+				{...props}
+				aria-label="Animals"
+				items={options}
+				selectionMode="single"
+			>
 				{(item) => <ListboxItem id={item.id}>{item.name}</ListboxItem>}
 			</Listbox>
 		);
 	},
 };
 
+/** Shows items with leading icons and multi-line content using label and description text slots. */
 export const WithDescriptions: Story = {
-	render: () => (
-		<Listbox aria-label="Permissions" selectionMode="single">
+	render: (props) => (
+		<Listbox {...props} aria-label="Permissions" selectionMode="single">
 			<ListboxItem
 				id="read"
 				textValue="Read"
@@ -101,9 +109,10 @@ export const WithDescriptions: Story = {
 	),
 };
 
+/** Groups items into labelled sections separated by a divider. */
 export const Sections: Story = {
-	render: () => (
-		<Listbox aria-label="Sandwich contents" selectionMode="multiple">
+	render: (props) => (
+		<Listbox {...props} aria-label="Sandwich contents" selectionMode="multiple">
 			<ListboxSection title={<ListboxSectionHeader title="Veggies" />}>
 				<ListboxItem id="lettuce">Lettuce</ListboxItem>
 				<ListboxItem id="tomato">Tomato</ListboxItem>
@@ -129,13 +138,15 @@ export const Sections: Story = {
 	),
 };
 
+/** Demonstrates controlled multi-select with a disabled item and a live readout of the current selection. */
 export const MultipleSelection: Story = {
-	render: () => {
+	render: (props) => {
 		const [selected, setSelected] = useState<Selection>(new Set(["cheese"]));
 
 		return (
 			<div className="space-y-4">
 				<Listbox
+					{...props}
 					aria-label="Sandwich contents"
 					selectionMode="multiple"
 					selectedKeys={selected}
@@ -159,9 +170,11 @@ export const MultipleSelection: Story = {
 	},
 };
 
+/** Shows the placeholder rendered by `renderEmptyState` when the listbox has no items. */
 export const EmptyState: Story = {
-	render: () => (
+	render: (props) => (
 		<Listbox
+			{...props}
 			aria-label="Search results"
 			renderEmptyState={() => "No results found."}
 		>

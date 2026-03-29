@@ -13,16 +13,28 @@ import { Label, type LabelProps } from "../../field/label";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
+/** Props for the {@link TextField} component. */
 export interface TextFieldProps extends AriaTextFieldProps {
+	/** The label text displayed above the input. */
 	label?: string;
+	/** Help text displayed below the input. */
 	description?: string;
+	/** An error message or a function that returns one from the validation result. */
 	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** Additional props forwarded to the `Label` component. */
 	labelProps?: LabelProps;
+	/** Additional props forwarded to the `Input` component. */
 	inputProps?: InputProps;
+	/** Additional props forwarded to the `Description` component. */
 	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 }
 
+/**
+ * A text field allows a user to enter a plain text value with a keyboard.
+ * Composes a label, input, description, and error message.
+ */
 export const TextField = ({
 	label,
 	description,
@@ -52,11 +64,15 @@ export const TextField = ({
 	);
 };
 
+/** Props for the {@link FormTextField} component. */
 export interface FormTextFieldProps extends Omit<TextFieldProps, "label"> {
+	/** The label text displayed above the input. Required for form-connected fields. */
 	label: string;
+	/** A custom error formatter for converting form validation errors to a display string. */
 	formatErrors?: TErrorFormatter;
 }
 
+/** A form-connected text field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormTextField = ({
 	inputProps,
 	formatErrors = defaultErrorFormatter,

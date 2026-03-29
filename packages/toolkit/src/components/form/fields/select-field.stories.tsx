@@ -34,6 +34,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/** A select field with a label and a list of options, showing the minimal required configuration. */
 export const Primary: Story = {
 	args: {
 		items,
@@ -41,6 +42,7 @@ export const Primary: Story = {
 	},
 };
 
+/** A select field with help text below the trigger, providing additional guidance to the user. */
 export const WithDescription: Story = {
 	args: {
 		...Primary.args,
@@ -48,6 +50,7 @@ export const WithDescription: Story = {
 	},
 };
 
+/** A select field with placeholder text displayed when no option is selected. */
 export const WithPlaceholder: Story = {
 	args: {
 		...Primary.args,
@@ -55,6 +58,7 @@ export const WithPlaceholder: Story = {
 	},
 };
 
+/** A select field in the disabled state, preventing all interaction. */
 export const Disabled: Story = {
 	args: {
 		...Primary.args,
@@ -62,6 +66,7 @@ export const Disabled: Story = {
 	},
 };
 
+/** A required select field, displaying the required indicator on the label. */
 export const Required: Story = {
 	args: {
 		...Primary.args,
@@ -69,6 +74,7 @@ export const Required: Story = {
 	},
 };
 
+/** A select field in the invalid state with a visible error message. */
 export const WithError: Story = {
 	args: {
 		...Primary.args,

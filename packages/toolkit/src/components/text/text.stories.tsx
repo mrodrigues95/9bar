@@ -6,6 +6,7 @@ const meta = {
 	component: Text,
 	parameters: {
 		layout: "centered",
+		controls: { include: [] },
 	},
 	tags: ["autodocs"],
 } satisfies Meta<typeof Text>;
@@ -13,12 +14,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Renders default body text. Use the controls to adjust variant and color. */
 export const Default: Story = {
 	args: {
 		children: "The quick brown fox jumps over the lazy dog",
 	},
 };
 
+/** Displays every text variant side by side, from `body` through `detail`. */
 export const Variants: Story = {
 	render: () => (
 		<div className="flex flex-col gap-4">
@@ -40,6 +43,7 @@ export const Variants: Story = {
 	),
 };
 
+/** Shows how the `as` prop maps Text to different HTML elements (`p`, `span`, `label`, `div`). */
 export const SemanticElements: Story = {
 	render: () => (
 		<div className="flex flex-col gap-3">
@@ -59,6 +63,7 @@ export const SemanticElements: Story = {
 	),
 };
 
+/** A product-card layout combining multiple Text variants and colors in a realistic composition. */
 export const RealWorldExample: Story = {
 	render: () => (
 		<div className="mx-auto max-w-2xl space-y-6 p-8">

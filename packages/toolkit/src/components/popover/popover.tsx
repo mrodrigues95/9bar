@@ -20,10 +20,13 @@ const popoverVariants = tv({
 });
 
 export interface PopoverProps extends Omit<AriaPopoverProps, "children"> {
+	/** Whether to display a directional arrow pointing at the trigger. */
 	showArrow?: boolean;
+	/** The content rendered inside the popover. */
 	children: React.ReactNode;
 }
 
+/** A floating overlay anchored to a trigger element, used for menus, dialogs, and other transient content. */
 export const Popover = ({
 	children,
 	showArrow,

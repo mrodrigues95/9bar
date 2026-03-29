@@ -18,6 +18,7 @@ export default meta;
 
 type Story = StoryObj<typeof CheckboxGroup>;
 
+/** A checkbox group with a label, description, and multiple checkbox options for multi-select scenarios. */
 export const Default: Story = {
 	args: {},
 	render: (props) => {

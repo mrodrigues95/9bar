@@ -22,6 +22,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A checkbox group field with a label, description, and multiple checkbox options, showing the standard configuration. */
 export const Primary: Story = {
 	args: {
 		label: "Favorite toppings",
@@ -36,10 +37,12 @@ export const Primary: Story = {
 	},
 };
 
+/** A checkbox group field in the disabled state, preventing all interaction. */
 export const Disabled: Story = {
 	args: { ...Primary.args, isDisabled: true },
 };
 
+/** A checkbox group field in the invalid state with a visible error message, such as when a minimum selection is not met. */
 export const WithError: Story = {
 	args: {
 		...Primary.args,

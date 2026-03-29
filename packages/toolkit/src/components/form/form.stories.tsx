@@ -13,12 +13,13 @@ import { useAppForm, withForm } from "./utils/form";
 const meta = {
 	component: Form,
 	title: "Form",
-	parameters: { controls: { disable: true } },
+	parameters: { controls: { include: [] } },
 } satisfies Meta<typeof Form>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A form using native HTML validation attributes (`required`, `type`, `minLength`, etc.) with standard form fields. */
 export const HTMLValidation: Story = {
 	render: (props) => (
 		<Form
@@ -107,6 +108,7 @@ interface FormErrors<TFormValues> {
 	fields: { [K in keyof TFormValues]?: string };
 }
 
+/** A form using TanStack Form's `useAppForm` hook with inline `onChange` validators for client-side validation. */
 export const ComposedForm: Story = {
 	render: (props) => {
 		const form = useAppForm({
@@ -292,6 +294,7 @@ const schema = z.object({
 		.max(3, "[Zod] You can only select up to 3 preferences"),
 });
 
+/** A form using a Zod schema as the `onChange` validator, demonstrating structured schema-driven validation. */
 export const WithZodValidation: Story = {
 	render: (props) => {
 		const form = useAppForm({
@@ -546,6 +549,7 @@ const ContactFormComponent = withForm({
 	},
 });
 
+/** A form built with the `withForm` higher-order component pattern for creating reusable, composable form sections. */
 export const ReusableContactForm: Story = {
 	render: (props) => {
 		const form = useAppForm({

@@ -24,6 +24,7 @@ import {
 } from "../listbox/listbox";
 import { Popover, type PopoverProps } from "../popover/popover";
 
+/** A list of actions or options that a user can take, displayed as a dropdown from a trigger. */
 export const Menu = <T extends object>(props: AriaMenuProps<T>) => {
 	return (
 		<AriaMenu
@@ -43,6 +44,7 @@ export interface MenuItemProps
 	extends AriaMenuItemProps,
 		VariantProps<typeof listboxItemVariants> {}
 
+/** An individual action or option within a {@link Menu}. */
 export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 	const textValue =
 		props.textValue ||
@@ -81,14 +83,17 @@ export const MenuItem = ({ variant, ...props }: MenuItemProps) => {
 
 export interface MenuSeparatorProps extends ListboxSeparatorProps {}
 
+/** A visual divider placed between groups of {@link MenuItem} elements. */
 export const MenuSeparator = (props: MenuSeparatorProps) => {
 	return <ListboxSeparator data-slot="menu-separator" {...props} />;
 };
 
 export interface MenuSectionProps<T> extends AriaMenuSectionProps<T> {
+	/** A header element rendered above the section items. */
 	title?: ReactNode;
 }
 
+/** A semantic group of related {@link MenuItem} elements within a {@link Menu}. */
 export const MenuSection = <T extends object>({
 	title,
 	items,
@@ -105,14 +110,17 @@ export const MenuSection = <T extends object>({
 
 export interface MenuSectionHeaderProps extends ListboxSectionHeaderProps {}
 
+/** A styled header rendered above a {@link MenuSection}. */
 export const MenuSectionHeader = (props: MenuSectionHeaderProps) => {
 	return <ListboxSectionHeader data-slot="menu-section-header" {...props} />;
 };
 
 export interface MenuTriggerProps extends AriaMenuTriggerProps {
+	/** Additional props forwarded to the internal {@link Popover}. */
 	popoverProps?: PopoverProps;
 }
 
+/** Wraps a trigger element and a {@link Menu}, handling open/close state and popover positioning. */
 export const MenuTrigger = ({ popoverProps, ...props }: MenuTriggerProps) => {
 	const [trigger, menu] = Children.toArray(props.children) as [
 		ReactElement,
@@ -133,9 +141,11 @@ export const MenuTrigger = ({ popoverProps, ...props }: MenuTriggerProps) => {
 };
 
 export interface SubmenuTriggerProps extends AriaSubmenuTriggerProps {
+	/** Additional props forwarded to the internal {@link Popover}. */
 	popoverProps?: PopoverProps;
 }
 
+/** Wraps a {@link MenuItem} that opens a nested sub-menu when activated. */
 export const SubmenuTrigger = ({
 	popoverProps,
 	...props

@@ -22,9 +22,11 @@ const headingVariants = tv({
 export interface HeadingProps
 	extends Omit<TextProps, "elementType">,
 		VariantProps<typeof headingVariants> {
+	/** The HTML element type to render. Defaults to `"h1"`. */
 	as?: string;
 }
 
+/** A typographic heading component that maps visual variants to semantic HTML heading levels. */
 export const Heading = ({
 	as = "h1",
 	variant,

@@ -30,6 +30,7 @@ export interface PaginationProps
 	extends ComponentProps<"nav">,
 		VariantProps<typeof paginationVariants> {}
 
+/** The root navigation landmark for a set of pagination controls. */
 export const Pagination = ({
 	"aria-label": ariaLabel = "Pagination",
 	children,
@@ -53,6 +54,7 @@ export interface PaginationContentProps
 	extends ComponentProps<"ul">,
 		VariantProps<typeof paginationVariants> {}
 
+/** A horizontal list that lays out {@link PaginationItem} elements. */
 export const PaginationContent = ({
 	children,
 	className,
@@ -74,6 +76,7 @@ export interface PaginationItemProps
 	extends ComponentProps<"li">,
 		VariantProps<typeof paginationVariants> {}
 
+/** A list item wrapper for a single pagination control (button or ellipsis). */
 export const PaginationItem = ({
 	children,
 	className,
@@ -94,9 +97,11 @@ export const PaginationItem = ({
 export interface PaginationButtonProps
 	extends Omit<ButtonProps, "size">,
 		VariantProps<typeof paginationVariants> {
+	/** Whether this button represents the currently active page. */
 	isActive?: boolean;
 }
 
+/** A button representing a single page number within the pagination bar. */
 export const PaginationButton = ({
 	isActive = false,
 	children,
@@ -124,9 +129,11 @@ export const PaginationButton = ({
 export interface PaginationPreviousProps
 	extends Omit<PaginationButtonProps, "children"> {
 	"aria-label"?: string;
+	/** Whether to display a text label alongside the icon. */
 	showLabel?: boolean;
 }
 
+/** A button that navigates to the previous page. */
 export const PaginationPrevious = ({
 	"aria-label": ariaLabel = "Go to previous page",
 	className,
@@ -145,9 +152,11 @@ export const PaginationPrevious = ({
 
 export interface PaginationNextProps
 	extends Omit<PaginationButtonProps, "children"> {
+	/** Whether to display a text label alongside the icon. */
 	showLabel?: boolean;
 }
 
+/** A button that navigates to the next page. */
 export const PaginationNext = ({
 	"aria-label": ariaLabel = "Go to next page",
 	className,
@@ -167,6 +176,7 @@ export const PaginationNext = ({
 export interface PaginationFirstProps
 	extends Omit<PaginationButtonProps, "children"> {}
 
+/** A button that navigates to the first page. */
 export const PaginationFirst = ({
 	"aria-label": ariaLabel = "Go to first page",
 	className,
@@ -186,6 +196,7 @@ export const PaginationFirst = ({
 export interface PaginationLastProps
 	extends Omit<PaginationButtonProps, "children"> {}
 
+/** A button that navigates to the last page. */
 export const PaginationLast = ({
 	"aria-label": ariaLabel = "Go to last page",
 	className,
@@ -205,9 +216,11 @@ export const PaginationLast = ({
 export interface PaginationEllipsisProps
 	extends ComponentProps<"span">,
 		VariantProps<typeof paginationVariants> {
+	/** Whether the ellipsis should appear visually disabled. */
 	isDisabled?: boolean;
 }
 
+/** A non-interactive indicator representing omitted page numbers between visible ranges. */
 export const PaginationEllipsis = ({
 	children = "...",
 	className,

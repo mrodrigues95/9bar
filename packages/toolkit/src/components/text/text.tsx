@@ -30,9 +30,11 @@ const textVariants = tv({
 export interface TextProps
 	extends Omit<AriaTextProps, "elementType" | "color">,
 		VariantProps<typeof textVariants> {
+	/** The HTML element type to render. Defaults to `"p"`. */
 	as?: string;
 }
 
+/** A typographic primitive for body copy, labels, captions, and other running text. */
 export const Text = ({
 	as = "p",
 	variant,

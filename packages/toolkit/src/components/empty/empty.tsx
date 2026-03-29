@@ -2,6 +2,7 @@ import { BookOpenIcon } from "@heroicons/react/24/outline";
 import type { ComponentProps } from "react";
 import { cn } from "tailwind-variants";
 
+/** An empty state placeholder displayed when a view has no content. Provides a call to action to help the user get started. */
 export const Empty = ({ className, ...props }: ComponentProps<"div">) => {
 	return (
 		<div
@@ -15,6 +16,7 @@ export const Empty = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
+/** The top section of an empty state, typically containing an icon, title, and description. */
 export const EmptyHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	return (
 		<div
@@ -28,6 +30,7 @@ export const EmptyHeader = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
+/** An illustration or icon displayed above the empty state title. Renders a default book icon when no children are provided. */
 export const EmptyMedia = ({ className, ...props }: ComponentProps<"div">) => {
 	return (
 		<div
@@ -43,6 +46,7 @@ export const EmptyMedia = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
+/** A heading for the empty state message. */
 export const EmptyTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	return (
 		<div
@@ -53,6 +57,7 @@ export const EmptyTitle = ({ className, ...props }: ComponentProps<"div">) => {
 	);
 };
 
+/** Supplementary text explaining why the view is empty or what action to take. */
 export const EmptyDescription = ({
 	className,
 	...props
@@ -69,6 +74,7 @@ export const EmptyDescription = ({
 	);
 };
 
+/** A container for action buttons or links within an empty state. */
 export const EmptyContent = ({
 	className,
 	...props

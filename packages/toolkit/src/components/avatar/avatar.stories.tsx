@@ -13,6 +13,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** An avatar displaying a user's profile image. Falls back to initials or a placeholder icon on load error. */
 export const WithImage: Story = {
 	args: {
 		src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
@@ -22,6 +23,7 @@ export const WithImage: Story = {
 	},
 };
 
+/** An avatar displaying initials derived from the user's name when no image is provided. */
 export const WithInitials: Story = {
 	args: {
 		name: "John Doe",
@@ -29,12 +31,14 @@ export const WithInitials: Story = {
 	},
 };
 
+/** An avatar showing the default user icon placeholder when neither an image nor a name is provided. */
 export const DefaultPlaceholder: Story = {
 	args: {
 		size: "md",
 	},
 };
 
+/** An avatar with custom placeholder content instead of the default user icon. */
 export const CustomPlaceholder: Story = {
 	args: {
 		size: "md",
@@ -42,6 +46,7 @@ export const CustomPlaceholder: Story = {
 	},
 };
 
+/** Demonstrates the fallback behavior when an image URL fails to load, showing initials derived from the name. */
 export const ImageError: Story = {
 	args: {
 		src: "https://invalid-url-that-will-fail.com/image.jpg",
@@ -50,6 +55,7 @@ export const ImageError: Story = {
 	},
 };
 
+/** Demonstrates the fallback behavior when an image URL fails to load and no name is provided, showing the placeholder icon. */
 export const ImageErrorNoName: Story = {
 	args: {
 		src: "https://invalid-url-that-will-fail.com/image.jpg",
@@ -57,6 +63,7 @@ export const ImageErrorNoName: Story = {
 	},
 };
 
+/** Compares all available avatar sizes side by side: `xs`, `sm`, `md`, and `lg`. */
 export const AllSizes: Story = {
 	render: () => (
 		<div className="flex items-end gap-4">
@@ -68,20 +75,7 @@ export const AllSizes: Story = {
 	),
 };
 
-export const MixedStates: Story = {
-	render: () => (
-		<div className="flex items-center gap-4">
-			<Avatar
-				src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
-				name="John Doe"
-				size="md"
-			/>
-			<Avatar name="Jane Smith" size="md" />
-			<Avatar size="md" alt="foo" />
-		</div>
-	),
-};
-
+/** Compares all available color options for initials avatars: `slate`, `sky`, `emerald`, and `rose`. */
 export const AllColors: Story = {
 	render: () => (
 		<div className="flex items-center gap-4">
@@ -93,6 +87,7 @@ export const AllColors: Story = {
 	),
 };
 
+/** Compares all available border radius options: `none`, `sm`, `md`, `lg`, and `full`. */
 export const AllRadius: Story = {
 	render: () => (
 		<div className="flex items-center gap-4">
@@ -105,6 +100,7 @@ export const AllRadius: Story = {
 	),
 };
 
+/** Placeholder avatars in different colors, showing how the placeholder icon adapts to the color scheme. */
 export const ColoredPlaceholders: Story = {
 	render: () => (
 		<div className="flex items-center gap-4">

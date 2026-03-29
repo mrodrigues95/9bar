@@ -23,6 +23,7 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
+/** A checkbox with a text label, demonstrating the default checked/unchecked toggle behavior. */
 export const Default: Story = {
 	args: {
 		children: "Accept terms and conditions",
@@ -32,6 +33,7 @@ export const Default: Story = {
 	},
 };
 
+/** A checkbox with a description below the label, using `CheckboxRoot` to group the checkbox and its help text. */
 export const WithDescription: Story = {
 	args: {
 		...Default.args,
@@ -50,6 +52,7 @@ export const WithDescription: Story = {
 	},
 };
 
+/** A checkbox with a custom indicator rendered via the `indicator` render prop, for full control over the check icon. */
 export const CustomIndicator: Story = {
 	args: {
 		...Default.args,

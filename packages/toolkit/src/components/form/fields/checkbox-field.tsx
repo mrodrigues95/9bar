@@ -22,15 +22,26 @@ const mergeIds = (...ids: Array<string | undefined>) => {
 	return ids.filter((id) => !!id).join(" ");
 };
 
+/** Props for the {@link CheckboxField} component. */
 export interface CheckboxFieldProps extends Omit<CheckboxProps, "children"> {
+	/** The label text displayed beside the checkbox. */
 	label?: string;
+	/** Help text displayed below the checkbox. */
 	description?: string;
+	/** An error message or a function that returns one from the validation result. */
 	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** Additional props forwarded to the `Description` component. */
 	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
+	/** Additional props forwarded to the `CheckboxRoot` layout wrapper. */
 	checkboxRootProps?: CheckboxRootProps;
 }
 
+/**
+ * A checkbox field composes a checkbox with a label, description, and error
+ * message for use in forms.
+ */
 export const CheckboxField = ({
 	label,
 	description,
@@ -89,12 +100,16 @@ export const CheckboxField = ({
 	);
 };
 
+/** Props for the {@link FormCheckboxField} component. */
 export interface FormCheckboxFieldProps
 	extends Omit<CheckboxFieldProps, "label"> {
+	/** The label text displayed beside the checkbox. Required for form-connected fields. */
 	label: string;
+	/** A custom error formatter for converting form validation errors to a display string. */
 	formatErrors?: TErrorFormatter;
 }
 
+/** A form-connected checkbox field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormCheckboxField = ({
 	formatErrors = defaultErrorFormatter,
 	...props

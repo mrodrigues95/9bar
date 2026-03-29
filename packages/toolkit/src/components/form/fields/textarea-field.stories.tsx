@@ -23,6 +23,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A textarea field with a label, description, and placeholder, showing the standard configuration. */
 export const Primary: Story = {
 	args: {
 		label: "Name",

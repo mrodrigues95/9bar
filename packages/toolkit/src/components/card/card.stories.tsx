@@ -28,9 +28,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A full card with header, panel, and footer sections showing the standard composition pattern. */
 export const Default: Story = {
-	render: () => (
-		<Card>
+	render: (props) => (
+		<Card {...props}>
 			<CardHeader>
 				<CardTitle>Card Title</CardTitle>
 				<CardDescription>
@@ -55,9 +56,10 @@ export const Default: Story = {
 	),
 };
 
+/** A card without a footer, showing that card slots are composable and optional. */
 export const WithoutFooter: Story = {
-	render: () => (
-		<Card>
+	render: (props) => (
+		<Card {...props}>
 			<CardHeader>
 				<CardTitle>Simple Card</CardTitle>
 				<CardDescription>This card has no footer.</CardDescription>
@@ -71,9 +73,10 @@ export const WithoutFooter: Story = {
 	),
 };
 
+/** A card without a header, containing only a panel and a footer. */
 export const WithoutHeader: Story = {
-	render: () => (
-		<Card>
+	render: (props) => (
+		<Card {...props}>
 			<CardPanel>
 				<p className="text-secondary text-sm">
 					This card doesn't have a header, just content in the panel.
@@ -88,9 +91,10 @@ export const WithoutHeader: Story = {
 	),
 };
 
+/** A card containing a form, demonstrating how card slots compose with form elements. */
 export const FormCard: Story = {
-	render: () => (
-		<Card className="w-full max-w-xs">
+	render: (props) => (
+		<Card {...props} className="w-full max-w-xs">
 			<CardHeader>
 				<CardTitle>Create project</CardTitle>
 				<CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -123,9 +127,10 @@ export const FormCard: Story = {
 	),
 };
 
+/** A card using only the panel slot for minimal content-only layouts like stat dashboards. */
 export const MinimalPanel: Story = {
-	render: () => (
-		<Card>
+	render: (props) => (
+		<Card {...props}>
 			<CardPanel className="space-y-4">
 				<h4 className="font-semibold text-slate-900">Quick Stats</h4>
 				<div className="grid grid-cols-2 gap-4">

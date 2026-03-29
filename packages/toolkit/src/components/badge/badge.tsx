@@ -26,10 +26,12 @@ const badgeVariants = tv({
 	},
 });
 
+/** Props for the {@link Badge} component. */
 export interface BadgeProps
 	extends ComponentProps<"span">,
 		VariantProps<typeof badgeVariants> {}
 
+/** A badge displays a small label for categorization, status, or metadata. */
 export const Badge = ({ className, variant, size, ...props }: BadgeProps) => {
 	return (
 		<span

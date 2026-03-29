@@ -24,6 +24,7 @@ export default meta;
 
 type Story = StoryObj<typeof Popover>;
 
+/** Opens a basic popover from an icon button trigger. Use the controls to toggle the arrow, placement, and offset. */
 export const Default: Story = {
 	args: {},
 	render: (props) => (

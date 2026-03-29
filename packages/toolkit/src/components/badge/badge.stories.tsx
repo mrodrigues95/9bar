@@ -15,12 +15,14 @@ export default meta;
 
 type Story = StoryObj<typeof Badge>;
 
+/** A badge with default props, useful as a baseline for testing variant and size controls. */
 export const Default: Story = {
 	args: {
 		size: "sm",
 	},
 };
 
+/** Compares all available badge variants side by side: `default`, `outline`, `solid`, `success`, `warning`, `info`, and `danger`. */
 export const Variants: Story = {
 	args: {
 		size: "sm",
@@ -52,6 +54,7 @@ export const Variants: Story = {
 	),
 };
 
+/** A badge with a leading icon, demonstrating how SVG icons are sized automatically. */
 export const WithIcon: Story = {
 	args: {
 		size: "md",

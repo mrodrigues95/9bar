@@ -100,13 +100,22 @@ const getInitials = (name?: string, limit = 2) => {
 		.toUpperCase();
 };
 
+/** Props for the {@link Avatar} component. */
 export interface AvatarProps extends VariantProps<typeof avatarVariants> {
+	/** The URL of the avatar image. */
 	src?: string;
+	/** Accessible alt text for the avatar image. */
 	alt?: string;
+	/** The user's full name, used to derive initials as a fallback. */
 	name?: string;
+	/** Custom content to display when no image or name is available. */
 	placeholder?: ReactNode;
 }
 
+/**
+ * An avatar represents a user or entity with a profile image, initials derived
+ * from their name, or a placeholder icon.
+ */
 export const Avatar = ({
 	src,
 	alt,

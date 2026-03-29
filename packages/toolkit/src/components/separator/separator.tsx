@@ -48,6 +48,7 @@ export interface SeparatorProps
 	extends Omit<AriaSeparatorProps, "orientation">,
 		VariantProps<typeof separatorVariants> {}
 
+/** A visual divider that separates content into distinct sections. */
 export const Separator = ({
 	orientation,
 	variant,

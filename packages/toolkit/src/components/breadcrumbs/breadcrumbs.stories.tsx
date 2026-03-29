@@ -14,7 +14,7 @@ import { Breadcrumb, type BreadcrumbProps, Breadcrumbs } from "./breadcrumbs";
 const meta = {
 	component: Breadcrumbs,
 	title: "Breadcrumbs",
-	parameters: { controls: { disable: true } },
+	parameters: { controls: { include: [] } },
 } satisfies Meta<typeof Breadcrumbs>;
 
 export default meta;
@@ -32,9 +32,10 @@ const DefaultBreadcrumb = ({ label }: { label: string }) => (
 	</Breadcrumb>
 );
 
+/** A basic breadcrumb trail with link items separated by chevron icons. */
 export const Default: Story = {
-	render: () => (
-		<Breadcrumbs>
+	render: (props) => (
+		<Breadcrumbs {...props}>
 			<DefaultBreadcrumb label="Home" />
 			<DefaultBreadcrumb label="Library" />
 			<DefaultBreadcrumb label="Data" />
@@ -68,6 +69,7 @@ const WithEllipsisBreadcrumb = ({ children }: BreadcrumbProps) => (
 	</Breadcrumb>
 );
 
+/** A breadcrumb trail that collapses intermediate items behind an ellipsis menu, useful for deep hierarchies. */
 export const WithEllipsis: Story = {
 	render: (props) => (
 		<Breadcrumbs {...props}>
@@ -96,6 +98,7 @@ export const WithEllipsis: Story = {
 	),
 };
 
+/** Breadcrumbs wrapped in a `nav` landmark element for use as the primary page navigation. */
 export const MainNavigation: Story = {
 	...WithEllipsis,
 	render: (props, context) => (
@@ -103,6 +106,7 @@ export const MainNavigation: Story = {
 	),
 };
 
+/** Breadcrumbs in the disabled state, preventing all interaction. */
 export const Disabled: Story = {
 	...WithEllipsis,
 	args: {
@@ -111,6 +115,7 @@ export const Disabled: Story = {
 	},
 };
 
+/** Breadcrumbs with a dynamic item list that updates when a breadcrumb is clicked, simulating navigation. */
 export const DynamicContent: Story = {
 	render: () => {
 		const [breadcrumbs, setBreadcrumbs] = useState([

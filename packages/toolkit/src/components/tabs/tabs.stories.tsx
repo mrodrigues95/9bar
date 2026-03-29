@@ -25,6 +25,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A horizontal underline tab bar with icon+label tabs and corresponding content panels. Use the controls to change variant, orientation, and color. */
 export const Default: Story = {
 	args: {
 		variant: "underline",

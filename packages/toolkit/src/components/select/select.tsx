@@ -27,6 +27,7 @@ type SelectionMode = "single" | "multiple";
 export interface SelectProps<T extends object>
 	extends AriaSelectProps<T, SelectionMode> {}
 
+/** A dropdown component that allows users to choose one or more options from a collapsible list. */
 export const Select = <T extends object>({
 	children,
 	...props
@@ -47,6 +48,7 @@ export const Select = <T extends object>({
 
 export interface SelectTriggerProps extends ButtonProps {}
 
+/** The button that opens the {@link Select} popover and displays the current value. */
 export const SelectTrigger = (props: SelectTriggerProps) => {
 	const context = useContext(AriaSelectStateContext);
 	return (
@@ -76,6 +78,7 @@ export const SelectTrigger = (props: SelectTriggerProps) => {
 export interface SelectValueProps<T extends object>
 	extends AriaSelectValueProps<T> {}
 
+/** Renders the currently selected value or a placeholder inside a {@link SelectTrigger}. */
 export const SelectValue = <T extends object>({
 	children,
 	...props
@@ -98,6 +101,7 @@ export const SelectValue = <T extends object>({
 
 export interface SelectPopoverProps extends PopoverProps {}
 
+/** The floating overlay that contains the {@link SelectListbox}. */
 export const SelectPopover = (props: SelectPopoverProps) => {
 	return (
 		<Popover
@@ -114,6 +118,7 @@ export const SelectPopover = (props: SelectPopoverProps) => {
 export interface SelectListboxProps<T extends object>
 	extends AriaListBoxProps<T> {}
 
+/** The scrollable list of options rendered inside a {@link SelectPopover}. */
 export const SelectListbox = <T extends object>(
 	props: SelectListboxProps<T>,
 ) => {
@@ -132,6 +137,7 @@ export const SelectListbox = <T extends object>(
 export interface SelectItemProps<T extends object>
 	extends ListboxItemProps<T> {}
 
+/** An individual option within a {@link SelectListbox}. */
 export const SelectItem = <T extends object>(props: SelectItemProps<T>) => {
 	return <ListboxItem data-slot="select-item" {...props} />;
 };
@@ -139,6 +145,7 @@ export const SelectItem = <T extends object>(props: SelectItemProps<T>) => {
 export interface SelectSectionProps<T extends object>
 	extends ListboxSectionProps<T> {}
 
+/** A semantic group of related {@link SelectItem} elements within a {@link SelectListbox}. */
 export const SelectSection = <T extends object>(
 	props: SelectSectionProps<T>,
 ) => {
@@ -147,6 +154,7 @@ export const SelectSection = <T extends object>(
 
 export interface SelectSectionHeaderProps extends ListboxSectionHeaderProps {}
 
+/** A styled header rendered above a {@link SelectSection}. */
 export const SelectSectionHeader = (props: SelectSectionHeaderProps) => {
 	return <ListboxSectionHeader data-slot="select-section-header" {...props} />;
 };

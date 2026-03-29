@@ -12,6 +12,7 @@ export default meta;
 
 type Story = StoryObj<typeof Link>;
 
+/** Renders the default link variant. Use the controls to switch between button-style variants, sizes, and disabled states. */
 export const Primary: Story = {
 	args: {},
 };

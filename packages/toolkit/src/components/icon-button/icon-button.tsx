@@ -29,10 +29,13 @@ export const iconButtonVariants = tv({
 export interface IconButtonProps
 	extends Omit<AriaButtonProps, "children">,
 		VariantProps<typeof iconButtonVariants> {
+	/** The icon element to render inside the button. */
 	children: React.ReactNode;
+	/** An accessible label describing the button's action. Required because the button has no visible text. */
 	"aria-label": string;
 }
 
+/** A button that displays only an icon, requiring an `aria-label` for accessibility. */
 export const IconButton = ({
 	variant,
 	size,

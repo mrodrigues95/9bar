@@ -11,17 +11,29 @@ import { Label, type LabelProps } from "../../field/label";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
+/** Props for the {@link CheckboxGroupField} component. */
 export interface CheckboxGroupFieldProps
 	extends Omit<CheckboxGroupProps, "children"> {
+	/** The checkbox items to display in the group. */
 	children: ReactNode;
+	/** The label text displayed above the checkbox group. */
 	label: string;
+	/** Help text displayed below the checkbox group. */
 	description?: string;
+	/** An error message or a function that returns one from the validation result. */
 	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** Additional props forwarded to the `Label` component. */
 	labelProps?: LabelProps;
+	/** Additional props forwarded to the `Description` component. */
 	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 }
 
+/**
+ * A checkbox group field composes a labeled checkbox group with a description
+ * and error message for use in forms.
+ */
 export const CheckboxGroupField = ({
 	label,
 	description,
@@ -44,10 +56,13 @@ export const CheckboxGroupField = ({
 	);
 };
 
+/** Props for the {@link FormCheckboxGroupField} component. */
 export interface FormCheckboxGroupFieldProps extends CheckboxGroupFieldProps {
+	/** A custom error formatter for converting form validation errors to a display string. */
 	formatErrors?: TErrorFormatter;
 }
 
+/** A form-connected checkbox group field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormCheckboxGroupField = ({
 	formatErrors = defaultErrorFormatter,
 	...props

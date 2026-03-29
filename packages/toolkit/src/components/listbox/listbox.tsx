@@ -18,6 +18,7 @@ import { Separator, type SeparatorProps } from "../separator/separator";
 export interface ListboxProps<T extends object>
 	extends Omit<AriaListBoxProps<T>, "layout" | "orientation"> {}
 
+/** A list of options that allows single or multiple selection. */
 export const Listbox = <T extends object>({
 	children,
 	...props
@@ -58,9 +59,11 @@ export const listboxItemVariants = tv({
 export interface ListboxItemProps<T extends object>
 	extends AriaListBoxItemProps<T>,
 		VariantProps<typeof listboxItemVariants> {
+	/** Content rendered before the item label, such as an icon. */
 	startContent?: ReactNode;
 }
 
+/** An individual option within a {@link Listbox}. */
 export const ListboxItem = <T extends object>({
 	variant,
 	startContent,
@@ -94,9 +97,11 @@ export const ListboxItem = <T extends object>({
 
 export interface ListboxSectionProps<T extends object>
 	extends AriaListBoxSectionProps<T> {
+	/** A header element rendered above the section items. */
 	title?: ReactNode;
 }
 
+/** A semantic group of related {@link ListboxItem} elements within a {@link Listbox}. */
 export const ListboxSection = <T extends object>({
 	title,
 	items,
@@ -112,9 +117,11 @@ export const ListboxSection = <T extends object>({
 };
 
 export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
+	/** The text label displayed for this section. */
 	title: string;
 }
 
+/** A styled header rendered above a {@link ListboxSection}. */
 export const ListboxSectionHeader = ({
 	title,
 	...props
@@ -135,6 +142,7 @@ export const ListboxSectionHeader = ({
 
 export interface ListboxSeparatorProps extends SeparatorProps {}
 
+/** A visual divider placed between {@link ListboxSection} elements. */
 export const ListboxSeparator = (props: ListboxSeparatorProps) => {
 	return (
 		<Separator

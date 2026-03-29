@@ -75,10 +75,16 @@ const defaultIcons = {
 	info: InformationCircleIcon,
 };
 
+/** Props for the {@link Alert} component. */
 export interface AlertProps
 	extends ComponentProps<"div">,
 		VariantProps<typeof alertVariants> {}
 
+/**
+ * An alert displays a brief, important message in a way that attracts the user's attention
+ * without interrupting their task. Use alerts for contextual feedback such as success
+ * confirmations, warnings, errors, or informational notices.
+ */
 export const Alert = ({
 	variant = "info",
 	className,
@@ -117,10 +123,13 @@ export const Alert = ({
 	);
 };
 
+/** Props for the {@link AlertIndicator} component. */
 export interface AlertIndicatorProps extends ComponentProps<"div"> {
+	/** A custom icon to display. Defaults to a variant-appropriate icon when omitted. */
 	children?: ReactNode;
 }
 
+/** An icon displayed at the start of an alert. Renders a default icon based on the alert variant when no children are provided. */
 export const AlertIndicator = ({
 	className,
 	children,
@@ -141,6 +150,7 @@ export const AlertIndicator = ({
 	);
 };
 
+/** A layout wrapper for the title and description within an alert. */
 export const AlertContent = ({
 	className,
 	...props
@@ -157,6 +167,7 @@ export const AlertContent = ({
 	);
 };
 
+/** A short heading that labels the alert. Automatically linked to the alert via `aria-labelledby`. */
 export const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	const { titleId, variant, setHasTitle } = useAlert();
 	const styles = alertVariants({ variant });
@@ -176,6 +187,7 @@ export const AlertTitle = ({ className, ...props }: ComponentProps<"span">) => {
 	);
 };
 
+/** Supplementary text that provides additional context for the alert. Automatically linked to the alert via `aria-describedby`. */
 export const AlertDescription = ({
 	className,
 	...props
@@ -213,6 +225,7 @@ const alertActionVariants = tv({
 	},
 });
 
+/** A container for interactive elements (buttons, links) placed at the end of an alert. Inherits variant-aware text color. */
 export const AlertAction = ({ className, ...props }: ComponentProps<"div">) => {
 	const { variant } = useAlert();
 	return (

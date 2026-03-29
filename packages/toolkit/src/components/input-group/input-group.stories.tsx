@@ -30,6 +30,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** A minimal input group with a trailing icon addon. */
 export const Default: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Weight" {...props}>
@@ -41,6 +42,7 @@ export const Default: Story = {
 	),
 };
 
+/** Pairs the input group with a visible Field and Label, plus a trailing text addon showing the unit. */
 export const WithVisibleLabel: Story = {
 	render: (props) => {
 		const id = useId();
@@ -66,6 +68,7 @@ export const WithVisibleLabel: Story = {
 	},
 };
 
+/** Shows multiple InputGroupInput elements in a single group, useful for segmented inputs like serial numbers. */
 export const WithMultipleInputs: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Serial Number" className="max-w-40" {...props}>
@@ -88,6 +91,7 @@ export const WithMultipleInputs: Story = {
 	),
 };
 
+/** Demonstrates a leading text addon, such as a currency symbol, before the input. */
 export const WithStartText: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Price" {...props}>
@@ -105,6 +109,7 @@ export const WithStartText: Story = {
 	),
 };
 
+/** Combines a leading prefix and trailing suffix around the input, useful for URL builders. */
 export const WithStartAndEndText: Story = {
 	render: (props) => (
 		<InputGroup aria-label="URL" {...props}>
@@ -123,6 +128,7 @@ export const WithStartAndEndText: Story = {
 	),
 };
 
+/** Embeds a compact Select inside a trailing addon, allowing the user to choose a unit alongside the numeric input. */
 export const WithSelect: Story = {
 	render: (props) => (
 		<div className="flex flex-col gap-6">

@@ -105,6 +105,7 @@ const TabsContext = createContext<TabsContextValue>({
 
 export interface TabsProps extends AriaTabsProps, TabsVariantProps {}
 
+/** A set of layered panels where only one panel is visible at a time, controlled by a tabbed navigation bar. */
 export const Tabs = ({
 	variant = "underline",
 	orientation = "horizontal",
@@ -129,6 +130,7 @@ export const Tabs = ({
 
 export interface TabListProps<T extends object> extends AriaTabListProps<T> {}
 
+/** A horizontal or vertical bar containing the {@link Tab} elements that control panel visibility. */
 export const TabList = <T extends object>(props: TabListProps<T>) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });
@@ -146,6 +148,7 @@ export const TabList = <T extends object>(props: TabListProps<T>) => {
 
 export interface TabProps extends AriaTabProps {}
 
+/** An individual tab button that activates its corresponding {@link TabPanel}. */
 export const Tab = (props: TabProps) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });
@@ -172,6 +175,7 @@ export const Tab = (props: TabProps) => {
 export interface TabPanelsProps<T extends object>
 	extends AriaTabPanelsProps<T> {}
 
+/** A container for the set of {@link TabPanel} elements, handling animated transitions between panels. */
 export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });
@@ -187,6 +191,7 @@ export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
 
 export interface TabPanelProps extends AriaTabPanelProps {}
 
+/** The content area associated with a single {@link Tab}. Only the active panel is visible. */
 export const TabPanel = (props: TabPanelProps) => {
 	const { variant, orientation, color } = useContext(TabsContext);
 	const styles = tabsVariants({ variant, orientation, color });

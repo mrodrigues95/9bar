@@ -70,10 +70,15 @@ export const buttonVariants = tv({
 	},
 });
 
+/** Props for the {@link Button} component. */
 export interface ButtonProps
 	extends AriaButtonProps,
 		VariantProps<typeof buttonVariants> {}
 
+/**
+ * A button allows a user to perform an action, with mouse, touch, and
+ * keyboard interactions.
+ */
 export const Button = ({ variant, size, ...props }: ButtonProps) => (
 	<AriaButton
 		data-slot="button"
