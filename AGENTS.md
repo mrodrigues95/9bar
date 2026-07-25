@@ -50,9 +50,13 @@ The `pnpm web` and `pnpm toolkit` shorthands are aliases for `pnpm --filter @9ba
 
 ## Development Guidelines
 
-- For general coding guidelines, see [.agents/general.md](.agents/general.md)
-- For accessibility guidelines, see [.agents/a11y.md](.agents/a11y.md)
-- For TypeScript guidelines, see [.agents/typescript.md](.agents/typescript.md)
+### Code Style
+
+- Use ES6 arrow functions over `function` declarations. Always use curly braces for function bodies; avoid inline returns.
+- Rely on TypeScript's return-type inference; annotate return types only when needed to narrow a type or resolve a type error.
+- Prefer shorthand falsy checks (`!value.length`, `!items`) over explicit comparisons. Exception: in JSX, use `value.length > 0 &&` instead of `value.length &&` to avoid rendering `0`.
+
+For accessibility guidelines when building UI, see [.agents/a11y.md](.agents/a11y.md).
 
 ### Commit Messages
 
@@ -76,10 +80,7 @@ Common scopes: `web`, `toolkit`, or both `web, toolkit`.
 │       │   ├── routes/         # File-based routes (TanStack Router)
 │       │   ├── styles/         # Global CSS
 │       │   └── ...
-│       ├── biome.json          # Extends root, adds a11y + React rules
-│       ├── vite.config.ts
-│       ├── tsconfig.json
-│       └── package.json
+│       └── biome.json          # Extends root, adds a11y + React rules
 ├── packages/
 │   └── toolkit/                # @9bar/toolkit
 │       ├── src/
@@ -87,13 +88,9 @@ Common scopes: `web`, `toolkit`, or both `web, toolkit`.
 │       │   ├── form/           # Form system
 │       │   └── index.ts        # Barrel export
 │       ├── .storybook/         # Storybook 10 config
-│       ├── vite.config.ts
-│       ├── tsconfig.json
-│       └── package.json
+│       └── ...
 ├── biome.json                  # Root Biome config
 ├── tsconfig.base.json          # Shared strict TS config
-├── tsconfig.node.json          # Shared Node TS config (for vite.config.ts)
-├── commitlint.config.js
 ├── pnpm-workspace.yaml
 └── package.json
 ```

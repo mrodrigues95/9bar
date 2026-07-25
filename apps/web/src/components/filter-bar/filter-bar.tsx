@@ -48,7 +48,7 @@ export interface FilterBarDefinition<
 		plural: TOperatorId;
 	}>;
 	formatValue?: (
-		values: readonly string[],
+		values: ReadonlyArray<string>,
 		options: ReadonlyArray<FilterBarOption>,
 	) => string;
 	/** Whether to partition value menu options (selected first, then unselected). Defaults to `true`. */
@@ -114,7 +114,7 @@ const getVisibleOperators = (
 };
 
 const formatValuesDefault = (
-	values: readonly string[],
+	values: ReadonlyArray<string>,
 	options: ReadonlyArray<FilterBarOption>,
 	pluralLabel: string,
 ): string => {
@@ -129,7 +129,7 @@ const formatValuesDefault = (
 
 const partitionFilterOptions = (
 	options: ReadonlyArray<FilterBarOption>,
-	values: readonly string[],
+	values: ReadonlyArray<string>,
 ): [Array<FilterBarOption>, Array<FilterBarOption>] => {
 	const selectedSet = new Set(values);
 	const selected: Array<FilterBarOption> = [];
@@ -194,7 +194,7 @@ interface FilterBarChipProps {
 	definition: FilterBarDefinition;
 	onUpdate: (
 		id: string,
-		changes: { operatorId?: string; values?: string[] },
+		changes: { operatorId?: string; values?: Array<string> },
 	) => void;
 	onRemove: (id: string) => void;
 }
@@ -404,12 +404,12 @@ export const FilterBar = <
 	children,
 	...toolbarProps
 }: FilterBarProps<TDefs>) => {
-	const [uncontrolledFilters, setUncontrolledFilters] = useState<Filter[]>(
-		() => (defaultFilters as Filter[] | undefined) ?? [],
+	const [uncontrolledFilters, setUncontrolledFilters] = useState<Array<Filter>>(
+		() => (defaultFilters as Array<Filter> | undefined) ?? [],
 	);
 	const isControlled = controlledFilters !== undefined;
-	const filters: Filter[] = isControlled
-		? (controlledFilters as Filter[])
+	const filters: Array<Filter> = isControlled
+		? (controlledFilters as Array<Filter>)
 		: uncontrolledFilters;
 
 	// biome-ignore lint/suspicious/noExplicitAny: Type-erased ref for generic callback
@@ -433,7 +433,7 @@ export const FilterBar = <
 	);
 
 	const update = useCallback(
-		(getNext: (current: Filter[]) => Filter[]) => {
+		(getNext: (current: Array<Filter>) => Array<Filter>) => {
 			if (!isControlled) {
 				setUncontrolledFilters((prev) => {
 					const next = getNext(prev);
@@ -490,7 +490,7 @@ export const FilterBar = <
 	}, [update]);
 
 	const handleFilterUpdate = useCallback(
-		(id: string, changes: { operatorId?: string; values?: string[] }) => {
+		(id: string, changes: { operatorId?: string; values?: Array<string> }) => {
 			update((current) =>
 				current.map((f) => (f.id === id ? { ...f, ...changes } : f)),
 			);

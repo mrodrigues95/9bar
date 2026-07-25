@@ -115,7 +115,7 @@ export function FormSelectField<T extends object>({
 	formatErrors = defaultErrorFormatter,
 	...props
 }: FormSelectFieldProps<T>) {
-	const field = useFieldContext<Key | Key[] | null>();
+	const field = useFieldContext<Key | Array<Key> | null>();
 	const errors = useStore(field.store, (state) => state.meta.errors);
 	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
 

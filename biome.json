@@ -29,6 +29,14 @@
 						"functions": ["tv"]
 					}
 				}
+			},
+			"style": {
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": {
+						"syntax": "generic"
+					}
+				}
 			}
 		}
 	},

@@ -61,7 +61,7 @@ const getLoaderBreadcrumb = (
  */
 const resolveSuffixParentBreadcrumbs = (
 	match: AnyRouteMatch,
-	matches: AnyRouteMatch[],
+	matches: Array<AnyRouteMatch>,
 	routesById: TRoutesById,
 	seen: Set<string>,
 ) => {
