@@ -361,7 +361,7 @@ const FilterBarChip = ({
 };
 
 export interface FilterBarProps<
-	TDefs extends readonly FilterBarDefinition<string, string>[],
+	TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>,
 > extends Omit<AriaToolbarProps, "orientation" | "children"> {
 	definitions: TDefs;
 	filters?: Array<
@@ -395,7 +395,7 @@ export interface FilterBarProps<
 type Filter = FilterBarFilterState;
 
 export const FilterBar = <
-	TDefs extends readonly FilterBarDefinition<string, string>[],
+	TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>,
 >({
 	definitions,
 	filters: controlledFilters,
