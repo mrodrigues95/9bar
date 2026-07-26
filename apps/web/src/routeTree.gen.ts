@@ -8,62 +8,50 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UnauthenticatedRouteRouteImport } from './routes/_unauthenticated/route'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as UnauthenticatedSignUpRouteRouteImport } from './routes/_unauthenticated/sign-up/route'
-import { Route as UnauthenticatedSignInRouteRouteImport } from './routes/_unauthenticated/sign-in/route'
-import { Route as AuthenticatedRecipesRouteRouteImport } from './routes/_authenticated/recipes/route'
-import { Route as AuthenticatedProfileRouteRouteImport } from './routes/_authenticated/profile/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as UnauthenticatedRouteRouteImport } from './routes/_unauthenticated/route'
 import { Route as AuthenticatedHomeRouteRouteImport } from './routes/_authenticated/home/route'
-import { Route as AuthenticatedRecipes_formRouteRouteImport } from './routes/_authenticated/recipes_/_form/route'
+import { Route as AuthenticatedProfileRouteRouteImport } from './routes/_authenticated/profile/route'
+import { Route as AuthenticatedRecipesRouteRouteImport } from './routes/_authenticated/recipes/route'
+import { Route as UnauthenticatedSignInRouteRouteImport } from './routes/_unauthenticated/sign-in/route'
+import { Route as UnauthenticatedSignUpRouteRouteImport } from './routes/_unauthenticated/sign-up/route'
 import { Route as AuthenticatedRecipesRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/route'
+import { Route as AuthenticatedRecipes_formRouteRouteImport } from './routes/_authenticated/recipes_/_form/route'
 import { Route as AuthenticatedRecipesRecipeIdIndexRouteImport } from './routes/_authenticated/recipes_/$recipeId/index'
-import { Route as AuthenticatedRecipes_formNewRouteRouteImport } from './routes/_authenticated/recipes_/_form/new/route'
-import { Route as AuthenticatedRecipes_formRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/route'
-import { Route as AuthenticatedRecipesRecipeIdOverviewRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/overview/route'
 import { Route as AuthenticatedRecipesRecipeIdLogsRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/logs/route'
-import { Route as AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/logs/route'
+import { Route as AuthenticatedRecipesRecipeIdOverviewRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/overview/route'
+import { Route as AuthenticatedRecipes_formRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/route'
+import { Route as AuthenticatedRecipes_formNewRouteRouteImport } from './routes/_authenticated/recipes_/_form/new/route'
 import { Route as AuthenticatedRecipes_formRecipeIdEditRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/edit/route'
+import { Route as AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/logs/route'
 import { Route as AuthenticatedRecipes_formRecipeIdLogsNewRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/logs/new/route'
 import { Route as AuthenticatedRecipes_formRecipeIdLogsLogIdEditRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/logs/$logId/edit/route'
 
-const AuthenticatedRecipesRouteImport = createFileRoute(
-  '/_authenticated/recipes_',
-)()
-
-const UnauthenticatedRouteRoute = UnauthenticatedRouteRouteImport.update({
-  id: '/_unauthenticated',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const UnauthenticatedRouteRoute = UnauthenticatedRouteRouteImport.update({
+  id: '/_unauthenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRecipesRoute = AuthenticatedRecipesRouteImport.update({
-  id: '/recipes_',
-  path: '/recipes',
+const AuthenticatedHomeRouteRoute = AuthenticatedHomeRouteRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const UnauthenticatedSignUpRouteRoute =
-  UnauthenticatedSignUpRouteRouteImport.update({
-    id: '/sign-up',
-    path: '/sign-up',
-    getParentRoute: () => UnauthenticatedRouteRoute,
-  } as any)
-const UnauthenticatedSignInRouteRoute =
-  UnauthenticatedSignInRouteRouteImport.update({
-    id: '/sign-in',
-    path: '/sign-in',
-    getParentRoute: () => UnauthenticatedRouteRoute,
+const AuthenticatedProfileRouteRoute =
+  AuthenticatedProfileRouteRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRecipesRouteRoute =
   AuthenticatedRecipesRouteRouteImport.update({
@@ -71,26 +59,28 @@ const AuthenticatedRecipesRouteRoute =
     path: '/recipes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedProfileRouteRoute =
-  AuthenticatedProfileRouteRouteImport.update({
-    id: '/profile',
-    path: '/profile',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const UnauthenticatedSignInRouteRoute =
+  UnauthenticatedSignInRouteRouteImport.update({
+    id: '/sign-in',
+    path: '/sign-in',
+    getParentRoute: () => UnauthenticatedRouteRoute,
   } as any)
-const AuthenticatedHomeRouteRoute = AuthenticatedHomeRouteRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedRecipes_formRouteRoute =
-  AuthenticatedRecipes_formRouteRouteImport.update({
-    id: '/_form',
-    getParentRoute: () => AuthenticatedRecipesRoute,
+const UnauthenticatedSignUpRouteRoute =
+  UnauthenticatedSignUpRouteRouteImport.update({
+    id: '/sign-up',
+    path: '/sign-up',
+    getParentRoute: () => UnauthenticatedRouteRoute,
   } as any)
 const AuthenticatedRecipesRecipeIdRouteRoute =
   AuthenticatedRecipesRecipeIdRouteRouteImport.update({
     id: '/recipes_/$recipeId',
     path: '/recipes/$recipeId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRecipes_formRouteRoute =
+  AuthenticatedRecipes_formRouteRouteImport.update({
+    id: '/recipes_/_form',
+    path: '/recipes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRecipesRecipeIdIndexRoute =
@@ -99,17 +89,11 @@ const AuthenticatedRecipesRecipeIdIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
   } as any)
-const AuthenticatedRecipes_formNewRouteRoute =
-  AuthenticatedRecipes_formNewRouteRouteImport.update({
-    id: '/new',
-    path: '/new',
-    getParentRoute: () => AuthenticatedRecipes_formRouteRoute,
-  } as any)
-const AuthenticatedRecipes_formRecipeIdRouteRoute =
-  AuthenticatedRecipes_formRecipeIdRouteRouteImport.update({
-    id: '/$recipeId_',
-    path: '/$recipeId',
-    getParentRoute: () => AuthenticatedRecipes_formRouteRoute,
+const AuthenticatedRecipesRecipeIdLogsRouteRoute =
+  AuthenticatedRecipesRecipeIdLogsRouteRouteImport.update({
+    id: '/logs',
+    path: '/logs',
+    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
   } as any)
 const AuthenticatedRecipesRecipeIdOverviewRouteRoute =
   AuthenticatedRecipesRecipeIdOverviewRouteRouteImport.update({
@@ -117,22 +101,28 @@ const AuthenticatedRecipesRecipeIdOverviewRouteRoute =
     path: '/overview',
     getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
   } as any)
-const AuthenticatedRecipesRecipeIdLogsRouteRoute =
-  AuthenticatedRecipesRecipeIdLogsRouteRouteImport.update({
-    id: '/logs',
-    path: '/logs',
-    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
+const AuthenticatedRecipes_formRecipeIdRouteRoute =
+  AuthenticatedRecipes_formRecipeIdRouteRouteImport.update({
+    id: '/$recipeId_',
+    path: '/$recipeId',
+    getParentRoute: () => AuthenticatedRecipes_formRouteRoute,
   } as any)
-const AuthenticatedRecipes_formRecipeIdLogsRouteRoute =
-  AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport.update({
-    id: '/logs',
-    path: '/logs',
-    getParentRoute: () => AuthenticatedRecipes_formRecipeIdRouteRoute,
+const AuthenticatedRecipes_formNewRouteRoute =
+  AuthenticatedRecipes_formNewRouteRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedRecipes_formRouteRoute,
   } as any)
 const AuthenticatedRecipes_formRecipeIdEditRouteRoute =
   AuthenticatedRecipes_formRecipeIdEditRouteRouteImport.update({
     id: '/edit',
     path: '/edit',
+    getParentRoute: () => AuthenticatedRecipes_formRecipeIdRouteRoute,
+  } as any)
+const AuthenticatedRecipes_formRecipeIdLogsRouteRoute =
+  AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport.update({
+    id: '/logs',
+    path: '/logs',
     getParentRoute: () => AuthenticatedRecipes_formRecipeIdRouteRoute,
   } as any)
 const AuthenticatedRecipes_formRecipeIdLogsNewRouteRoute =
@@ -152,7 +142,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof AuthenticatedHomeRouteRoute
   '/profile': typeof AuthenticatedProfileRouteRoute
-  '/recipes': typeof AuthenticatedRecipes_formRouteRouteWithChildren
+  '/recipes': typeof AuthenticatedRecipesRouteRoute
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/$recipeId': typeof AuthenticatedRecipes_formRecipeIdRouteRouteWithChildren
@@ -168,7 +158,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof AuthenticatedHomeRouteRoute
   '/profile': typeof AuthenticatedProfileRouteRoute
-  '/recipes': typeof AuthenticatedRecipes_formRouteRouteWithChildren
+  '/recipes': typeof AuthenticatedRecipesRouteRoute
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/$recipeId/logs': typeof AuthenticatedRecipes_formRecipeIdLogsRouteRouteWithChildren
@@ -190,7 +180,6 @@ export interface FileRoutesById {
   '/_unauthenticated/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/_unauthenticated/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
-  '/_authenticated/recipes_': typeof AuthenticatedRecipesRouteWithChildren
   '/_authenticated/recipes_/_form': typeof AuthenticatedRecipes_formRouteRouteWithChildren
   '/_authenticated/recipes_/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRoute
   '/_authenticated/recipes_/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
@@ -245,7 +234,6 @@ export interface FileRouteTypes {
     | '/_unauthenticated/sign-in'
     | '/_unauthenticated/sign-up'
     | '/_authenticated/recipes_/$recipeId'
-    | '/_authenticated/recipes_'
     | '/_authenticated/recipes_/_form'
     | '/_authenticated/recipes_/$recipeId/logs'
     | '/_authenticated/recipes_/$recipeId/overview'
@@ -266,20 +254,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_unauthenticated': {
-      id: '/_unauthenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof UnauthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -287,32 +261,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/recipes_': {
-      id: '/_authenticated/recipes_'
-      path: '/recipes'
-      fullPath: '/recipes'
-      preLoaderRoute: typeof AuthenticatedRecipesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_unauthenticated/sign-up': {
-      id: '/_unauthenticated/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof UnauthenticatedSignUpRouteRouteImport
-      parentRoute: typeof UnauthenticatedRouteRoute
+    '/_unauthenticated': {
+      id: '/_unauthenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof UnauthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_unauthenticated/sign-in': {
-      id: '/_unauthenticated/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof UnauthenticatedSignInRouteRouteImport
-      parentRoute: typeof UnauthenticatedRouteRoute
-    }
-    '/_authenticated/recipes': {
-      id: '/_authenticated/recipes'
-      path: '/recipes'
-      fullPath: '/recipes'
-      preLoaderRoute: typeof AuthenticatedRecipesRouteRouteImport
+    '/_authenticated/home': {
+      id: '/_authenticated/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profile': {
@@ -322,11 +289,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/home': {
-      id: '/_authenticated/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof AuthenticatedHomeRouteRouteImport
+    '/_authenticated/recipes': {
+      id: '/_authenticated/recipes'
+      path: '/recipes'
+      fullPath: '/recipes'
+      preLoaderRoute: typeof AuthenticatedRecipesRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_unauthenticated/sign-in': {
+      id: '/_unauthenticated/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof UnauthenticatedSignInRouteRouteImport
+      parentRoute: typeof UnauthenticatedRouteRoute
+    }
+    '/_unauthenticated/sign-up': {
+      id: '/_unauthenticated/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof UnauthenticatedSignUpRouteRouteImport
+      parentRoute: typeof UnauthenticatedRouteRoute
+    }
+    '/_authenticated/recipes_/$recipeId': {
+      id: '/_authenticated/recipes_/$recipeId'
+      path: '/recipes/$recipeId'
+      fullPath: '/recipes/$recipeId'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/recipes_/_form': {
@@ -334,13 +322,6 @@ declare module '@tanstack/react-router' {
       path: '/recipes'
       fullPath: '/recipes'
       preLoaderRoute: typeof AuthenticatedRecipes_formRouteRouteImport
-      parentRoute: typeof AuthenticatedRecipesRoute
-    }
-    '/_authenticated/recipes_/$recipeId': {
-      id: '/_authenticated/recipes_/$recipeId'
-      path: '/recipes/$recipeId'
-      fullPath: '/recipes/$recipeId'
-      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/recipes_/$recipeId/': {
@@ -350,19 +331,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRecipesRecipeIdIndexRouteImport
       parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
     }
-    '/_authenticated/recipes_/_form/new': {
-      id: '/_authenticated/recipes_/_form/new'
-      path: '/new'
-      fullPath: '/recipes/new'
-      preLoaderRoute: typeof AuthenticatedRecipes_formNewRouteRouteImport
-      parentRoute: typeof AuthenticatedRecipes_formRouteRoute
-    }
-    '/_authenticated/recipes_/_form/$recipeId_': {
-      id: '/_authenticated/recipes_/_form/$recipeId_'
-      path: '/$recipeId'
-      fullPath: '/recipes/$recipeId'
-      preLoaderRoute: typeof AuthenticatedRecipes_formRecipeIdRouteRouteImport
-      parentRoute: typeof AuthenticatedRecipes_formRouteRoute
+    '/_authenticated/recipes_/$recipeId/logs': {
+      id: '/_authenticated/recipes_/$recipeId/logs'
+      path: '/logs'
+      fullPath: '/recipes/$recipeId/logs'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdLogsRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
     }
     '/_authenticated/recipes_/$recipeId/overview': {
       id: '/_authenticated/recipes_/$recipeId/overview'
@@ -371,25 +345,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRecipesRecipeIdOverviewRouteRouteImport
       parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
     }
-    '/_authenticated/recipes_/$recipeId/logs': {
-      id: '/_authenticated/recipes_/$recipeId/logs'
-      path: '/logs'
-      fullPath: '/recipes/$recipeId/logs'
-      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdLogsRouteRouteImport
-      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+    '/_authenticated/recipes_/_form/$recipeId_': {
+      id: '/_authenticated/recipes_/_form/$recipeId_'
+      path: '/$recipeId'
+      fullPath: '/recipes/$recipeId'
+      preLoaderRoute: typeof AuthenticatedRecipes_formRecipeIdRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipes_formRouteRoute
     }
-    '/_authenticated/recipes_/_form/$recipeId_/logs': {
-      id: '/_authenticated/recipes_/_form/$recipeId_/logs'
-      path: '/logs'
-      fullPath: '/recipes/$recipeId/logs'
-      preLoaderRoute: typeof AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport
-      parentRoute: typeof AuthenticatedRecipes_formRecipeIdRouteRoute
+    '/_authenticated/recipes_/_form/new': {
+      id: '/_authenticated/recipes_/_form/new'
+      path: '/new'
+      fullPath: '/recipes/new'
+      preLoaderRoute: typeof AuthenticatedRecipes_formNewRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipes_formRouteRoute
     }
     '/_authenticated/recipes_/_form/$recipeId_/edit': {
       id: '/_authenticated/recipes_/_form/$recipeId_/edit'
       path: '/edit'
       fullPath: '/recipes/$recipeId/edit'
       preLoaderRoute: typeof AuthenticatedRecipes_formRecipeIdEditRouteRouteImport
+      parentRoute: typeof AuthenticatedRecipes_formRecipeIdRouteRoute
+    }
+    '/_authenticated/recipes_/_form/$recipeId_/logs': {
+      id: '/_authenticated/recipes_/_form/$recipeId_/logs'
+      path: '/logs'
+      fullPath: '/recipes/$recipeId/logs'
+      preLoaderRoute: typeof AuthenticatedRecipes_formRecipeIdLogsRouteRouteImport
       parentRoute: typeof AuthenticatedRecipes_formRecipeIdRouteRoute
     }
     '/_authenticated/recipes_/_form/$recipeId_/logs/new': {
@@ -484,24 +465,12 @@ const AuthenticatedRecipes_formRouteRouteWithChildren =
     AuthenticatedRecipes_formRouteRouteChildren,
   )
 
-interface AuthenticatedRecipesRouteChildren {
-  AuthenticatedRecipes_formRouteRoute: typeof AuthenticatedRecipes_formRouteRouteWithChildren
-}
-
-const AuthenticatedRecipesRouteChildren: AuthenticatedRecipesRouteChildren = {
-  AuthenticatedRecipes_formRouteRoute:
-    AuthenticatedRecipes_formRouteRouteWithChildren,
-}
-
-const AuthenticatedRecipesRouteWithChildren =
-  AuthenticatedRecipesRoute._addFileChildren(AuthenticatedRecipesRouteChildren)
-
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRouteRoute: typeof AuthenticatedHomeRouteRoute
   AuthenticatedProfileRouteRoute: typeof AuthenticatedProfileRouteRoute
   AuthenticatedRecipesRouteRoute: typeof AuthenticatedRecipesRouteRoute
   AuthenticatedRecipesRecipeIdRouteRoute: typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
-  AuthenticatedRecipesRoute: typeof AuthenticatedRecipesRouteWithChildren
+  AuthenticatedRecipes_formRouteRoute: typeof AuthenticatedRecipes_formRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -510,7 +479,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRecipesRouteRoute: AuthenticatedRecipesRouteRoute,
   AuthenticatedRecipesRecipeIdRouteRoute:
     AuthenticatedRecipesRecipeIdRouteRouteWithChildren,
-  AuthenticatedRecipesRoute: AuthenticatedRecipesRouteWithChildren,
+  AuthenticatedRecipes_formRouteRoute:
+    AuthenticatedRecipes_formRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -537,3 +507,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

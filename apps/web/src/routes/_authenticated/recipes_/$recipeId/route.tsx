@@ -27,16 +27,10 @@ const Recipe = () => {
 		to: "/recipes/$recipeId/overview",
 		params: { recipeId: String(recipe.id) },
 	});
-	const logsMatch = matchRoute({
-		to: "/recipes/$recipeId/logs",
-		params: { recipeId: String(recipe.id) },
-	});
 
-	let tab: Key | null = null;
+	let tab: Key = TABS.logs;
 	if (overviewMatch) {
 		tab = TABS.overview;
-	} else if (logsMatch) {
-		tab = TABS.logs;
 	}
 
 	return (

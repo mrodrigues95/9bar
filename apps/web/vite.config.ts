@@ -1,9 +1,9 @@
 import optimizeLocales from "@react-aria/optimize-locales-plugin";
+import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
+import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
 	server: {
@@ -16,9 +16,12 @@ export default defineConfig({
 			}),
 			enforce: "pre",
 		},
-		tsConfigPaths(),
-		tanstackStart({ customViteReactPlugin: true }),
-		viteReact({ babel: { plugins: [["babel-plugin-react-compiler", {}]] } }),
+		tanstackStart(),
+		viteReact(),
+		babel({ presets: [reactCompilerPreset()] }),
 		tailwindcss(),
 	],
+	resolve: {
+		tsconfigPaths: true,
+	},
 });

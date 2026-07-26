@@ -9,7 +9,7 @@ import {
 } from "@9bar/toolkit";
 import { BeakerIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "src/components";
+import { Link } from "../../../components";
 
 const Home = () => {
 	return (

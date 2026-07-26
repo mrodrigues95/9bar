@@ -103,7 +103,9 @@ const TabsContext = createContext<TabsContextValue>({
 	color: "default",
 });
 
-export interface TabsProps extends AriaTabsProps, TabsVariantProps {}
+export interface TabsProps
+	extends AriaTabsProps,
+		Omit<TabsVariantProps, "orientation"> {}
 
 /** A set of layered panels where only one panel is visible at a time, controlled by a tabbed navigation bar. */
 export const Tabs = ({

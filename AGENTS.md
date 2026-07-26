@@ -17,7 +17,7 @@ Each package has its own `AGENTS.md` with package-specific architecture details,
 
 - **Runtime:** Node.js 22+ (pinned via `.nvmrc`)
 - **Package manager:** pnpm 10+ (npm and yarn are blocked)
-- **Build:** Vite 7 + TypeScript (`tsc -b && vite build`)
+- **Build:** Vite 8 + TypeScript 7 native (`tsc -b && vite build`). A TS 6 compatibility alias (`@typescript/typescript6`) provides the programmatic API for Storybook's `react-docgen-typescript` and `typescript-eslint`.
 - **Linting/Formatting:** Biome (not ESLint/Prettier)
 - **Commit conventions:** Conventional Commits enforced by commitlint
 - **CI:** GitHub Actions (`.github/workflows/ci.yml`)

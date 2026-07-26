@@ -8,7 +8,7 @@
 	"linter": {
 		"rules": {
 			"a11y": {
-				"recommended": true
+				"preset": "recommended"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "error"
