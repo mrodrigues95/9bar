@@ -1,171 +1,213 @@
-import type { ComponentProps } from "react";
-import {
-	Group as AriaGroup,
-	type GroupProps as AriaGroupProps,
-	Input as AriaInput,
-	type InputProps as AriaInputProps,
-	composeRenderProps,
-	InputContext,
-	Provider,
-	SelectContext,
-} from "react-aria-components";
-import { cn, tv, type VariantProps } from "tailwind-variants";
-import {
-	inputContainer,
-	inputDensity,
-	inputDisabled,
-	inputFocusRing,
-	inputText,
-} from "../field/input";
+"use client";
 
-const inputGroupVariants = tv({
-	slots: {
-		root: [
-			inputFocusRing({ variant: "focusWithin" }),
-			inputDisabled(),
-			inputContainer(),
-			"flex items-center gap-1",
-			"has-[[data-slot$=addon]_[data-focused]]:ring-0",
-			"not-data-[invalid]:has-[[data-slot$=addon]_[data-focused]]:border-border",
-		],
-		input: [
-			inputText(),
-			"min-w-0 flex-1 border-0 bg-transparent p-0 shadow-none outline-none ring-0",
-		],
-		text: "line-clamp-1 whitespace-nowrap text-muted text-sm",
-	},
-	variants: {
-		density: {
-			loose: { root: inputDensity({ density: "loose" }) },
-			compact: { root: inputDensity({ density: "compact" }) },
-		},
-	},
-	defaultVariants: {
-		density: "loose",
-	},
-});
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
+import { Group, type GroupProps } from "react-aria-components";
+import { Button } from "#components/button";
+import { Input } from "#components/input";
+import { Textarea } from "#components/textarea";
+import { cn } from "#lib/utils";
 
-export interface InputGroupProps
-	extends AriaGroupProps,
-		VariantProps<typeof inputGroupVariants> {}
+/** Props for the {@link InputGroup} component. */
+export type InputGroupProps = GroupProps;
 
-/** A container that groups an input with addons such as icons, text, or inline selects into a single composite field. */
-export const InputGroup = ({ density, ...props }: InputGroupProps) => {
-	const styles = inputGroupVariants({ density });
+/** A composite control that groups an input or textarea with addons and buttons, such as a unit selector or search field. */
+export const InputGroup = ({ className, ...props }: GroupProps) => {
 	return (
-		<AriaGroup
+		<Group
 			data-slot="input-group"
+			className={cn(
+				[
+					"group/input-group relative flex h-7 w-full min-w-0 items-center rounded-md",
+					"border border-input bg-input/20 outline-none transition-colors",
+					"in-data-[slot=combobox-content]:focus-within:border-inherit",
+					"in-data-[slot=combobox-content]:focus-within:ring-0",
+					"has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto",
+					"has-[>textarea]:h-auto",
+					"has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:flex-col",
+					"has-[textarea]:rounded-md",
+					"has-data-[align=block-end]:rounded-md has-data-[align=block-start]:rounded-md",
+					"has-[[data-slot=input-group-control]:focus-visible]:border-ring",
+					"has-[[data-slot][aria-invalid=true]]:border-destructive",
+					"has-[[data-slot=input-group-control]:focus-visible]:ring-2",
+					"has-[[data-slot=input-group-control]:focus-visible]:ring-ring/30",
+					"has-[[data-slot][aria-invalid=true]]:ring-2",
+					"has-[[data-slot][aria-invalid=true]]:ring-destructive/20",
+					"dark:bg-input/30 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40",
+					"has-[>[data-align=block-end]]:[&>input]:pt-3",
+					"has-[>[data-align=inline-end]]:[&>input]:pr-1.5",
+					"has-[>[data-align=block-start]]:[&>input]:pb-3",
+					"has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
+				],
+				className,
+			)}
 			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				styles.root({ className }),
-			)}
-		>
-			{composeRenderProps(
-				props.children,
-				(children, { isDisabled, isInvalid }) => (
-					<Provider
-						values={[
-							[InputContext, { disabled: isDisabled }],
-							[SelectContext, { isInvalid }],
-						]}
-					>
-						{children}
-					</Provider>
-				),
-			)}
-		</AriaGroup>
-	);
-};
-
-export interface InputGroupInputProps extends AriaInputProps {}
-
-/** The text input rendered inside an {@link InputGroup}. */
-export const InputGroupInput = (props: InputGroupInputProps) => {
-	const styles = inputGroupVariants();
-	return (
-		<AriaInput
-			data-slot="input-group-input"
-			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				styles.input({ className }),
-			)}
 		/>
 	);
 };
 
-const inputGroupAddonVariants = tv({
-	base: [
-		"flex h-auto shrink-0 select-none items-center justify-center",
-		"[&_svg:not([class*='size-'])]:size-4",
+const inputGroupAddonVariants = cva(
+	[
+		"flex h-auto cursor-text select-none items-center justify-center gap-1 py-2",
+		"font-medium text-muted-foreground text-xs/relaxed",
+		"**:data-[slot=kbd]:rounded-[calc(var(--radius-sm)-2px)]",
+		"**:data-[slot=kbd]:bg-muted-foreground/10 **:data-[slot=kbd]:px-1",
+		"**:data-[slot=kbd]:text-[0.625rem]",
+		"group-data-[disabled=true]/input-group:opacity-50",
+		"[&>svg:not([class*='size-'])]:size-3.5",
 	],
-	variants: {
-		align: {
-			start: "has-[[data-slot^=select],[data-slot^=button]]:-ml-0.5",
-			end: "has-[[data-slot^=select],[data-slot^=button]]:-mr-0.5",
+	{
+		variants: {
+			align: {
+				"inline-start":
+					"order-first pl-2 has-[>button]:ml-[-0.275rem] has-[>kbd]:ml-[-0.275rem]",
+				"inline-end":
+					"order-last pr-2 has-[>button]:mr-[-0.275rem] has-[>kbd]:mr-[-0.275rem]",
+				"block-start": [
+					"order-first w-full justify-start px-2 pt-2 group-has-[>input]/input-group:pt-2",
+					"[.border-b]:pb-2",
+				],
+				"block-end": [
+					"order-last w-full justify-start px-2 pb-2 group-has-[>input]/input-group:pb-2",
+					"[.border-t]:pt-2",
+				],
+			},
+		},
+		defaultVariants: {
+			align: "inline-start",
 		},
 	},
-	defaultVariants: {
-		align: "start",
-	},
-});
+);
 
-export interface InputGroupAddonProps
-	extends ComponentProps<"div">,
-		VariantProps<typeof inputGroupAddonVariants> {}
+/** Props for the {@link InputGroupAddon} component. */
+export type InputGroupAddonProps = React.ComponentProps<"div"> &
+	VariantProps<typeof inputGroupAddonVariants>;
 
-/** A slot for supplementary content (icons, buttons, or inline selects) placed at the start or end of an {@link InputGroup}. */
+/** A label, icon, or button placed at the edge of an {@link InputGroup}. */
 export const InputGroupAddon = ({
-	align = "start",
+	className,
+	align = "inline-start",
 	...props
 }: InputGroupAddonProps) => {
 	return (
 		<div
 			data-slot="input-group-addon"
-			role="none"
+			data-align={align}
+			className={cn(inputGroupAddonVariants({ align }), className)}
 			{...props}
-			onMouseDown={(e) => {
-				const target = e.target as HTMLElement;
-				const isInteractive = target.closest(
-					[
-						"button",
-						"a",
-						"input",
-						"select",
-						"textarea",
-						"[role='button']",
-						"[role='combobox']",
-						"[role='listbox']",
-						"[data-slot='select-trigger']",
-					].join(","),
-				);
-				if (isInteractive) {
-					return;
-				}
-
-				e.preventDefault();
-				const parent = e.currentTarget.parentElement;
-				const input = parent?.querySelector<
-					HTMLInputElement | HTMLTextAreaElement
-				>("input, textarea");
-				if (input && !parent?.querySelector("input:focus, textarea:focus")) {
-					input.focus();
-				}
-			}}
-			className={inputGroupAddonVariants({ align, className: props.className })}
 		/>
 	);
 };
 
-export interface InputGroupTextProps extends ComponentProps<"span"> {}
+const inputGroupButtonVariants = cva(
+	"flex items-center gap-2 rounded-md text-xs/relaxed shadow-none",
+	{
+		variants: {
+			size: {
+				xs: "h-5 gap-1 rounded-[calc(var(--radius-sm)-2px)] px-1 [&>svg:not([class*='size-'])]:size-3",
+				sm: "gap-1",
+				"icon-xs": "size-6 p-0 has-[>svg]:p-0",
+				"icon-sm": "size-7 p-0 has-[>svg]:p-0",
+			},
+		},
+		defaultVariants: {
+			size: "xs",
+		},
+	},
+);
 
-/** A short inline text label (e.g. a currency symbol or unit) displayed inside an {@link InputGroupAddon}. */
-export const InputGroupText = (props: InputGroupTextProps) => {
-	const styles = inputGroupVariants();
+/** Props for the {@link InputGroupButton} component. */
+export type InputGroupButtonProps = Omit<
+	React.ComponentProps<typeof Button>,
+	"size" | "type"
+> &
+	VariantProps<typeof inputGroupButtonVariants> & {
+		type?: "button" | "submit" | "reset";
+	};
+
+/** A compact button rendered as an {@link InputGroupAddon}. */
+export const InputGroupButton = ({
+	className,
+	type = "button",
+	variant = "ghost",
+	size = "xs",
+	...props
+}: InputGroupButtonProps) => {
+	return (
+		<Button
+			type={type}
+			data-size={size}
+			variant={variant}
+			className={cn(inputGroupButtonVariants({ size }), className)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link InputGroupText} component. */
+export type InputGroupTextProps = React.ComponentProps<"span">;
+
+/** Static text rendered inside an {@link InputGroup}, such as a unit of measure. */
+export const InputGroupText = ({
+	className,
+	...props
+}: InputGroupTextProps) => {
 	return (
 		<span
-			data-slot="input-group-text"
+			className={cn(
+				[
+					"flex items-center gap-2 text-muted-foreground text-xs/relaxed",
+					"[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+				],
+				className,
+			)}
 			{...props}
-			className={cn(styles.text(), props.className) ?? ""}
+		/>
+	);
+};
+
+/** Props for the {@link InputGroupInput} component. */
+export type InputGroupInputProps = React.ComponentProps<"input">;
+
+/** The input control embedded in an {@link InputGroup}. */
+export const InputGroupInput = ({
+	className,
+	...props
+}: InputGroupInputProps) => {
+	return (
+		<Input
+			data-slot="input-group-control"
+			className={cn(
+				[
+					"flex-1 rounded-none border-0 bg-transparent shadow-none ring-0",
+					"focus-visible:ring-0 aria-invalid:ring-0 dark:bg-transparent",
+				],
+				className,
+			)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link InputGroupTextarea} component. */
+export type InputGroupTextareaProps = React.ComponentProps<"textarea">;
+
+/** The textarea control embedded in an {@link InputGroup}. */
+export const InputGroupTextarea = ({
+	className,
+	...props
+}: InputGroupTextareaProps) => {
+	return (
+		<Textarea
+			data-slot="input-group-control"
+			className={cn(
+				[
+					"flex-1 resize-none rounded-none border-0 bg-transparent py-2 shadow-none ring-0",
+					"focus-visible:ring-0 aria-invalid:ring-0 dark:bg-transparent",
+				],
+				className,
+			)}
+			{...props}
 		/>
 	);
 };

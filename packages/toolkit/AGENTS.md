@@ -1,15 +1,12 @@
 # @9bar/toolkit
 
-Primitive design system built on React Aria Components with Tailwind Variants (`tv()`) for styling.
+Primitive design system built on React Aria Components, styled with shadcn/ui (React Aria base, `aria-mira` style, zinc theme).
 
 ## Commands
 
 ```bash
 # Start Storybook dev server (port 6006)
 pnpm toolkit storybook
-
-# Build the toolkit
-pnpm toolkit build
 
 # Build Storybook as a static site
 pnpm toolkit build-storybook
@@ -22,11 +19,23 @@ pnpm toolkit typecheck
 
 ### Component Conventions
 
-- Each component lives in its own directory: `src/<component>/<component>.tsx`
-- Stories are co-located: `src/<component>/<component>.stories.tsx`
+- Each component lives in its own directory: `src/components/<component>/<component>.tsx`
+- Each component directory has an `index.ts` barrel (`export * from "./<component>"`) so the `#components/*` import alias and `@9bar/toolkit/components/*` exports resolve
+- Public barrels: `src/components/index.ts` (all components, incl. the form system) and `src/utils/index.ts` (utilities). Consumers import from `@9bar/toolkit/components` and `@9bar/toolkit/utils`
 - Components use `data-slot` attributes for identification
-- All components are re-exported from the barrel file `src/index.ts`
-- Component props extend React Aria props with variant types from `tailwind-variants`
+- Components are styled with shadcn class strings (`cn()` / `cva()`) using the theme tokens defined in `src/styles/globals.css`
+- Component props extend React Aria props where applicable
+
+### Class String Formatting
+
+Long class strings in `cva()`/`cn()` calls are broken into arrays of shorter strings, grouped by selector (base layout, then `hover:`/`focus-visible:`/`active:`/`disabled:`/`aria-*`/`data-*`/`dark:*`/`group-*`/`has-*`/arbitrary `[&_...]` variants). Each array entry stays under ~90 chars. See `src/components/button/button.tsx` for the reference pattern. Never combine multiple selectors into a single unreadable line.
+
+### shadcn / CLI
+
+- `components.json` at the package root configures the CLI: `style: "aria-mira"`, baseColor `zinc`, icon library `lucide`, aliases `#components` / `#lib` / `#hooks`
+- `imports` in `package.json` map `#components/*` → `./src/components/*/index.ts` and `#lib/*` → `./src/utils/*.ts`
+- `exports` expose `./components`, `./components/*`, `./utils`, `./hooks/*`, `./globals.css`
+- Adding a shadcn component: run `pnpm dlx shadcn@latest add <name>` from `apps/web` (monorepo routing) or with `-c packages/toolkit`. The CLI writes flat `src/components/<name>.tsx`; the following post-install steps are required (see Adding a New Component below).
 
 ### Form System
 
@@ -34,12 +43,13 @@ pnpm toolkit typecheck
 - Pre-registered field components: Input, Textarea, Select, Checkbox, CheckboxGroup, InputGroupSelect
 - Pre-registered form components: SubmitButton
 - Error formatters handle Zod errors, HTML validation errors, and generic errors
+- Form fields compose shadcn `Field` / `FieldLabel` / `FieldDescription` / `FieldError` (the latter accepts `errors={field.state.meta.errors}` directly)
 
 ### Styling
 
-- Tailwind CSS v4 with plugins: `@tailwindcss/forms`, `tailwindcss-react-aria-components`, `tailwindcss-animate`
-- Custom CSS theme variables defined in the Storybook `styles.css` (mirrors the web app's `globals.css`)
-- Tailwind Variants (`tv()`) is used for all component variant styling
+- Tailwind CSS v4, single source of truth: `src/styles/globals.css` (zinc theme, Geist font via `@fontsource-variable/geist`, `shadcn/tailwind.css` + `tw-animate-css` imports)
+- The web app imports this file from its own `globals.css`; Storybook imports it from `.storybook/styles.css`
+- `tailwindcss-react-aria-components` plugin is retained for the legacy custom components that use `pressed:`/`selected:`/`current:` variants
 
 ### Storybook
 
@@ -59,11 +69,19 @@ Components are built on React Aria Components for WAI-ARIA-compliant semantics a
 
 ## Adding a New Component
 
-1. Create a directory: `src/<component>/`
-2. Create the component file: `<component>.tsx`
-3. Create a story file: `<component>.stories.tsx`
-4. Export the component from `src/index.ts`
+1. Run `pnpm dlx shadcn@latest add <name>` from `apps/web` (or `-c packages/toolkit`)
+2. Move the generated `src/components/<name>.tsx` into `src/components/<name>/<name>.tsx` and delete the flat file
+3. Create `src/components/<name>/index.ts` with `export * from "./<name>";`
+4. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook docs → MCP `get-documentation`. Add:
+   - A descriptive JSDoc on every exported component (use `{@link}` for subcomponent relationships)
+   - `/** Props for the {@link X} component. */` on every exported props type
+   - Convert `function` declarations to arrow functions (repo convention)
+5. Add an export line to `src/components/index.ts`
+6. Create/migrate `<name>.stories.tsx` with JSDoc on each story
 
 ## Common Pitfalls
 
-- **Always add new components to the barrel export** -- if you forget to export from `src/index.ts`, the component won't be available to consumers.
+- **Always add new components to the barrel export** (`src/components/index.ts`) -- if you forget, the component won't be available to consumers
+- **`shadcn add` writes flat files and recreates registry dependencies** (e.g. `button.tsx` when adding a component that depends on button) -- after each add, delete any flat `src/components/*.tsx` whose directory version already exists (they are identical)
+- **React Aria tabs/select use `id`, not `value`** -- `TabsTrigger id=...`/`TabsContent id=...`, `SelectItem id=...`/`Select selectedKey=...`
+- **exactOptionalPropertyTypes is disabled** in `tsconfig.base.json` -- shadcn-generated components rely on standard optional semantics

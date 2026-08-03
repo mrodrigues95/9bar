@@ -1,16 +1,15 @@
-import { UserGroupIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+	CircleCheck,
+	Info as InfoIcon,
+	TriangleAlert,
+	Users,
+	X,
+} from "lucide-react";
 import { Button } from "../button/button";
 import { IconButton } from "../icon-button/icon-button";
 import { Link } from "../link/link";
-import {
-	Alert,
-	AlertAction,
-	AlertContent,
-	AlertDescription,
-	AlertIndicator,
-	AlertTitle,
-} from "./alert";
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "./alert";
 
 const meta = {
 	component: Alert,
@@ -27,12 +26,10 @@ type Story = StoryObj<typeof meta>;
 /** An informational alert used for neutral, non-critical messages. */
 export const Info: Story = {
 	render: (props) => (
-		<Alert {...props} variant="info">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Information</AlertTitle>
-				<AlertDescription>This is an informational message.</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<InfoIcon />
+			<AlertTitle>Information</AlertTitle>
+			<AlertDescription>This is an informational message.</AlertDescription>
 		</Alert>
 	),
 };
@@ -40,12 +37,10 @@ export const Info: Story = {
 /** A success alert used to confirm that an action completed successfully. */
 export const Success: Story = {
 	render: (props) => (
-		<Alert {...props} variant="success">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Success</AlertTitle>
-				<AlertDescription>Your action was successful.</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<CircleCheck />
+			<AlertTitle>Success</AlertTitle>
+			<AlertDescription>Your action was successful.</AlertDescription>
 		</Alert>
 	),
 };
@@ -53,25 +48,21 @@ export const Success: Story = {
 /** A warning alert used to caution the user about a potential issue. */
 export const Warning: Story = {
 	render: (props) => (
-		<Alert {...props} variant="warning">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Warning</AlertTitle>
-				<AlertDescription>Please proceed with caution.</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<TriangleAlert />
+			<AlertTitle>Warning</AlertTitle>
+			<AlertDescription>Please proceed with caution.</AlertDescription>
 		</Alert>
 	),
 };
 
-/** A danger alert used to communicate errors or destructive outcomes. */
+/** A destructive alert used to communicate errors or destructive outcomes. */
 export const Danger: Story = {
 	render: (props) => (
-		<Alert {...props} variant="danger">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Error</AlertTitle>
-				<AlertDescription>An error has occurred.</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="destructive">
+			<TriangleAlert />
+			<AlertTitle>Error</AlertTitle>
+			<AlertDescription>An error has occurred.</AlertDescription>
 		</Alert>
 	),
 };
@@ -79,11 +70,9 @@ export const Danger: Story = {
 /** An alert with only a title and no description, for brief single-line messages. */
 export const TitleOnly: Story = {
 	render: (props) => (
-		<Alert {...props} variant="success">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Operation completed successfully</AlertTitle>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<CircleCheck />
+			<AlertTitle>Operation completed successfully</AlertTitle>
 		</Alert>
 	),
 };
@@ -91,44 +80,34 @@ export const TitleOnly: Story = {
 /** An alert with only a description and no title, for supplementary messages that don't need a heading. */
 export const DescriptionOnly: Story = {
 	render: (props) => (
-		<Alert {...props} variant="info">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertDescription>
-					This alert only contains a description without a title.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<InfoIcon />
+			<AlertDescription>
+				This alert only contains a description without a title.
+			</AlertDescription>
 		</Alert>
 	),
 };
 
-/** An alert with a custom icon overriding the default variant icon via `AlertIndicator` children. */
+/** An alert with a custom icon passed as a direct child of the `Alert`. */
 export const CustomIcon: Story = {
 	render: (props) => (
-		<Alert {...props} variant="success">
-			<AlertIndicator>
-				<UserGroupIcon />
-			</AlertIndicator>
-			<AlertContent>
-				<AlertTitle>Team Invitation</AlertTitle>
-				<AlertDescription>
-					You've been invited to join the team workspace.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<Users />
+			<AlertTitle>Team Invitation</AlertTitle>
+			<AlertDescription>
+				You've been invited to join the team workspace.
+			</AlertDescription>
 		</Alert>
 	),
 };
 
-/** An alert without an indicator icon, relying solely on color and text. */
+/** An alert without an icon, relying solely on color and text. */
 export const WithoutIndicator: Story = {
 	render: (props) => (
-		<Alert {...props} variant="info">
-			<AlertContent>
-				<AlertTitle>Simple Alert</AlertTitle>
-				<AlertDescription>
-					This alert doesn't use an indicator icon.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<AlertTitle>Simple Alert</AlertTitle>
+			<AlertDescription>This alert doesn't use an icon.</AlertDescription>
 		</Alert>
 	),
 };
@@ -136,18 +115,16 @@ export const WithoutIndicator: Story = {
 /** An alert with a dismiss button using `AlertAction` and an `IconButton`. */
 export const WithDismiss: Story = {
 	render: (props) => (
-		<Alert {...props} variant="success">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Storage Almost Full</AlertTitle>
-				<AlertDescription>
-					You're using 90% of your available storage. Consider upgrading your
-					plan.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<CircleCheck />
+			<AlertTitle>Storage Almost Full</AlertTitle>
+			<AlertDescription>
+				You're using 90% of your available storage. Consider upgrading your
+				plan.
+			</AlertDescription>
 			<AlertAction>
 				<IconButton aria-label="Close" variant="ghost" size="sm">
-					<XMarkIcon />
+					<X />
 				</IconButton>
 			</AlertAction>
 		</Alert>
@@ -157,15 +134,13 @@ export const WithDismiss: Story = {
 /** An alert with an inline action button using `AlertAction` and a `Button`. */
 export const WithActionButton: Story = {
 	render: (props) => (
-		<Alert {...props} variant="warning">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Storage Almost Full</AlertTitle>
-				<AlertDescription>
-					You're using 90% of your available storage. Consider upgrading your
-					plan.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<TriangleAlert />
+			<AlertTitle>Storage Almost Full</AlertTitle>
+			<AlertDescription>
+				You're using 90% of your available storage. Consider upgrading your
+				plan.
+			</AlertDescription>
 			<AlertAction>
 				<Button variant="ghost">Upgrade Plan</Button>
 			</AlertAction>
@@ -176,14 +151,12 @@ export const WithActionButton: Story = {
 /** An alert with an inline link action using `AlertAction` and a `Link`. */
 export const WithLinkAction: Story = {
 	render: (props) => (
-		<Alert {...props} variant="info">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>New Feature Available</AlertTitle>
-				<AlertDescription>
-					Check out our new dashboard with enhanced analytics.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="default">
+			<InfoIcon />
+			<AlertTitle>New Feature Available</AlertTitle>
+			<AlertDescription>
+				Check out our new dashboard with enhanced analytics.
+			</AlertDescription>
 			<AlertAction>
 				<Link size="sm">Learn More</Link>
 			</AlertAction>
@@ -194,20 +167,18 @@ export const WithLinkAction: Story = {
 /** An alert with multiple action slots, such as a confirm/cancel pair for destructive actions. */
 export const WithMultipleActions: Story = {
 	render: (props) => (
-		<Alert {...props} variant="danger">
-			<AlertIndicator />
-			<AlertContent>
-				<AlertTitle>Delete Account</AlertTitle>
-				<AlertDescription>
-					Are you sure you want to delete your account? This action cannot be
-					undone.
-				</AlertDescription>
-			</AlertContent>
+		<Alert {...props} variant="destructive">
+			<TriangleAlert />
+			<AlertTitle>Delete Account</AlertTitle>
+			<AlertDescription>
+				Are you sure you want to delete your account? This action cannot be
+				undone.
+			</AlertDescription>
 			<AlertAction>
 				<Button variant="ghost">Cancel</Button>
 			</AlertAction>
 			<AlertAction>
-				<Button variant="ghost">Delete</Button>
+				<Button variant="destructive">Delete</Button>
 			</AlertAction>
 		</Alert>
 	),

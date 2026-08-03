@@ -97,7 +97,7 @@ export const HTMLValidation: Story = {
 				<Checkbox value="sms">SMS alerts</Checkbox>
 				<Checkbox value="newsletter">Monthly newsletter</Checkbox>
 			</CheckboxGroupField>
-			<Button type="submit" variant="solid">
+			<Button type="submit" variant="default">
 				Submit
 			</Button>
 		</Form>
@@ -259,7 +259,7 @@ export const ComposedForm: Story = {
 							</field.CheckboxGroup>
 						)}
 					</form.AppField>
-					<form.SubmitButton variant="solid">Submit</form.SubmitButton>
+					<form.SubmitButton variant="default">Submit</form.SubmitButton>
 				</form.AppForm>
 			</Form>
 		);
@@ -415,7 +415,7 @@ export const WithZodValidation: Story = {
 					)}
 				</form.AppField>
 				<form.AppForm>
-					<form.SubmitButton variant="solid">Register</form.SubmitButton>
+					<form.SubmitButton variant="default">Register</form.SubmitButton>
 				</form.AppForm>
 			</Form>
 		);
@@ -540,7 +540,7 @@ const ContactFormComponent = withForm({
 					)}
 				</form.AppField>
 				<form.AppForm>
-					<form.SubmitButton loadingText="Sending message..." variant="solid">
+					<form.SubmitButton loadingText="Sending message..." variant="default">
 						Send Message
 					</form.SubmitButton>
 				</form.AppForm>

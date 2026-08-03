@@ -1,20 +1,20 @@
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { CircleAlert, Search } from "lucide-react";
 import { useId } from "react";
 import { Field } from "../field/field";
-import { Label } from "../field/label";
+import { Label } from "../label/label";
 import {
 	Select,
+	SelectContent,
 	SelectItem,
-	SelectListbox,
-	SelectPopover,
+	SelectList,
 	SelectTrigger,
 	SelectValue,
 } from "../select/select";
 import {
 	InputGroup,
 	InputGroupAddon,
+	InputGroupButton,
 	InputGroupInput,
 	InputGroupText,
 } from "./input-group";
@@ -23,7 +23,7 @@ const meta = {
 	component: InputGroup,
 	title: "InputGroup",
 	parameters: {
-		controls: { include: ["isDisabled", "isInvalid", "density"] },
+		controls: { include: ["isDisabled", "isInvalid"] },
 	},
 } satisfies Meta<typeof InputGroup>;
 
@@ -35,8 +35,8 @@ export const Default: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Weight" {...props}>
 			<InputGroupInput aria-label="Weight value" />
-			<InputGroupAddon align="end">
-				<ExclamationCircleIcon />
+			<InputGroupAddon align="inline-end">
+				<CircleAlert />
 			</InputGroupAddon>
 		</InputGroup>
 	),
@@ -59,7 +59,7 @@ export const WithVisibleLabel: Story = {
 						min="0"
 						placeholder="0.00"
 					/>
-					<InputGroupAddon align="end">
+					<InputGroupAddon align="inline-end">
 						<InputGroupText>grams</InputGroupText>
 					</InputGroupAddon>
 				</InputGroup>
@@ -121,8 +121,25 @@ export const WithStartAndEndText: Story = {
 				type="text"
 				placeholder="example"
 			/>
-			<InputGroupAddon align="end">
+			<InputGroupAddon align="inline-end">
 				<InputGroupText>.com</InputGroupText>
+			</InputGroupAddon>
+		</InputGroup>
+	),
+};
+
+/** Adds a compact search button as a trailing addon, a common pattern for search inputs. */
+export const WithButton: Story = {
+	render: (props) => (
+		<InputGroup aria-label="Search" className="max-w-64" {...props}>
+			<InputGroupInput
+				aria-label="Search terms"
+				placeholder="Search recipes..."
+			/>
+			<InputGroupAddon align="inline-end">
+				<InputGroupButton variant="ghost" size="icon-sm" aria-label="Search">
+					<Search />
+				</InputGroupButton>
 			</InputGroupAddon>
 		</InputGroup>
 	),
@@ -140,18 +157,17 @@ export const WithSelect: Story = {
 					min="0"
 					placeholder="0.0"
 				/>
-				<InputGroupAddon align="end">
-					<Select aria-label="Time unit value" defaultValue="s">
-						<SelectTrigger variant="default" size="xs">
+				<InputGroupAddon align="inline-end">
+					<Select aria-label="Time unit value" defaultSelectedKey="s">
+						<SelectTrigger size="sm">
 							<SelectValue />
-							<ChevronDownIcon />
 						</SelectTrigger>
-						<SelectPopover>
-							<SelectListbox>
+						<SelectContent>
+							<SelectList>
 								<SelectItem id="s">Seconds (s)</SelectItem>
 								<SelectItem id="m">Minutes (m)</SelectItem>
-							</SelectListbox>
-						</SelectPopover>
+							</SelectList>
+						</SelectContent>
 					</Select>
 				</InputGroupAddon>
 			</InputGroup>

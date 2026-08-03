@@ -1,26 +1,14 @@
 import { useStore } from "@tanstack/react-form";
-import { useId } from "react";
+import { Checkbox, type CheckboxProps } from "../../checkbox/checkbox";
 import {
-	FieldErrorContext,
-	Provider,
-	type ValidationResult,
-} from "react-aria-components";
-import { cn } from "tailwind-variants";
-import {
-	Checkbox,
-	type CheckboxProps,
-	CheckboxRoot,
-	type CheckboxRootProps,
-} from "../../checkbox/checkbox";
-import { Description, type DescriptionProps } from "../../field/description";
-import { fieldVariants } from "../../field/field";
-import { FieldError, type FieldErrorProps } from "../../field/field-error";
+	Field,
+	FieldDescription,
+	type FieldDescriptionProps,
+	FieldError,
+	type FieldErrorProps,
+} from "../../field/field";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
-
-const mergeIds = (...ids: Array<string | undefined>) => {
-	return ids.filter((id) => !!id).join(" ");
-};
 
 /** Props for the {@link CheckboxField} component. */
 export interface CheckboxFieldProps extends Omit<CheckboxProps, "children"> {
@@ -28,14 +16,12 @@ export interface CheckboxFieldProps extends Omit<CheckboxProps, "children"> {
 	label?: string;
 	/** Help text displayed below the checkbox. */
 	description?: string;
-	/** An error message or a function that returns one from the validation result. */
-	errorMessage?: string | ((validation: ValidationResult) => string);
-	/** Additional props forwarded to the `Description` component. */
-	descriptionProps?: DescriptionProps;
+	/** An error message displayed when validation fails. */
+	errorMessage?: string;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
 	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
-	/** Additional props forwarded to the `CheckboxRoot` layout wrapper. */
-	checkboxRootProps?: CheckboxRootProps;
 }
 
 /**
@@ -48,55 +34,20 @@ export const CheckboxField = ({
 	errorMessage,
 	descriptionProps,
 	fieldErrorProps,
-	checkboxRootProps,
 	...props
 }: CheckboxFieldProps) => {
-	const descriptionId = useId();
-	const errorId = useId();
-	const ids = mergeIds(
-		description ? descriptionId : undefined,
-		errorMessage ? errorId : undefined,
-	);
-
-	// TODO: Native errors (e.g. required) don't show since the individual react-aria <Checkbox /> component isn't wrapped in
-	// `FieldErrorContext` provider, so we manually construct the validation object here and manage its state.
-	// <CheckboxGroup /> seems to be preferred for integrating with forms, so this is less of a concern for now.
-	// Need to investigate further on how react-aria handles form validation states to get this working properly.
-	// See https://github.com/adobe/react-spectrum/blob/d9292a9ed6c8b7bebdd56bd094f9d1dbe089f83a/packages/react-aria-components/src/Checkbox.tsx#L203
-	const validation: ValidationResult = {
-		isInvalid: !!props.isInvalid,
-		validationErrors: typeof errorMessage === "string" ? [errorMessage] : [],
-		validationDetails: {} as ValidityState,
-	};
-
 	return (
-		<CheckboxRoot
-			data-slot="checkbox-field"
-			{...checkboxRootProps}
-			className={cn(fieldVariants(), checkboxRootProps?.className)}
-		>
-			<Checkbox
-				{...(ids ? { "aria-describedby": ids } : {})}
-				data-slot="checkbox-field-label"
-				{...props}
-			>
+		<Field data-slot="checkbox-field" data-invalid={!!errorMessage}>
+			<Checkbox {...props} aria-invalid={!!errorMessage || undefined}>
 				{label}
 			</Checkbox>
 			{description && (
-				<Description
-					data-slot="checkbox-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
-					{description}
-				</Description>
+				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
 			)}
-			<Provider values={[[FieldErrorContext, validation]]}>
-				<FieldError data-slot="checkbox-field-error" {...fieldErrorProps}>
-					{errorMessage}
-				</FieldError>
-			</Provider>
-		</CheckboxRoot>
+			{errorMessage && (
+				<FieldError {...fieldErrorProps} errors={[{ message: errorMessage }]} />
+			)}
+		</Field>
 	);
 };
 

@@ -1,5 +1,5 @@
-import { UserIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { User } from "lucide-react";
 import { IconButton } from "./icon-button";
 
 const meta = {
@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	args: {
 		"aria-label": "User",
-		children: <UserIcon />,
+		children: <User />,
 		size: "md",
 		variant: "ghost",
 	},

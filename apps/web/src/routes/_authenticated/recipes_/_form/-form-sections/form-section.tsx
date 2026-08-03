@@ -1,13 +1,13 @@
 import {
 	Card,
+	CardContent,
 	CardHeader,
-	CardPanel,
 	CardTitle,
 	type TInputGroupSelectFieldValue,
-} from "@9bar/toolkit";
+} from "@9bar/toolkit/components";
+import { cn } from "@9bar/toolkit/utils";
 import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
-import { cn } from "tailwind-variants";
 import z from "zod";
 import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
 
@@ -133,12 +133,12 @@ export const FormSection = ({
 	panelProps?: ComponentProps<"div">;
 }) => {
 	return (
-		<Card render={<fieldset />}>
+		<Card>
 			<legend className="sr-only">{title}</legend>
 			<CardHeader>
 				<CardTitle aria-hidden="true">{title}</CardTitle>
 			</CardHeader>
-			<CardPanel
+			<CardContent
 				{...panelProps}
 				className={cn(
 					"grid grid-cols-1 gap-6 sm:grid-cols-2",
@@ -146,7 +146,7 @@ export const FormSection = ({
 				)}
 			>
 				{children}
-			</CardPanel>
+			</CardContent>
 		</Card>
 	);
 };

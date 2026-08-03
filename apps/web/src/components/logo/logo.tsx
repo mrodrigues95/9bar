@@ -1,8 +1,8 @@
-import { Avatar, type AvatarProps } from "@9bar/toolkit";
-
-interface LogoProps extends AvatarProps {}
+import { Avatar, AvatarFallback } from "@9bar/toolkit/components";
 
 // TODO: Replace with actual logo graphic.
-export const Logo = (props?: LogoProps) => (
-	<Avatar radius="md" color="rose" name="9" size="sm" {...props} />
+export const Logo = () => (
+	<Avatar size="sm">
+		<AvatarFallback>9</AvatarFallback>
+	</Avatar>
 );

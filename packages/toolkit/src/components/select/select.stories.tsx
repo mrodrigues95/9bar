@@ -1,19 +1,15 @@
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ReactNode } from "react";
 import { Collection } from "react-aria-components";
-import { Label } from "../field/label";
+import { Label } from "../label/label";
 import {
 	Select,
+	SelectContent,
+	SelectGroup,
 	SelectItem,
-	SelectListbox,
-	SelectPopover,
-	type SelectProps,
-	SelectSection,
-	SelectSectionHeader,
+	SelectLabel,
+	SelectList,
 	SelectTrigger,
 	SelectValue,
-	type SelectValueProps,
 } from "./select";
 
 const meta = {
@@ -36,58 +32,23 @@ export const Basic: Story = {
 		<Select aria-label="Favorite Animal" {...props}>
 			<SelectTrigger>
 				<SelectValue />
-				<ChevronDownIcon />
 			</SelectTrigger>
-			<SelectPopover>
-				<SelectListbox>
-					<SelectItem>Aardvark</SelectItem>
-					<SelectItem>Cat</SelectItem>
-					<SelectItem>Dog</SelectItem>
-					<SelectItem>Kangaroo</SelectItem>
-					<SelectItem>Panda</SelectItem>
-					<SelectItem>Snake</SelectItem>
-				</SelectListbox>
-			</SelectPopover>
+			<SelectContent>
+				<SelectList>
+					<SelectItem id="aardvark">Aardvark</SelectItem>
+					<SelectItem id="cat">Cat</SelectItem>
+					<SelectItem id="dog">Dog</SelectItem>
+					<SelectItem id="kangaroo">Kangaroo</SelectItem>
+					<SelectItem id="panda">Panda</SelectItem>
+					<SelectItem id="snake">Snake</SelectItem>
+				</SelectList>
+			</SelectContent>
 		</Select>
 	),
 };
 
-interface ComposedSelectProps<T extends object>
-	extends Omit<SelectProps<T>, "children"> {
-	label?: string;
-	renderValue?: SelectValueProps<T>["children"];
-	items?: Iterable<T>;
-	children: ReactNode | ((item: T) => ReactNode);
-}
-
-const ComposedSelect = <T extends object>({
-	label,
-	renderValue,
-	items = [],
-	children,
-	...props
-}: ComposedSelectProps<T>) => {
-	return (
-		<Select {...props}>
-			{label && <Label>{label}</Label>}
-			<SelectTrigger>
-				<SelectValue<T>>
-					{renderValue ??
-						(({ selectedText, defaultChildren }) =>
-							selectedText || defaultChildren)}
-				</SelectValue>
-				<ChevronDownIcon />
-			</SelectTrigger>
-			<SelectPopover>
-				<SelectListbox items={items}>{children}</SelectListbox>
-			</SelectPopover>
-		</Select>
-	);
-};
-
 /** Groups options under labelled section headers with dynamic data. */
 export const WithSections: Story = {
-	args: {},
 	render: (props) => {
 		const items = [
 			{
@@ -119,16 +80,26 @@ export const WithSections: Story = {
 		];
 
 		return (
-			<ComposedSelect {...props} label="Fruits and Vegetables" items={items}>
-				{(section) => (
-					<SelectSection id={section.name}>
-						<SelectSectionHeader title={section.name} />
-						<Collection items={section.children}>
-							{(item) => <SelectItem id={item.name}>{item.name}</SelectItem>}
-						</Collection>
-					</SelectSection>
-				)}
-			</ComposedSelect>
+			<Select aria-label="Fruits and Vegetables" {...props}>
+				<Label>Fruits and Vegetables</Label>
+				<SelectTrigger>
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectList items={items}>
+						{(section) => (
+							<SelectGroup id={section.name}>
+								<SelectLabel>{section.name}</SelectLabel>
+								<Collection items={section.children}>
+									{(item) => (
+										<SelectItem id={item.name}>{item.name}</SelectItem>
+									)}
+								</Collection>
+							</SelectGroup>
+						)}
+					</SelectList>
+				</SelectContent>
+			</Select>
 		);
 	},
 };
@@ -138,7 +109,7 @@ export const MultipleSelection: Story = {
 	args: {
 		selectionMode: "multiple",
 	},
-	render: (props) => {
+	render: () => {
 		const items = [
 			{ name: "Apple" },
 			{ name: "Banana" },
@@ -151,24 +122,30 @@ export const MultipleSelection: Story = {
 		];
 
 		return (
-			<ComposedSelect
-				{...props}
+			<Select<{ name: string }, "multiple">
+				selectionMode="multiple"
 				placeholder="Select fruits..."
 				defaultValue={["Apple", "Banana"]}
-				renderValue={({ selectedText, selectedItems, defaultChildren }) => {
-					if (Array.isArray(selectedItems) && selectedItems.length > 1) {
-						const firstItem = selectedItems[0];
-						const remaining = selectedItems.length - 1;
-						return `${firstItem?.name} (+${remaining} more)`;
-					}
-
-					return selectedText || defaultChildren;
-				}}
-				label="Fruits"
-				items={items}
 			>
-				{(item) => <SelectItem id={item.name}>{item.name}</SelectItem>}
-			</ComposedSelect>
+				<Label>Fruits</Label>
+				<SelectTrigger>
+					<SelectValue<{ name: string }>>
+						{({ selectedText, selectedItems, defaultChildren }) => {
+							if (selectedItems.length > 1) {
+								const firstItem = selectedItems[0];
+								return `${firstItem?.name} (+${selectedItems.length - 1} more)`;
+							}
+
+							return selectedText || defaultChildren;
+						}}
+					</SelectValue>
+				</SelectTrigger>
+				<SelectContent>
+					<SelectList items={items}>
+						{(item) => <SelectItem id={item.name}>{item.name}</SelectItem>}
+					</SelectList>
+				</SelectContent>
+			</Select>
 		);
 	},
 };

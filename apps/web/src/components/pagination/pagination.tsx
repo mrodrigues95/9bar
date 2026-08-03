@@ -10,7 +10,7 @@ import {
 	PaginationPrevious,
 	Text,
 	Pagination as ToolkitPagination,
-} from "@9bar/toolkit";
+} from "@9bar/toolkit/components";
 import { type ReactNode, useState } from "react";
 
 const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => {

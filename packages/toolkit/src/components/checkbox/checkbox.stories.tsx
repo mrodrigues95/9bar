@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useId } from "react";
-import { Description } from "../field/description";
-import {
-	Checkbox,
-	CheckboxIcon,
-	CheckboxIndicator,
-	CheckboxRoot,
-} from "./checkbox";
+import { FieldDescription } from "../field/field";
+import { Checkbox } from "./checkbox";
 
 const meta = {
 	component: Checkbox,
@@ -28,47 +23,39 @@ export const Default: Story = {
 	args: {
 		children: "Accept terms and conditions",
 	},
-	render: (props) => {
-		return <Checkbox {...props} />;
+};
+
+/** A checkbox in the indeterminate state, shown when only a subset of related options is selected. */
+export const Indeterminate: Story = {
+	args: {
+		isIndeterminate: true,
+		children: "Select all",
 	},
 };
 
-/** A checkbox with a description below the label, using `CheckboxRoot` to group the checkbox and its help text. */
+/** A checkbox that is disabled and cannot be toggled. */
+export const Disabled: Story = {
+	args: {
+		isDisabled: true,
+		children: "Accept terms and conditions",
+	},
+};
+
+/** A checkbox with a description below the label, linked via `aria-describedby`. */
 export const WithDescription: Story = {
 	args: {
-		...Default.args,
+		children: "Accept terms and conditions",
 	},
 	render: (props) => {
 		const id = useId();
 
 		return (
-			<CheckboxRoot>
+			<div className="flex flex-col gap-1">
 				<Checkbox {...props} aria-describedby={id} />
-				<Description id={id}>
+				<FieldDescription id={id}>
 					By clicking this checkbox, you agree to the terms and conditions.
-				</Description>
-			</CheckboxRoot>
-		);
-	},
-};
-
-/** A checkbox with a custom indicator rendered via the `indicator` render prop, for full control over the check icon. */
-export const CustomIndicator: Story = {
-	args: {
-		...Default.args,
-	},
-	render: ({ children, ...props }) => {
-		return (
-			<Checkbox
-				{...props}
-				indicator={(renderProps) => (
-					<CheckboxIndicator renderProps={renderProps}>
-						<CheckboxIcon {...renderProps} />
-					</CheckboxIndicator>
-				)}
-			>
-				{children}
-			</Checkbox>
+				</FieldDescription>
+			</div>
 		);
 	},
 };

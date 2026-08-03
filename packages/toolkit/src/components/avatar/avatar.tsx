@@ -1,158 +1,150 @@
-import { UserIcon } from "@heroicons/react/20/solid";
-import { type ReactNode, useState } from "react";
-import { tv, type VariantProps } from "tailwind-variants";
-
-const avatarVariants = tv({
-	slots: {
-		root: [
-			"relative inline-flex shrink-0 items-center justify-center overflow-hidden",
-		],
-		image: "size-full object-cover",
-		fallback: "flex size-full items-center justify-center font-medium",
-		placeholder: "flex size-full items-center justify-center",
-	},
-	variants: {
-		size: {
-			xs: {
-				root: "size-6",
-				fallback: "text-xs",
-			},
-			sm: {
-				root: "size-8",
-				fallback: "text-sm",
-			},
-			md: {
-				root: "size-10",
-				fallback: "text-base",
-			},
-			lg: {
-				root: "size-12",
-				fallback: "text-lg",
-			},
-		},
-		color: {
-			slate: {
-				root: "bg-slate-100",
-				fallback: "text-secondary",
-				placeholder: "text-slate-400",
-			},
-			sky: {
-				root: "bg-sky-100",
-				fallback: "text-sky-700",
-				placeholder: "text-sky-400",
-			},
-			emerald: {
-				root: "bg-emerald-100",
-				fallback: "text-emerald-700",
-				placeholder: "text-emerald-400",
-			},
-			rose: {
-				root: "bg-rose-100",
-				fallback: "text-rose-700",
-				placeholder: "text-rose-400",
-			},
-			fuchsia: {
-				root: "bg-fuchsia-100",
-				fallback: "text-fuchsia-700",
-				placeholder: "text-fuchsia-400",
-			},
-		},
-		radius: {
-			none: {
-				root: "rounded-none",
-			},
-			sm: {
-				root: "rounded-sm",
-			},
-			md: {
-				root: "rounded-md",
-			},
-			lg: {
-				root: "rounded-lg",
-			},
-			full: {
-				root: "rounded-full",
-			},
-		},
-	},
-	defaultVariants: {
-		size: "md",
-		color: "slate",
-		radius: "full",
-	},
-});
-
-const getInitials = (name?: string, limit = 2) => {
-	if (!name) {
-		return "";
-	}
-
-	const parts = name.split(" ");
-
-	if (parts.length === 1) {
-		return name.slice(0, limit).toUpperCase();
-	}
-
-	return parts
-		.map((word) => word[0])
-		.slice(0, limit)
-		.join("")
-		.toUpperCase();
-};
+import type * as React from "react";
+import { useState } from "react";
+import { cn } from "#lib/utils";
 
 /** Props for the {@link Avatar} component. */
-export interface AvatarProps extends VariantProps<typeof avatarVariants> {
-	/** The URL of the avatar image. */
-	src?: string;
-	/** Accessible alt text for the avatar image. */
-	alt?: string;
-	/** The user's full name, used to derive initials as a fallback. */
-	name?: string;
-	/** Custom content to display when no image or name is available. */
-	placeholder?: ReactNode;
-}
+export type AvatarProps = React.ComponentProps<"div"> & {
+	size?: "default" | "sm" | "lg";
+};
 
-/**
- * An avatar represents a user or entity with a profile image, initials derived
- * from their name, or a placeholder icon.
- */
+/** A circular image container. Combine with {@link AvatarImage} and {@link AvatarFallback} to render a user photo with a loading/error placeholder. */
 export const Avatar = ({
-	src,
-	alt,
-	name,
-	placeholder,
-	size,
-	color,
-	radius,
+	className,
+	size = "default",
+	...props
 }: AvatarProps) => {
-	const [error, setError] = useState(false);
-
-	const styles = avatarVariants({ size, color, radius });
-	const showImage = src && !error;
-	const initials = getInitials(name);
-
 	return (
-		<div className={styles.root()} data-slot="avatar">
-			{showImage && (
-				<img
-					src={src}
-					alt={alt || name || "Avatar"}
-					data-slot="avatar-image"
-					className={styles.image()}
-					onError={() => setError(true)}
-					onLoad={() => setError(false)}
-				/>
+		<div
+			data-slot="avatar"
+			data-size={size}
+			className={cn(
+				[
+					"group/avatar relative flex size-8 shrink-0 select-none rounded-full",
+					"after:absolute after:inset-0 after:rounded-full",
+					"after:border after:border-border after:mix-blend-darken",
+					"data-[size=lg]:size-10 data-[size=sm]:size-6",
+					"dark:after:mix-blend-lighten",
+				],
+				className,
 			)}
-			{!showImage && initials && (
-				<span data-slot="avatar-fallback" className={styles.fallback()}>
-					{initials}
-				</span>
+			{...props}
+		/>
+	);
+};
+
+type ImageState = "loading" | "loaded" | "error";
+
+/** Props for the {@link AvatarImage} component. */
+export type AvatarImageProps = React.ComponentProps<"img">;
+
+/** The image displayed inside an {@link Avatar}. Tracks its own load state to show or hide the fallback. */
+export const AvatarImage = ({ className, ...props }: AvatarImageProps) => {
+	const [state, setState] = useState<ImageState>(
+		props.src ? "loading" : "error",
+	);
+	return (
+		<img
+			data-slot="avatar-image"
+			alt={props.alt || ""}
+			data-state={state}
+			onLoad={() => setState("loaded")}
+			onError={() => setState("error")}
+			className={cn(
+				"peer aspect-square size-full rounded-full object-cover data-[state=error]:hidden",
+				className,
 			)}
-			{!showImage && !initials && (
-				<span data-slot="avatar-placeholder" className={styles.placeholder()}>
-					{placeholder || <UserIcon className="size-1/2" title={alt || ""} />}
-				</span>
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link AvatarFallback} component. */
+export type AvatarFallbackProps = React.ComponentProps<"div">;
+
+/** A placeholder rendered inside an {@link Avatar} while the image loads or when it fails. */
+export const AvatarFallback = ({
+	className,
+	...props
+}: AvatarFallbackProps) => {
+	return (
+		<div
+			data-slot="avatar-fallback"
+			className={cn(
+				[
+					"flex size-full items-center justify-center rounded-full bg-muted text-muted-foreground text-sm",
+					"peer-[*]:hidden group-data-[size=sm]/avatar:text-xs peer-data-[state=error]:flex",
+				],
+				className,
 			)}
-		</div>
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link AvatarBadge} component. */
+export type AvatarBadgeProps = React.ComponentProps<"span">;
+
+/** A status badge anchored to the corner of an {@link Avatar}. */
+export const AvatarBadge = ({ className, ...props }: AvatarBadgeProps) => {
+	return (
+		<span
+			data-slot="avatar-badge"
+			className={cn(
+				[
+					"absolute right-0 bottom-0 z-10 inline-flex select-none items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background",
+					"group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
+					"group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
+					"group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",
+				],
+				className,
+			)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link AvatarGroup} component. */
+export type AvatarGroupProps = React.ComponentProps<"div">;
+
+/** A cluster of overlapping {@link Avatar} elements. */
+export const AvatarGroup = ({ className, ...props }: AvatarGroupProps) => {
+	return (
+		<div
+			data-slot="avatar-group"
+			className={cn(
+				[
+					"group/avatar-group flex -space-x-2",
+					"*:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background",
+				],
+				className,
+			)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link AvatarGroupCount} component. */
+export type AvatarGroupCountProps = React.ComponentProps<"div">;
+
+/** A count chip rendered at the end of an {@link AvatarGroup}, sized to match the avatars. */
+export const AvatarGroupCount = ({
+	className,
+	...props
+}: AvatarGroupCountProps) => {
+	return (
+		<div
+			data-slot="avatar-group-count"
+			className={cn(
+				[
+					"relative flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs/relaxed ring-2 ring-background",
+					"group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6",
+					"group-has-data-[size=lg]/avatar-group:[&>svg]:size-5",
+					"group-has-data-[size=sm]/avatar-group:[&>svg]:size-3",
+					"[&>svg]:size-4",
+				],
+				className,
+			)}
+			{...props}
+		/>
 	);
 };

@@ -7,7 +7,7 @@ const meta = {
 	component: Separator,
 	parameters: {
 		controls: {
-			include: ["variant", "orientation"],
+			include: ["orientation"],
 		},
 	},
 } satisfies Meta<typeof Separator>;
@@ -33,19 +33,6 @@ export const Vertical: Story = {
 			<div className="px-4">Left content</div>
 			<Separator {...props} orientation="vertical" />
 			<div className="px-4">Right content</div>
-		</div>
-	),
-};
-
-/** Uses the `middle` variant to inset the separator within a bordered container, leaving side margins. */
-export const Middle: Story = {
-	render: (props) => (
-		<div className="w-96 rounded-lg border border-border">
-			<div className="p-4">First item</div>
-			<Separator {...props} variant="middle" />
-			<div className="p-4">Second item</div>
-			<Separator {...props} variant="middle" />
-			<div className="p-4">Third item</div>
 		</div>
 	),
 };

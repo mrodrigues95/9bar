@@ -1,90 +1,137 @@
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
 import {
-	Button as AriaButton,
-	type ButtonProps as AriaButtonProps,
-	composeRenderProps,
+	Button as ButtonPrimitive,
+	type ButtonProps as ButtonPrimitiveProps,
+	Link as LinkPrimitive,
+	type LinkProps as LinkPrimitiveProps,
 } from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
+import { cn } from "#lib/utils";
 
-export const buttonFocusRing = tv({
-	base: [
-		"transition",
-		"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-white",
-	],
-});
-
-export const buttonVariants = tv({
-	extend: buttonFocusRing,
-	base: [
-		"relative inline-flex cursor-pointer select-none items-center justify-center gap-x-2 rounded-lg font-medium text-sm outline-none",
-		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
+export const buttonVariants = cva(
+	[
+		"group/button inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-clip-padding font-medium text-xs/relaxed outline-none transition-all",
+		"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
+		"active:not-aria-[haspopup]:translate-y-px",
 		"disabled:pointer-events-none disabled:opacity-50",
+		"aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
+		"dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+		"[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 	],
-	variants: {
-		variant: {
-			default: [
-				"bg-slate-100 text-secondary",
-				"hover:bg-slate-200 hover:text-slate-900",
-				"pressed:bg-slate-300",
-			],
-			solid: [
-				"bg-slate-900 text-white shadow-sm",
-				"hover:bg-secondary",
-				"pressed:bg-slate-600",
-			],
-			solidBlue: [
-				"bg-blue-900 text-white shadow-sm",
-				"hover:bg-blue-800",
-				"pressed:bg-blue-700",
-			],
-			danger: [
-				"text-red-700 hover:bg-red-100",
-				"focus-visible:bg-red-100",
-				"pressed:bg-red-200",
-			],
-			outline: [
-				"bg-white text-secondary shadow-sm ring-1 ring-border",
-				"hover:bg-slate-100 hover:text-slate-900",
-				"pressed:bg-slate-200",
-			],
-			ghost: [
-				"bg-transparent text-muted",
-				"hover:bg-slate-100 hover:text-slate-900",
-				"pressed:bg-slate-200",
-			],
-			link: [
-				"text-slate-900 underline-offset-4",
-				"hover:underline",
-				"focus-visible:underline",
-			],
+	{
+		variants: {
+			variant: {
+				default: "bg-primary text-primary-foreground hover:bg-primary/80",
+				outline: [
+					"border-border",
+					"hover:bg-input/50 hover:text-foreground",
+					"aria-expanded:bg-muted aria-expanded:text-foreground",
+					"dark:bg-input/30",
+				],
+				secondary: [
+					"bg-secondary text-secondary-foreground",
+					"hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
+					"aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+				],
+				ghost: [
+					"hover:bg-muted hover:text-foreground",
+					"aria-expanded:bg-muted aria-expanded:text-foreground",
+					"dark:hover:bg-muted/50",
+				],
+				destructive: [
+					"bg-destructive/10 text-destructive",
+					"hover:bg-destructive/20",
+					"focus-visible:border-destructive/40 focus-visible:ring-destructive/20",
+					"dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 dark:hover:bg-destructive/30",
+				],
+				link: "text-primary underline-offset-4 hover:underline",
+			},
+			size: {
+				default: [
+					"h-7 gap-1 px-2 text-xs/relaxed",
+					"has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
+					"[&_svg:not([class*='size-'])]:size-3.5",
+				],
+				xs: [
+					"h-5 gap-1 rounded-sm px-2 text-[0.625rem]",
+					"has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
+					"[&_svg:not([class*='size-'])]:size-2.5",
+				],
+				sm: [
+					"h-6 gap-1 px-2 text-xs/relaxed",
+					"has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",
+					"[&_svg:not([class*='size-'])]:size-3",
+				],
+				lg: [
+					"h-8 gap-1 px-2.5 text-xs/relaxed",
+					"has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+					"[&_svg:not([class*='size-'])]:size-4",
+				],
+				icon: "size-7 [&_svg:not([class*='size-'])]:size-3.5",
+				"icon-xs": "size-5 rounded-sm [&_svg:not([class*='size-'])]:size-2.5",
+				"icon-sm": "size-6 [&_svg:not([class*='size-'])]:size-3",
+				"icon-lg": "size-8 [&_svg:not([class*='size-'])]:size-4",
+			},
 		},
-		size: {
-			xs: "px-2 py-1 text-xs [&_svg]:size-3",
-			sm: "px-2.5 py-1 text-sm [&_svg]:size-4",
-			md: "px-3 py-2 text-base [&_svg]:size-5",
-			lg: "px-4 py-2 text-lg [&_svg]:size-6",
+		defaultVariants: {
+			variant: "default",
+			size: "default",
 		},
 	},
-	defaultVariants: {
-		variant: "default",
-		size: "sm",
-	},
-});
+);
 
 /** Props for the {@link Button} component. */
-export interface ButtonProps
-	extends AriaButtonProps,
-		VariantProps<typeof buttonVariants> {}
+export type ButtonProps = Omit<ButtonPrimitiveProps, "className"> &
+	React.RefAttributes<HTMLButtonElement> &
+	VariantProps<typeof buttonVariants> & {
+		className?: string;
+	};
 
 /**
- * A button allows a user to perform an action, with mouse, touch, and
- * keyboard interactions.
+ * A button allows a user to perform an action, with mouse, touch, and keyboard
+ * interactions. Use `buttonVariants` with a plain `<a>` tag or `LinkButton` to
+ * render a button-styled link.
  */
-export const Button = ({ variant, size, ...props }: ButtonProps) => (
-	<AriaButton
-		data-slot="button"
-		{...props}
-		className={composeRenderProps(props.className, (className, renderProps) =>
-			buttonVariants({ ...renderProps, variant, size, className }),
-		)}
-	/>
-);
+export const Button = ({
+	className,
+	variant = "default",
+	size = "default",
+	...props
+}: ButtonProps) => {
+	return (
+		<ButtonPrimitive
+			data-slot="button"
+			data-variant={variant}
+			data-size={size}
+			className={cn(buttonVariants({ variant, size, className }))}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link LinkButton} component. */
+export type LinkButtonProps = Omit<LinkPrimitiveProps, "className"> &
+	VariantProps<typeof buttonVariants> & {
+		className?: string;
+	};
+
+/**
+ * A button-styled link rendered as an anchor element, useful for navigating to
+ * a route while preserving button semantics.
+ */
+export const LinkButton = ({
+	className,
+	variant = "default",
+	size = "default",
+	...props
+}: LinkButtonProps) => {
+	return (
+		<LinkPrimitive
+			data-slot="button"
+			data-variant={variant}
+			data-size={size}
+			className={cn(buttonVariants({ variant, size, className }))}
+			{...props}
+		/>
+	);
+};

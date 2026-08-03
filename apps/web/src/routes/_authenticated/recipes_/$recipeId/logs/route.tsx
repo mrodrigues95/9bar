@@ -1,24 +1,24 @@
 import {
 	Card,
+	CardContent,
 	CardFooter,
 	CardHeader,
-	CardPanel,
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 	Heading,
 	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
 	Text,
-} from "@9bar/toolkit";
-import {
-	EllipsisVerticalIcon,
-	FingerPrintIcon,
-	PencilIcon,
-	PlusIcon,
-	TrashIcon,
-} from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import {
+	EllipsisVertical,
+	Fingerprint,
+	Pencil,
+	Plus,
+	Trash2,
+} from "lucide-react";
 import { Link, List, ListItem, Pagination } from "../../../../../components";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 
@@ -42,13 +42,13 @@ export const RecipeLogs = () => {
 				<Link
 					to="/recipes/$recipeId/logs/new"
 					params={{ recipeId: String(recipe.id) }}
-					variant="solid"
+					variant="default"
 				>
-					<PlusIcon />
+					<Plus />
 					New Log
 				</Link>
 			</CardHeader>
-			<CardPanel className="gap-4">
+			<CardContent className="gap-4">
 				<List>
 					<ListItem className="justify-between">
 						<div className="flex flex-col">
@@ -56,7 +56,7 @@ export const RecipeLogs = () => {
 								variant="body-sm"
 								className="flex items-center gap-1 text-blue-950"
 							>
-								<FingerPrintIcon className="size-4" />
+								<Fingerprint className="size-4" />
 								{machine.name} · {grinder.name}
 							</Text>
 							<Text variant="body-sm" className="font-medium" color="primary">
@@ -72,26 +72,29 @@ export const RecipeLogs = () => {
 							</Text>
 						</div>
 						<div className="flex items-center gap-0.5">
-							<MenuTrigger>
+							<DropdownMenuTrigger>
 								<IconButton aria-label="Actions" size="sm" variant="ghost">
-									<EllipsisVerticalIcon />
+									<EllipsisVertical />
 								</IconButton>
-								<Menu>
-									<MenuItem onAction={() => alert("rename")}>
-										<PencilIcon className="size-3" />
+								<DropdownMenu>
+									<DropdownMenuItem onAction={() => alert("rename")}>
+										<Pencil className="size-3" />
 										Edit
-									</MenuItem>
-									<MenuSeparator />
-									<MenuItem onAction={() => alert("delete")} variant="danger">
-										<TrashIcon className="size-3" />
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										onAction={() => alert("delete")}
+										variant="destructive"
+									>
+										<Trash2 className="size-3" />
 										Delete
-									</MenuItem>
-								</Menu>
-							</MenuTrigger>
+									</DropdownMenuItem>
+								</DropdownMenu>
+							</DropdownMenuTrigger>
 						</div>
 					</ListItem>
 				</List>
-			</CardPanel>
+			</CardContent>
 			<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
 				<Pagination />
 			</CardFooter>

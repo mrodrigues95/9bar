@@ -44,9 +44,8 @@ Built on **TanStack Router** with file-based, type-safe routing.
 
 ### Styling
 
-- Tailwind CSS v4 with a `@source` directive pointing to the toolkit's source files so Tailwind scans toolkit components for class usage
-- Custom CSS theme variables defined in `src/styles/globals.css`
-- Geist is the primary typeface (loaded from Google Fonts)
+- Tailwind CSS v4; `src/styles/globals.css` imports the toolkit's theme (`../../packages/toolkit/src/styles/globals.css`) and adds a `@source` directive pointing at the toolkit source so Tailwind scans toolkit components for class usage
+- Geist is the primary typeface (bundled via `@fontsource-variable/geist` in the toolkit)
 
 ## Common Pitfalls
 

@@ -1,3 +1,4 @@
+import { Breadcrumb as ToolkitBreadcrumb } from "@9bar/toolkit/components";
 import type {
 	AnyRouteMatch,
 	RegisteredRouter,
@@ -148,7 +149,8 @@ const useAppBreadcrumbs = () => {
 	});
 };
 
-interface AppBreadcrumbsProps extends ComponentProps<"nav"> {}
+interface AppBreadcrumbsProps
+	extends ComponentProps<typeof ToolkitBreadcrumb> {}
 
 export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 	const breadcrumbs = useAppBreadcrumbs();
@@ -157,7 +159,7 @@ export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 	}
 
 	return (
-		<nav {...props}>
+		<ToolkitBreadcrumb {...props}>
 			<Breadcrumbs items={breadcrumbs}>
 				{(item) => (
 					<Breadcrumb
@@ -169,7 +171,7 @@ export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 					</Breadcrumb>
 				)}
 			</Breadcrumbs>
-		</nav>
+		</ToolkitBreadcrumb>
 	);
 };
 

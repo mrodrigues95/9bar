@@ -1,14 +1,14 @@
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@tanstack/react-form";
 import { useId } from "react";
 import {
-	FieldErrorContext,
-	type ValidationResult,
-} from "react-aria-components";
-import { Description, type DescriptionProps } from "../../field/description";
-import { Field } from "../../field/field";
-import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { Label, type LabelProps } from "../../field/label";
+	Field,
+	FieldDescription,
+	type FieldDescriptionProps,
+	FieldError,
+	type FieldErrorProps,
+	FieldLabel,
+	type FieldLabelProps,
+} from "../../field/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -18,9 +18,9 @@ import {
 } from "../../input-group/input-group";
 import {
 	Select,
+	SelectContent,
 	SelectItem,
-	SelectListbox,
-	SelectPopover,
+	SelectList,
 	type SelectProps,
 	SelectTrigger,
 	type SelectTriggerProps,
@@ -55,14 +55,14 @@ export interface InputGroupSelectFieldProps
 	label?: string;
 	/** Help text displayed below the input group. */
 	description?: string;
-	/** An error message or a function that returns one from the validation result. */
-	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** An error message displayed when validation fails. */
+	errorMessage?: string;
 	/** The collection of items to display in the select dropdown. */
 	items: Array<TInputGroupSelectFieldItem>;
-	/** Additional props forwarded to the `Label` component. */
-	labelProps?: LabelProps;
-	/** Additional props forwarded to the `Description` component. */
-	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldLabel` component. */
+	labelProps?: FieldLabelProps;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
 	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 	/** Additional props forwarded to the text input. */
@@ -110,20 +110,19 @@ export const InputGroupSelectField = ({
 }: InputGroupSelectFieldProps & InputGroupSelectFieldInternalProps) => {
 	const labelId = useId();
 	const descriptionId = useId();
-	const errorId = useId();
 	const describedBy =
-		`${description ? descriptionId : ""} ${errorMessage ? errorId : ""}`.trim();
+		`${description ? descriptionId : ""} ${errorMessage ? descriptionId : ""}`.trim();
 
 	return (
-		<Field data-slot="input-group-select-field">
+		<Field data-slot="input-group-select-field" data-invalid={!!errorMessage}>
 			{label && (
-				<Label
+				<FieldLabel
 					id={labelId}
 					data-slot="input-group-select-field-label"
 					{...labelProps}
 				>
 					{label}
-				</Label>
+				</FieldLabel>
 			)}
 			<InputGroup
 				data-slot="input-group-select-field-input-group"
@@ -140,12 +139,15 @@ export const InputGroupSelectField = ({
 					onChange={(e) => onInputChange(e.target.value)}
 					onBlur={onBlur}
 				/>
-				<InputGroupAddon data-slot="input-group-select-field-addon" align="end">
+				<InputGroupAddon
+					data-slot="input-group-select-field-addon"
+					align="inline-end"
+				>
 					<Select
 						data-slot="input-group-select-field-select"
 						{...selectProps}
-						value={value.selectValue}
-						onChange={(key) => {
+						selectedKey={value.selectValue}
+						onSelectionChange={(key) => {
 							if (key !== null) {
 								onSelectChange(String(key));
 							}
@@ -153,17 +155,15 @@ export const InputGroupSelectField = ({
 					>
 						<SelectTrigger
 							data-slot="input-group-select-field-select-trigger"
-							variant="default"
-							size="xs"
+							size="sm"
 							className="min-w-auto"
 							{...selectTriggerProps}
 						>
 							<SelectValue data-slot="input-group-select-field-select-value" />
-							<ChevronDownIcon />
 						</SelectTrigger>
-						<SelectPopover data-slot="input-group-select-field-select-popover">
-							<SelectListbox
-								data-slot="input-group-select-field-select-listbox"
+						<SelectContent data-slot="input-group-select-field-select-content">
+							<SelectList
+								data-slot="input-group-select-field-select-list"
 								items={items}
 							>
 								{(item) => (
@@ -174,36 +174,27 @@ export const InputGroupSelectField = ({
 										{item.label}
 									</SelectItem>
 								)}
-							</SelectListbox>
-						</SelectPopover>
+							</SelectList>
+						</SelectContent>
 					</Select>
 				</InputGroupAddon>
 			</InputGroup>
 			{description && (
-				<Description
+				<FieldDescription
 					data-slot="input-group-select-field-description"
 					id={descriptionId}
 					{...descriptionProps}
 				>
 					{description}
-				</Description>
+				</FieldDescription>
 			)}
-			<FieldErrorContext
-				value={{
-					isInvalid: !!errorMessage,
-					validationErrors:
-						typeof errorMessage === "string" ? [errorMessage] : [],
-					validationDetails: {} as ValidityState,
-				}}
-			>
+			{errorMessage && (
 				<FieldError
 					data-slot="input-group-select-field-error"
-					id={errorId}
 					{...fieldErrorProps}
-				>
-					{errorMessage}
-				</FieldError>
-			</FieldErrorContext>
+					errors={[{ message: errorMessage }]}
+				/>
+			)}
 		</Field>
 	);
 };

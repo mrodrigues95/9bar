@@ -1,5 +1,5 @@
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Settings2 } from "lucide-react";
 import { DialogTrigger } from "react-aria-components";
 import { IconButton } from "../icon-button/icon-button";
 import { Popover } from "./popover";
@@ -30,7 +30,7 @@ export const Default: Story = {
 	render: (props) => (
 		<DialogTrigger>
 			<IconButton aria-label="Open settings">
-				<AdjustmentsHorizontalIcon />
+				<Settings2 />
 			</IconButton>
 			<Popover {...props}>
 				<div className="p-4">

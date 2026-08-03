@@ -1,4 +1,4 @@
-import { Heading, Text } from "@9bar/toolkit";
+import { Heading, Text } from "@9bar/toolkit/components";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { AppBreadcrumbs } from "../../../../components";
 import { useRecipeFormMode } from "./-form-sections/use-recipe-form-mode";

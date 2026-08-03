@@ -1,91 +1,128 @@
-import { BookOpenIcon } from "@heroicons/react/24/outline";
-import type { ComponentProps } from "react";
-import { cn } from "tailwind-variants";
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
+import { cn } from "#lib/utils";
 
-/** An empty state placeholder displayed when a view has no content. Provides a call to action to help the user get started. */
-export const Empty = ({ className, ...props }: ComponentProps<"div">) => {
+/** Props for the {@link Empty} component. */
+export type EmptyProps = React.ComponentProps<"div">;
+
+/** A full-width container used for empty states. Combine with {@link EmptyMedia}, {@link EmptyTitle}, and {@link EmptyDescription}. */
+export const Empty = ({ className, ...props }: EmptyProps) => {
 	return (
 		<div
-			className={cn(
-				"flex min-w-0 flex-1 flex-col items-center justify-center gap-6 text-balance rounded-xl border-dashed p-6 text-center md:p-12",
-				className,
-			)}
 			data-slot="empty"
+			className={cn(
+				"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 text-balance rounded-xl border-dashed p-6 text-center",
+				className,
+			)}
 			{...props}
 		/>
 	);
 };
 
-/** The top section of an empty state, typically containing an icon, title, and description. */
-export const EmptyHeader = ({ className, ...props }: ComponentProps<"div">) => {
+/** Props for the {@link EmptyHeader} component. */
+export type EmptyHeaderProps = React.ComponentProps<"div">;
+
+/** A centered column for the title and description within an {@link Empty} state. */
+export const EmptyHeader = ({ className, ...props }: EmptyHeaderProps) => {
 	return (
 		<div
-			className={cn(
-				"flex max-w-sm flex-col items-center text-center",
-				className,
-			)}
 			data-slot="empty-header"
+			className={cn("flex max-w-sm flex-col items-center gap-1", className)}
 			{...props}
 		/>
 	);
 };
 
-/** An illustration or icon displayed above the empty state title. Renders a default book icon when no children are provided. */
-export const EmptyMedia = ({ className, ...props }: ComponentProps<"div">) => {
+const emptyMediaVariants = cva(
+	[
+		"mb-2 flex shrink-0 items-center justify-center",
+		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
+	],
+	{
+		variants: {
+			variant: {
+				default: "bg-transparent",
+				icon: [
+					"flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-foreground",
+					"[&_svg:not([class*='size-'])]:size-4",
+				],
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+		},
+	},
+);
+
+/** Props for the {@link EmptyMedia} component. */
+export type EmptyMediaProps = React.ComponentProps<"div"> &
+	VariantProps<typeof emptyMediaVariants>;
+
+/** The visual (icon or illustration) displayed above an {@link Empty} state. */
+export const EmptyMedia = ({
+	className,
+	variant = "default",
+	...props
+}: EmptyMediaProps) => {
 	return (
 		<div
+			data-slot="empty-icon"
+			data-variant={variant}
+			className={cn(emptyMediaVariants({ variant, className }))}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link EmptyTitle} component. */
+export type EmptyTitleProps = React.ComponentProps<"div">;
+
+/** A short heading for an {@link Empty} state. */
+export const EmptyTitle = ({ className, ...props }: EmptyTitleProps) => {
+	return (
+		<div
+			data-slot="empty-title"
 			className={cn(
-				"relative mb-6 flex shrink-0 items-center justify-center [&>svg]:pointer-events-none [&_svg]:size-8 [&_svg]:shrink-0",
+				"font-heading font-medium text-sm tracking-tight",
 				className,
 			)}
-			data-slot="empty-media"
-			{...props}
-		>
-			<BookOpenIcon />
-		</div>
-	);
-};
-
-/** A heading for the empty state message. */
-export const EmptyTitle = ({ className, ...props }: ComponentProps<"div">) => {
-	return (
-		<div
-			className={cn("font-semibold text-xl leading-none", className)}
-			data-slot="empty-title"
 			{...props}
 		/>
 	);
 };
 
-/** Supplementary text explaining why the view is empty or what action to take. */
+/** Props for the {@link EmptyDescription} component. */
+export type EmptyDescriptionProps = React.ComponentProps<"p">;
+
+/** Supporting text that explains an {@link Empty} state. */
 export const EmptyDescription = ({
 	className,
 	...props
-}: ComponentProps<"div">) => {
+}: EmptyDescriptionProps) => {
 	return (
 		<div
+			data-slot="empty-description"
 			className={cn(
-				"text-slate-600 text-sm/relaxed [[data-slot=empty-title]+&]:mt-1",
+				"text-muted-foreground text-xs/relaxed [&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
 				className,
 			)}
-			data-slot="empty-description"
 			{...props}
 		/>
 	);
 };
 
-/** A container for action buttons or links within an empty state. */
-export const EmptyContent = ({
-	className,
-	...props
-}: ComponentProps<"div">) => {
+/** Props for the {@link EmptyContent} component. */
+export type EmptyContentProps = React.ComponentProps<"div">;
+
+/** A wrapper for arbitrary content (such as actions) within an {@link Empty} state. */
+export const EmptyContent = ({ className, ...props }: EmptyContentProps) => {
 	return (
 		<div
+			data-slot="empty-content"
 			className={cn(
-				"flex w-full min-w-0 max-w-sm items-center gap-2 text-balance text-sm",
+				"flex w-full min-w-0 max-w-sm flex-col items-center gap-2 text-balance text-xs/relaxed",
 				className,
 			)}
-			data-slot="empty-content"
 			{...props}
 		/>
 	);

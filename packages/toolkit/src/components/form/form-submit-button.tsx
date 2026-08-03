@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { Button, type ButtonProps } from "../button/button";
 import { useFormContext } from "./utils/form-context";
 
@@ -10,11 +11,11 @@ export interface FormSubmitButtonProps extends Omit<ButtonProps, "type"> {
 }
 
 /** A submit button that automatically disables itself when the form cannot submit or is currently submitting. */
-export function FormSubmitButton({
+export const FormSubmitButton = ({
 	children,
 	loadingText = "Submitting...",
 	...props
-}: FormSubmitButtonProps) {
+}: FormSubmitButtonProps) => {
 	const form = useFormContext();
 
 	return (
@@ -35,4 +36,4 @@ export function FormSubmitButton({
 			)}
 		</form.Subscribe>
 	);
-}
+};

@@ -1,37 +1,40 @@
 import { useStore } from "@tanstack/react-form";
 import type { ReactNode } from "react";
-import type { ValidationResult } from "react-aria-components";
+import { CheckboxGroup } from "react-aria-components";
 import {
-	CheckboxGroup,
-	type CheckboxGroupProps,
-} from "../../checkbox-group/checkbox-group";
-import { Description, type DescriptionProps } from "../../field/description";
-import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { Label, type LabelProps } from "../../field/label";
+	FieldDescription,
+	type FieldDescriptionProps,
+	FieldError,
+	type FieldErrorProps,
+	FieldGroup,
+	FieldLegend,
+	type FieldLegendProps,
+	FieldSet,
+} from "../../field/field";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
 /** Props for the {@link CheckboxGroupField} component. */
 export interface CheckboxGroupFieldProps
-	extends Omit<CheckboxGroupProps, "children"> {
+	extends Omit<React.ComponentProps<typeof CheckboxGroup>, "children"> {
 	/** The checkbox items to display in the group. */
 	children: ReactNode;
 	/** The label text displayed above the checkbox group. */
 	label: string;
 	/** Help text displayed below the checkbox group. */
 	description?: string;
-	/** An error message or a function that returns one from the validation result. */
-	errorMessage?: string | ((validation: ValidationResult) => string);
-	/** Additional props forwarded to the `Label` component. */
-	labelProps?: LabelProps;
-	/** Additional props forwarded to the `Description` component. */
-	descriptionProps?: DescriptionProps;
+	/** An error message displayed when validation fails. */
+	errorMessage?: string;
+	/** Additional props forwarded to the `FieldLegend` component. */
+	labelProps?: FieldLegendProps;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
 	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 }
 
 /**
- * A checkbox group field composes a labeled checkbox group with a description
+ * A checkbox group field composes a labeled group of checkboxes with a description
  * and error message for use in forms.
  */
 export const CheckboxGroupField = ({
@@ -45,14 +48,22 @@ export const CheckboxGroupField = ({
 	...props
 }: CheckboxGroupFieldProps) => {
 	return (
-		<CheckboxGroup data-slot="checkbox-group-field" {...props}>
-			<Label {...labelProps}>{label}</Label>
-			{children}
+		<FieldSet data-slot="checkbox-group-field">
+			{label && <FieldLegend {...labelProps}>{label}</FieldLegend>}
+			<CheckboxGroup
+				data-slot="checkbox-group-field-group"
+				{...props}
+				isInvalid={!!errorMessage}
+			>
+				<FieldGroup data-slot="checkbox-group">{children}</FieldGroup>
+			</CheckboxGroup>
 			{description && (
-				<Description {...descriptionProps}>{description}</Description>
+				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
 			)}
-			<FieldError {...fieldErrorProps}>{errorMessage}</FieldError>
-		</CheckboxGroup>
+			{errorMessage && (
+				<FieldError {...fieldErrorProps} errors={[{ message: errorMessage }]} />
+			)}
+		</FieldSet>
 	);
 };
 

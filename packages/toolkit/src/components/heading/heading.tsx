@@ -1,8 +1,8 @@
+import { cva, type VariantProps } from "class-variance-authority";
 import { Text, type TextProps } from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
+import { cn } from "#lib/utils";
 
-const headingVariants = tv({
-	base: "text-primary",
+const headingVariants = cva("text-primary", {
 	variants: {
 		variant: {
 			heading:
@@ -38,7 +38,7 @@ export const Heading = ({
 			data-slot="heading"
 			{...props}
 			elementType={as}
-			className={headingVariants({ variant, className })}
+			className={cn(headingVariants({ variant, className }))}
 		/>
 	);
 };

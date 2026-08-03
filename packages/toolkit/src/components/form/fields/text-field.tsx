@@ -3,13 +3,16 @@ import {
 	TextField as AriaTextField,
 	type TextFieldProps as AriaTextFieldProps,
 	composeRenderProps,
-	type ValidationResult,
 } from "react-aria-components";
-import { Description, type DescriptionProps } from "../../field/description";
-import { fieldVariants } from "../../field/field";
-import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { Input, type InputProps } from "../../field/input";
-import { Label, type LabelProps } from "../../field/label";
+import { cn } from "#lib/utils";
+import {
+	FieldDescription,
+	type FieldDescriptionProps,
+	FieldError,
+	type FieldErrorProps,
+} from "../../field/field";
+import { Input, type InputProps } from "../../input/input";
+import { Label, type LabelProps } from "../../label/label";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
@@ -19,14 +22,14 @@ export interface TextFieldProps extends AriaTextFieldProps {
 	label?: string;
 	/** Help text displayed below the input. */
 	description?: string;
-	/** An error message or a function that returns one from the validation result. */
-	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** An error message displayed when validation fails. */
+	errorMessage?: string;
 	/** Additional props forwarded to the `Label` component. */
 	labelProps?: LabelProps;
 	/** Additional props forwarded to the `Input` component. */
 	inputProps?: InputProps;
-	/** Additional props forwarded to the `Description` component. */
-	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
 	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 }
@@ -49,17 +52,19 @@ export const TextField = ({
 		<AriaTextField
 			data-slot="text-field"
 			{...props}
-			className={composeRenderProps(
-				props.className,
-				(className, _renderProps) => fieldVariants({ className }),
+			className={composeRenderProps(props.className, (className) =>
+				cn("flex flex-col gap-1", className),
 			)}
 		>
 			{label && <Label {...labelProps}>{label}</Label>}
 			<Input {...inputProps} />
 			{description && (
-				<Description {...descriptionProps}>{description}</Description>
+				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
 			)}
-			<FieldError {...fieldErrorProps}>{errorMessage}</FieldError>
+			<FieldError
+				{...fieldErrorProps}
+				errors={errorMessage ? [{ message: errorMessage }] : undefined}
+			/>
 		</AriaTextField>
 	);
 };

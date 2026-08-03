@@ -1,66 +1,31 @@
-import {
-	Separator as AriaSeparator,
-	type SeparatorProps as AriaSeparatorProps,
-} from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
+"use client";
 
-const separatorVariants = tv({
-	base: "shrink-0 border-none bg-border",
-	variants: {
-		orientation: {
-			horizontal: "h-px self-stretch",
-			vertical: "w-px self-stretch",
-		},
-		variant: {
-			default: "",
-			middle: "",
-		},
-	},
-	compoundVariants: [
-		{
-			orientation: "horizontal",
-			variant: "default",
-			className: "w-full",
-		},
-		{
-			orientation: "vertical",
-			variant: "default",
-			className: "h-auto",
-		},
-		{
-			orientation: "horizontal",
-			variant: "middle",
-			className: "mx-4 w-auto",
-		},
-		{
-			orientation: "vertical",
-			variant: "middle",
-			className: "my-4 h-auto",
-		},
-	],
-	defaultVariants: {
-		orientation: "horizontal",
-		variant: "default",
-	},
-});
+import { Separator as SeparatorPrimitive } from "react-aria-components";
+import { cn } from "#lib/utils";
 
-export interface SeparatorProps
-	extends Omit<AriaSeparatorProps, "orientation">,
-		VariantProps<typeof separatorVariants> {}
+/** Props for the {@link Separator} component. */
+export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive>;
 
-/** A visual divider that separates content into distinct sections. */
+/** A visual divider between content, rendered as a horizontal or vertical line. */
 export const Separator = ({
-	orientation,
-	variant,
 	className,
+	orientation = "horizontal",
 	...props
 }: SeparatorProps) => {
 	return (
-		<AriaSeparator
-			data-slot="divider"
+		<SeparatorPrimitive
+			data-slot="separator"
+			orientation={orientation}
+			className={cn(
+				[
+					"block shrink-0 border-0 bg-border",
+					"aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full",
+					"aria-[orientation=vertical]:w-px aria-[orientation=vertical]:self-stretch",
+					"[:is(hr)]:h-px [:is(hr)]:w-full",
+				],
+				className,
+			)}
 			{...props}
-			orientation={orientation === "vertical" ? "vertical" : "horizontal"}
-			className={separatorVariants({ orientation, variant, className })}
 		/>
 	);
 };

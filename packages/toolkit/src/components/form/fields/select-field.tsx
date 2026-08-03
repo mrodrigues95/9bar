@@ -1,16 +1,19 @@
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@tanstack/react-form";
 import type { ReactNode } from "react";
-import type { Key, ValidationResult } from "react-aria-components";
-import { composeTailwindRenderProps } from "../../../utils/classes";
-import { Description, type DescriptionProps } from "../../field/description";
-import { fieldVariants } from "../../field/field";
-import { FieldError, type FieldErrorProps } from "../../field/field-error";
-import { Label, type LabelProps } from "../../field/label";
+import type { Key } from "react-aria-components";
+import {
+	Field,
+	FieldDescription,
+	type FieldDescriptionProps,
+	FieldError,
+	type FieldErrorProps,
+	FieldLabel,
+	type FieldLabelProps,
+} from "../../field/field";
 import {
 	Select,
-	SelectListbox,
-	SelectPopover,
+	SelectContent,
+	SelectList,
 	type SelectProps,
 	SelectTrigger,
 	type SelectTriggerProps,
@@ -23,20 +26,20 @@ import { useFieldContext } from "../utils/form-context";
 /** Props for the {@link SelectField} component. */
 export interface SelectFieldProps<T extends object>
 	extends Omit<SelectProps<T>, "children"> {
-	/** The collection of items to display in the select listbox. */
+	/** The collection of items to display in the select list. */
 	items?: Iterable<T>;
 	/** The label text displayed above the select trigger. */
 	label?: string;
 	/** Help text displayed below the select trigger. */
 	description?: string;
-	/** An error message or a function that returns one from the validation result. */
-	errorMessage?: string | ((validation: ValidationResult) => string);
+	/** An error message displayed when validation fails. */
+	errorMessage?: string;
 	/** A render function or static elements for the select options. */
 	children: ReactNode | ((item: T) => ReactNode);
-	/** Additional props forwarded to the `Label` component. */
-	labelProps?: LabelProps;
-	/** Additional props forwarded to the `Description` component. */
-	descriptionProps?: DescriptionProps;
+	/** Additional props forwarded to the `FieldLabel` component. */
+	labelProps?: FieldLabelProps;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
 	/** Additional props forwarded to the `FieldError` component. */
 	fieldErrorProps?: FieldErrorProps;
 	/** Additional props forwarded to the `SelectTrigger` component. */
@@ -49,7 +52,7 @@ export interface SelectFieldProps<T extends object>
 
 /**
  * A select field displays a collapsible list of options and allows a user to select
- * one of them. Composes a label, trigger, popover, listbox, description, and error message.
+ * one of them. Composes a label, trigger, popover, list, description, and error message.
  */
 export const SelectField = <T extends object>({
 	renderValue,
@@ -66,38 +69,46 @@ export const SelectField = <T extends object>({
 	...props
 }: SelectFieldProps<T>) => {
 	return (
-		<Select
-			data-slot="select-field"
-			{...props}
-			className={composeTailwindRenderProps(props.className, fieldVariants())}
-		>
+		<Field data-slot="select-field" data-invalid={!!errorMessage}>
 			{label && (
-				<Label data-slot="select-field-label" {...labelProps}>
+				<FieldLabel data-slot="select-field-label" {...labelProps}>
 					{label}
-				</Label>
+				</FieldLabel>
 			)}
-			<SelectTrigger data-slot="select-field-trigger" {...selectTriggerProps}>
-				<SelectValue<T> data-slot="select-field-value" {...selectValueProps}>
-					{renderValue ??
-						(({ selectedText, defaultChildren }) =>
-							selectedText || defaultChildren)}
-				</SelectValue>
-				<ChevronDownIcon />
-			</SelectTrigger>
-			{description && (
-				<Description data-slot="select-field-description" {...descriptionProps}>
-					{description}
-				</Description>
-			)}
-			<FieldError data-slot="select-field-error" {...fieldErrorProps}>
-				{errorMessage}
-			</FieldError>
-			<SelectPopover data-slot="select-field-popover">
-				<SelectListbox data-slot="select-field-listbox" items={items}>
-					{children}
-				</SelectListbox>
-			</SelectPopover>
-		</Select>
+			<Select {...props} isInvalid={!!errorMessage}>
+				<SelectTrigger
+					data-slot="select-field-trigger"
+					aria-invalid={!!errorMessage || undefined}
+					{...selectTriggerProps}
+				>
+					<SelectValue<T> data-slot="select-field-value" {...selectValueProps}>
+						{renderValue ??
+							(({ selectedText, defaultChildren }) =>
+								selectedText || defaultChildren)}
+					</SelectValue>
+				</SelectTrigger>
+				{description && (
+					<FieldDescription
+						data-slot="select-field-description"
+						{...descriptionProps}
+					>
+						{description}
+					</FieldDescription>
+				)}
+				{errorMessage && (
+					<FieldError
+						data-slot="select-field-error"
+						{...fieldErrorProps}
+						errors={[{ message: errorMessage }]}
+					/>
+				)}
+				<SelectContent data-slot="select-field-content">
+					<SelectList data-slot="select-field-list" items={items}>
+						{children}
+					</SelectList>
+				</SelectContent>
+			</Select>
+		</Field>
 	);
 };
 
@@ -111,10 +122,10 @@ export interface FormSelectFieldProps<T extends object>
 }
 
 /** A form-connected select field that reads its value, change handlers, and validation errors from the nearest field context. */
-export function FormSelectField<T extends object>({
+export const FormSelectField = <T extends object>({
 	formatErrors = defaultErrorFormatter,
 	...props
-}: FormSelectFieldProps<T>) {
+}: FormSelectFieldProps<T>) => {
 	const field = useFieldContext<Key | Array<Key> | null>();
 	const errors = useStore(field.store, (state) => state.meta.errors);
 	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
@@ -124,9 +135,9 @@ export function FormSelectField<T extends object>({
 			{...props}
 			{...(errorMessage && { errorMessage, isInvalid: true })}
 			name={field.name}
-			value={field.state.value}
+			selectedKey={field.state.value as Key | null}
 			onBlur={field.handleBlur}
-			onChange={(value) => field.handleChange(value)}
+			onSelectionChange={(value) => field.handleChange(value)}
 		/>
 	);
-}
+};

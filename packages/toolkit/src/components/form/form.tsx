@@ -2,11 +2,7 @@ import {
 	Form as AriaForm,
 	type FormProps as AriaFormProps,
 } from "react-aria-components";
-import { tv } from "tailwind-variants";
-
-const formVariants = tv({
-	base: "space-y-4",
-});
+import { cn } from "#lib/utils";
 
 /** Props for the {@link Form} component. */
 export interface FormProps extends AriaFormProps {}
@@ -17,7 +13,7 @@ export const Form = (props: FormProps) => {
 		<AriaForm
 			data-slot="form"
 			{...props}
-			className={formVariants({ className: props.className })}
+			className={cn("space-y-4", props.className)}
 			{...(!props.action && {
 				onSubmit: (e) => {
 					e.preventDefault();

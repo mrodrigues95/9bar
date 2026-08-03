@@ -1,4 +1,4 @@
-import { Link as ToolkitLink } from "@9bar/toolkit";
+import { Link as ToolkitLink } from "@9bar/toolkit/components";
 import {
 	createLink,
 	type RegisteredRouter,

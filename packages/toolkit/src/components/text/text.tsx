@@ -1,11 +1,11 @@
+import { cva, type VariantProps } from "class-variance-authority";
 import {
 	Text as AriaText,
 	type TextProps as AriaTextProps,
 } from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
+import { cn } from "#lib/utils";
 
-const textVariants = tv({
-	base: "",
+const textVariants = cva("", {
 	variants: {
 		variant: {
 			body: "text-base leading-normal",
@@ -47,7 +47,7 @@ export const Text = ({
 			data-slot="text"
 			{...props}
 			elementType={as}
-			className={textVariants({ variant, color, className })}
+			className={cn(textVariants({ variant, color, className }))}
 		/>
 	);
 };

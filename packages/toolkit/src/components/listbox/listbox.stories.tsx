@@ -1,5 +1,5 @@
-import { BookOpenIcon, KeyIcon, PencilIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BookOpen, Key, Pencil } from "lucide-react";
 import { useState } from "react";
 import type { Selection } from "react-aria-components";
 import { Text } from "../text/text";
@@ -72,7 +72,7 @@ export const WithDescriptions: Story = {
 			<ListboxItem
 				id="read"
 				textValue="Read"
-				startContent={<BookOpenIcon className="size-3.5" />}
+				startContent={<BookOpen className="size-3.5" />}
 			>
 				<Text slot="label" color="primary" variant="detail">
 					Read
@@ -84,7 +84,7 @@ export const WithDescriptions: Story = {
 			<ListboxItem
 				id="write"
 				textValue="Write"
-				startContent={<PencilIcon className="size-3.5" />}
+				startContent={<Pencil className="size-3.5" />}
 			>
 				<Text slot="label" color="primary" variant="detail">
 					Write
@@ -96,7 +96,7 @@ export const WithDescriptions: Story = {
 			<ListboxItem
 				id="admin"
 				textValue="Admin"
-				startContent={<KeyIcon className="size-3.5" />}
+				startContent={<Key className="size-3.5" />}
 			>
 				<Text slot="label" color="primary" variant="detail">
 					Admin

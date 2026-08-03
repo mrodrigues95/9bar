@@ -1,211 +1,132 @@
-import { createContext, useContext } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
 import {
-	Tab as AriaTab,
-	TabList as AriaTabList,
-	type TabListProps as AriaTabListProps,
-	TabPanel as AriaTabPanel,
-	type TabPanelProps as AriaTabPanelProps,
-	TabPanels as AriaTabPanels,
-	type TabPanelsProps as AriaTabPanelsProps,
-	type TabProps as AriaTabProps,
-	Tabs as AriaTabs,
-	type TabsProps as AriaTabsProps,
-	composeRenderProps,
-	SelectionIndicator,
+	TabList as TabListPrimitive,
+	TabPanel as TabPanelPrimitive,
+	Tab as TabPrimitive,
+	Tabs as TabsPrimitive,
 } from "react-aria-components";
-import { cn, tv, type VariantProps } from "tailwind-variants";
-import { buttonVariants } from "../button/button";
+import { cn } from "#lib/utils";
 
-const tabsVariants = tv({
-	slots: {
-		root: "flex w-full gap-2",
-		list: "relative z-0 flex h-fit items-center justify-center gap-x-0.5 [scrollbar-width:none]",
-		tab: [
-			buttonVariants({ variant: "ghost", size: "sm" }),
-			"group motion-safe:transition-[translate,width,height]",
-			"focus-visible:ring-offset-0",
-		],
-		indicator:
-			"absolute z-50 transition-[width,translate] duration-150 ease-in-out",
-		panels: "relative w-full flex-1",
-		panel: [
-			"w-full flex-1 p-4 outline-none transition",
-			"exiting:absolute exiting:top-0 exiting:left-0 exiting:w-full",
-		],
-	},
-	variants: {
-		variant: {
-			underline: {
-				list: "gap-x-0.5 overflow-visible border-border bg-transparent",
-				indicator: "z-10 h-0.5 w-full",
-			},
-		},
-		orientation: {
-			horizontal: {
-				root: "flex-col",
-				list: "flex-row",
-			},
-			vertical: {
-				root: "flex-row",
-				list: "flex-col items-start",
-				tab: "w-full justify-start",
-			},
-		},
-		color: {
-			default: {
-				tab: "selected:text-slate-900",
-				indicator: "bg-slate-900",
-			},
-			blue: {
-				tab: "selected:text-blue-900",
-				indicator: "bg-blue-900",
-			},
-		},
-	},
-	compoundVariants: [
-		{
-			variant: "underline",
-			orientation: "horizontal",
-			class: {
-				list: "w-full justify-start border-b py-1",
-				indicator: "-bottom-[5.5px] left-0 h-[3px]",
-			},
-		},
-		{
-			variant: "underline",
-			orientation: "vertical",
-			class: {
-				list: "border-l px-1",
-				tab: "w-full justify-start",
-				indicator: "bottom-0 -left-[5.5px] h-full w-0.5",
-			},
-		},
-	],
-	defaultVariants: {
-		variant: "underline",
-		orientation: "horizontal",
-		color: "default",
-	},
-});
-
-type TabsVariantProps = VariantProps<typeof tabsVariants>;
-
-interface TabsContextValue {
-	// TODO: Add a `pill` variant.
-	variant: "underline";
-	orientation: "horizontal" | "vertical";
-	color: "default" | "blue";
-}
-
-const TabsContext = createContext<TabsContextValue>({
-	variant: "underline",
-	orientation: "horizontal",
-	color: "default",
-});
-
-export interface TabsProps
-	extends AriaTabsProps,
-		Omit<TabsVariantProps, "orientation"> {}
+/** Props for the {@link Tabs} component. */
+export type TabsProps = React.ComponentProps<typeof TabsPrimitive>;
 
 /** A set of layered panels where only one panel is visible at a time, controlled by a tabbed navigation bar. */
-export const Tabs = ({
-	variant = "underline",
-	orientation = "horizontal",
-	color = "default",
+export const Tabs = ({ className, ...props }: TabsProps) => {
+	return (
+		<TabsPrimitive
+			data-slot="tabs"
+			className={cn(
+				"group/tabs flex gap-2 data-horizontal:flex-col",
+				className,
+			)}
+			{...props}
+		/>
+	);
+};
+
+const tabsListVariants = cva(
+	[
+		"group/tabs-list inline-flex w-fit items-center justify-center rounded-lg",
+		"p-[3px] text-muted-foreground",
+		"data-[variant=line]:rounded-none",
+		"group-data-horizontal/tabs:h-8 group-data-vertical/tabs:h-fit",
+		"group-data-vertical/tabs:flex-col",
+	],
+	{
+		variants: {
+			variant: {
+				default: "bg-muted",
+				line: "gap-1 bg-transparent",
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+		},
+	},
+);
+
+/** Props for the {@link TabsList} component. */
+export type TabsListProps = React.ComponentProps<typeof TabListPrimitive> &
+	VariantProps<typeof tabsListVariants>;
+
+/** A horizontal or vertical bar containing the {@link TabsTrigger} elements that control panel visibility. */
+export const TabsList = ({
+	className,
+	variant = "default",
 	...props
-}: TabsProps) => {
-	const styles = tabsVariants({ variant, orientation, color });
-
+}: TabsListProps) => {
 	return (
-		<TabsContext.Provider value={{ variant, orientation, color }}>
-			<AriaTabs
-				orientation={orientation}
-				{...props}
-				data-slot="tabs"
-				className={composeRenderProps(props.className, (className) =>
-					styles.root({ className }),
-				)}
-			/>
-		</TabsContext.Provider>
-	);
-};
-
-export interface TabListProps<T extends object> extends AriaTabListProps<T> {}
-
-/** A horizontal or vertical bar containing the {@link Tab} elements that control panel visibility. */
-export const TabList = <T extends object>(props: TabListProps<T>) => {
-	const { variant, orientation, color } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation, color });
-
-	return (
-		<AriaTabList
+		<TabListPrimitive
 			data-slot="tabs-list"
+			data-variant={variant}
+			className={cn(tabsListVariants({ variant }), className)}
 			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				styles.list({ className }),
-			)}
 		/>
 	);
 };
 
-export interface TabProps extends AriaTabProps {}
+/** Props for the {@link TabsTrigger} component. */
+export type TabsTriggerProps = React.ComponentProps<typeof TabPrimitive>;
 
-/** An individual tab button that activates its corresponding {@link TabPanel}. */
-export const Tab = (props: TabProps) => {
-	const { variant, orientation, color } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation, color });
-
+/** An individual tab button that activates its corresponding {@link TabsContent}. */
+export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 	return (
-		<AriaTab
-			data-slot="tabs-tab"
-			{...props}
-			className={composeRenderProps(
-				props.className,
-				(className) => cn(styles.tab({ className })) ?? "",
+		<TabPrimitive
+			data-slot="tabs-trigger"
+			className={cn(
+				[
+					"relative inline-flex h-[calc(100%-1px)] flex-1 cursor-default items-center justify-center",
+					"gap-1.5 whitespace-nowrap rounded-md border border-transparent px-1.5 py-0.5",
+					"font-medium text-foreground/60 text-xs transition-all",
+					"hover:text-foreground",
+					"focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring",
+					"focus-visible:ring-[3px] focus-visible:ring-ring/50",
+					"disabled:pointer-events-none disabled:opacity-50",
+					"has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1",
+					"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+					"group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start",
+					"group-data-vertical/tabs:py-[calc(--spacing(1.25))]",
+					"dark:text-muted-foreground dark:hover:text-foreground",
+					"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+				],
+				[
+					"group-data-[variant=line]/tabs-list:bg-transparent",
+					"group-data-[variant=line]/tabs-list:data-selected:bg-transparent",
+					"dark:group-data-[variant=line]/tabs-list:data-selected:border-transparent",
+					"dark:group-data-[variant=line]/tabs-list:data-selected:bg-transparent",
+				],
+				[
+					"data-selected:bg-background data-selected:text-foreground",
+					"dark:data-selected:border-input dark:data-selected:bg-input/30",
+					"dark:data-selected:text-foreground",
+				],
+				[
+					"after:absolute after:bg-foreground after:opacity-0 after:transition-opacity",
+					"group-data-horizontal/tabs:after:inset-x-0 group-data-vertical/tabs:after:inset-y-0",
+					"group-data-vertical/tabs:after:-right-1 group-data-horizontal/tabs:after:bottom-[-5px]",
+					"group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:w-0.5",
+					"group-data-[variant=line]/tabs-list:data-selected:after:opacity-100",
+				],
+				className,
 			)}
-		>
-			{composeRenderProps(props.children, (children) => (
-				<>
-					{children}
-					<SelectionIndicator className={styles.indicator()} />
-				</>
-			))}
-		</AriaTab>
-	);
-};
-
-export interface TabPanelsProps<T extends object>
-	extends AriaTabPanelsProps<T> {}
-
-/** A container for the set of {@link TabPanel} elements, handling animated transitions between panels. */
-export const TabPanels = <T extends object>(props: TabPanelsProps<T>) => {
-	const { variant, orientation, color } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation, color });
-
-	return (
-		<AriaTabPanels
-			data-slot="tabs-panels"
 			{...props}
-			className={styles.panels({ className: props.className })}
 		/>
 	);
 };
 
-export interface TabPanelProps extends AriaTabPanelProps {}
+/** Props for the {@link TabsContent} component. */
+export type TabsContentProps = React.ComponentProps<typeof TabPanelPrimitive>;
 
-/** The content area associated with a single {@link Tab}. Only the active panel is visible. */
-export const TabPanel = (props: TabPanelProps) => {
-	const { variant, orientation, color } = useContext(TabsContext);
-	const styles = tabsVariants({ variant, orientation, color });
-
+/** The content area associated with a single {@link TabsTrigger}. Only the active panel is visible. */
+export const TabsContent = ({ className, ...props }: TabsContentProps) => {
 	return (
-		<AriaTabPanel
-			data-slot="tabs-panel"
+		<TabPanelPrimitive
+			data-slot="tabs-content"
+			className={cn("flex-1 text-xs/relaxed outline-none", className)}
 			{...props}
-			className={composeRenderProps(
-				props.className,
-				(className) => cn(styles.panel({ className })) ?? "",
-			)}
 		/>
 	);
 };
+
+export { tabsListVariants };

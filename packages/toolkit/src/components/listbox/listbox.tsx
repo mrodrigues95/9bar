@@ -1,4 +1,5 @@
-import { CheckIcon } from "@heroicons/react/24/solid";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Check } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
 	Header as AriaHeader,
@@ -11,8 +12,7 @@ import {
 	Collection,
 	composeRenderProps,
 } from "react-aria-components";
-import { cn, tv, type VariantProps } from "tailwind-variants";
-import { composeTailwindRenderProps } from "../../utils/classes";
+import { cn, composeTailwindRenderProps } from "../../utils";
 import { Separator, type SeparatorProps } from "../separator/separator";
 
 export interface ListboxProps<T extends object>
@@ -37,24 +37,28 @@ export const Listbox = <T extends object>({
 	);
 };
 
-export const listboxItemVariants = tv({
-	base: [
-		"group flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 font-normal text-sm outline-none [&[href]]:cursor-pointer",
+export const listboxItemVariants = cva(
+	[
+		"group flex cursor-default select-none items-center gap-2 rounded-sm",
+		"px-2 py-1 font-normal text-sm outline-none",
+		"[&[href]]:cursor-pointer",
 		"disabled:pointer-events-none disabled:opacity-50",
 		"hover:bg-slate-100",
 		"pressed:bg-slate-200",
 		"focus:bg-slate-100",
 	],
-	variants: {
-		variant: {
-			default: ["text-primary"],
-			danger: ["text-destructive-fg"],
+	{
+		variants: {
+			variant: {
+				default: ["text-primary"],
+				danger: ["text-destructive-fg"],
+			},
+		},
+		defaultVariants: {
+			variant: "default",
 		},
 	},
-	defaultVariants: {
-		variant: "default",
-	},
-});
+);
 
 export interface ListboxItemProps<T extends object>
 	extends AriaListBoxItemProps<T>,
@@ -79,7 +83,7 @@ export const ListboxItem = <T extends object>({
 			{...props}
 			{...(textValue ? { textValue } : {})}
 			className={composeRenderProps(props.className, (className, renderProps) =>
-				listboxItemVariants({ ...renderProps, variant, className }),
+				cn(listboxItemVariants({ ...renderProps, variant, className })),
 			)}
 		>
 			{composeRenderProps(props.children, (children, { isSelected }) => (
@@ -88,7 +92,7 @@ export const ListboxItem = <T extends object>({
 					<div className="flex flex-1 flex-col justify-center truncate text-primary group-selected:font-medium">
 						{children}
 					</div>
-					{isSelected && <CheckIcon className="size-3.5" />}
+					{isSelected && <Check className="size-3.5" />}
 				</>
 			))}
 		</AriaListBoxItem>
@@ -147,9 +151,8 @@ export const ListboxSeparator = (props: ListboxSeparatorProps) => {
 	return (
 		<Separator
 			data-slot="listbox-separator"
-			variant="middle"
 			{...props}
-			className={cn("mx-2 my-1", props.className) ?? ""}
+			className={cn("mx-2 my-1", props.className)}
 		/>
 	);
 };

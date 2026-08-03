@@ -1,5 +1,5 @@
+import { cn } from "@9bar/toolkit/utils";
 import type { ComponentProps } from "react";
-import { cn } from "tailwind-variants";
 
 export const ListItem = (props: ComponentProps<"li">) => {
 	return (

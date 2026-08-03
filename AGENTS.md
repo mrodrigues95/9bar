@@ -78,22 +78,33 @@ Common scopes: `web`, `toolkit`, or both `web, toolkit`.
 │   └── web/                    # @9bar/web
 │       ├── src/
 │       │   ├── routes/         # File-based routes (TanStack Router)
-│       │   ├── styles/         # Global CSS
+│       │   ├── styles/         # globals.css (imports the toolkit theme)
 │       │   └── ...
+│       ├── components.json     # shadcn config (ui → @9bar/toolkit/components)
 │       └── biome.json          # Extends root, adds a11y + React rules
 ├── packages/
 │   └── toolkit/                # @9bar/toolkit
 │       ├── src/
-│       │   ├── <component>/    # Component directories
-│       │   ├── form/           # Form system
-│       │   └── index.ts        # Barrel export
+│       │   ├── components/     # Component dirs (shadcn React Aria base) + index.ts barrel
+│       │   ├── styles/         # globals.css — single source of truth for the theme
+│       │   ├── utils/          # utils barrel (cn, composeTailwindRenderProps)
+│       │   └── index.ts        # re-exports the component + utils barrels
+│       ├── components.json     # shadcn config (aria-mira, zinc, lucide)
 │       ├── .storybook/         # Storybook 10 config
 │       └── ...
 ├── biome.json                  # Root Biome config
-├── tsconfig.base.json          # Shared strict TS config
+├── tsconfig.base.json          # Shared strict TS config (no exactOptionalPropertyTypes)
 ├── pnpm-workspace.yaml
 └── package.json
 ```
+
+## shadcn/ui Monorepo Setup
+
+- `@9bar/toolkit` is the shadcn `ui` package: the CLI installs components there via `apps/web/components.json` aliases (`ui` → `@9bar/toolkit/components`)
+- Add components with `pnpm dlx shadcn@latest add <name>` from `apps/web`, then follow the toolkit's "Adding a New Component" workflow (move into a dir, index.ts, JSDoc, barrel)
+- Theming is centralized in `packages/toolkit/src/styles/globals.css`; `apps/web/src/styles/globals.css` imports it and adds a `@source` for toolkit source scanning
+- The `shadcn/ui` agent skill lives in `.agents/skills/shadcn` -- use it for CLI/composition guidance
+- Preset `bdvw9IJc`: style `aria-mira`, baseColor `zinc`, icon library `lucide`, font Geist
 
 ## Adding a New Package
 

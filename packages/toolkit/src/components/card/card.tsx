@@ -1,144 +1,128 @@
-import { mergeProps } from "@base-ui/react/merge-props";
-import { useRender } from "@base-ui/react/use-render";
-import { tv, type VariantProps } from "tailwind-variants";
-
-const cardVariants = tv({
-	slots: {
-		root: "relative flex flex-col gap-6 rounded-lg border border-border bg-white py-6 shadow-xs outline-none",
-		header: "flex flex-col gap-1.5 px-6",
-		title: "font-semibold text-lg text-primary leading-none",
-		description: "text-muted text-sm",
-		panel: "flex flex-col px-6",
-		footer: "flex items-center gap-2 px-6",
-	},
-	variants: {
-		variant: {
-			default: {},
-		},
-	},
-	defaultVariants: {
-		variant: "default",
-	},
-});
+import type * as React from "react";
+import { cn } from "#lib/utils";
 
 /** Props for the {@link Card} component. */
-export interface CardProps
-	extends useRender.ComponentProps<"div">,
-		VariantProps<typeof cardVariants> {}
-
-/** A card groups related content and actions in a contained, visually distinct surface. */
-export const Card = ({ variant, className, render, ...props }: CardProps) => {
-	const styles = cardVariants({ variant });
-	return useRender({
-		defaultTagName: "div",
-		render: render ?? <div />,
-		props: mergeProps<"div">(
-			{
-				className: styles.root({ className }),
-				// https://github.com/mui/base-ui/issues/3545
-				["data-slot" as string]: "card",
-			},
-			props,
-		),
-	});
+export type CardProps = React.ComponentProps<"div"> & {
+	size?: "default" | "sm";
 };
 
-/** The top section of a card, typically containing a title and description. */
-export const CardHeader = ({
-	className,
-	render,
-	...props
-}: useRender.ComponentProps<"div">) => {
-	const styles = cardVariants();
-	return useRender({
-		defaultTagName: "div",
-		render: render ?? <div />,
-		props: mergeProps<"div">(
-			{
-				className: styles.header({ className }),
-				["data-slot" as string]: "card-header",
-			},
-			props,
-		),
-	});
+/** A surface for grouping related content. Combine with {@link CardHeader}, {@link CardContent}, and {@link CardFooter}. */
+export const Card = ({ className, size = "default", ...props }: CardProps) => {
+	return (
+		<div
+			data-slot="card"
+			data-size={size}
+			className={cn(
+				[
+					"group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-card-foreground text-xs/relaxed ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]",
+					"data-[size=sm]:[--card-spacing:--spacing(3)]",
+					"has-[>img:first-child]:pt-0",
+					"*:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
+				],
+				className,
+			)}
+			{...props}
+		/>
+	);
 };
 
-/** A heading for the card. */
-export const CardTitle = ({
-	className,
-	render,
-	...props
-}: useRender.ComponentProps<"div">) => {
-	const styles = cardVariants();
-	return useRender({
-		defaultTagName: "div",
-		render: render ?? <div />,
-		props: mergeProps<"div">(
-			{
-				className: styles.title({ className }),
-				["data-slot" as string]: "card-title",
-			},
-			props,
-		),
-	});
+/** Props for the {@link CardHeader} component. */
+export type CardHeaderProps = React.ComponentProps<"div">;
+
+/** The top section of a {@link Card}, containing its title, description, and optional action. */
+export const CardHeader = ({ className, ...props }: CardHeaderProps) => {
+	return (
+		<div
+			data-slot="card-header"
+			className={cn(
+				[
+					"group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-lg px-(--card-spacing)",
+					"has-data-[slot=card-action]:grid-cols-[1fr_auto]",
+					"has-data-[slot=card-description]:grid-rows-[auto_auto]",
+					"[.border-b]:pb-(--card-spacing)",
+				],
+				className,
+			)}
+			{...props}
+		/>
+	);
 };
 
-/** Supplementary text describing the card's purpose, displayed below the title. */
+/** Props for the {@link CardTitle} component. */
+export type CardTitleProps = React.ComponentProps<"div">;
+
+/** A short heading for a {@link Card}. */
+export const CardTitle = ({ className, ...props }: CardTitleProps) => {
+	return (
+		<div
+			data-slot="card-title"
+			className={cn("font-heading font-medium text-sm", className)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link CardDescription} component. */
+export type CardDescriptionProps = React.ComponentProps<"div">;
+
+/** Supporting text displayed beneath a {@link CardTitle}. */
 export const CardDescription = ({
 	className,
-	render,
 	...props
-}: useRender.ComponentProps<"p">) => {
-	const styles = cardVariants();
-	return useRender({
-		defaultTagName: "p",
-		render: render ?? <p />,
-		props: mergeProps<"p">(
-			{
-				className: styles.description({ className }),
-				["data-slot" as string]: "card-description",
-			},
-			props,
-		),
-	});
+}: CardDescriptionProps) => {
+	return (
+		<div
+			data-slot="card-description"
+			className={cn("text-muted-foreground text-xs/relaxed", className)}
+			{...props}
+		/>
+	);
 };
 
-/** The main content area of a card. */
-export const CardPanel = ({
-	className,
-	render,
-	...props
-}: useRender.ComponentProps<"div">) => {
-	const styles = cardVariants();
-	return useRender({
-		defaultTagName: "div",
-		render: render ?? <div />,
-		props: mergeProps<"div">(
-			{
-				className: styles.panel({ className }),
-				["data-slot" as string]: "card-panel",
-			},
-			props,
-		),
-	});
+/** Props for the {@link CardAction} component. */
+export type CardActionProps = React.ComponentProps<"div">;
+
+/** An action (such as a button or menu) aligned to the end of a {@link CardHeader}. */
+export const CardAction = ({ className, ...props }: CardActionProps) => {
+	return (
+		<div
+			data-slot="card-action"
+			className={cn(
+				"col-start-2 row-span-2 row-start-1 self-start justify-self-end",
+				className,
+			)}
+			{...props}
+		/>
+	);
 };
 
-/** The bottom section of a card, typically containing action buttons. */
-export const CardFooter = ({
-	className,
-	render,
-	...props
-}: useRender.ComponentProps<"div">) => {
-	const styles = cardVariants();
-	return useRender({
-		defaultTagName: "div",
-		render: render ?? <div />,
-		props: mergeProps<"div">(
-			{
-				className: styles.footer({ className }),
-				["data-slot" as string]: "card-footer",
-			},
-			props,
-		),
-	});
+/** Props for the {@link CardContent} component. */
+export type CardContentProps = React.ComponentProps<"div">;
+
+/** The main body of a {@link Card}. */
+export const CardContent = ({ className, ...props }: CardContentProps) => {
+	return (
+		<div
+			data-slot="card-content"
+			className={cn("px-(--card-spacing)", className)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link CardFooter} component. */
+export type CardFooterProps = React.ComponentProps<"div">;
+
+/** The bottom section of a {@link Card}, typically holding actions. */
+export const CardFooter = ({ className, ...props }: CardFooterProps) => {
+	return (
+		<div
+			data-slot="card-footer"
+			className={cn(
+				"flex items-center rounded-b-lg px-(--card-spacing) [.border-t]:pt-(--card-spacing)",
+				className,
+			)}
+			{...props}
+		/>
+	);
 };

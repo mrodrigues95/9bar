@@ -1,11 +1,11 @@
-import { Heading, TabList, TabPanel, TabPanels, Tabs } from "@9bar/toolkit";
-import { DocumentIcon, FingerPrintIcon } from "@heroicons/react/24/solid";
+import { Heading, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
 import {
 	createFileRoute,
 	Outlet,
 	redirect,
 	useMatchRoute,
 } from "@tanstack/react-router";
+import { FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
 import {
 	AppBreadcrumbs,
@@ -40,14 +40,14 @@ const Recipe = () => {
 				<Heading as="h1" variant="title">
 					{recipe.name ?? "(Untitled)"}
 				</Heading>
-				<Tabs color="blue" selectedKey={tab}>
-					<TabList aria-label={`Manage ${recipe.name ?? "recipe"}`}>
+				<Tabs selectedKey={tab}>
+					<TabsList aria-label={`Manage ${recipe.name ?? "recipe"}`}>
 						<TabLink
 							id={TABS.overview}
 							to="/recipes/$recipeId/overview"
 							params={{ recipeId: String(recipe.id) }}
 						>
-							<FingerPrintIcon />
+							<Fingerprint />
 							Overview
 						</TabLink>
 						<TabLink
@@ -55,17 +55,15 @@ const Recipe = () => {
 							to="/recipes/$recipeId/logs"
 							params={{ recipeId: String(recipe.id) }}
 						>
-							<DocumentIcon />
+							<FileText />
 							Logs
 						</TabLink>
-					</TabList>
-					<TabPanels>
-						{objectKeys(TABS).map((key) => (
-							<TabPanel id={TABS[key]} key={key} className="px-0">
-								<Outlet />
-							</TabPanel>
-						))}
-					</TabPanels>
+					</TabsList>
+					{objectKeys(TABS).map((key) => (
+						<TabsContent id={TABS[key]} key={key} className="px-0">
+							<Outlet />
+						</TabsContent>
+					))}
 				</Tabs>
 			</div>
 		</>

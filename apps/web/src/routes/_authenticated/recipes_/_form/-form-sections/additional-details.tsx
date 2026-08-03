@@ -1,4 +1,4 @@
-import { withForm } from "@9bar/toolkit";
+import { withForm } from "@9bar/toolkit/components";
 import { FormSection, recipeFormOpts } from "./form-section";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
 

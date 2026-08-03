@@ -1,13 +1,16 @@
 import {
 	Button,
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
 	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
-	SubmenuTrigger,
-} from "@9bar/toolkit";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
+import { cn } from "@9bar/toolkit/utils";
+import { Plus, X } from "lucide-react";
 import {
 	type ComponentProps,
 	createContext,
@@ -25,7 +28,6 @@ import {
 	type Key,
 	type Selection,
 } from "react-aria-components";
-import { cn, tv } from "tailwind-variants";
 
 export interface FilterBarOption {
 	id: string;
@@ -144,20 +146,17 @@ const partitionFilterOptions = (
 	return [selected, unselected];
 };
 
-export const filterBarVariants = tv({
-	slots: {
-		root: "flex flex-wrap items-center gap-1.5",
-		filter: [
-			"flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border",
-		],
-		filterLabel:
-			"flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg]:size-3.5",
-		filterOperator: ["rounded-none font-normal"],
-		filterValue: ["rounded-none"],
-		filterRemove: "",
-		actions: "ml-auto flex items-center gap-1",
-	},
-});
+export const filterBarVariants = {
+	root: "flex flex-wrap items-center gap-1.5",
+	filter:
+		"flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border",
+	filterLabel:
+		"flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg]:size-3.5",
+	filterOperator: "rounded-none font-normal",
+	filterValue: "rounded-none",
+	filterRemove: "",
+	actions: "ml-auto flex items-center gap-1",
+};
 
 // biome-ignore lint/suspicious/noExplicitAny: Type-erased context for generic component
 const FilterBarContext = createContext<FilterBarState<any, any> | null>(null);
@@ -179,11 +178,10 @@ export const FilterBarActions = ({
 	className,
 	...props
 }: FilterBarActionsProps) => {
-	const styles = filterBarVariants();
 	return (
 		<div
 			data-slot="filter-bar-actions"
-			className={cn(styles.actions(), className) ?? ""}
+			className={cn(filterBarVariants.actions, className) ?? ""}
 			{...props}
 		/>
 	);
@@ -205,8 +203,6 @@ const FilterBarChip = ({
 	onUpdate,
 	onRemove,
 }: FilterBarChipProps) => {
-	const styles = filterBarVariants();
-
 	const currentOp = definition.operators.find(
 		(o) => o.id === filter.operatorId,
 	);
@@ -274,48 +270,48 @@ const FilterBarChip = ({
 		<AriaGroup
 			data-slot="filter-bar-filter"
 			aria-label={`${definition.label} ${currentOp?.label} ${valueLabel}`}
-			className={styles.filter()}
+			className={filterBarVariants.filter}
 		>
 			<span
 				data-slot="filter-bar-filter-label"
-				className={styles.filterLabel()}
+				className={filterBarVariants.filterLabel}
 			>
 				{definition.icon}
 				{definition.label}
 			</span>
 
-			<MenuTrigger>
+			<DropdownMenuTrigger>
 				<Button
 					data-slot="filter-bar-filter-operator"
 					variant="ghost"
 					size="xs"
-					className={styles.filterOperator()}
+					className={filterBarVariants.filterOperator}
 				>
 					{currentOp?.label}
 				</Button>
-				<Menu
+				<DropdownMenu
 					selectionMode="single"
 					selectedKeys={new Set<Key>([filter.operatorId])}
 					onSelectionChange={handleOperatorChange}
 				>
 					{visibleOperators.map((o) => (
-						<MenuItem key={o.id} id={o.id}>
+						<DropdownMenuItem key={o.id} id={o.id}>
 							{o.label}
-						</MenuItem>
+						</DropdownMenuItem>
 					))}
-				</Menu>
-			</MenuTrigger>
+				</DropdownMenu>
+			</DropdownMenuTrigger>
 
-			<MenuTrigger onOpenChange={handleValueMenuOpenChange}>
+			<DropdownMenuTrigger onOpenChange={handleValueMenuOpenChange}>
 				<Button
 					data-slot="filter-bar-filter-value"
 					variant="ghost"
 					size="xs"
-					className={styles.filterValue()}
+					className={filterBarVariants.filterValue}
 				>
 					{filter.values.length > 0 ? valueLabel : "\u2026"}
 				</Button>
-				<Menu
+				<DropdownMenu
 					selectionMode="multiple"
 					selectedKeys={filter.values}
 					onSelectionChange={handleValueChange}
@@ -323,28 +319,28 @@ const FilterBarChip = ({
 					{shouldPartition ? (
 						<>
 							{selectedOptions.map((opt) => (
-								<MenuItem key={opt.id} id={opt.id}>
+								<DropdownMenuItem key={opt.id} id={opt.id}>
 									{opt.label}
-								</MenuItem>
+								</DropdownMenuItem>
 							))}
 							{selectedOptions.length > 0 && unselectedOptions.length > 0 && (
-								<MenuSeparator />
+								<DropdownMenuSeparator />
 							)}
 							{unselectedOptions.map((opt) => (
-								<MenuItem key={opt.id} id={opt.id}>
+								<DropdownMenuItem key={opt.id} id={opt.id}>
 									{opt.label}
-								</MenuItem>
+								</DropdownMenuItem>
 							))}
 						</>
 					) : (
 						definition.options.map((opt) => (
-							<MenuItem key={opt.id} id={opt.id}>
+							<DropdownMenuItem key={opt.id} id={opt.id}>
 								{opt.label}
-							</MenuItem>
+							</DropdownMenuItem>
 						))
 					)}
-				</Menu>
-			</MenuTrigger>
+				</DropdownMenu>
+			</DropdownMenuTrigger>
 
 			<IconButton
 				data-slot="filter-bar-filter-remove"
@@ -354,7 +350,7 @@ const FilterBarChip = ({
 				className="mr-1.5"
 				onPress={() => onRemove(filter.id)}
 			>
-				<XMarkIcon />
+				<X />
 			</IconButton>
 		</AriaGroup>
 	);
@@ -554,15 +550,13 @@ export const FilterBar = <
 		[definitionById, filtersByFilterId, update],
 	);
 
-	const styles = filterBarVariants();
-
 	return (
 		<FilterBarContext.Provider value={state}>
 			<AriaToolbar
 				orientation="horizontal"
 				data-slot="filter-bar"
 				{...toolbarProps}
-				className={cn(styles.root(), toolbarProps.className) ?? ""}
+				className={cn(filterBarVariants.root, toolbarProps.className) ?? ""}
 			>
 				{filters.map((filter) => (
 					<FilterBarChip
@@ -574,41 +568,41 @@ export const FilterBar = <
 					/>
 				))}
 
-				<MenuTrigger>
+				<DropdownMenuTrigger>
 					<IconButton
 						data-slot="filter-bar-add"
 						aria-label="Add filter"
 						variant="ghost"
 						size="sm"
 					>
-						<PlusIcon aria-hidden="true" />
+						<Plus aria-hidden="true" />
 					</IconButton>
-					<Menu>
+					<DropdownMenu>
 						{definitions.map((def) => (
-							<SubmenuTrigger key={def.id}>
-								<MenuItem textValue={def.label}>
+							<DropdownMenuSub key={def.id}>
+								<DropdownMenuSubTrigger textValue={def.label}>
 									{def.icon && (
 										<span className="[&_svg]:size-4" aria-hidden="true">
 											{def.icon}
 										</span>
 									)}
 									{def.label}
-								</MenuItem>
-								<Menu
+								</DropdownMenuSubTrigger>
+								<DropdownMenuSubContent
 									selectionMode="multiple"
 									selectedKeys={filtersByFilterId.get(def.id)?.values ?? []}
 									onSelectionChange={(keys) => handleAddFilter(def.id, keys)}
 								>
 									{def.options.map((opt) => (
-										<MenuItem key={opt.id} id={opt.id}>
+										<DropdownMenuItem key={opt.id} id={opt.id}>
 											{opt.label}
-										</MenuItem>
+										</DropdownMenuItem>
 									))}
-								</Menu>
-							</SubmenuTrigger>
+								</DropdownMenuSubContent>
+							</DropdownMenuSub>
 						))}
-					</Menu>
-				</MenuTrigger>
+					</DropdownMenu>
+				</DropdownMenuTrigger>
 
 				{children?.(
 					state as unknown as FilterBarState<

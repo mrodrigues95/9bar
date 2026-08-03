@@ -1,22 +1,22 @@
 import {
 	Badge,
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
 	Text,
-} from "@9bar/toolkit";
-import {
-	ArrowRightIcon,
-	ArrowsRightLeftIcon,
-	EllipsisVerticalIcon,
-	FingerPrintIcon,
-	PaperClipIcon,
-	PencilIcon,
-	TrashIcon,
-} from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
 import { parseAbsolute } from "@internationalized/date";
+import {
+	ArrowRight,
+	ArrowRightLeft,
+	EllipsisVertical,
+	Fingerprint,
+	Paperclip,
+	Pencil,
+	Trash2,
+} from "lucide-react";
 import { List, ListItem, MenuItemLink } from "../../../components";
 import {
 	GRINDER_OPTIONS,
@@ -51,7 +51,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					variant="body-sm"
 					className="flex items-center gap-1 text-blue-950"
 				>
-					<FingerPrintIcon className="size-4" />
+					<Fingerprint className="size-4" />
 					{machine.name} · {grinder.name}
 				</Text>
 				{!recipe.isQuickBrew && (
@@ -74,20 +74,20 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 				)}
 			</div>
 			<div className="flex items-center gap-1">
-				<Badge variant={recipe.isQuickBrew ? "warning" : "success"} size="xs">
+				<Badge variant={recipe.isQuickBrew ? "secondary" : "outline"}>
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
-				<MenuTrigger>
+				<DropdownMenuTrigger>
 					<IconButton aria-label="Actions" size="sm" variant="ghost">
-						<EllipsisVerticalIcon />
+						<EllipsisVertical />
 					</IconButton>
-					<Menu>
+					<DropdownMenu>
 						{!recipe.isQuickBrew && (
 							<MenuItemLink
 								to="/recipes/$recipeId"
 								params={{ recipeId: String(recipe.id) }}
 							>
-								<ArrowRightIcon className="size-3" />
+								<ArrowRight className="size-3" />
 								View
 							</MenuItemLink>
 						)}
@@ -105,7 +105,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 										params: { recipeId: String(recipe.id) },
 									})}
 						>
-							<PencilIcon className="size-3" />
+							<Pencil className="size-3" />
 							Edit
 						</MenuItemLink>
 						{recipe.isQuickBrew && (
@@ -114,23 +114,26 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 								params={{ recipeId: String(recipe.id) }}
 								search={{ convert: "log" }}
 							>
-								<ArrowsRightLeftIcon className="size-3" />
+								<ArrowRightLeft className="size-3" />
 								Convert to Recipe
 							</MenuItemLink>
 						)}
 						{recipe.isQuickBrew && (
-							<MenuItem onAction={() => alert("rename")}>
-								<PaperClipIcon className="size-3" />
+							<DropdownMenuItem onAction={() => alert("rename")}>
+								<Paperclip className="size-3" />
 								Attach to Recipe
-							</MenuItem>
+							</DropdownMenuItem>
 						)}
-						<MenuSeparator />
-						<MenuItem onAction={() => alert("delete")} variant="danger">
-							<TrashIcon className="size-3" />
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onAction={() => alert("delete")}
+							variant="destructive"
+						>
+							<Trash2 className="size-3" />
 							Delete
-						</MenuItem>
-					</Menu>
-				</MenuTrigger>
+						</DropdownMenuItem>
+					</DropdownMenu>
+				</DropdownMenuTrigger>
 			</div>
 		</ListItem>
 	);
