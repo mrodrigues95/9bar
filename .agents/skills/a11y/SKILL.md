@@ -1,3 +1,8 @@
+---
+name: a11y
+description: Accessibility guidelines for building UI in this repo, on top of React Aria Components. Use when creating or reviewing any UI, interactive elements, form fields, or components; when handling focus rings, keyboard navigation, screen reader semantics, labels, or accessible names; or when checking Storybook stories for a11y violations. Covers labeling conventions, focus ring systems, disabled states, and the new-component checklist.
+---
+
 # Accessibility Guidelines
 
 This project uses [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) as its accessibility foundation. These guidelines cover project-specific conventions for building on top of that foundation.
