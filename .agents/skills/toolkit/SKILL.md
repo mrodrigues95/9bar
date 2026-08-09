@@ -38,7 +38,7 @@ Long class strings in `cva()`/`cn()` calls are broken into arrays of shorter str
 - `components.json` at the package root configures the CLI: `style: "aria-mira"`, baseColor `zinc`, icon library `lucide`, aliases `#components` / `#lib` / `#hooks`
 - `imports` in `package.json` map `#components/*` → `./src/components/*/index.ts` and `#lib/*` → `./src/utils/*.ts`
 - `exports` expose `./components`, `./components/*`, `./utils`, `./hooks/*`, `./globals.css`
-- Adding a shadcn component: run `pnpm dlx shadcn@latest add <name>` from `apps/web` (monorepo routing) or with `-c packages/toolkit`. The CLI writes flat `src/components/<name>.tsx`; the following post-install steps are required (see Adding a New Component below)
+- Monorepo routing: the CLI installs into this package via `apps/web/components.json` (`ui` → `@9bar/toolkit/components`) — run `pnpm dlx shadcn@latest add <name>` from `apps/web`, or with `-c packages/toolkit`. Follow the `shadcn` skill for CLI usage, then the post-install steps below
 
 ## Form System
 
@@ -72,15 +72,16 @@ Components are built on React Aria Components for WAI-ARIA-compliant semantics a
 
 ## Adding a New Component
 
-1. Run `pnpm dlx shadcn@latest add <name>` from `apps/web` (or `-c packages/toolkit`)
-2. Move the generated `src/components/<name>.tsx` into `src/components/<name>/<name>.tsx` and delete the flat file
-3. Create `src/components/<name>/index.ts` with `export * from "./<name>";`
-4. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook docs → MCP `get-documentation`. Add:
+Follow the `shadcn` skill for the CLI add (registry lookup, `add`, post-add review). These repo-specific post-install steps are then required — the CLI writes a flat `src/components/<name>.tsx`:
+
+1. Move the generated flat `src/components/<name>.tsx` into `src/components/<name>/<name>.tsx` and delete the flat file
+2. Create `src/components/<name>/index.ts` with `export * from "./<name>";`
+3. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook docs → MCP `get-documentation`. Add:
    - A descriptive JSDoc on every exported component (use `{@link}` for subcomponent relationships)
    - `/** Props for the {@link X} component. */` on every exported props type
    - Convert `function` declarations to arrow functions (repo convention)
-5. Add an export line to `src/components/index.ts`
-6. Create/migrate `<name>.stories.tsx` with JSDoc on each story
+4. Add an export line to `src/components/index.ts`
+5. Create/migrate `<name>.stories.tsx` with JSDoc on each story
 
 ## Common Pitfalls
 
