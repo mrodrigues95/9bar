@@ -52,7 +52,7 @@ export const WithDescription: Story = {
 		return (
 			<div className="flex flex-col gap-1">
 				<Checkbox {...props} aria-describedby={id} />
-				<FieldDescription id={id}>
+				<FieldDescription id={id} className="pl-6">
 					By clicking this checkbox, you agree to the terms and conditions.
 				</FieldDescription>
 			</div>

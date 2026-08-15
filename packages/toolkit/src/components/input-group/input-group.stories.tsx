@@ -137,7 +137,7 @@ export const WithButton: Story = {
 				placeholder="Search recipes..."
 			/>
 			<InputGroupAddon align="inline-end">
-				<InputGroupButton variant="ghost" size="icon-sm" aria-label="Search">
+				<InputGroupButton variant="ghost" size="icon-xs" aria-label="Search">
 					<Search />
 				</InputGroupButton>
 			</InputGroupAddon>
@@ -159,7 +159,10 @@ export const WithSelect: Story = {
 				/>
 				<InputGroupAddon align="inline-end">
 					<Select aria-label="Time unit value" defaultSelectedKey="s">
-						<SelectTrigger size="sm">
+						<SelectTrigger
+							size="sm"
+							className="border-0 bg-transparent shadow-none dark:bg-transparent dark:hover:bg-transparent"
+						>
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>

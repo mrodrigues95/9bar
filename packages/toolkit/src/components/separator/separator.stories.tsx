@@ -44,21 +44,21 @@ export const ListExample: Story = {
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">John Doe</div>
-					<div className="text-muted text-xs">john@example.com</div>
+					<div className="text-muted-foreground text-xs">john@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">Jane Smith</div>
-					<div className="text-muted text-xs">jane@example.com</div>
+					<div className="text-muted-foreground text-xs">jane@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">Bob Johnson</div>
-					<div className="text-muted text-xs">bob@example.com</div>
+					<div className="text-muted-foreground text-xs">bob@example.com</div>
 				</div>
 			</div>
 		</div>

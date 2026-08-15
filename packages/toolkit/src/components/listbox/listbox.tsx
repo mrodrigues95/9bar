@@ -135,7 +135,7 @@ export const ListboxSectionHeader = ({
 			data-slot="listbox-section-header"
 			{...props}
 			className={cn(
-				"truncate px-2 py-1.5 font-medium text-muted text-xs",
+				"truncate px-2 py-1.5 font-medium text-muted-foreground text-xs",
 				props.className,
 			)}
 		>

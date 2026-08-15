@@ -163,23 +163,3 @@ export const WithLinkAction: Story = {
 		</Alert>
 	),
 };
-
-/** An alert with multiple action slots, such as a confirm/cancel pair for destructive actions. */
-export const WithMultipleActions: Story = {
-	render: (props) => (
-		<Alert {...props} variant="destructive">
-			<TriangleAlert />
-			<AlertTitle>Delete Account</AlertTitle>
-			<AlertDescription>
-				Are you sure you want to delete your account? This action cannot be
-				undone.
-			</AlertDescription>
-			<AlertAction>
-				<Button variant="ghost">Cancel</Button>
-			</AlertAction>
-			<AlertAction>
-				<Button variant="destructive">Delete</Button>
-			</AlertAction>
-		</Alert>
-	),
-};

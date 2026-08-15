@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Collection } from "react-aria-components";
-import { Label } from "../label/label";
 import {
 	Select,
 	SelectContent,
@@ -81,7 +80,6 @@ export const WithSections: Story = {
 
 		return (
 			<Select aria-label="Fruits and Vegetables" {...props}>
-				<Label>Fruits and Vegetables</Label>
 				<SelectTrigger>
 					<SelectValue />
 				</SelectTrigger>
@@ -127,7 +125,6 @@ export const MultipleSelection: Story = {
 				placeholder="Select fruits..."
 				defaultValue={["Apple", "Banana"]}
 			>
-				<Label>Fruits</Label>
 				<SelectTrigger>
 					<SelectValue<{ name: string }>>
 						{({ selectedText, selectedItems, defaultChildren }) => {

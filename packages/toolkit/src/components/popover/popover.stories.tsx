@@ -29,7 +29,7 @@ export const Default: Story = {
 	args: {},
 	render: (props) => (
 		<DialogTrigger>
-			<IconButton aria-label="Open settings">
+			<IconButton aria-label="Open settings" variant="ghost">
 				<Settings2 />
 			</IconButton>
 			<Popover {...props}>

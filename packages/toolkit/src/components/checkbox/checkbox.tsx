@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, MinusIcon } from "lucide-react";
 import {
 	Checkbox as CheckboxPrimitive,
 	type CheckboxProps,
@@ -18,20 +18,8 @@ export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 			data-slot="checkbox"
 			className={cn(
 				[
-					"peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input outline-none transition-shadow",
-					"after:absolute after:-inset-x-3 after:-inset-y-2",
-					"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
-					"aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
-					"aria-invalid:aria-checked:border-primary",
-					"data-invalid:data-selected:border-primary data-[disabled]:cursor-not-allowed",
-					"data-checked:border-primary data-focus-visible:border-ring data-invalid:border-destructive",
-					"data-selected:border-primary data-checked:bg-primary data-selected:bg-primary",
-					"data-checked:text-primary-foreground data-selected:text-primary-foreground",
-					"data-[disabled]:opacity-50 data-focus-visible:ring-2 data-focus-visible:ring-ring/30",
-					"data-invalid:ring-2 data-invalid:ring-destructive/20",
-					"dark:bg-input/30 dark:data-invalid:border-destructive/50 dark:data-checked:bg-primary",
-					"dark:data-selected:bg-primary dark:data-invalid:ring-destructive/40",
-					"dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+					"group/checkbox peer relative flex shrink-0 select-none items-center gap-2 text-sm outline-none",
+					"data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
 					"group-has-disabled/field:opacity-50",
 				],
 				className,
@@ -44,9 +32,41 @@ export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 					<>
 						<span
 							data-slot="checkbox-indicator"
-							className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+							className={cn([
+								"relative flex size-4 shrink-0 items-center justify-center rounded-[4px]",
+								"border border-input transition-shadow",
+								"after:absolute after:-inset-x-3 after:-inset-y-2",
+								"group-data-[focus-visible]/checkbox:border-ring",
+								"group-data-[focus-visible]/checkbox:ring-2",
+								"group-data-[focus-visible]/checkbox:ring-ring/30",
+								"group-aria-invalid/checkbox:border-destructive",
+								"group-aria-invalid/checkbox:ring-2",
+								"group-aria-invalid/checkbox:ring-destructive/20",
+								"group-data-[invalid]/checkbox:border-destructive",
+								"group-data-[invalid]/checkbox:ring-2",
+								"group-data-[invalid]/checkbox:ring-destructive/20",
+								"group-data-[invalid]/checkbox:group-data-[selected]/checkbox:border-primary",
+								"group-data-[checked]/checkbox:border-primary",
+								"group-data-[checked]/checkbox:bg-primary",
+								"group-data-[selected]/checkbox:border-primary",
+								"group-data-[selected]/checkbox:bg-primary",
+								"group-data-[checked]/checkbox:text-primary-foreground",
+								"group-data-[selected]/checkbox:text-primary-foreground",
+								"dark:bg-input/30",
+								"dark:group-data-[checked]/checkbox:bg-primary",
+								"dark:group-data-[selected]/checkbox:bg-primary",
+								"dark:group-data-[invalid]/checkbox:border-destructive/50",
+								"dark:group-data-[invalid]/checkbox:ring-destructive/40",
+								"dark:group-aria-invalid/checkbox:border-destructive/50",
+								"dark:group-aria-invalid/checkbox:ring-destructive/40",
+								"[&>svg]:size-3.5 [&>svg]:shrink-0",
+							])}
 						>
-							{(isSelected || isIndeterminate) && <CheckIcon />}
+							{isIndeterminate ? (
+								<MinusIcon />
+							) : isSelected ? (
+								<CheckIcon />
+							) : null}
 						</span>
 						{children}
 					</>

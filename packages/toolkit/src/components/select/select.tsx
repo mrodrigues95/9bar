@@ -56,7 +56,7 @@ export const SelectGroup = <T extends object>({
 	return (
 		<ListBoxSectionPrimitive
 			data-slot="select-group"
-			className={cn("scroll-my-1 p-1", className)}
+			className={cn("scroll-my-1", className)}
 			{...props}
 		/>
 	);
@@ -160,7 +160,7 @@ export const SelectContent = ({
 			crossOffset={crossOffset}
 			{...props}
 		>
-			<SelectList>{children}</SelectList>
+			{children}
 		</SelectPopover>
 	);
 };
@@ -223,7 +223,7 @@ export const SelectList = <T extends object>({
 		<ListBoxPrimitive
 			data-slot="select-list"
 			className={cn(
-				"group/select-list max-h-[inherit] overflow-y-auto overflow-x-hidden p-0 outline-hidden",
+				"group/select-list max-h-[inherit] overflow-y-auto overflow-x-hidden p-1 outline-hidden",
 				className,
 			)}
 			{...props}

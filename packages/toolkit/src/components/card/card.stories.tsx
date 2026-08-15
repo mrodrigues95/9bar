@@ -40,12 +40,12 @@ export const Default: Story = {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<p className="text-secondary text-sm">
+				<p className="text-muted-foreground text-sm">
 					This is the main content area of the card. You can place any content
 					here.
 				</p>
 			</CardContent>
-			<CardFooter>
+			<CardFooter className="flex-col gap-2">
 				<Button variant="outline" className="w-full">
 					Cancel
 				</Button>
@@ -71,7 +71,7 @@ export const WithHeaderAction: Story = {
 				</CardAction>
 			</CardHeader>
 			<CardContent>
-				<p className="text-secondary text-sm">
+				<p className="text-muted-foreground text-sm">
 					Your account settings are stored securely and synced across devices.
 				</p>
 			</CardContent>
@@ -88,7 +88,7 @@ export const WithoutFooter: Story = {
 				<CardDescription>This card has no footer.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<p className="text-secondary text-sm">
+				<p className="text-muted-foreground text-sm">
 					Cards are flexible. You can use only the slots you need.
 				</p>
 			</CardContent>
@@ -101,7 +101,7 @@ export const WithoutHeader: Story = {
 	render: (props) => (
 		<Card {...props} className="w-full max-w-sm">
 			<CardContent>
-				<p className="text-secondary text-sm">
+				<p className="text-muted-foreground text-sm">
 					This card doesn't have a header, just content.
 				</p>
 			</CardContent>
