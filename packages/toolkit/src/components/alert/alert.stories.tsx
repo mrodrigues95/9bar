@@ -25,7 +25,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: { type: "select" },
-			options: ["default", "destructive"],
+			options: ["default", "info", "success", "warning", "destructive"],
 		},
 	},
 	args: { variant: "default" },
@@ -34,8 +34,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** An informational alert used for neutral, non-critical messages. */
+/** An informational alert with a blue theme, used for neutral, non-critical messages. */
 export const Info: Story = {
+	args: { variant: "info" },
 	render: (props) => (
 		<Alert {...props}>
 			<InfoIcon />
@@ -45,8 +46,9 @@ export const Info: Story = {
 	),
 };
 
-/** A success alert used to confirm that an action completed successfully. */
+/** A success alert with a green theme, used to confirm that an action completed successfully. */
 export const Success: Story = {
+	args: { variant: "success" },
 	render: (props) => (
 		<Alert {...props}>
 			<CircleCheck />
@@ -56,8 +58,9 @@ export const Success: Story = {
 	),
 };
 
-/** A warning alert used to caution the user about a potential issue. */
+/** A warning alert with a yellow theme, used to caution the user about a potential issue. */
 export const Warning: Story = {
+	args: { variant: "warning" },
 	render: (props) => (
 		<Alert {...props}>
 			<TriangleAlert />
@@ -67,7 +70,7 @@ export const Warning: Story = {
 	),
 };
 
-/** A destructive alert used to communicate errors or destructive outcomes. */
+/** A destructive alert with a red theme, used to communicate errors or destructive outcomes. */
 export const Danger: Story = {
 	args: { variant: "destructive" },
 	render: (props) => (
