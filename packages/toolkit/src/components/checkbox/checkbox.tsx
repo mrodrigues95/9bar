@@ -2,7 +2,7 @@
 
 import { CheckIcon, MinusIcon } from "lucide-react";
 import {
-	Checkbox as CheckboxPrimitive,
+	Checkbox as AriaCheckbox,
 	type CheckboxProps,
 	composeRenderProps,
 } from "react-aria-components";
@@ -14,7 +14,7 @@ export type { CheckboxProps };
 /** A control that allows a user to toggle a single option on or off, supporting an indeterminate state. */
 export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 	return (
-		<CheckboxPrimitive
+		<AriaCheckbox
 			data-slot="checkbox"
 			className={cn(
 				[
@@ -72,6 +72,6 @@ export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 					</>
 				),
 			)}
-		</CheckboxPrimitive>
+		</AriaCheckbox>
 	);
 };

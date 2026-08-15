@@ -1,22 +1,22 @@
 import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
 import type * as React from "react";
 import {
-	Button as ButtonPrimitive,
+	Button as AriaButton,
+	Header as AriaHeader,
+	ListBox as AriaListBox,
+	ListBoxItem as AriaListBoxItem,
+	ListBoxSection as AriaListBoxSection,
+	Popover as AriaPopover,
+	Select as AriaSelect,
+	SelectValue as AriaSelectValue,
+	Separator as AriaSeparator,
 	composeRenderProps,
-	Header as HeaderPrimitive,
-	ListBoxItem as ListBoxItemPrimitive,
-	ListBox as ListBoxPrimitive,
 	type ListBoxProps,
-	ListBoxSection as ListBoxSectionPrimitive,
-	Popover as PopoverPrimitive,
 	SearchField,
 	type SearchFieldProps,
 	type ListBoxSectionProps as SelectGroupProps,
-	Select as SelectPrimitive,
 	type SelectProps,
-	SelectValue as SelectValuePrimitive,
 	type SelectValueProps,
-	Separator as SeparatorPrimitive,
 } from "react-aria-components";
 import {
 	InputGroup,
@@ -37,7 +37,7 @@ export const Select = <
 	...props
 }: SelectProps<T, M>) => {
 	return (
-		<SelectPrimitive
+		<AriaSelect
 			data-slot="select"
 			className={cn("w-fit", className)}
 			{...props}
@@ -54,7 +54,7 @@ export const SelectGroup = <T extends object>({
 	...props
 }: SelectGroupProps<T>) => {
 	return (
-		<ListBoxSectionPrimitive
+		<AriaListBoxSection
 			data-slot="select-group"
 			className={cn("scroll-my-1", className)}
 			{...props}
@@ -72,7 +72,7 @@ export const SelectValue = <T extends object>({
 	...props
 }: SelectValueProps<T>) => {
 	return (
-		<SelectValuePrimitive
+		<AriaSelectValue
 			data-slot="select-value"
 			className={cn(
 				"flex flex-1 text-left data-placeholder:text-muted-foreground",
@@ -84,13 +84,13 @@ export const SelectValue = <T extends object>({
 				? children
 				: ({ selectedItems, selectedText, defaultChildren }) =>
 						selectedItems.length > 1 ? selectedText : defaultChildren}
-		</SelectValuePrimitive>
+		</AriaSelectValue>
 	);
 };
 
 /** Props for the {@link SelectTrigger} component. */
 export type SelectTriggerProps = Omit<
-	React.ComponentProps<typeof ButtonPrimitive>,
+	React.ComponentProps<typeof AriaButton>,
 	"children"
 > & {
 	children?: React.ReactNode;
@@ -105,7 +105,7 @@ export const SelectTrigger = ({
 	...props
 }: SelectTriggerProps) => {
 	return (
-		<ButtonPrimitive
+		<AriaButton
 			data-slot="select-trigger"
 			data-size={size}
 			className={cn(
@@ -130,13 +130,13 @@ export const SelectTrigger = ({
 		>
 			{children}
 			<ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground" />
-		</ButtonPrimitive>
+		</AriaButton>
 	);
 };
 
 /** Props for the {@link SelectContent} component. */
 export type SelectContentProps = Omit<
-	React.ComponentProps<typeof PopoverPrimitive>,
+	React.ComponentProps<typeof AriaPopover>,
 	"className" | "children"
 > & {
 	className?: string;
@@ -167,7 +167,7 @@ export const SelectContent = ({
 
 /** Props for the {@link SelectPopover} component. */
 export type SelectPopoverProps = Omit<
-	React.ComponentProps<typeof PopoverPrimitive>,
+	React.ComponentProps<typeof AriaPopover>,
 	"className" | "children"
 > & {
 	className?: string;
@@ -184,7 +184,7 @@ export const SelectPopover = ({
 	...props
 }: SelectPopoverProps) => {
 	return (
-		<PopoverPrimitive
+		<AriaPopover
 			data-slot="select-content"
 			placement={placement}
 			offset={offset}
@@ -207,7 +207,7 @@ export const SelectPopover = ({
 			{...props}
 		>
 			{children}
-		</PopoverPrimitive>
+		</AriaPopover>
 	);
 };
 
@@ -220,7 +220,7 @@ export const SelectList = <T extends object>({
 	...props
 }: ListBoxProps<T>) => {
 	return (
-		<ListBoxPrimitive
+		<AriaListBox
 			data-slot="select-list"
 			className={cn(
 				"group/select-list max-h-[inherit] overflow-y-auto overflow-x-hidden p-1 outline-hidden",
@@ -257,12 +257,12 @@ export const SelectInput = ({ className, ...props }: SearchFieldProps) => {
 };
 
 /** Props for the {@link SelectLabel} component. */
-export type SelectLabelProps = React.ComponentProps<typeof HeaderPrimitive>;
+export type SelectLabelProps = React.ComponentProps<typeof AriaHeader>;
 
 /** A heading rendered above a group of {@link SelectItem} elements. */
 export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
 	return (
-		<HeaderPrimitive
+		<AriaHeader
 			data-slot="select-label"
 			className={cn("px-2 py-1.5 text-muted-foreground text-xs", className)}
 			{...props}
@@ -271,7 +271,7 @@ export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
 };
 
 /** Props for the {@link SelectItem} component. */
-export type SelectItemProps = React.ComponentProps<typeof ListBoxItemPrimitive>;
+export type SelectItemProps = React.ComponentProps<typeof AriaListBoxItem>;
 
 /** An individual option within a {@link SelectList}. */
 export const SelectItem = ({
@@ -280,7 +280,7 @@ export const SelectItem = ({
 	...props
 }: SelectItemProps) => {
 	return (
-		<ListBoxItemPrimitive
+		<AriaListBoxItem
 			data-slot="select-item"
 			textValue={typeof children === "string" ? children : undefined}
 			className={cn(
@@ -308,14 +308,12 @@ export const SelectItem = ({
 					</span>
 				</>
 			))}
-		</ListBoxItemPrimitive>
+		</AriaListBoxItem>
 	);
 };
 
 /** Props for the {@link SelectSeparator} component. */
-export type SelectSeparatorProps = React.ComponentProps<
-	typeof SeparatorPrimitive
->;
+export type SelectSeparatorProps = React.ComponentProps<typeof AriaSeparator>;
 
 /** A divider between {@link SelectGroup} sections within a {@link SelectList}. */
 export const SelectSeparator = ({
@@ -323,7 +321,7 @@ export const SelectSeparator = ({
 	...props
 }: SelectSeparatorProps) => {
 	return (
-		<SeparatorPrimitive
+		<AriaSeparator
 			data-slot="select-separator"
 			className={cn(
 				"pointer-events-none -mx-1 my-1 h-px bg-border/50",

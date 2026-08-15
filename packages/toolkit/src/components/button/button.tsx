@@ -1,10 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import {
-	Button as ButtonPrimitive,
-	type ButtonProps as ButtonPrimitiveProps,
-	Link as LinkPrimitive,
-	type LinkProps as LinkPrimitiveProps,
+	Button as AriaButton,
+	type ButtonProps as AriaButtonProps,
+	Link as AriaLink,
+	type LinkProps as AriaLinkProps,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
 
@@ -81,7 +81,7 @@ export const buttonVariants = cva(
 );
 
 /** Props for the {@link Button} component. */
-export type ButtonProps = Omit<ButtonPrimitiveProps, "className"> &
+export type ButtonProps = Omit<AriaButtonProps, "className"> &
 	React.RefAttributes<HTMLButtonElement> &
 	VariantProps<typeof buttonVariants> & {
 		className?: string;
@@ -99,7 +99,7 @@ export const Button = ({
 	...props
 }: ButtonProps) => {
 	return (
-		<ButtonPrimitive
+		<AriaButton
 			data-slot="button"
 			data-variant={variant}
 			data-size={size}
@@ -110,7 +110,7 @@ export const Button = ({
 };
 
 /** Props for the {@link LinkButton} component. */
-export type LinkButtonProps = Omit<LinkPrimitiveProps, "className"> &
+export type LinkButtonProps = Omit<AriaLinkProps, "className"> &
 	VariantProps<typeof buttonVariants> & {
 		className?: string;
 	};
@@ -126,7 +126,7 @@ export const LinkButton = ({
 	...props
 }: LinkButtonProps) => {
 	return (
-		<LinkPrimitive
+		<AriaLink
 			data-slot="button"
 			data-variant={variant}
 			data-size={size}

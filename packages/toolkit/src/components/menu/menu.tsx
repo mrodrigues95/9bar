@@ -2,37 +2,35 @@ import { cva } from "class-variance-authority";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
 import type * as React from "react";
 import {
+	Header as AriaHeader,
+	Menu as AriaMenu,
+	MenuItem as AriaMenuItem,
+	type MenuItemProps as AriaMenuItemProps,
+	MenuSection as AriaMenuSection,
+	type MenuSectionProps as AriaMenuSectionProps,
+	MenuTrigger as AriaMenuTrigger,
+	Popover as AriaPopover,
+	Separator as AriaSeparator,
+	SubmenuTrigger as AriaSubmenuTrigger,
 	composeRenderProps,
-	Header as HeaderPrimitive,
-	MenuItem as MenuItemPrimitive,
-	type MenuItemProps as MenuItemPrimitiveProps,
-	Menu as MenuPrimitive,
-	MenuSection as MenuSectionPrimitive,
-	type MenuSectionProps as MenuSectionPrimitiveProps,
-	MenuTrigger as MenuTriggerPrimitive,
-	Popover as PopoverPrimitive,
-	Separator as SeparatorPrimitive,
-	SubmenuTrigger as SubmenuTriggerPrimitive,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
-export type MenuTriggerProps = React.ComponentProps<
-	typeof MenuTriggerPrimitive
->;
+export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;
 
 /** The trigger that opens the {@link Menu}, wrapping the element that receives the interaction. */
 export const MenuTrigger = ({ ...props }: MenuTriggerProps) => {
-	return <MenuTriggerPrimitive data-slot="menu-trigger" {...props} />;
+	return <AriaMenuTrigger data-slot="menu-trigger" {...props} />;
 };
 
 /** Props for the {@link Menu} component. */
 export type MenuProps<T extends object> = Omit<
-	React.ComponentProps<typeof MenuPrimitive<T>>,
+	React.ComponentProps<typeof AriaMenu<T>>,
 	"className"
 > &
 	Pick<
-		React.ComponentProps<typeof PopoverPrimitive>,
+		React.ComponentProps<typeof AriaPopover>,
 		"placement" | "offset" | "crossOffset"
 	> & {
 		"data-slot"?: string;
@@ -50,7 +48,7 @@ export const Menu = <T extends object>({
 	...props
 }: MenuProps<T>) => {
 	return (
-		<PopoverPrimitive
+		<AriaPopover
 			data-slot={dataSlot}
 			placement={placement}
 			offset={offset}
@@ -70,35 +68,35 @@ export const Menu = <T extends object>({
 				className,
 			)}
 		>
-			<MenuPrimitive<T>
+			<AriaMenu<T>
 				className="max-h-[inherit] overflow-y-auto overflow-x-hidden outline-hidden"
 				{...props}
 			>
 				{children}
-			</MenuPrimitive>
-		</PopoverPrimitive>
+			</AriaMenu>
+		</AriaPopover>
 	);
 };
 
 /** Props for the {@link MenuGroup} component. */
-export type MenuGroupProps<T extends object> = MenuSectionPrimitiveProps<T>;
+export type MenuGroupProps<T extends object> = AriaMenuSectionProps<T>;
 
 /** A semantic group of related {@link MenuItem} elements. */
 export const MenuGroup = <T extends object>({
 	...props
 }: MenuGroupProps<T>) => {
-	return <MenuSectionPrimitive<T> data-slot="menu-group" {...props} />;
+	return <AriaMenuSection<T> data-slot="menu-group" {...props} />;
 };
 
 /** Props for the {@link MenuLabel} component. */
-export type MenuLabelProps = React.ComponentProps<typeof HeaderPrimitive> & {
+export type MenuLabelProps = React.ComponentProps<typeof AriaHeader> & {
 	inset?: boolean;
 };
 
 /** A heading that labels a {@link MenuGroup}. */
 export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
 	return (
-		<HeaderPrimitive
+		<AriaHeader
 			data-slot="menu-label"
 			data-inset={inset}
 			className={cn(
@@ -148,7 +146,7 @@ const menuItemVariants = cva(
 );
 
 /** Props for the {@link MenuItem} component. */
-export type MenuItemProps<T extends object> = MenuItemPrimitiveProps<T> & {
+export type MenuItemProps<T extends object> = AriaMenuItemProps<T> & {
 	inset?: boolean;
 	variant?: "default" | "destructive";
 };
@@ -162,7 +160,7 @@ export const MenuItem = <T extends object>({
 	...props
 }: MenuItemProps<T>) => {
 	return (
-		<MenuItemPrimitive
+		<AriaMenuItem
 			data-slot="menu-item"
 			data-inset={inset}
 			data-variant={variant}
@@ -192,23 +190,22 @@ export const MenuItem = <T extends object>({
 					</>
 				),
 			)}
-		</MenuItemPrimitive>
+		</AriaMenuItem>
 	);
 };
 
 /** Props for the {@link MenuSub} component. */
-export type MenuSubProps = React.ComponentProps<typeof SubmenuTriggerPrimitive>;
+export type MenuSubProps = React.ComponentProps<typeof AriaSubmenuTrigger>;
 
 /** A nested submenu within a {@link Menu}, pairing a {@link MenuSubTrigger} with a {@link MenuSubContent}. */
 export const MenuSub = ({ ...props }: MenuSubProps) => {
-	return <SubmenuTriggerPrimitive data-slot="menu-sub" {...props} />;
+	return <AriaSubmenuTrigger data-slot="menu-sub" {...props} />;
 };
 
 /** Props for the {@link MenuSubTrigger} component. */
-export type MenuSubTriggerProps<T extends object> =
-	MenuItemPrimitiveProps<T> & {
-		inset?: boolean;
-	};
+export type MenuSubTriggerProps<T extends object> = AriaMenuItemProps<T> & {
+	inset?: boolean;
+};
 
 /** The menu item that opens a {@link MenuSub}. */
 export const MenuSubTrigger = <T extends object>({
@@ -218,7 +215,7 @@ export const MenuSubTrigger = <T extends object>({
 	...props
 }: MenuSubTriggerProps<T>) => {
 	return (
-		<MenuItemPrimitive
+		<AriaMenuItem
 			data-slot="menu-sub-trigger"
 			data-inset={inset}
 			textValue={typeof children === "string" ? children : props.textValue}
@@ -241,7 +238,7 @@ export const MenuSubTrigger = <T extends object>({
 					<ChevronRightIcon className="ml-auto" />
 				</>
 			))}
-		</MenuItemPrimitive>
+		</AriaMenuItem>
 	);
 };
 
@@ -275,14 +272,12 @@ export const MenuSubContent = <T extends object>({
 };
 
 /** Props for the {@link MenuSeparator} component. */
-export type MenuSeparatorProps = React.ComponentProps<
-	typeof SeparatorPrimitive
->;
+export type MenuSeparatorProps = React.ComponentProps<typeof AriaSeparator>;
 
 /** A divider between {@link MenuItem} elements or groups. */
 export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => {
 	return (
-		<SeparatorPrimitive
+		<AriaSeparator
 			data-slot="menu-separator"
 			className={cn("-mx-1 my-1 h-px bg-border/50", className)}
 			{...props}

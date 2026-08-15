@@ -1,10 +1,10 @@
 "use client";
 
-import { Separator as SeparatorPrimitive } from "react-aria-components";
+import { Separator as AriaSeparator } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Separator} component. */
-export type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive>;
+export type SeparatorProps = React.ComponentProps<typeof AriaSeparator>;
 
 /** A visual divider between content, rendered as a horizontal or vertical line. */
 export const Separator = ({
@@ -13,7 +13,7 @@ export const Separator = ({
 	...props
 }: SeparatorProps) => {
 	return (
-		<SeparatorPrimitive
+		<AriaSeparator
 			data-slot="separator"
 			orientation={orientation}
 			className={cn(

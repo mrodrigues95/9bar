@@ -1,19 +1,16 @@
 "use client";
 
 import type * as React from "react";
-import {
-	composeRenderProps,
-	Input as InputPrimitive,
-} from "react-aria-components";
+import { Input as AriaInput, composeRenderProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Input} component. */
-export type InputProps = React.ComponentProps<typeof InputPrimitive>;
+export type InputProps = React.ComponentProps<typeof AriaInput>;
 
 /** A single-line text input for user-entered values, typically used inside a {@link Field}. */
 export const Input = ({ className, type, ...props }: InputProps) => {
 	return (
-		<InputPrimitive
+		<AriaInput
 			type={type}
 			data-slot="input"
 			className={composeRenderProps(className, (className) =>

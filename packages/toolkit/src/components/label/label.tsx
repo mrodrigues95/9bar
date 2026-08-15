@@ -1,8 +1,8 @@
 "use client";
 
 import {
+	Label as AriaLabel,
 	LabelContext,
-	Label as LabelPrimitive,
 	type LabelProps,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
@@ -13,7 +13,7 @@ export type { LabelProps };
 /** A label that describes a form control, automatically associated with it via the `htmlFor` prop or the surrounding field context. */
 export const Label = ({ className, htmlFor, slot, ...props }: LabelProps) => {
 	const label = (
-		<LabelPrimitive
+		<AriaLabel
 			data-slot="label"
 			className={cn(
 				[

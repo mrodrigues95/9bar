@@ -28,6 +28,7 @@ pnpm toolkit typecheck
 - Components use `data-slot` attributes for identification
 - Components are styled with shadcn class strings (`cn()` / `cva()`) using the theme tokens defined in `src/styles/globals.css`
 - Component props extend React Aria props where applicable
+- **Alias react-aria-components imports with the `Aria*` prefix** when a name would collide with the toolkit's own export: `Button as AriaButton`, `type ButtonProps as AriaButtonProps`, `ListBoxItem as AriaListBoxItem`. Do not use `*Primitive` aliases (legacy convention, being phased out). Leave imports unaliased when there is no collision (e.g. `Group`, `composeRenderProps`).
 
 ## Class String Formatting
 

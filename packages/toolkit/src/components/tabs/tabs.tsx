@@ -1,20 +1,20 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import {
-	TabList as TabListPrimitive,
-	TabPanel as TabPanelPrimitive,
-	Tab as TabPrimitive,
-	Tabs as TabsPrimitive,
+	Tab as AriaTab,
+	TabList as AriaTabList,
+	TabPanel as AriaTabPanel,
+	Tabs as AriaTabs,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Tabs} component. */
-export type TabsProps = React.ComponentProps<typeof TabsPrimitive>;
+export type TabsProps = React.ComponentProps<typeof AriaTabs>;
 
 /** A set of layered panels where only one panel is visible at a time, controlled by a tabbed navigation bar. */
 export const Tabs = ({ className, ...props }: TabsProps) => {
 	return (
-		<TabsPrimitive
+		<AriaTabs
 			data-slot="tabs"
 			className={cn(
 				"group/tabs flex gap-2 data-horizontal:flex-col",
@@ -47,7 +47,7 @@ const tabsListVariants = cva(
 );
 
 /** Props for the {@link TabsList} component. */
-export type TabsListProps = React.ComponentProps<typeof TabListPrimitive> &
+export type TabsListProps = React.ComponentProps<typeof AriaTabList> &
 	VariantProps<typeof tabsListVariants>;
 
 /** A horizontal or vertical bar containing the {@link TabsTrigger} elements that control panel visibility. */
@@ -57,7 +57,7 @@ export const TabsList = ({
 	...props
 }: TabsListProps) => {
 	return (
-		<TabListPrimitive
+		<AriaTabList
 			data-slot="tabs-list"
 			data-variant={variant}
 			className={cn(tabsListVariants({ variant }), className)}
@@ -67,12 +67,12 @@ export const TabsList = ({
 };
 
 /** Props for the {@link TabsTrigger} component. */
-export type TabsTriggerProps = React.ComponentProps<typeof TabPrimitive>;
+export type TabsTriggerProps = React.ComponentProps<typeof AriaTab>;
 
 /** An individual tab button that activates its corresponding {@link TabsContent}. */
 export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 	return (
-		<TabPrimitive
+		<AriaTab
 			data-slot="tabs-trigger"
 			className={cn(
 				[
@@ -116,12 +116,12 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 };
 
 /** Props for the {@link TabsContent} component. */
-export type TabsContentProps = React.ComponentProps<typeof TabPanelPrimitive>;
+export type TabsContentProps = React.ComponentProps<typeof AriaTabPanel>;
 
 /** The content area associated with a single {@link TabsTrigger}. Only the active panel is visible. */
 export const TabsContent = ({ className, ...props }: TabsContentProps) => {
 	return (
-		<TabPanelPrimitive
+		<AriaTabPanel
 			data-slot="tabs-content"
 			className={cn("flex-1 text-xs/relaxed outline-none", className)}
 			{...props}

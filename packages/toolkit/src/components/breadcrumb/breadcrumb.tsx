@@ -3,12 +3,12 @@
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import type * as React from "react";
 import {
-	Breadcrumb as BreadcrumbPrimitive,
+	Breadcrumb as AriaBreadcrumb,
+	Breadcrumbs as AriaBreadcrumbs,
+	Link as AriaLink,
 	type BreadcrumbProps,
-	Breadcrumbs as BreadcrumbsPrimitive,
 	type BreadcrumbsProps,
 	composeRenderProps,
-	Link as LinkPrimitive,
 	type LinkProps,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
@@ -37,7 +37,7 @@ export const BreadcrumbList = <T extends object>({
 	...props
 }: BreadcrumbsProps<T>) => {
 	return (
-		<BreadcrumbsPrimitive
+		<AriaBreadcrumbs
 			data-slot="breadcrumb-list"
 			className={cn(
 				"wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-xs/relaxed",
@@ -64,7 +64,7 @@ export const BreadcrumbItem = ({
 	...props
 }: BreadcrumbItemProps) => {
 	return (
-		<BreadcrumbPrimitive
+		<AriaBreadcrumb
 			data-slot="breadcrumb-item"
 			className={cn("inline-flex items-center gap-1", className)}
 			{...props}
@@ -84,7 +84,7 @@ export const BreadcrumbItem = ({
 					)}
 				</>
 			))}
-		</BreadcrumbPrimitive>
+		</AriaBreadcrumb>
 	);
 };
 
@@ -98,7 +98,7 @@ export const BreadcrumbLink = ({
 	...props
 }: BreadcrumbLinkProps) => {
 	return (
-		<LinkPrimitive
+		<AriaLink
 			data-slot="breadcrumb-link"
 			className={cn(
 				"inline-flex items-center gap-1.5 transition-colors hover:text-foreground",

@@ -1,10 +1,10 @@
 import type * as React from "react";
 import {
+	Popover as AriaPopover,
+	type PopoverProps as AriaPopoverProps,
 	DialogTrigger,
 	type DialogTriggerProps,
 	Heading,
-	Popover as PopoverPrimitive,
-	type PopoverProps as PopoverPrimitiveProps,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
 
@@ -21,7 +21,7 @@ export const PopoverTrigger = ({ children, ...props }: PopoverTriggerProps) => {
 };
 
 /** Props for the {@link Popover} component. */
-export type PopoverProps = Omit<PopoverPrimitiveProps, "className"> & {
+export type PopoverProps = Omit<AriaPopoverProps, "className"> & {
 	className?: string;
 };
 
@@ -34,7 +34,7 @@ export const Popover = ({
 	...props
 }: PopoverProps) => {
 	return (
-		<PopoverPrimitive
+		<AriaPopover
 			data-slot="popover-content"
 			placement={placement}
 			offset={offset}
