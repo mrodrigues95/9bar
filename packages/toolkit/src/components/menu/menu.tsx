@@ -16,20 +16,20 @@ import {
 } from "react-aria-components";
 import { cn } from "#lib/utils";
 
-/** Props for the {@link DropdownMenuTrigger} component. */
-export type DropdownMenuTriggerProps = React.ComponentProps<
+/** Props for the {@link MenuTrigger} component. */
+export type MenuTriggerProps = React.ComponentProps<
 	typeof MenuTriggerPrimitive
 >;
 
-/** The trigger that opens the {@link DropdownMenu}, wrapping the element that receives the interaction. */
-export const DropdownMenuTrigger = ({ ...props }: DropdownMenuTriggerProps) => {
-	return <MenuTriggerPrimitive data-slot="dropdown-menu-trigger" {...props} />;
+/** The trigger that opens the {@link Menu}, wrapping the element that receives the interaction. */
+export const MenuTrigger = ({ ...props }: MenuTriggerProps) => {
+	return <MenuTriggerPrimitive data-slot="menu-trigger" {...props} />;
 };
 
-/** Props for the {@link DropdownMenu} component. */
-export type DropdownMenuProps = Omit<
-	React.ComponentProps<typeof MenuPrimitive<object>>,
-	"children" | "className"
+/** Props for the {@link Menu} component. */
+export type MenuProps<T extends object> = Omit<
+	React.ComponentProps<typeof MenuPrimitive<T>>,
+	"className"
 > &
 	Pick<
 		React.ComponentProps<typeof PopoverPrimitive>,
@@ -37,19 +37,18 @@ export type DropdownMenuProps = Omit<
 	> & {
 		"data-slot"?: string;
 		className?: string;
-		children?: React.ReactNode;
 	};
 
-/** A menu of actions displayed in a floating popover. Compose {@link DropdownMenuItem}, {@link DropdownMenuSub}, and {@link DropdownMenuSeparator}. */
-export const DropdownMenu = ({
-	"data-slot": dataSlot = "dropdown-menu-content",
+/** A menu of actions displayed in a floating popover. Compose {@link MenuItem}, {@link MenuSub}, and {@link MenuSeparator}. */
+export const Menu = <T extends object>({
+	"data-slot": dataSlot = "menu-content",
 	placement = "bottom start",
 	offset = 4,
 	crossOffset = 0,
 	className,
 	children,
 	...props
-}: DropdownMenuProps) => {
+}: MenuProps<T>) => {
 	return (
 		<PopoverPrimitive
 			data-slot={dataSlot}
@@ -71,7 +70,7 @@ export const DropdownMenu = ({
 				className,
 			)}
 		>
-			<MenuPrimitive
+			<MenuPrimitive<T>
 				className="max-h-[inherit] overflow-y-auto overflow-x-hidden outline-hidden"
 				{...props}
 			>
@@ -81,35 +80,26 @@ export const DropdownMenu = ({
 	);
 };
 
-/** Props for the {@link DropdownMenuGroup} component. */
-export type DropdownMenuGroupProps = Omit<
-	MenuSectionPrimitiveProps<object>,
-	"children"
-> & {
-	children?: React.ReactNode;
+/** Props for the {@link MenuGroup} component. */
+export type MenuGroupProps<T extends object> = MenuSectionPrimitiveProps<T>;
+
+/** A semantic group of related {@link MenuItem} elements. */
+export const MenuGroup = <T extends object>({
+	...props
+}: MenuGroupProps<T>) => {
+	return <MenuSectionPrimitive<T> data-slot="menu-group" {...props} />;
 };
 
-/** A semantic group of related {@link DropdownMenuItem} elements. */
-export const DropdownMenuGroup = ({ ...props }: DropdownMenuGroupProps) => {
-	return <MenuSectionPrimitive data-slot="dropdown-menu-group" {...props} />;
-};
-
-/** Props for the {@link DropdownMenuLabel} component. */
-export type DropdownMenuLabelProps = React.ComponentProps<
-	typeof HeaderPrimitive
-> & {
+/** Props for the {@link MenuLabel} component. */
+export type MenuLabelProps = React.ComponentProps<typeof HeaderPrimitive> & {
 	inset?: boolean;
 };
 
-/** A heading that labels a {@link DropdownMenuGroup}. */
-export const DropdownMenuLabel = ({
-	className,
-	inset,
-	...props
-}: DropdownMenuLabelProps) => {
+/** A heading that labels a {@link MenuGroup}. */
+export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
 	return (
 		<HeaderPrimitive
-			data-slot="dropdown-menu-label"
+			data-slot="menu-label"
 			data-inset={inset}
 			className={cn(
 				"px-2 py-1.5 text-muted-foreground text-xs data-inset:pl-7.5",
@@ -120,9 +110,9 @@ export const DropdownMenuLabel = ({
 	);
 };
 
-const dropdownMenuItemVariants = cva(
+const menuItemVariants = cva(
 	[
-		"group/dropdown-menu-item relative flex cursor-default select-none items-center",
+		"group/menu-item relative flex cursor-default select-none items-center",
 		"outline-hidden",
 		"data-disabled:pointer-events-none data-disabled:opacity-50",
 		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
@@ -157,28 +147,28 @@ const dropdownMenuItemVariants = cva(
 	},
 );
 
-/** Props for the {@link DropdownMenuItem} component. */
-export type DropdownMenuItemProps = MenuItemPrimitiveProps<object> & {
+/** Props for the {@link MenuItem} component. */
+export type MenuItemProps<T extends object> = MenuItemPrimitiveProps<T> & {
 	inset?: boolean;
 	variant?: "default" | "destructive";
 };
 
-/** An individual action within a {@link DropdownMenu}. */
-export const DropdownMenuItem = ({
+/** An individual action within a {@link Menu}. */
+export const MenuItem = <T extends object>({
 	className,
 	inset,
 	variant = "default",
 	children,
 	...props
-}: DropdownMenuItemProps) => {
+}: MenuItemProps<T>) => {
 	return (
 		<MenuItemPrimitive
-			data-slot="dropdown-menu-item"
+			data-slot="menu-item"
 			data-inset={inset}
 			data-variant={variant}
 			textValue={typeof children === "string" ? children : props.textValue}
 			className={composeRenderProps(className, (className, { selectionMode }) =>
-				cn(dropdownMenuItemVariants({ selectionMode }), className),
+				cn(menuItemVariants({ selectionMode }), className),
 			)}
 			{...props}
 		>
@@ -191,8 +181,8 @@ export const DropdownMenuItem = ({
 								className="pointer-events-none absolute right-2 flex items-center justify-center"
 								data-slot={
 									selectionMode === "single"
-										? "dropdown-menu-radio-item-indicator"
-										: "dropdown-menu-checkbox-item-indicator"
+										? "menu-radio-item-indicator"
+										: "menu-checkbox-item-indicator"
 								}
 							>
 								{isSelected ? <CheckIcon /> : null}
@@ -206,31 +196,30 @@ export const DropdownMenuItem = ({
 	);
 };
 
-/** Props for the {@link DropdownMenuSub} component. */
-export type DropdownMenuSubProps = React.ComponentProps<
-	typeof SubmenuTriggerPrimitive
->;
+/** Props for the {@link MenuSub} component. */
+export type MenuSubProps = React.ComponentProps<typeof SubmenuTriggerPrimitive>;
 
-/** A nested submenu within a {@link DropdownMenu}, pairing a {@link DropdownMenuSubTrigger} with a {@link DropdownMenuSubContent}. */
-export const DropdownMenuSub = ({ ...props }: DropdownMenuSubProps) => {
-	return <SubmenuTriggerPrimitive data-slot="dropdown-menu-sub" {...props} />;
+/** A nested submenu within a {@link Menu}, pairing a {@link MenuSubTrigger} with a {@link MenuSubContent}. */
+export const MenuSub = ({ ...props }: MenuSubProps) => {
+	return <SubmenuTriggerPrimitive data-slot="menu-sub" {...props} />;
 };
 
-/** Props for the {@link DropdownMenuSubTrigger} component. */
-export type DropdownMenuSubTriggerProps = MenuItemPrimitiveProps<object> & {
-	inset?: boolean;
-};
+/** Props for the {@link MenuSubTrigger} component. */
+export type MenuSubTriggerProps<T extends object> =
+	MenuItemPrimitiveProps<T> & {
+		inset?: boolean;
+	};
 
-/** The menu item that opens a {@link DropdownMenuSub}. */
-export const DropdownMenuSubTrigger = ({
+/** The menu item that opens a {@link MenuSub}. */
+export const MenuSubTrigger = <T extends object>({
 	className,
 	inset,
 	children,
 	...props
-}: DropdownMenuSubTriggerProps) => {
+}: MenuSubTriggerProps<T>) => {
 	return (
 		<MenuItemPrimitive
-			data-slot="dropdown-menu-sub-trigger"
+			data-slot="menu-sub-trigger"
 			data-inset={inset}
 			textValue={typeof children === "string" ? children : props.textValue}
 			className={cn(
@@ -256,22 +245,20 @@ export const DropdownMenuSubTrigger = ({
 	);
 };
 
-/** Props for the {@link DropdownMenuSubContent} component. */
-export type DropdownMenuSubContentProps = React.ComponentProps<
-	typeof DropdownMenu
->;
+/** Props for the {@link MenuSubContent} component. */
+export type MenuSubContentProps<T extends object> = MenuProps<T>;
 
-/** The floating panel of a {@link DropdownMenuSub}, containing nested {@link DropdownMenuItem} elements. */
-export const DropdownMenuSubContent = ({
+/** The floating panel of a {@link MenuSub}, containing nested {@link MenuItem} elements. */
+export const MenuSubContent = <T extends object>({
 	placement = "end top",
 	crossOffset = -3,
 	offset = 0,
 	className,
 	...props
-}: DropdownMenuSubContentProps) => {
+}: MenuSubContentProps<T>) => {
 	return (
-		<DropdownMenu
-			data-slot="dropdown-menu-sub-content"
+		<Menu<T>
+			data-slot="menu-sub-content"
 			className={cn(
 				[
 					"w-auto min-w-32 rounded-lg bg-popover p-1 text-popover-foreground",
@@ -287,40 +274,34 @@ export const DropdownMenuSubContent = ({
 	);
 };
 
-/** Props for the {@link DropdownMenuSeparator} component. */
-export type DropdownMenuSeparatorProps = React.ComponentProps<
+/** Props for the {@link MenuSeparator} component. */
+export type MenuSeparatorProps = React.ComponentProps<
 	typeof SeparatorPrimitive
 >;
 
-/** A divider between {@link DropdownMenuItem} elements or groups. */
-export const DropdownMenuSeparator = ({
-	className,
-	...props
-}: DropdownMenuSeparatorProps) => {
+/** A divider between {@link MenuItem} elements or groups. */
+export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => {
 	return (
 		<SeparatorPrimitive
-			data-slot="dropdown-menu-separator"
+			data-slot="menu-separator"
 			className={cn("-mx-1 my-1 h-px bg-border/50", className)}
 			{...props}
 		/>
 	);
 };
 
-/** Props for the {@link DropdownMenuShortcut} component. */
-export type DropdownMenuShortcutProps = React.ComponentProps<"span">;
+/** Props for the {@link MenuShortcut} component. */
+export type MenuShortcutProps = React.ComponentProps<"span">;
 
-/** A keyboard shortcut hint aligned to the end of a {@link DropdownMenuItem}. */
-export const DropdownMenuShortcut = ({
-	className,
-	...props
-}: DropdownMenuShortcutProps) => {
+/** A keyboard shortcut hint aligned to the end of a {@link MenuItem}. */
+export const MenuShortcut = ({ className, ...props }: MenuShortcutProps) => {
 	return (
 		<span
-			data-slot="dropdown-menu-shortcut"
+			data-slot="menu-shortcut"
 			className={cn(
 				[
 					"ml-auto text-[0.625rem] text-muted-foreground tracking-widest",
-					"group-focus/dropdown-menu-item:text-accent-foreground",
+					"group-focus/menu-item:text-accent-foreground",
 				],
 				className,
 			)}

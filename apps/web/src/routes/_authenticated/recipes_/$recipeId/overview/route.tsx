@@ -3,11 +3,11 @@ import {
 	Card,
 	CardContent,
 	CardHeader,
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
 	Heading,
+	Menu,
+	MenuItem,
+	MenuSeparator,
+	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
@@ -105,26 +105,23 @@ const RecipeOverview = () => {
 		<Card>
 			<CardHeader className="flex flex-row items-center justify-between gap-4">
 				<RecipeName />
-				<DropdownMenuTrigger>
+				<MenuTrigger>
 					<Button variant="outline">
 						Actions
 						<ChevronDown />
 					</Button>
-					<DropdownMenu>
+					<Menu>
 						<MenuItemLink to="/recipes/$recipeId/edit" params={{ recipeId }}>
 							<Pencil className="size-3" />
 							Edit
 						</MenuItemLink>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							onAction={() => alert("delete")}
-							variant="destructive"
-						>
+						<MenuSeparator />
+						<MenuItem onAction={() => alert("delete")} variant="destructive">
 							<Trash2 className="size-3" />
 							Delete
-						</DropdownMenuItem>
-					</DropdownMenu>
-				</DropdownMenuTrigger>
+						</MenuItem>
+					</Menu>
+				</MenuTrigger>
 			</CardHeader>
 			<CardContent className="gap-4">
 				<RecipeStats />

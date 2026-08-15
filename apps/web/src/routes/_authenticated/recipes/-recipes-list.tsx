@@ -1,10 +1,10 @@
 import {
 	Badge,
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
 	IconButton,
+	Menu,
+	MenuItem,
+	MenuSeparator,
+	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
 import { parseAbsolute } from "@internationalized/date";
@@ -77,11 +77,11 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 				<Badge variant={recipe.isQuickBrew ? "secondary" : "outline"}>
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
-				<DropdownMenuTrigger>
+				<MenuTrigger>
 					<IconButton aria-label="Actions" size="sm" variant="ghost">
 						<EllipsisVertical />
 					</IconButton>
-					<DropdownMenu>
+					<Menu>
 						{!recipe.isQuickBrew && (
 							<MenuItemLink
 								to="/recipes/$recipeId"
@@ -119,21 +119,18 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 							</MenuItemLink>
 						)}
 						{recipe.isQuickBrew && (
-							<DropdownMenuItem onAction={() => alert("rename")}>
+							<MenuItem onAction={() => alert("rename")}>
 								<Paperclip className="size-3" />
 								Attach to Recipe
-							</DropdownMenuItem>
+							</MenuItem>
 						)}
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							onAction={() => alert("delete")}
-							variant="destructive"
-						>
+						<MenuSeparator />
+						<MenuItem onAction={() => alert("delete")} variant="destructive">
 							<Trash2 className="size-3" />
 							Delete
-						</DropdownMenuItem>
-					</DropdownMenu>
-				</DropdownMenuTrigger>
+						</MenuItem>
+					</Menu>
+				</MenuTrigger>
 			</div>
 		</ListItem>
 	);

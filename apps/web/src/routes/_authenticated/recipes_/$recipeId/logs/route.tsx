@@ -3,12 +3,12 @@ import {
 	CardContent,
 	CardFooter,
 	CardHeader,
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
 	Heading,
 	IconButton,
+	Menu,
+	MenuItem,
+	MenuSeparator,
+	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
@@ -72,25 +72,25 @@ export const RecipeLogs = () => {
 							</Text>
 						</div>
 						<div className="flex items-center gap-0.5">
-							<DropdownMenuTrigger>
+							<MenuTrigger>
 								<IconButton aria-label="Actions" size="sm" variant="ghost">
 									<EllipsisVertical />
 								</IconButton>
-								<DropdownMenu>
-									<DropdownMenuItem onAction={() => alert("rename")}>
+								<Menu>
+									<MenuItem onAction={() => alert("rename")}>
 										<Pencil className="size-3" />
 										Edit
-									</DropdownMenuItem>
-									<DropdownMenuSeparator />
-									<DropdownMenuItem
+									</MenuItem>
+									<MenuSeparator />
+									<MenuItem
 										onAction={() => alert("delete")}
 										variant="destructive"
 									>
 										<Trash2 className="size-3" />
 										Delete
-									</DropdownMenuItem>
-								</DropdownMenu>
-							</DropdownMenuTrigger>
+									</MenuItem>
+								</Menu>
+							</MenuTrigger>
 						</div>
 					</ListItem>
 				</List>

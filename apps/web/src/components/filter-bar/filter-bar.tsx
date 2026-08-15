@@ -1,13 +1,13 @@
 import {
 	Button,
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
 	IconButton,
+	Menu,
+	MenuItem,
+	MenuSeparator,
+	MenuSub,
+	MenuSubContent,
+	MenuSubTrigger,
+	MenuTrigger,
 } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
 import { Plus, X } from "lucide-react";
@@ -280,7 +280,7 @@ const FilterBarChip = ({
 				{definition.label}
 			</span>
 
-			<DropdownMenuTrigger>
+			<MenuTrigger>
 				<Button
 					data-slot="filter-bar-filter-operator"
 					variant="ghost"
@@ -289,20 +289,20 @@ const FilterBarChip = ({
 				>
 					{currentOp?.label}
 				</Button>
-				<DropdownMenu
+				<Menu
 					selectionMode="single"
 					selectedKeys={new Set<Key>([filter.operatorId])}
 					onSelectionChange={handleOperatorChange}
 				>
 					{visibleOperators.map((o) => (
-						<DropdownMenuItem key={o.id} id={o.id}>
+						<MenuItem key={o.id} id={o.id}>
 							{o.label}
-						</DropdownMenuItem>
+						</MenuItem>
 					))}
-				</DropdownMenu>
-			</DropdownMenuTrigger>
+				</Menu>
+			</MenuTrigger>
 
-			<DropdownMenuTrigger onOpenChange={handleValueMenuOpenChange}>
+			<MenuTrigger onOpenChange={handleValueMenuOpenChange}>
 				<Button
 					data-slot="filter-bar-filter-value"
 					variant="ghost"
@@ -311,7 +311,7 @@ const FilterBarChip = ({
 				>
 					{filter.values.length > 0 ? valueLabel : "\u2026"}
 				</Button>
-				<DropdownMenu
+				<Menu
 					selectionMode="multiple"
 					selectedKeys={filter.values}
 					onSelectionChange={handleValueChange}
@@ -319,28 +319,28 @@ const FilterBarChip = ({
 					{shouldPartition ? (
 						<>
 							{selectedOptions.map((opt) => (
-								<DropdownMenuItem key={opt.id} id={opt.id}>
+								<MenuItem key={opt.id} id={opt.id}>
 									{opt.label}
-								</DropdownMenuItem>
+								</MenuItem>
 							))}
 							{selectedOptions.length > 0 && unselectedOptions.length > 0 && (
-								<DropdownMenuSeparator />
+								<MenuSeparator />
 							)}
 							{unselectedOptions.map((opt) => (
-								<DropdownMenuItem key={opt.id} id={opt.id}>
+								<MenuItem key={opt.id} id={opt.id}>
 									{opt.label}
-								</DropdownMenuItem>
+								</MenuItem>
 							))}
 						</>
 					) : (
 						definition.options.map((opt) => (
-							<DropdownMenuItem key={opt.id} id={opt.id}>
+							<MenuItem key={opt.id} id={opt.id}>
 								{opt.label}
-							</DropdownMenuItem>
+							</MenuItem>
 						))
 					)}
-				</DropdownMenu>
-			</DropdownMenuTrigger>
+				</Menu>
+			</MenuTrigger>
 
 			<IconButton
 				data-slot="filter-bar-filter-remove"
@@ -568,7 +568,7 @@ export const FilterBar = <
 					/>
 				))}
 
-				<DropdownMenuTrigger>
+				<MenuTrigger>
 					<IconButton
 						data-slot="filter-bar-add"
 						aria-label="Add filter"
@@ -577,32 +577,32 @@ export const FilterBar = <
 					>
 						<Plus aria-hidden="true" />
 					</IconButton>
-					<DropdownMenu>
+					<Menu>
 						{definitions.map((def) => (
-							<DropdownMenuSub key={def.id}>
-								<DropdownMenuSubTrigger textValue={def.label}>
+							<MenuSub key={def.id}>
+								<MenuSubTrigger textValue={def.label}>
 									{def.icon && (
 										<span className="[&_svg]:size-4" aria-hidden="true">
 											{def.icon}
 										</span>
 									)}
 									{def.label}
-								</DropdownMenuSubTrigger>
-								<DropdownMenuSubContent
+								</MenuSubTrigger>
+								<MenuSubContent
 									selectionMode="multiple"
 									selectedKeys={filtersByFilterId.get(def.id)?.values ?? []}
 									onSelectionChange={(keys) => handleAddFilter(def.id, keys)}
 								>
 									{def.options.map((opt) => (
-										<DropdownMenuItem key={opt.id} id={opt.id}>
+										<MenuItem key={opt.id} id={opt.id}>
 											{opt.label}
-										</DropdownMenuItem>
+										</MenuItem>
 									))}
-								</DropdownMenuSubContent>
-							</DropdownMenuSub>
+								</MenuSubContent>
+							</MenuSub>
 						))}
-					</DropdownMenu>
-				</DropdownMenuTrigger>
+					</Menu>
+				</MenuTrigger>
 
 				{children?.(
 					state as unknown as FilterBarState<

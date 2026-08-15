@@ -1,4 +1,4 @@
-import { DropdownMenuItem } from "@9bar/toolkit/components";
+import { MenuItem } from "@9bar/toolkit/components";
 import { createLink } from "@tanstack/react-router";
 
-export const MenuItemLink = createLink(DropdownMenuItem);
+export const MenuItemLink = createLink(MenuItem);
