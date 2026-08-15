@@ -6,6 +6,24 @@ const meta = {
 	component: Heading,
 	parameters: {
 		controls: { include: ["variant", "as"] },
+		docs: {
+			controls: { include: ["variant", "as"] },
+			argTypes: { include: ["variant", "as"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: [
+				"title",
+				"heading",
+				"subheading",
+				"subtitle",
+				"section",
+				"subsection",
+			],
+		},
+		as: { control: { type: "text" } },
 	},
 } satisfies Meta<typeof Heading>;
 

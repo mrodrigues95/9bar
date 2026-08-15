@@ -6,8 +6,16 @@ const meta = {
 	title: "Separator",
 	component: Separator,
 	parameters: {
-		controls: {
-			include: ["orientation"],
+		controls: { include: ["orientation"] },
+		docs: {
+			controls: { include: ["orientation"] },
+			argTypes: { include: ["orientation"] },
+		},
+	},
+	argTypes: {
+		orientation: {
+			control: { type: "select" },
+			options: ["horizontal", "vertical"],
 		},
 	},
 } satisfies Meta<typeof Separator>;

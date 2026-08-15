@@ -6,7 +6,21 @@ const meta = {
 	component: Text,
 	parameters: {
 		layout: "centered",
-		controls: { include: [] },
+		controls: { include: ["variant", "color"] },
+		docs: {
+			controls: { include: ["variant", "color"] },
+			argTypes: { include: ["variant", "color"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: ["body", "body-sm", "body-lg", "caption", "label", "detail"],
+		},
+		color: {
+			control: { type: "select" },
+			options: ["muted", "primary", "secondary"],
+		},
 	},
 	tags: ["autodocs"],
 } satisfies Meta<typeof Text>;

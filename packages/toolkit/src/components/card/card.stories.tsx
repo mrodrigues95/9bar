@@ -17,6 +17,10 @@ const meta = {
 	title: "Card",
 	parameters: {
 		controls: { include: ["size"] },
+		docs: {
+			controls: { include: ["size"] },
+			argTypes: { include: ["size"] },
+		},
 	},
 	argTypes: {
 		size: {

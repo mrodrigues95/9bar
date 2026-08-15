@@ -15,6 +15,16 @@ const meta = {
 	parameters: {
 		layout: "centered",
 		controls: { include: ["size"] },
+		docs: {
+			controls: { include: ["size"] },
+			argTypes: { include: ["size"] },
+		},
+	},
+	argTypes: {
+		size: {
+			control: { type: "select" },
+			options: ["default", "sm", "lg"],
+		},
 	},
 } satisfies Meta<typeof Avatar>;
 
@@ -23,8 +33,8 @@ type Story = StoryObj<typeof meta>;
 
 /** An avatar displaying a user's profile image, falling back to initials on load error. */
 export const WithImage: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" />
 			<AvatarFallback>JD</AvatarFallback>
 		</Avatar>
@@ -33,8 +43,8 @@ export const WithImage: Story = {
 
 /** An avatar displaying initials derived from the user's name when no image is provided. */
 export const WithInitials: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarFallback>JD</AvatarFallback>
 		</Avatar>
 	),
@@ -42,8 +52,8 @@ export const WithInitials: Story = {
 
 /** An avatar showing a default user icon placeholder when neither an image nor a name is provided. */
 export const DefaultPlaceholder: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarFallback>
 				<Users />
 			</AvatarFallback>
@@ -53,8 +63,8 @@ export const DefaultPlaceholder: Story = {
 
 /** An avatar with custom placeholder content instead of the default user icon. */
 export const CustomPlaceholder: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarFallback>?</AvatarFallback>
 		</Avatar>
 	),
@@ -62,8 +72,8 @@ export const CustomPlaceholder: Story = {
 
 /** Demonstrates the fallback behavior when an image URL fails to load, showing initials derived from the name. */
 export const ImageError: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarImage src="https://invalid-url-that-will-fail.com/image.jpg" />
 			<AvatarFallback>JS</AvatarFallback>
 		</Avatar>
@@ -72,8 +82,8 @@ export const ImageError: Story = {
 
 /** Demonstrates the fallback behavior when an image URL fails to load and no name is provided, showing the placeholder icon. */
 export const ImageErrorNoName: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarImage src="https://invalid-url-that-will-fail.com/image.jpg" />
 			<AvatarFallback>
 				<Users />
@@ -101,8 +111,8 @@ export const AllSizes: Story = {
 
 /** An avatar with a status badge anchored to its corner. */
 export const WithBadge: Story = {
-	render: () => (
-		<Avatar>
+	render: (props) => (
+		<Avatar {...props}>
 			<AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" />
 			<AvatarFallback>JD</AvatarFallback>
 			<AvatarBadge />

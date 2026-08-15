@@ -18,6 +18,23 @@ const meta = {
 		controls: {
 			include: ["placeholder", "isDisabled", "isInvalid", "selectionMode"],
 		},
+		docs: {
+			controls: {
+				include: ["placeholder", "isDisabled", "isInvalid", "selectionMode"],
+			},
+			argTypes: {
+				include: ["placeholder", "isDisabled", "isInvalid", "selectionMode"],
+			},
+		},
+	},
+	argTypes: {
+		placeholder: { control: { type: "text" } },
+		isDisabled: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
+		selectionMode: {
+			control: { type: "select" },
+			options: ["single", "multiple"],
+		},
 	},
 } satisfies Meta<typeof Select>;
 

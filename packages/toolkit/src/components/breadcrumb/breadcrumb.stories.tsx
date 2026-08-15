@@ -14,6 +14,10 @@ const meta = {
 	title: "Breadcrumb",
 	parameters: {
 		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof Breadcrumb>;
 

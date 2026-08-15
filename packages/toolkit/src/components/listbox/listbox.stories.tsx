@@ -14,7 +14,14 @@ import {
 const meta = {
 	component: Listbox,
 	title: "Listbox",
-	parameters: { layout: "padded", controls: { include: [] } },
+	parameters: {
+		layout: "padded",
+		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
+	},
 } satisfies Meta<typeof Listbox>;
 
 export default meta;

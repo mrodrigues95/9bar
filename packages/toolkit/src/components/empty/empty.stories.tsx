@@ -17,6 +17,10 @@ const meta = {
 		controls: {
 			include: [],
 		},
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof Empty>;
 

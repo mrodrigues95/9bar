@@ -11,11 +11,40 @@ const meta = {
 				"isInvalid",
 				"isReadOnly",
 				"isRequired",
-				"placeholder",
 				"label",
 				"description",
 			],
 		},
+		docs: {
+			controls: {
+				include: [
+					"isDisabled",
+					"isInvalid",
+					"isReadOnly",
+					"isRequired",
+					"label",
+					"description",
+				],
+			},
+			argTypes: {
+				include: [
+					"isDisabled",
+					"isInvalid",
+					"isReadOnly",
+					"isRequired",
+					"label",
+					"description",
+				],
+			},
+		},
+	},
+	argTypes: {
+		isDisabled: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
+		isReadOnly: { control: { type: "boolean" } },
+		isRequired: { control: { type: "boolean" } },
+		label: { control: { type: "text" } },
+		description: { control: { type: "text" } },
 	},
 } satisfies Meta<typeof TextField>;
 

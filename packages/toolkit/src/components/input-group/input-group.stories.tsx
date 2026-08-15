@@ -24,6 +24,14 @@ const meta = {
 	title: "InputGroup",
 	parameters: {
 		controls: { include: ["isDisabled", "isInvalid"] },
+		docs: {
+			controls: { include: ["isDisabled", "isInvalid"] },
+			argTypes: { include: ["isDisabled", "isInvalid"] },
+		},
+	},
+	argTypes: {
+		isDisabled: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
 	},
 } satisfies Meta<typeof InputGroup>;
 

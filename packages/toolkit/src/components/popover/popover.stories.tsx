@@ -9,14 +9,36 @@ const meta = {
 	title: "Popover",
 	parameters: {
 		controls: {
-			include: [
-				"showArrow",
-				"placement",
-				"shouldFlip",
-				"offset",
-				"crossOffset",
+			include: ["placement", "shouldFlip", "offset", "crossOffset"],
+		},
+		docs: {
+			controls: {
+				include: ["placement", "shouldFlip", "offset", "crossOffset"],
+			},
+			argTypes: {
+				include: ["placement", "shouldFlip", "offset", "crossOffset"],
+			},
+		},
+	},
+	argTypes: {
+		placement: {
+			control: { type: "select" },
+			options: [
+				"bottom",
+				"top",
+				"left",
+				"right",
+				"bottom start",
+				"bottom end",
+				"top start",
+				"top end",
+				"start",
+				"end",
 			],
 		},
+		shouldFlip: { control: { type: "boolean" } },
+		offset: { control: { type: "number" } },
+		crossOffset: { control: { type: "number" } },
 	},
 } satisfies Meta<typeof Popover>;
 

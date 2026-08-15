@@ -11,6 +11,20 @@ const meta = {
 		controls: {
 			include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
 		},
+		docs: {
+			controls: {
+				include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
+			},
+			argTypes: {
+				include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
+			},
+		},
+	},
+	argTypes: {
+		isDisabled: { control: { type: "boolean" } },
+		isReadOnly: { control: { type: "boolean" } },
+		isIndeterminate: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
 	},
 } satisfies Meta<typeof Checkbox>;
 

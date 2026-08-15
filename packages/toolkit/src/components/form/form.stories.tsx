@@ -13,7 +13,13 @@ import { useAppForm, withForm } from "./utils/form";
 const meta = {
 	component: Form,
 	title: "Form",
-	parameters: { controls: { include: [] } },
+	parameters: {
+		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
+	},
 } satisfies Meta<typeof Form>;
 
 export default meta;

@@ -7,6 +7,28 @@ const meta = {
 	title: "IconButton",
 	parameters: {
 		controls: { include: ["variant", "size", "isDisabled"] },
+		docs: {
+			controls: { include: ["variant", "size", "isDisabled"] },
+			argTypes: { include: ["variant", "size", "isDisabled"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"outline",
+				"secondary",
+				"ghost",
+				"destructive",
+				"link",
+			],
+		},
+		size: {
+			control: { type: "select" },
+			options: ["md", "xs", "sm", "lg"],
+		},
+		isDisabled: { control: { type: "boolean" } },
 	},
 } satisfies Meta<typeof IconButton>;
 

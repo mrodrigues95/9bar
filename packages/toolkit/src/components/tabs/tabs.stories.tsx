@@ -7,7 +7,17 @@ const meta = {
 	component: Tabs,
 	parameters: {
 		layout: "fullscreen",
-		controls: { include: ["orientation", "disabled"] },
+		controls: { include: ["orientation"] },
+		docs: {
+			controls: { include: ["orientation"] },
+			argTypes: { include: ["orientation"] },
+		},
+	},
+	argTypes: {
+		orientation: {
+			control: { type: "select" },
+			options: ["horizontal", "vertical"],
+		},
 	},
 } satisfies Meta<typeof Tabs>;
 
@@ -16,8 +26,8 @@ type Story = StoryObj<typeof meta>;
 
 /** A tab bar with icon+label triggers and corresponding content panels. Use the controls to change orientation. */
 export const Default: Story = {
-	render: () => (
-		<Tabs defaultSelectedKey="home" className="p-4">
+	render: (props) => (
+		<Tabs {...props} defaultSelectedKey="home" className="p-4">
 			<TabsList>
 				<TabsTrigger id="home">
 					<Home />

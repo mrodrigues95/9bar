@@ -24,6 +24,36 @@ const meta = {
 				"description",
 			],
 		},
+		docs: {
+			controls: {
+				include: [
+					"isDisabled",
+					"isInvalid",
+					"isRequired",
+					"placeholder",
+					"label",
+					"description",
+				],
+			},
+			argTypes: {
+				include: [
+					"isDisabled",
+					"isInvalid",
+					"isRequired",
+					"placeholder",
+					"label",
+					"description",
+				],
+			},
+		},
+	},
+	argTypes: {
+		isDisabled: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
+		isRequired: { control: { type: "boolean" } },
+		placeholder: { control: { type: "text" } },
+		label: { control: { type: "text" } },
+		description: { control: { type: "text" } },
 	},
 	args: {
 		children: (item) => <SelectItem id={item.name}>{item.name}</SelectItem>,

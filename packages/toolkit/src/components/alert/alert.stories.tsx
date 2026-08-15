@@ -16,8 +16,19 @@ const meta = {
 	title: "Alert",
 	parameters: {
 		layout: "padded",
-		controls: { include: [] },
+		controls: { include: ["variant"] },
+		docs: {
+			controls: { include: ["variant"] },
+			argTypes: { include: ["variant"] },
+		},
 	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: ["default", "destructive"],
+		},
+	},
+	args: { variant: "default" },
 } satisfies Meta<typeof Alert>;
 
 export default meta;
@@ -26,7 +37,7 @@ type Story = StoryObj<typeof meta>;
 /** An informational alert used for neutral, non-critical messages. */
 export const Info: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<InfoIcon />
 			<AlertTitle>Information</AlertTitle>
 			<AlertDescription>This is an informational message.</AlertDescription>
@@ -37,7 +48,7 @@ export const Info: Story = {
 /** A success alert used to confirm that an action completed successfully. */
 export const Success: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<CircleCheck />
 			<AlertTitle>Success</AlertTitle>
 			<AlertDescription>Your action was successful.</AlertDescription>
@@ -48,7 +59,7 @@ export const Success: Story = {
 /** A warning alert used to caution the user about a potential issue. */
 export const Warning: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<TriangleAlert />
 			<AlertTitle>Warning</AlertTitle>
 			<AlertDescription>Please proceed with caution.</AlertDescription>
@@ -58,8 +69,9 @@ export const Warning: Story = {
 
 /** A destructive alert used to communicate errors or destructive outcomes. */
 export const Danger: Story = {
+	args: { variant: "destructive" },
 	render: (props) => (
-		<Alert {...props} variant="destructive">
+		<Alert {...props}>
 			<TriangleAlert />
 			<AlertTitle>Error</AlertTitle>
 			<AlertDescription>An error has occurred.</AlertDescription>
@@ -70,7 +82,7 @@ export const Danger: Story = {
 /** An alert with only a title and no description, for brief single-line messages. */
 export const TitleOnly: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<CircleCheck />
 			<AlertTitle>Operation completed successfully</AlertTitle>
 		</Alert>
@@ -80,7 +92,7 @@ export const TitleOnly: Story = {
 /** An alert with only a description and no title, for supplementary messages that don't need a heading. */
 export const DescriptionOnly: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<InfoIcon />
 			<AlertDescription>
 				This alert only contains a description without a title.
@@ -92,7 +104,7 @@ export const DescriptionOnly: Story = {
 /** An alert with a custom icon passed as a direct child of the `Alert`. */
 export const CustomIcon: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<Users />
 			<AlertTitle>Team Invitation</AlertTitle>
 			<AlertDescription>
@@ -105,7 +117,7 @@ export const CustomIcon: Story = {
 /** An alert without an icon, relying solely on color and text. */
 export const WithoutIndicator: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<AlertTitle>Simple Alert</AlertTitle>
 			<AlertDescription>This alert doesn't use an icon.</AlertDescription>
 		</Alert>
@@ -115,7 +127,7 @@ export const WithoutIndicator: Story = {
 /** An alert with a dismiss button using `AlertAction` and an `IconButton`. */
 export const WithDismiss: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<CircleCheck />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
@@ -134,7 +146,7 @@ export const WithDismiss: Story = {
 /** An alert with an inline action button using `AlertAction` and a `Button`. */
 export const WithActionButton: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<TriangleAlert />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
@@ -151,7 +163,7 @@ export const WithActionButton: Story = {
 /** An alert with an inline link action using `AlertAction` and a `Link`. */
 export const WithLinkAction: Story = {
 	render: (props) => (
-		<Alert {...props} variant="default">
+		<Alert {...props}>
 			<InfoIcon />
 			<AlertTitle>New Feature Available</AlertTitle>
 			<AlertDescription>

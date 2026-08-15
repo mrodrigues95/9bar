@@ -7,7 +7,24 @@ const meta = {
 	title: "Badge",
 	args: { children: "Badge" },
 	parameters: {
-		controls: { include: ["children", "variant"] },
+		controls: { include: ["variant"] },
+		docs: {
+			controls: { include: ["variant"] },
+			argTypes: { include: ["variant"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"secondary",
+				"destructive",
+				"outline",
+				"ghost",
+				"link",
+			],
+		},
 	},
 } satisfies Meta<typeof Badge>;
 

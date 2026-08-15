@@ -21,6 +21,10 @@ const meta = {
 	title: "DropdownMenu",
 	parameters: {
 		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof DropdownMenu>;
 

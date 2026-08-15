@@ -18,6 +18,10 @@ const meta = {
 	title: "Pagination",
 	parameters: {
 		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof Pagination>;
 
