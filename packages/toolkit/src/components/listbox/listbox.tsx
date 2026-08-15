@@ -29,7 +29,7 @@ export const Listbox = <T extends object>({
 			{...props}
 			className={composeTailwindRenderProps(
 				props.className,
-				"relative h-full overflow-y-auto rounded-lg border border-border bg-white p-1 shadow-xs outline-0",
+				"relative h-full overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-xs outline-0",
 			)}
 		>
 			{children}
@@ -39,19 +39,24 @@ export const Listbox = <T extends object>({
 
 export const listboxItemVariants = cva(
 	[
-		"group flex cursor-default select-none items-center gap-2 rounded-sm",
-		"px-2 py-1 font-normal text-sm outline-none",
+		"group relative flex min-h-7 w-full cursor-default select-none items-center gap-2",
+		"rounded-md py-1 pr-8 pl-2 text-xs/relaxed outline-hidden",
 		"[&[href]]:cursor-pointer",
-		"disabled:pointer-events-none disabled:opacity-50",
-		"hover:bg-slate-100",
-		"pressed:bg-slate-200",
-		"focus:bg-slate-100",
+		"hover:bg-foreground/10",
+		"focus:bg-foreground/10 focus:text-accent-foreground",
+		"not-data-[variant=destructive]:focus:**:text-accent-foreground",
+		"data-focused:bg-foreground/10 data-focused:text-accent-foreground",
+		"data-disabled:pointer-events-none data-disabled:opacity-50",
+		"data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive",
+		"dark:data-[variant=destructive]:focus:bg-destructive/20",
+		"data-[variant=destructive]:*:[svg]:text-destructive",
+		"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 	],
 	{
 		variants: {
 			variant: {
-				default: ["text-primary"],
-				danger: ["text-destructive-fg"],
+				default: [],
+				danger: ["text-destructive"],
 			},
 		},
 		defaultVariants: {
@@ -69,7 +74,7 @@ export interface ListboxItemProps<T extends object>
 
 /** An individual option within a {@link Listbox}. */
 export const ListboxItem = <T extends object>({
-	variant,
+	variant = "default",
 	startContent,
 	...props
 }: ListboxItemProps<T>) => {
@@ -80,6 +85,7 @@ export const ListboxItem = <T extends object>({
 	return (
 		<AriaListBoxItem
 			data-slot="listbox-item"
+			data-variant={variant}
 			{...props}
 			{...(textValue ? { textValue } : {})}
 			className={composeRenderProps(props.className, (className, renderProps) =>
@@ -89,10 +95,12 @@ export const ListboxItem = <T extends object>({
 			{composeRenderProps(props.children, (children, { isSelected }) => (
 				<>
 					{startContent}
-					<div className="flex flex-1 flex-col justify-center truncate text-primary group-selected:font-medium">
+					<div className="flex flex-1 flex-col justify-center truncate group-selected:font-medium">
 						{children}
 					</div>
-					{isSelected && <Check className="size-3.5" />}
+					<span className="pointer-events-none absolute right-2 flex items-center justify-center">
+						{isSelected ? <Check /> : null}
+					</span>
 				</>
 			))}
 		</AriaListBoxItem>
@@ -135,7 +143,7 @@ export const ListboxSectionHeader = ({
 			data-slot="listbox-section-header"
 			{...props}
 			className={cn(
-				"truncate px-2 py-1.5 font-medium text-muted-foreground text-xs",
+				"truncate px-2 py-1.5 text-muted-foreground text-xs",
 				props.className,
 			)}
 		>
@@ -152,7 +160,10 @@ export const ListboxSeparator = (props: ListboxSeparatorProps) => {
 		<Separator
 			data-slot="listbox-separator"
 			{...props}
-			className={cn("mx-2 my-1", props.className)}
+			className={cn(
+				"pointer-events-none -mx-1 my-1 bg-border/50",
+				props.className,
+			)}
 		/>
 	);
 };
