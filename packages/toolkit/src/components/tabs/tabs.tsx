@@ -84,7 +84,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 					"focus-visible:ring-[3px] focus-visible:ring-ring/50",
 					"disabled:pointer-events-none disabled:opacity-50",
 					"has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1",
-					"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+					"data-disabled:pointer-events-none data-disabled:opacity-50",
 					"group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start",
 					"group-data-vertical/tabs:py-[calc(--spacing(1.25))]",
 					"dark:text-muted-foreground dark:hover:text-foreground",
