@@ -8,7 +8,6 @@ import {
 	SelectContent,
 	SelectItem,
 	SelectList,
-	SelectTrigger,
 	SelectValue,
 } from "../select/select";
 import {
@@ -16,6 +15,7 @@ import {
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
+	InputGroupSelectTrigger,
 	InputGroupText,
 } from "./input-group";
 
@@ -167,12 +167,9 @@ export const WithSelect: Story = {
 				/>
 				<InputGroupAddon align="inline-end">
 					<Select aria-label="Time unit value" defaultSelectedKey="s">
-						<SelectTrigger
-							size="sm"
-							className="border-0 bg-transparent shadow-none dark:bg-transparent dark:hover:bg-transparent"
-						>
+						<InputGroupSelectTrigger>
 							<SelectValue />
-						</SelectTrigger>
+						</InputGroupSelectTrigger>
 						<SelectContent>
 							<SelectList>
 								<SelectItem id="s">Seconds (s)</SelectItem>

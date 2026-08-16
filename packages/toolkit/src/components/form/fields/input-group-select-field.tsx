@@ -15,6 +15,8 @@ import {
 	InputGroupInput,
 	type InputGroupInputProps,
 	type InputGroupProps,
+	InputGroupSelectTrigger,
+	type InputGroupSelectTriggerProps,
 } from "../../input-group/input-group";
 import {
 	Select,
@@ -22,8 +24,6 @@ import {
 	SelectItem,
 	SelectList,
 	type SelectProps,
-	SelectTrigger,
-	type SelectTriggerProps,
 	SelectValue,
 } from "../../select/select";
 import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
@@ -76,7 +76,7 @@ export interface InputGroupSelectFieldProps
 		"children" | "selectedKey" | "onSelectionChange" | "items"
 	>;
 	/** Additional props forwarded to the `SelectTrigger` component. */
-	selectTriggerProps?: SelectTriggerProps;
+	selectTriggerProps?: InputGroupSelectTriggerProps;
 }
 
 interface InputGroupSelectFieldInternalProps {
@@ -153,14 +153,13 @@ export const InputGroupSelectField = ({
 							}
 						}}
 					>
-						<SelectTrigger
+						<InputGroupSelectTrigger
 							data-slot="input-group-select-field-select-trigger"
-							size="sm"
 							className="min-w-auto"
 							{...selectTriggerProps}
 						>
 							<SelectValue data-slot="input-group-select-field-select-value" />
-						</SelectTrigger>
+						</InputGroupSelectTrigger>
 						<SelectContent data-slot="input-group-select-field-select-content">
 							<SelectList
 								data-slot="input-group-select-field-select-list"

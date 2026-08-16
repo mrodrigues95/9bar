@@ -5,6 +5,7 @@ import type * as React from "react";
 import { Group, type GroupProps } from "react-aria-components";
 import { Button } from "#components/button";
 import { Input } from "#components/input";
+import { SelectTrigger } from "#components/select";
 import { Textarea } from "#components/textarea";
 import { cn } from "#lib/utils";
 
@@ -99,8 +100,9 @@ export const InputGroupAddon = ({
 	);
 };
 
-const inputGroupButtonVariants = cva(
-	"flex items-center gap-2 rounded-md text-xs/relaxed shadow-none",
+/** Variants for compact controls rendered inside an {@link InputGroup}. Shared by {@link InputGroupButton} and {@link InputGroupSelectTrigger}. */
+export const inputGroupButtonVariants = cva(
+	"flex items-center gap-2 text-xs/relaxed shadow-none",
 	{
 		variants: {
 			size: {
@@ -139,6 +141,37 @@ export const InputGroupButton = ({
 			data-size={size}
 			variant={variant}
 			className={cn(inputGroupButtonVariants({ size }), className)}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link InputGroupSelectTrigger} component. */
+export type InputGroupSelectTriggerProps = Omit<
+	React.ComponentProps<typeof SelectTrigger>,
+	"size"
+> &
+	VariantProps<typeof inputGroupButtonVariants>;
+
+/** A compact select trigger rendered inside an {@link InputGroup}, sharing {@link inputGroupButtonVariants} sizing with {@link InputGroupButton}. */
+export const InputGroupSelectTrigger = ({
+	className,
+	size = "xs",
+	variant = "ghost",
+	...props
+}: InputGroupSelectTriggerProps) => {
+	return (
+		<SelectTrigger
+			variant={variant}
+			data-size={size}
+			className={cn(
+				inputGroupButtonVariants({ size }),
+				[
+					"bg-transparent",
+					"dark:bg-transparent",
+				],
+				className,
+			)}
 			{...props}
 		/>
 	);

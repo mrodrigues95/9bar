@@ -1,7 +1,6 @@
 import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
 import type * as React from "react";
 import {
-	Button as AriaButton,
 	Header as AriaHeader,
 	ListBox as AriaListBox,
 	ListBoxItem as AriaListBoxItem,
@@ -18,6 +17,7 @@ import {
 	type SelectProps,
 	type SelectValueProps,
 } from "react-aria-components";
+import { Button, type ButtonProps } from "#components/button";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -89,40 +89,33 @@ export const SelectValue = <T extends object>({
 };
 
 /** Props for the {@link SelectTrigger} component. */
-export type SelectTriggerProps = Omit<
-	React.ComponentProps<typeof AriaButton>,
-	"children"
-> & {
+export type SelectTriggerProps = Omit<ButtonProps, "children" | "size"> & {
 	children?: React.ReactNode;
-	size?: "sm" | "default";
+	size?: "default" | "sm";
 };
 
 /** The button that opens the {@link Select} popover and displays the current value. */
 export const SelectTrigger = ({
 	className,
 	size = "default",
+	variant = "outline",
 	children,
 	...props
 }: SelectTriggerProps) => {
 	return (
-		<AriaButton
+		<Button
 			data-slot="select-trigger"
 			data-size={size}
+			variant={variant}
+			size={size}
 			className={cn(
 				[
-					"flex w-full items-center justify-between gap-1.5 whitespace-nowrap",
-					"rounded-md border border-input bg-input/20 px-2 py-1.5 text-xs/relaxed",
-					"outline-none transition-colors",
-					"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
-					"disabled:cursor-not-allowed disabled:opacity-50",
-					"aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
-					"data-[size=default]:h-7 data-[size=sm]:h-6",
+					"w-full justify-between gap-1.5 bg-input/20",
 					"data-placeholder:text-muted-foreground",
 					"*:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex",
 					"*:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
-					"dark:bg-input/30 dark:aria-invalid:border-destructive/50",
-					"dark:aria-invalid:ring-destructive/40 dark:hover:bg-input/50",
-					"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+					"dark:bg-input/30",
+					"[&_svg:not([class*='size-'])]:size-3.5",
 				],
 				className,
 			)}
@@ -130,7 +123,7 @@ export const SelectTrigger = ({
 		>
 			{children}
 			<ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground" />
-		</AriaButton>
+		</Button>
 	);
 };
 
