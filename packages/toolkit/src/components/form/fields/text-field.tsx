@@ -1,37 +1,31 @@
-import { useStore } from "@tanstack/react-form";
+import { useId } from "react";
 import {
-	TextField as AriaTextField,
-	type TextFieldProps as AriaTextFieldProps,
-	composeRenderProps,
-} from "react-aria-components";
-import { cn } from "#lib/utils";
-import {
+	Field,
+	type FieldComponentProps,
 	FieldDescription,
-	type FieldDescriptionProps,
 	FieldError,
-	type FieldErrorProps,
+	FieldLabel,
+	type FieldLabelProps,
+	getFieldDescribedBy,
 } from "../../field/field";
 import { Input, type InputProps } from "../../input/input";
-import { Label, type LabelProps } from "../../label/label";
-import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
+import {
+	getFieldErrorState,
+	normalizeFormErrors,
+	type TErrorFormatter,
+} from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
 /** Props for the {@link TextField} component. */
-export interface TextFieldProps extends AriaTextFieldProps {
-	/** The label text displayed above the input. */
-	label?: string;
-	/** Help text displayed below the input. */
-	description?: string;
-	/** An error message displayed when validation fails. */
-	errorMessage?: string;
-	/** Additional props forwarded to the `Label` component. */
-	labelProps?: LabelProps;
+export interface TextFieldProps
+	extends Omit<InputProps, "className">,
+		FieldComponentProps {
+	/** Additional props forwarded to the `FieldLabel` component. */
+	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the `Input` component. */
 	inputProps?: InputProps;
-	/** Additional props forwarded to the `FieldDescription` component. */
-	descriptionProps?: FieldDescriptionProps;
-	/** Additional props forwarded to the `FieldError` component. */
-	fieldErrorProps?: FieldErrorProps;
+	/** Class name forwarded to the `Field` wrapper. */
+	className?: string;
 }
 
 /**
@@ -41,31 +35,79 @@ export interface TextFieldProps extends AriaTextFieldProps {
 export const TextField = ({
 	label,
 	description,
+	errors,
 	errorMessage,
+	isInvalid = false,
+	isRequired = false,
+	isDisabled = false,
+	isReadOnly = false,
+	className,
 	labelProps,
 	inputProps,
 	descriptionProps,
 	fieldErrorProps,
-	...props
+	name,
+	id,
+	...rest
 }: TextFieldProps) => {
+	const controlId = useId();
+	const descriptionId = useId();
+	const errorId = useId();
+	const resolvedErrors =
+		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const showError = isInvalid && !!resolvedErrors?.length;
+	const describedBy = getFieldDescribedBy(
+		!!description,
+		descriptionId,
+		showError,
+		errorId,
+	);
+
 	return (
-		<AriaTextField
+		<Field
 			data-slot="text-field"
-			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				cn("flex flex-col gap-1", className),
-			)}
+			data-invalid={isInvalid || undefined}
+			className={className}
 		>
-			{label && <Label {...labelProps}>{label}</Label>}
-			<Input {...inputProps} />
-			{description && (
-				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
+			{label && (
+				<FieldLabel
+					data-slot="text-field-label"
+					htmlFor={id ?? controlId}
+					{...labelProps}
+				>
+					{label}
+				</FieldLabel>
 			)}
-			<FieldError
-				{...fieldErrorProps}
-				errors={errorMessage ? [{ message: errorMessage }] : undefined}
+			<Input
+				data-slot="text-field-input"
+				id={id ?? controlId}
+				name={name}
+				{...rest}
+				{...inputProps}
+				required={isRequired || undefined}
+				disabled={isDisabled || undefined}
+				readOnly={isReadOnly || undefined}
+				aria-invalid={isInvalid || undefined}
+				aria-describedby={describedBy}
 			/>
-		</AriaTextField>
+			{description && (
+				<FieldDescription
+					data-slot="text-field-description"
+					id={descriptionId}
+					{...descriptionProps}
+				>
+					{description}
+				</FieldDescription>
+			)}
+			{showError && (
+				<FieldError
+					data-slot="text-field-error"
+					id={errorId}
+					{...fieldErrorProps}
+					errors={resolvedErrors}
+				/>
+			)}
+		</Field>
 	);
 };
 
@@ -73,24 +115,28 @@ export const TextField = ({
 export interface FormTextFieldProps extends Omit<TextFieldProps, "label"> {
 	/** The label text displayed above the input. Required for form-connected fields. */
 	label: string;
-	/** A custom error formatter for converting form validation errors to a display string. */
+	/** A custom error formatter for converting form validation errors to displayable error items. */
 	formatErrors?: TErrorFormatter;
 }
 
 /** A form-connected text field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormTextField = ({
 	inputProps,
-	formatErrors = defaultErrorFormatter,
+	formatErrors,
 	...props
 }: FormTextFieldProps) => {
 	const field = useFieldContext<string>();
-	const errors = useStore(field.store, (state) => state.meta.errors);
-	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
+	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
+	const resolvedErrors =
+		props.errorMessage !== undefined
+			? [{ message: props.errorMessage }]
+			: normalizeFormErrors(errors, formatErrors);
 
 	return (
 		<TextField
 			{...props}
-			{...(errorMessage && { errorMessage, isInvalid: true })}
+			isInvalid={isInvalid}
+			errors={resolvedErrors}
 			inputProps={{
 				...inputProps,
 				name: field.name,

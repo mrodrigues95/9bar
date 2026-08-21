@@ -1,13 +1,12 @@
-import { useStore } from "@tanstack/react-form";
 import { useId } from "react";
 import {
 	Field,
+	type FieldComponentProps,
 	FieldDescription,
-	type FieldDescriptionProps,
 	FieldError,
-	type FieldErrorProps,
 	FieldLabel,
 	type FieldLabelProps,
+	getFieldDescribedBy,
 } from "../../field/field";
 import {
 	InputGroup,
@@ -26,7 +25,11 @@ import {
 	type SelectProps,
 	SelectValue,
 } from "../../select/select";
-import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
+import {
+	getFieldErrorState,
+	normalizeFormErrors,
+	type TErrorFormatter,
+} from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
 /** An item in the select dropdown of an InputGroupSelectField. */
@@ -50,21 +53,12 @@ export interface TInputGroupSelectFieldValue<
 
 /** Props for the {@link InputGroupSelectField} component. */
 export interface InputGroupSelectFieldProps
-	extends Omit<InputGroupProps, "children" | "aria-label" | "aria-labelledby"> {
-	/** The label text displayed above the input group. */
-	label?: string;
-	/** Help text displayed below the input group. */
-	description?: string;
-	/** An error message displayed when validation fails. */
-	errorMessage?: string;
+	extends Omit<InputGroupProps, "children" | "aria-label" | "aria-labelledby">,
+		FieldComponentProps {
 	/** The collection of items to display in the select dropdown. */
 	items: Array<TInputGroupSelectFieldItem>;
 	/** Additional props forwarded to the `FieldLabel` component. */
 	labelProps?: FieldLabelProps;
-	/** Additional props forwarded to the `FieldDescription` component. */
-	descriptionProps?: FieldDescriptionProps;
-	/** Additional props forwarded to the `FieldError` component. */
-	fieldErrorProps?: FieldErrorProps;
 	/** Additional props forwarded to the text input. */
 	inputProps?: Omit<
 		InputGroupInputProps,
@@ -94,6 +88,7 @@ interface InputGroupSelectFieldInternalProps {
 export const InputGroupSelectField = ({
 	label,
 	description,
+	errors,
 	errorMessage,
 	items,
 	labelProps,
@@ -102,22 +97,37 @@ export const InputGroupSelectField = ({
 	inputProps,
 	selectProps,
 	selectTriggerProps,
+	isInvalid = false,
 	value,
 	onInputChange,
 	onSelectChange,
 	onBlur,
+	name,
 	...props
 }: InputGroupSelectFieldProps & InputGroupSelectFieldInternalProps) => {
 	const labelId = useId();
+	const inputId = useId();
 	const descriptionId = useId();
-	const describedBy =
-		`${description ? descriptionId : ""} ${errorMessage ? descriptionId : ""}`.trim();
+	const errorId = useId();
+	const resolvedErrors =
+		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const showError = isInvalid && !!resolvedErrors?.length;
+	const describedBy = getFieldDescribedBy(
+		!!description,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
-		<Field data-slot="input-group-select-field" data-invalid={!!errorMessage}>
+		<Field
+			data-slot="input-group-select-field"
+			data-invalid={isInvalid || undefined}
+		>
 			{label && (
 				<FieldLabel
 					id={labelId}
+					htmlFor={inputId}
 					data-slot="input-group-select-field-label"
 					{...labelProps}
 				>
@@ -126,18 +136,21 @@ export const InputGroupSelectField = ({
 			)}
 			<InputGroup
 				data-slot="input-group-select-field-input-group"
-				{...(label ? { "aria-labelledby": labelId } : {})}
-				{...(description || errorMessage
-					? { "aria-describedby": describedBy }
-					: {})}
 				{...props}
+				{...(label ? { "aria-labelledby": labelId } : {})}
+				{...(describedBy ? { "aria-describedby": describedBy } : {})}
+				isInvalid={isInvalid || undefined}
 			>
 				<InputGroupInput
+					id={inputId}
 					data-slot="input-group-select-field-input"
 					{...inputProps}
+					name={name}
 					value={value.inputValue}
 					onChange={(e) => onInputChange(e.target.value)}
 					onBlur={onBlur}
+					aria-invalid={isInvalid || undefined}
+					aria-describedby={describedBy}
 				/>
 				<InputGroupAddon
 					data-slot="input-group-select-field-addon"
@@ -146,6 +159,7 @@ export const InputGroupSelectField = ({
 					<Select
 						data-slot="input-group-select-field-select"
 						{...selectProps}
+						isInvalid={isInvalid || undefined}
 						selectedKey={value.selectValue}
 						onSelectionChange={(key) => {
 							if (key !== null) {
@@ -157,6 +171,8 @@ export const InputGroupSelectField = ({
 							data-slot="input-group-select-field-select-trigger"
 							className="min-w-auto"
 							{...selectTriggerProps}
+							aria-invalid={isInvalid || undefined}
+							aria-describedby={describedBy}
 						>
 							<SelectValue data-slot="input-group-select-field-select-value" />
 						</InputGroupSelectTrigger>
@@ -187,11 +203,12 @@ export const InputGroupSelectField = ({
 					{description}
 				</FieldDescription>
 			)}
-			{errorMessage && (
+			{showError && (
 				<FieldError
 					data-slot="input-group-select-field-error"
+					id={errorId}
 					{...fieldErrorProps}
-					errors={[{ message: errorMessage }]}
+					errors={resolvedErrors}
 				/>
 			)}
 		</Field>
@@ -204,23 +221,27 @@ export interface FormInputGroupSelectFieldProps
 		InputGroupSelectFieldProps,
 		"value" | "onInputChange" | "onSelectChange" | "onBlur" | "name"
 	> {
-	/** A custom error formatter for converting form validation errors to a display string. */
+	/** A custom error formatter for converting form validation errors to displayable error items. */
 	formatErrors?: TErrorFormatter;
 }
 
 /** A form-connected input group select field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormInputGroupSelectField = ({
-	formatErrors = defaultErrorFormatter,
+	formatErrors,
 	...props
 }: FormInputGroupSelectFieldProps) => {
 	const field = useFieldContext<TInputGroupSelectFieldValue>();
-	const errors = useStore(field.store, (state) => state.meta.errors);
-	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
+	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
+	const resolvedErrors =
+		props.errorMessage !== undefined
+			? [{ message: props.errorMessage }]
+			: normalizeFormErrors(errors, formatErrors);
 
 	return (
 		<InputGroupSelectField
 			{...props}
-			{...(errorMessage && { errorMessage, isInvalid: true })}
+			isInvalid={isInvalid}
+			errors={resolvedErrors}
 			name={field.name}
 			value={field.state.value}
 			onInputChange={(value) =>

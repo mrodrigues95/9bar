@@ -1,28 +1,23 @@
-import { useStore } from "@tanstack/react-form";
+import { useId } from "react";
 import { Checkbox, type CheckboxProps } from "../../checkbox/checkbox";
 import {
 	Field,
+	type FieldComponentProps,
 	FieldDescription,
-	type FieldDescriptionProps,
 	FieldError,
-	type FieldErrorProps,
+	getFieldDescribedBy,
 } from "../../field/field";
-import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
+import {
+	getFieldErrorState,
+	normalizeFormErrors,
+	type TErrorFormatter,
+} from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
 /** Props for the {@link CheckboxField} component. */
-export interface CheckboxFieldProps extends Omit<CheckboxProps, "children"> {
-	/** The label text displayed beside the checkbox. */
-	label?: string;
-	/** Help text displayed below the checkbox. */
-	description?: string;
-	/** An error message displayed when validation fails. */
-	errorMessage?: string;
-	/** Additional props forwarded to the `FieldDescription` component. */
-	descriptionProps?: FieldDescriptionProps;
-	/** Additional props forwarded to the `FieldError` component. */
-	fieldErrorProps?: FieldErrorProps;
-}
+export interface CheckboxFieldProps
+	extends Omit<CheckboxProps, "children">,
+		FieldComponentProps {}
 
 /**
  * A checkbox field composes a checkbox with a label, description, and error
@@ -31,21 +26,51 @@ export interface CheckboxFieldProps extends Omit<CheckboxProps, "children"> {
 export const CheckboxField = ({
 	label,
 	description,
+	errors,
 	errorMessage,
 	descriptionProps,
 	fieldErrorProps,
 	...props
 }: CheckboxFieldProps) => {
+	const descriptionId = useId();
+	const errorId = useId();
+	const resolvedErrors =
+		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
+	const showError = isInvalid && !!resolvedErrors?.length;
+	const describedBy = getFieldDescribedBy(
+		!!description,
+		descriptionId,
+		showError,
+		errorId,
+	);
+
 	return (
-		<Field data-slot="checkbox-field" data-invalid={!!errorMessage}>
-			<Checkbox {...props} aria-invalid={!!errorMessage || undefined}>
+		<Field data-slot="checkbox-field" data-invalid={isInvalid || undefined}>
+			<Checkbox
+				{...props}
+				data-slot="checkbox-field-checkbox"
+				aria-invalid={isInvalid || undefined}
+				aria-describedby={describedBy}
+			>
 				{label}
 			</Checkbox>
 			{description && (
-				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
+				<FieldDescription
+					data-slot="checkbox-field-description"
+					id={descriptionId}
+					{...descriptionProps}
+				>
+					{description}
+				</FieldDescription>
 			)}
-			{errorMessage && (
-				<FieldError {...fieldErrorProps} errors={[{ message: errorMessage }]} />
+			{showError && (
+				<FieldError
+					data-slot="checkbox-field-error"
+					id={errorId}
+					{...fieldErrorProps}
+					errors={resolvedErrors}
+				/>
 			)}
 		</Field>
 	);
@@ -56,23 +81,27 @@ export interface FormCheckboxFieldProps
 	extends Omit<CheckboxFieldProps, "label"> {
 	/** The label text displayed beside the checkbox. Required for form-connected fields. */
 	label: string;
-	/** A custom error formatter for converting form validation errors to a display string. */
+	/** A custom error formatter for converting form validation errors to displayable error items. */
 	formatErrors?: TErrorFormatter;
 }
 
 /** A form-connected checkbox field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormCheckboxField = ({
-	formatErrors = defaultErrorFormatter,
+	formatErrors,
 	...props
 }: FormCheckboxFieldProps) => {
 	const field = useFieldContext<boolean>();
-	const errors = useStore(field.store, (state) => state.meta.errors);
-	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
+	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
+	const resolvedErrors =
+		props.errorMessage !== undefined
+			? [{ message: props.errorMessage }]
+			: normalizeFormErrors(errors, formatErrors);
 
 	return (
 		<CheckboxField
 			{...props}
-			{...(errorMessage && { errorMessage, isInvalid: true })}
+			isInvalid={isInvalid}
+			errors={resolvedErrors}
 			isSelected={field.state.value}
 			onChange={(isSelected) => field.handleChange(isSelected)}
 		/>

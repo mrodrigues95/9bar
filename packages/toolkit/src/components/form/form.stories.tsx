@@ -185,6 +185,7 @@ export const ComposedForm: Story = {
 					e.preventDefault();
 					form.handleSubmit();
 				}}
+				validationBehavior="aria"
 			>
 				<form.AppForm>
 					<form.AppField name="firstName">
@@ -579,6 +580,7 @@ export const ReusableContactForm: Story = {
 					e.preventDefault();
 					form.handleSubmit();
 				}}
+				validationBehavior="aria"
 			>
 				<ContactFormComponent form={form} title="Get in Touch" />
 			</Form>

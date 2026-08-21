@@ -166,10 +166,7 @@ export const InputGroupSelectTrigger = ({
 			data-size={size}
 			className={cn(
 				inputGroupButtonVariants({ size }),
-				[
-					"bg-transparent",
-					"dark:bg-transparent",
-				],
+				["bg-transparent", "dark:bg-transparent"],
 				className,
 			)}
 			{...props}

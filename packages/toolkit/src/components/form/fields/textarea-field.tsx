@@ -1,37 +1,31 @@
-import { useStore } from "@tanstack/react-form";
+import { useId } from "react";
 import {
-	TextField as AriaTextField,
-	type TextFieldProps as AriaTextFieldProps,
-	composeRenderProps,
-} from "react-aria-components";
-import { cn } from "#lib/utils";
-import {
+	Field,
+	type FieldComponentProps,
 	FieldDescription,
-	type FieldDescriptionProps,
 	FieldError,
-	type FieldErrorProps,
+	FieldLabel,
+	type FieldLabelProps,
+	getFieldDescribedBy,
 } from "../../field/field";
-import { Label, type LabelProps } from "../../label/label";
 import { Textarea, type TextareaProps } from "../../textarea/textarea";
-import { defaultErrorFormatter, type TErrorFormatter } from "../utils/errors";
+import {
+	getFieldErrorState,
+	normalizeFormErrors,
+	type TErrorFormatter,
+} from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
 
 /** Props for the {@link TextareaField} component. */
-export interface TextareaFieldProps extends AriaTextFieldProps {
-	/** The label text displayed above the textarea. */
-	label?: string;
-	/** Help text displayed below the textarea. */
-	description?: string;
-	/** An error message displayed when validation fails. */
-	errorMessage?: string;
-	/** Additional props forwarded to the `Label` component. */
-	labelProps?: LabelProps;
+export interface TextareaFieldProps
+	extends Omit<TextareaProps, "className">,
+		FieldComponentProps {
+	/** Additional props forwarded to the `FieldLabel` component. */
+	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the `Textarea` component. */
 	textareaProps?: TextareaProps;
-	/** Additional props forwarded to the `FieldDescription` component. */
-	descriptionProps?: FieldDescriptionProps;
-	/** Additional props forwarded to the `FieldError` component. */
-	fieldErrorProps?: FieldErrorProps;
+	/** Class name forwarded to the `Field` wrapper. */
+	className?: string;
 }
 
 /**
@@ -41,31 +35,79 @@ export interface TextareaFieldProps extends AriaTextFieldProps {
 export const TextareaField = ({
 	label,
 	description,
+	errors,
 	errorMessage,
+	isInvalid = false,
+	isRequired = false,
+	isDisabled = false,
+	isReadOnly = false,
+	className,
 	labelProps,
 	textareaProps,
 	descriptionProps,
 	fieldErrorProps,
-	...props
+	name,
+	id,
+	...rest
 }: TextareaFieldProps) => {
+	const controlId = useId();
+	const descriptionId = useId();
+	const errorId = useId();
+	const resolvedErrors =
+		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const showError = isInvalid && !!resolvedErrors?.length;
+	const describedBy = getFieldDescribedBy(
+		!!description,
+		descriptionId,
+		showError,
+		errorId,
+	);
+
 	return (
-		<AriaTextField
-			data-slot="text-field"
-			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				cn("flex flex-col gap-1", className),
-			)}
+		<Field
+			data-slot="textarea-field"
+			data-invalid={isInvalid || undefined}
+			className={className}
 		>
-			{label && <Label {...labelProps}>{label}</Label>}
-			<Textarea {...textareaProps} />
-			{description && (
-				<FieldDescription {...descriptionProps}>{description}</FieldDescription>
+			{label && (
+				<FieldLabel
+					data-slot="textarea-field-label"
+					htmlFor={id ?? controlId}
+					{...labelProps}
+				>
+					{label}
+				</FieldLabel>
 			)}
-			<FieldError
-				{...fieldErrorProps}
-				errors={errorMessage ? [{ message: errorMessage }] : undefined}
+			<Textarea
+				data-slot="textarea-field-textarea"
+				id={id ?? controlId}
+				name={name}
+				{...rest}
+				{...textareaProps}
+				required={isRequired || undefined}
+				disabled={isDisabled || undefined}
+				readOnly={isReadOnly || undefined}
+				aria-invalid={isInvalid || undefined}
+				aria-describedby={describedBy}
 			/>
-		</AriaTextField>
+			{description && (
+				<FieldDescription
+					data-slot="textarea-field-description"
+					id={descriptionId}
+					{...descriptionProps}
+				>
+					{description}
+				</FieldDescription>
+			)}
+			{showError && (
+				<FieldError
+					data-slot="textarea-field-error"
+					id={errorId}
+					{...fieldErrorProps}
+					errors={resolvedErrors}
+				/>
+			)}
+		</Field>
 	);
 };
 
@@ -74,24 +116,28 @@ export interface FormTextareaFieldProps
 	extends Omit<TextareaFieldProps, "label"> {
 	/** The label text displayed above the textarea. Required for form-connected fields. */
 	label: string;
-	/** A custom error formatter for converting form validation errors to a display string. */
+	/** A custom error formatter for converting form validation errors to displayable error items. */
 	formatErrors?: TErrorFormatter;
 }
 
 /** A form-connected textarea field that reads its value, change handlers, and validation errors from the nearest field context. */
 export const FormTextareaField = ({
 	textareaProps,
-	formatErrors = defaultErrorFormatter,
+	formatErrors,
 	...props
 }: FormTextareaFieldProps) => {
 	const field = useFieldContext<string>();
-	const errors = useStore(field.store, (state) => state.meta.errors);
-	const errorMessage = props.errorMessage ?? formatErrors?.(errors);
+	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
+	const resolvedErrors =
+		props.errorMessage !== undefined
+			? [{ message: props.errorMessage }]
+			: normalizeFormErrors(errors, formatErrors);
 
 	return (
 		<TextareaField
 			{...props}
-			{...(errorMessage && { errorMessage, isInvalid: true })}
+			isInvalid={isInvalid}
+			errors={resolvedErrors}
 			textareaProps={{
 				...textareaProps,
 				name: field.name,

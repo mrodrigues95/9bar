@@ -230,12 +230,57 @@ export const FieldSeparator = ({
 };
 
 /** A single validation error entry, compatible with TanStack Form's `field.state.meta.errors`. */
-export type FieldErrorItem = { message?: string } | undefined;
+export type FieldErrorItem = { message?: string } | string | undefined;
+
+/** Extracts a human-readable message from an error value (string, `{ message }` object, or any other object). */
+export const toErrorMessage = (error: unknown): string | undefined => {
+	if (typeof error === "string") {
+		return error.length ? error : undefined;
+	}
+
+	if (error !== null && typeof error === "object" && "message" in error) {
+		const message = (error as { message?: unknown }).message;
+		if (typeof message === "string" && message.length) {
+			return message;
+		}
+	}
+
+	if (error === null || error === undefined) {
+		return undefined;
+	}
+
+	const stringified = String(error);
+	return stringified.length ? stringified : undefined;
+};
 
 /** Props for the {@link FieldError} component. */
 export type FieldErrorProps = React.ComponentProps<"div"> & {
 	errors?: Array<FieldErrorItem>;
 };
+
+/** Props shared by composed field components: content, validity state, and description/error slot pass-throughs. */
+export interface FieldComponentProps {
+	/** The label text displayed for the field. */
+	label?: string;
+	/** Help text displayed below the control. */
+	description?: string;
+	/** Validation errors to display when the field is invalid. Takes precedence over `errorMessage`. */
+	errors?: Array<FieldErrorItem>;
+	/** A single error message displayed when the field is invalid. */
+	errorMessage?: string;
+	/** Whether the control is invalid. */
+	isInvalid?: boolean;
+	/** Whether a value is required. */
+	isRequired?: boolean;
+	/** Whether the control is disabled. */
+	isDisabled?: boolean;
+	/** Whether the control is read-only. */
+	isReadOnly?: boolean;
+	/** Additional props forwarded to the `FieldDescription` component. */
+	descriptionProps?: FieldDescriptionProps;
+	/** Additional props forwarded to the `FieldError` component. */
+	fieldErrorProps?: FieldErrorProps;
+}
 
 /** An error message for a form field, rendered when validation fails. Accepts an `errors` array from a form library such as TanStack Form. */
 export const FieldError = ({
@@ -254,19 +299,23 @@ export const FieldError = ({
 		}
 
 		const uniqueErrors = [
-			...new Map(errors.map((error) => [error?.message, error])).values(),
+			...new Map(
+				errors
+					.map((error) => toErrorMessage(error))
+					.filter((message): message is string => !!message)
+					.map((message) => [message, message] as const),
+			).values(),
 		];
 
-		if (uniqueErrors?.length === 1) {
-			return uniqueErrors[0]?.message;
+		if (uniqueErrors.length === 1) {
+			return uniqueErrors[0];
 		}
 
 		return (
 			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map(
-					(error) =>
-						error?.message && <li key={error.message}>{error.message}</li>,
-				)}
+				{uniqueErrors.map((message) => (
+					<li key={message}>{message}</li>
+				))}
 			</ul>
 		);
 	}, [children, errors]);
@@ -285,4 +334,17 @@ export const FieldError = ({
 			{content}
 		</div>
 	);
+};
+
+/** Builds an `aria-describedby` value from the description and error element ids. */
+export const getFieldDescribedBy = (
+	hasDescription: boolean,
+	descriptionId: string,
+	showError: boolean,
+	errorId: string,
+) => {
+	const ids = [hasDescription && descriptionId, showError && errorId].filter(
+		Boolean,
+	);
+	return ids.length ? ids.join(" ") : undefined;
 };
