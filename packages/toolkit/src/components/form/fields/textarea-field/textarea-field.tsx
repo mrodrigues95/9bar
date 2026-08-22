@@ -7,15 +7,15 @@ import {
 	FieldLabel,
 	type FieldLabelProps,
 	getFieldDescribedBy,
-} from "../../field/field";
-import { Textarea, type TextareaProps } from "../../textarea/textarea";
+} from "../../../field/field";
+import { Textarea, type TextareaProps } from "../../../textarea/textarea";
 import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
 	type TErrorFormatter,
-} from "../utils/errors";
-import { useFieldContext } from "../utils/form-context";
+} from "../../utils/errors";
+import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link TextareaField} component. */
 export interface TextareaFieldProps

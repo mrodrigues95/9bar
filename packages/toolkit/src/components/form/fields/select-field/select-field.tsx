@@ -9,7 +9,7 @@ import {
 	FieldLabel,
 	type FieldLabelProps,
 	getFieldDescribedBy,
-} from "../../field/field";
+} from "../../../field/field";
 import {
 	Select,
 	SelectContent,
@@ -19,14 +19,14 @@ import {
 	type SelectTriggerProps,
 	SelectValue,
 	type SelectValueProps,
-} from "../../select/select";
+} from "../../../select/select";
 import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
 	type TErrorFormatter,
-} from "../utils/errors";
-import { useFieldContext } from "../utils/form-context";
+} from "../../utils/errors";
+import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link SelectField} component. */
 export interface SelectFieldProps<T extends object>

@@ -7,15 +7,15 @@ import {
 	FieldLabel,
 	type FieldLabelProps,
 	getFieldDescribedBy,
-} from "../../field/field";
-import { Input, type InputProps } from "../../input/input";
+} from "../../../field/field";
+import { Input, type InputProps } from "../../../input/input";
 import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
 	type TErrorFormatter,
-} from "../utils/errors";
-import { useFieldContext } from "../utils/form-context";
+} from "../../utils/errors";
+import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link TextField} component. */
 export interface TextFieldProps

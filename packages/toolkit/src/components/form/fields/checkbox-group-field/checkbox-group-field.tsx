@@ -10,14 +10,14 @@ import {
 	FieldLabel,
 	type FieldLabelProps,
 	getFieldDescribedBy,
-} from "../../field/field";
+} from "../../../field/field";
 import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
 	type TErrorFormatter,
-} from "../utils/errors";
-import { useFieldContext } from "../utils/form-context";
+} from "../../utils/errors";
+import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link CheckboxGroupField} component. */
 export interface CheckboxGroupFieldProps

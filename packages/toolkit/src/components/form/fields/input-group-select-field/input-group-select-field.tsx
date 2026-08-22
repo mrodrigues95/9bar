@@ -7,7 +7,7 @@ import {
 	FieldLabel,
 	type FieldLabelProps,
 	getFieldDescribedBy,
-} from "../../field/field";
+} from "../../../field/field";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -16,7 +16,7 @@ import {
 	type InputGroupProps,
 	InputGroupSelectTrigger,
 	type InputGroupSelectTriggerProps,
-} from "../../input-group/input-group";
+} from "../../../input-group/input-group";
 import {
 	Select,
 	SelectContent,
@@ -24,14 +24,14 @@ import {
 	SelectList,
 	type SelectProps,
 	SelectValue,
-} from "../../select/select";
+} from "../../../select/select";
 import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
 	type TErrorFormatter,
-} from "../utils/errors";
-import { useFieldContext } from "../utils/form-context";
+} from "../../utils/errors";
+import { useFieldContext } from "../../utils/form-context";
 
 /** An item in the select dropdown of an InputGroupSelectField. */
 export interface TInputGroupSelectFieldItem {
