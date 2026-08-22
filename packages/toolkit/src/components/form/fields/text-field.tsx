@@ -11,7 +11,8 @@ import {
 import { Input, type InputProps } from "../../input/input";
 import {
 	getFieldErrorState,
-	normalizeFormErrors,
+	resolveFieldErrors,
+	resolveFormFieldErrors,
 	type TErrorFormatter,
 } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
@@ -53,8 +54,7 @@ export const TextField = ({
 	const controlId = useId();
 	const descriptionId = useId();
 	const errorId = useId();
-	const resolvedErrors =
-		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const showError = isInvalid && !!resolvedErrors?.length;
 	const describedBy = getFieldDescribedBy(
 		!!description,
@@ -127,10 +127,10 @@ export const FormTextField = ({
 }: FormTextFieldProps) => {
 	const field = useFieldContext<string>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
-	const resolvedErrors =
-		props.errorMessage !== undefined
-			? [{ message: props.errorMessage }]
-			: normalizeFormErrors(errors, formatErrors);
+	const resolvedErrors = resolveFormFieldErrors(errors, {
+		errorMessage: props.errorMessage,
+		formatErrors,
+	});
 
 	return (
 		<TextField

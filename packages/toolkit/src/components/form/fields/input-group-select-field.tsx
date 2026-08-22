@@ -27,7 +27,8 @@ import {
 } from "../../select/select";
 import {
 	getFieldErrorState,
-	normalizeFormErrors,
+	resolveFieldErrors,
+	resolveFormFieldErrors,
 	type TErrorFormatter,
 } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
@@ -109,8 +110,7 @@ export const InputGroupSelectField = ({
 	const inputId = useId();
 	const descriptionId = useId();
 	const errorId = useId();
-	const resolvedErrors =
-		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const showError = isInvalid && !!resolvedErrors?.length;
 	const describedBy = getFieldDescribedBy(
 		!!description,
@@ -232,10 +232,10 @@ export const FormInputGroupSelectField = ({
 }: FormInputGroupSelectFieldProps) => {
 	const field = useFieldContext<TInputGroupSelectFieldValue>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
-	const resolvedErrors =
-		props.errorMessage !== undefined
-			? [{ message: props.errorMessage }]
-			: normalizeFormErrors(errors, formatErrors);
+	const resolvedErrors = resolveFormFieldErrors(errors, {
+		errorMessage: props.errorMessage,
+		formatErrors,
+	});
 
 	return (
 		<InputGroupSelectField

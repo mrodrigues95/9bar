@@ -22,7 +22,8 @@ import {
 } from "../../select/select";
 import {
 	getFieldErrorState,
-	normalizeFormErrors,
+	resolveFieldErrors,
+	resolveFormFieldErrors,
 	type TErrorFormatter,
 } from "../utils/errors";
 import { useFieldContext } from "../utils/form-context";
@@ -71,8 +72,7 @@ export const SelectField = <T extends object>({
 	const labelId = useId();
 	const descriptionId = useId();
 	const errorId = useId();
-	const resolvedErrors =
-		errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
 	const showError = isInvalid && !!resolvedErrors?.length;
 	const describedBy = getFieldDescribedBy(
@@ -159,10 +159,10 @@ export const FormSelectField = <T extends object>({
 }: FormSelectFieldProps<T>) => {
 	const field = useFieldContext<Key | Array<Key> | null>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
-	const resolvedErrors =
-		props.errorMessage !== undefined
-			? [{ message: props.errorMessage }]
-			: normalizeFormErrors(errors, formatErrors);
+	const resolvedErrors = resolveFormFieldErrors(errors, {
+		errorMessage: props.errorMessage,
+		formatErrors,
+	});
 
 	return (
 		<SelectField

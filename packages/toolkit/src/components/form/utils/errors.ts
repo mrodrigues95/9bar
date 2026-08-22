@@ -27,6 +27,34 @@ export const defaultErrorFormatter: TErrorFormatter = (errors) => {
 	return messages.length ? messages : undefined;
 };
 
+/**
+ * Resolves the error items displayed by a field: explicit validation `errors`
+ * take precedence, otherwise a single `errorMessage` string is wrapped.
+ */
+export const resolveFieldErrors = (
+	errors?: Array<FieldErrorItem>,
+	errorMessage?: string,
+): Array<FieldErrorItem> | undefined =>
+	errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+
+/**
+ * Resolves the error items displayed by a form-connected field: an explicit
+ * `errorMessage` takes precedence over the field's normalized validation errors.
+ */
+export const resolveFormFieldErrors = <TError = unknown>(
+	errors: Array<TError>,
+	{
+		errorMessage,
+		formatErrors,
+	}: {
+		errorMessage?: string;
+		formatErrors?: TErrorFormatter<TError>;
+	},
+): Array<FieldErrorItem> | undefined =>
+	errorMessage !== undefined
+		? [{ message: errorMessage }]
+		: normalizeFormErrors(errors, formatErrors);
+
 /** Applies a custom formatter to raw form errors, falling back to the raw errors when no formatter is given. */
 export const normalizeFormErrors = <TError = unknown>(
 	errors: Array<TError>,
