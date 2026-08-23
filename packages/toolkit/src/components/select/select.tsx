@@ -8,7 +8,6 @@ import {
 	Popover as AriaPopover,
 	Select as AriaSelect,
 	SelectValue as AriaSelectValue,
-	Separator as AriaSeparator,
 	composeRenderProps,
 	type ListBoxProps,
 	SearchField,
@@ -23,6 +22,9 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "#components/input-group";
+import { listboxSectionHeaderVariants } from "#components/listbox";
+import { popoverVariants } from "#components/popover";
+import { Separator } from "#components/separator";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Select} component. */
@@ -183,16 +185,10 @@ export const SelectPopover = ({
 			offset={offset}
 			crossOffset={crossOffset}
 			className={cn(
+				popoverVariants(),
 				[
-					"data-entering:fade-in-0 data-entering:zoom-in-95",
-					"data-exiting:fade-out-0 data-exiting:zoom-out-95",
-					"data-[placement=bottom]:slide-in-from-top-2 data-[placement=left]:slide-in-from-right-2",
-					"data-[placement=right]:slide-in-from-left-2 data-[placement=top]:slide-in-from-bottom-2",
-					"relative isolate z-50 w-(--trigger-width) min-w-32 origin-(--trigger-anchor-point)",
-					"overflow-hidden rounded-lg bg-popover text-popover-foreground",
-					"shadow-md ring-1 ring-foreground/10",
-					"duration-100",
-					"data-entering:animate-in data-exiting:animate-out",
+					"relative isolate w-(--trigger-width) min-w-32",
+					"overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
 				],
 				className,
@@ -257,7 +253,7 @@ export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
 	return (
 		<AriaHeader
 			data-slot="select-label"
-			className={cn("px-2 py-1.5 text-muted-foreground text-xs", className)}
+			className={cn(listboxSectionHeaderVariants(), className)}
 			{...props}
 		/>
 	);
@@ -306,7 +302,7 @@ export const SelectItem = ({
 };
 
 /** Props for the {@link SelectSeparator} component. */
-export type SelectSeparatorProps = React.ComponentProps<typeof AriaSeparator>;
+export type SelectSeparatorProps = React.ComponentProps<typeof Separator>;
 
 /** A divider between {@link SelectGroup} sections within a {@link SelectList}. */
 export const SelectSeparator = ({
@@ -314,12 +310,9 @@ export const SelectSeparator = ({
 	...props
 }: SelectSeparatorProps) => {
 	return (
-		<AriaSeparator
+		<Separator
 			data-slot="select-separator"
-			className={cn(
-				"pointer-events-none -mx-1 my-1 h-px bg-border/50",
-				className,
-			)}
+			className={cn("pointer-events-none -mx-1 my-1 bg-border/50", className)}
 			{...props}
 		/>
 	);

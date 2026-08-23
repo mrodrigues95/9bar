@@ -29,6 +29,7 @@ pnpm toolkit typecheck
 - Components are styled with shadcn class strings (`cn()` / `cva()`) using the theme tokens defined in `src/styles/globals.css`
 - Component props extend React Aria props where applicable
 - **Alias react-aria-components imports with the `Aria*` prefix** when a name would collide with the toolkit's own export: `Button as AriaButton`, `type ButtonProps as AriaButtonProps`, `ListBoxItem as AriaListBoxItem`. Do not use `*Primitive` aliases (legacy convention, being phased out). Leave imports unaliased when there is no collision (e.g. `Group`, `composeRenderProps`).
+- **Reuse existing primitives instead of duplicating styling.** When a component needs styles that a sibling primitive already owns, import that primitive or its exported variant (`buttonVariants`, `badgeVariants`, `listboxItemVariants`, `listboxSectionHeaderVariants`, `popoverVariants`, `inputVariants`, `Separator`, `Popover`, …) and override via `className`/`data-slot`, rather than repeating the same class strings. Only extract a new shared `cva` variant when no primitive already provides the styles.
 
 ## Class String Formatting
 
@@ -90,3 +91,4 @@ Follow the `shadcn` skill for the CLI add (registry lookup, `add`, post-add revi
 - **`shadcn add` writes flat files and recreates registry dependencies** (e.g. `button.tsx` when adding a component that depends on button) -- after each add, delete any flat `src/components/*.tsx` whose directory version already exists (they are identical)
 - **React Aria tabs/select use `id`, not `value`** -- `TabsTrigger id=...`/`TabsContent id=...`, `SelectItem id=...`/`Select selectedKey=...`
 - **exactOptionalPropertyTypes is disabled** in `tsconfig.base.json` -- shadcn-generated components rely on standard optional semantics
+- **Don't repeat styling a primitive already provides** -- e.g. `select` and `menu` must reuse `popoverVariants` and `Separator` rather than hand-rolling the same overlay animation, border, and separator classes

@@ -133,6 +133,14 @@ export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
 	title: string;
 }
 
+/**
+ * Shared styles for collection section headers, reused by {@link ListboxSectionHeader}
+ * and other list-based primitives (such as select and menu labels) to avoid duplication.
+ */
+export const listboxSectionHeaderVariants = cva(
+	"px-2 py-1.5 text-muted-foreground text-xs",
+);
+
 /** A styled header rendered above a {@link ListboxSection}. */
 export const ListboxSectionHeader = ({
 	title,
@@ -143,7 +151,8 @@ export const ListboxSectionHeader = ({
 			data-slot="listbox-section-header"
 			{...props}
 			className={cn(
-				"truncate px-2 py-1.5 text-muted-foreground text-xs",
+				listboxSectionHeaderVariants(),
+				"truncate",
 				props.className,
 			)}
 		>

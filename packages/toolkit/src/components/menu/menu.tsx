@@ -10,10 +10,12 @@ import {
 	type MenuSectionProps as AriaMenuSectionProps,
 	MenuTrigger as AriaMenuTrigger,
 	Popover as AriaPopover,
-	Separator as AriaSeparator,
 	SubmenuTrigger as AriaSubmenuTrigger,
 	composeRenderProps,
 } from "react-aria-components";
+import { listboxSectionHeaderVariants } from "#components/listbox";
+import { popoverVariants } from "#components/popover";
+import { Separator } from "#components/separator";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
@@ -54,15 +56,11 @@ export const Menu = <T extends object>({
 			offset={offset}
 			crossOffset={crossOffset}
 			className={cn(
+				popoverVariants(),
 				[
-					"data-entering:fade-in-0 data-entering:zoom-in-95",
-					"data-exiting:fade-out-0 data-exiting:zoom-out-95",
-					"data-[placement=bottom]:slide-in-from-top-2 data-[placement=left]:slide-in-from-right-2",
-					"data-[placement=right]:slide-in-from-left-2 data-[placement=top]:slide-in-from-bottom-2",
-					"data-entering:animate-in data-exiting:animate-out data-exiting:overflow-hidden",
-					"z-50 w-(--trigger-width) min-w-32 origin-(--trigger-anchor-point)",
-					"overflow-y-auto overflow-x-hidden rounded-lg bg-popover p-1 text-popover-foreground",
-					"shadow-md outline-none ring-1 ring-foreground/10 duration-100",
+					"w-(--trigger-width) min-w-32",
+					"overflow-y-auto overflow-x-hidden p-1",
+					"data-exiting:overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
 				],
 				className,
@@ -100,7 +98,8 @@ export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
 			data-slot="menu-label"
 			data-inset={inset}
 			className={cn(
-				"px-2 py-1.5 text-muted-foreground text-xs data-inset:pl-7.5",
+				listboxSectionHeaderVariants(),
+				"data-inset:pl-7.5",
 				className,
 			)}
 			{...props}
@@ -256,13 +255,7 @@ export const MenuSubContent = <T extends object>({
 	return (
 		<Menu<T>
 			data-slot="menu-sub-content"
-			className={cn(
-				[
-					"w-auto min-w-32 rounded-lg bg-popover p-1 text-popover-foreground",
-					"shadow-md ring-1 ring-foreground/10 duration-100",
-				],
-				className,
-			)}
+			className={cn("w-auto min-w-32", className)}
 			placement={placement}
 			crossOffset={crossOffset}
 			offset={offset}
@@ -272,14 +265,14 @@ export const MenuSubContent = <T extends object>({
 };
 
 /** Props for the {@link MenuSeparator} component. */
-export type MenuSeparatorProps = React.ComponentProps<typeof AriaSeparator>;
+export type MenuSeparatorProps = React.ComponentProps<typeof Separator>;
 
 /** A divider between {@link MenuItem} elements or groups. */
 export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => {
 	return (
-		<AriaSeparator
+		<Separator
 			data-slot="menu-separator"
-			className={cn("-mx-1 my-1 h-px bg-border/50", className)}
+			className={cn("-mx-1 my-1 bg-border/50", className)}
 			{...props}
 		/>
 	);
