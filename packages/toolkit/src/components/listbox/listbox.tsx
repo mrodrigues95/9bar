@@ -161,18 +161,19 @@ export const ListboxSectionHeader = ({
 	);
 };
 
-export interface ListboxSeparatorProps extends SeparatorProps {}
+export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
 
-/** A visual divider placed between {@link ListboxSection} elements. */
-export const ListboxSeparator = (props: ListboxSeparatorProps) => {
+/** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
+export const ListboxSeparator = ({
+	className,
+	...props
+}: ListboxSeparatorProps) => {
 	return (
 		<Separator
 			data-slot="listbox-separator"
 			{...props}
-			className={cn(
-				"pointer-events-none -mx-1 my-1 bg-border/50",
-				props.className,
-			)}
+			className={cn("pointer-events-none my-1 bg-border/50", className)}
+			render={(renderProps) => <div {...renderProps} role="presentation" />}
 		/>
 	);
 };
