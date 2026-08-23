@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useId } from "react";
-import { FieldDescription } from "../field/field";
 import { Checkbox } from "./checkbox";
 
 const meta = {
@@ -55,21 +53,10 @@ export const Disabled: Story = {
 	},
 };
 
-/** A checkbox with a description below the label, linked via `aria-describedby`. */
-export const WithDescription: Story = {
+/** A checkbox in the invalid state, styled to indicate a validation error. */
+export const Invalid: Story = {
 	args: {
+		isInvalid: true,
 		children: "Accept terms and conditions",
-	},
-	render: (props) => {
-		const id = useId();
-
-		return (
-			<div className="flex flex-col gap-1">
-				<Checkbox {...props} aria-describedby={id} />
-				<FieldDescription id={id} className="pl-6">
-					By clicking this checkbox, you agree to the terms and conditions.
-				</FieldDescription>
-			</div>
-		);
 	},
 };
