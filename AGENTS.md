@@ -39,7 +39,7 @@ Before editing files for a substantial task:
 
 ## Commit Messages
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commits to the affected package: `feat(toolkit): ...`, `fix(web): ...`. Common scopes: `web`, `toolkit`, or both.
+Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commits to the affected package: `feat(toolkit): ...`, `fix(web): ...`. Common scopes: `web`, `toolkit`, or both. Keep body lines to 100 characters or fewer — commitlint enforces this in CI (`body-max-line-length`).
 
 ## Adding a New Package
 
