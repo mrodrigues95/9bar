@@ -1,6 +1,6 @@
 ---
 name: toolkit
-description: Conventions for @9bar/toolkit, the React Aria + shadcn (aria-mira, zinc) design system package. Use when adding, editing, reviewing, or styling toolkit components, writing Storybook stories, using the shadcn CLI in this monorepo, or working with the form system (createFormHook, field components). Covers component directory/barrel structure, cva/cn class string formatting, JSDoc requirements, the add-a-component workflow, and package pitfalls.
+description: Conventions for @9bar/toolkit, the React Aria + shadcn (aria-mira, zinc) design system package. Use when adding, editing, reviewing, or styling toolkit components, writing Storybook stories, using the shadcn CLI in this monorepo, working with the form system (createFormHook, field components), or updating the Overview canvas. Covers component directory/barrel structure, cva/cn class string formatting, JSDoc requirements, the add-a-component workflow, the overview coverage rule, and package pitfalls.
 ---
 
 # @9bar/toolkit
@@ -56,6 +56,14 @@ Long class strings in `cva()`/`cn()` calls are broken into arrays of shorter str
 - The web app imports this file from its own `globals.css`; Storybook imports it from `.storybook/styles.css`
 - `tailwindcss-react-aria-components` plugin is retained for the legacy custom components that use `pressed:`/`selected:`/`current:` variants
 
+## Overview Canvas
+
+- `src/overview/overview.stories.tsx` renders **Overview / Preview** — a shadcn-create-style canvas showing every public component applied in realistic 9bar UI. It is pinned first in the sidebar and is the design system's front door, regression-spotting page, and theme-alignment check (use the theme toolbar global for dark mode)
+- **Coverage rule: every public component must appear on the canvas at least once.** Components live in section modules under `src/overview/sections/` (hero, recipe form, brew log, feedback, navigation, overlays, typography, variant strips)
+- When **adding** a component, add it to the section that fits its role (or create a new section module) — see the last step of "Adding a New Component"
+- When **editing** a component's variants, sizes, or styling, update the matching canvas section/strip so the overview stays truthful
+- Sections use 9bar-flavored sample data (recipes, shots, beans) and compose via the `src/components` barrel; keep each section a small focused file
+
 ## Storybook
 
 - Storybook 10 with addons for Chromatic, docs, a11y, and MCP
@@ -84,6 +92,7 @@ Follow the `shadcn` skill for the CLI add (registry lookup, `add`, post-add revi
    - Convert `function` declarations to arrow functions (repo convention)
 4. Add an export line to `src/components/index.ts`
 5. Create/migrate `<name>.stories.tsx` with JSDoc on each story
+6. Add the component to the overview canvas: place it in the fitting `src/overview/sections/` module (hero, recipe form, brew log, feedback, navigation, overlays, typography, or a variant strip) so **Overview / Preview** keeps covering every public component — see "Overview Canvas"
 
 ## Common Pitfalls
 
