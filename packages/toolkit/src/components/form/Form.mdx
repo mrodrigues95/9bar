@@ -184,7 +184,7 @@ const form = useAppForm({
 
 ## Error formatting
 
-Form-connected fields pass `field.state.meta.errors` straight to `FieldError`, which normalizes strings, `{"{ message }"}` objects, and Zod issues and renders them as a list (each error message has `role="alert"`). For non-standard error shapes, pass a `formatErrors` formatter to map the raw errors into displayable error items. Three built-in formatters are available from `form/utils/errors`:
+Form-connected fields pass `field.state.meta.errors` straight to `FieldError`, which normalizes strings, `{"{ message }"}` objects, and Zod issues and renders them as a list (each error message has `role="alert"`). For non-standard error shapes, pass a `formatErrors` formatter to map the raw errors into displayable error items. A default formatter is available from `form/utils/errors`:
 
 <table className="w-full">
   <thead>
@@ -197,14 +197,6 @@ Form-connected fields pass `field.state.meta.errors` straight to `FieldError`, w
     <tr>
       <td>`defaultErrorFormatter`</td>
       <td>Generic fallback. Normalizes strings, `{"{ message }"}` objects, and other types into message items.</td>
-    </tr>
-    <tr>
-      <td>`zodErrorFormatter`</td>
-      <td>Extracts messages from `ZodError` issue arrays.</td>
-    </tr>
-    <tr>
-      <td>`htmlErrorFormatter`</td>
-      <td>Passes through string arrays from HTML constraint validation.</td>
     </tr>
   </tbody>
 </table>

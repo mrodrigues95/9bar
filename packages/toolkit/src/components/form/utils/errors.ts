@@ -1,23 +1,8 @@
-import type { ZodError } from "zod";
 import { type FieldErrorItem, toErrorMessage } from "../../field/field";
 
 export type TErrorFormatter<TError = unknown> = (
 	errors: Array<TError>,
 ) => Array<FieldErrorItem> | string | undefined;
-
-export const zodErrorFormatter: TErrorFormatter<ZodError> = (errors) => {
-	const messages = errors
-		.map((error) => error.message)
-		.filter((err): err is string => !!err);
-
-	return messages.length ? messages : undefined;
-};
-
-export const htmlErrorFormatter: TErrorFormatter<string> = (errors) => {
-	const messages = errors.filter((err): err is string => !!err);
-
-	return messages.length ? messages : undefined;
-};
 
 export const defaultErrorFormatter: TErrorFormatter = (errors) => {
 	const messages = errors
