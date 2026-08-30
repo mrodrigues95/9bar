@@ -1,28 +1,27 @@
 import {
-	Breadcrumb as ToolkitBreadcrumb,
-	type BreadcrumbProps as ToolkitBreadcrumbProps,
-	Breadcrumbs as ToolkitBreadcrumbs,
+	BreadcrumbItem as ToolkitBreadcrumbItem,
+	BreadcrumbList as ToolkitBreadcrumbList,
+	BreadcrumbPage as ToolkitBreadcrumbPage,
 	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
-} from "@9bar/toolkit";
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
+import { cn } from "@9bar/toolkit/utils";
 import type { RegisteredRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { cn } from "tailwind-variants";
 import { Link, type LinkProps } from "../link/link";
 
 export type BreadcrumbProps<
 	TRouter extends RegisteredRouter = RegisteredRouter,
 	TOptions = unknown,
 > = LinkProps<TRouter, TOptions> & {
-	breadcrumbProps?: Omit<ToolkitBreadcrumbProps, "children">;
+	className?: string;
 	isDisabled?: boolean;
+	children?: ReactNode;
 };
 
 export function Breadcrumb<TRouter extends RegisteredRouter, TOptions>(
 	props: BreadcrumbProps<TRouter, TOptions>,
 ): ReactNode;
 export function Breadcrumb({
-	breadcrumbProps,
 	children,
 	className,
 	to,
@@ -30,14 +29,15 @@ export function Breadcrumb({
 	isDisabled,
 }: BreadcrumbProps): ReactNode {
 	return (
-		<ToolkitBreadcrumb
-			{...breadcrumbProps}
-			className={
-				cn("disabled:[&_svg]:opacity-50", breadcrumbProps?.className) ?? ""
-			}
+		<ToolkitBreadcrumbItem
+			className={cn("disabled:[&_svg]:opacity-50", className) ?? ""}
 		>
-			{({ isCurrent }) => (
-				<>
+			{({ isCurrent }) =>
+				isCurrent ? (
+					<ToolkitBreadcrumbPage className={cn("text-muted", className) ?? ""}>
+						{children}
+					</ToolkitBreadcrumbPage>
+				) : (
 					<Link
 						to={to}
 						{...(isDisabled && { isDisabled: true })}
@@ -54,16 +54,15 @@ export function Breadcrumb({
 					>
 						{children}
 					</Link>
-					{!isCurrent && <ChevronRightIcon className="size-3 text-muted" />}
-				</>
-			)}
-		</ToolkitBreadcrumb>
+				)
+			}
+		</ToolkitBreadcrumbItem>
 	);
 }
 
-interface BreadcrumbsProps<T extends object>
+export interface BreadcrumbsProps<T extends object>
 	extends ToolkitBreadcrumbsProps<T> {}
 
 export const Breadcrumbs = <T extends object>(props: BreadcrumbsProps<T>) => {
-	return <ToolkitBreadcrumbs {...props} />;
+	return <ToolkitBreadcrumbList {...props} />;
 };

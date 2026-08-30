@@ -27,7 +27,7 @@ const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="font-geist antialiased">
+			<body className="antialiased">
 				{children}
 				<Scripts />
 			</body>

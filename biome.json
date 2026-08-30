@@ -7,7 +7,14 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx", "**/*.json"]
+		"includes": [
+			"**/*.js",
+			"**/*.ts",
+			"**/*.jsx",
+			"**/*.tsx",
+			"**/*.json",
+			"!.agents/skills"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -26,7 +33,7 @@
 					"level": "on",
 					"fix": "safe",
 					"options": {
-						"functions": ["tv"]
+						"functions": ["tv", "cn", "cva"]
 					}
 				}
 			},

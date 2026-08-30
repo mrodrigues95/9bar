@@ -1,0 +1,25 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Overview/Introduction" />
+
+# 9bar Toolkit
+
+The `@9bar/toolkit` package is 9bar's primitive design system: accessible components built on [React Aria Components](https://react-spectrum.adobe.com/react-aria/react-aria-components.html), styled with shadcn/ui (the `aria-mira` style, zinc theme) and Tailwind CSS v4. Every component is keyboard-navigable and screen-reader friendly out of the box, and themed through the design tokens defined in the package's `globals.css`.
+
+## This page
+
+**Overview / Preview** applies every public component in realistic 9bar UI — a recipe workspace with brew logs, forms, and stats — so you can see how the pieces look together. Use it to:
+
+- **Get oriented** — see what the design system offers before diving into individual component docs
+- **Spot regressions** — one page shows all components, so visual breakage after a change is easy to catch
+- **Check theme alignment** — use the theme toolbar (top of the preview) to review the same canvas in light and dark mode; inconsistencies between components usually show up there first
+
+## How the canvas is organized
+
+The page is a stack of labeled sections: **Recipe**, **Forms**, **Brew log**, **Feedback**, **Navigation**, **Overlays**, **Typography**, and **Variants**. The first sections read like a real app screen; the last ones guarantee coverage — every public component appears at least once, and primitives are exercised through the composed form. Overlays (menus, popovers, selects) render as their triggers and open through normal interaction.
+
+The sections live in `src/overview/sections/`. When adding or changing a component, update the matching section so this page stays complete.
+
+## Component docs
+
+Each component has its own stories with prop tables and examples — use the sidebar. The layered form system is documented separately in [Form/Overview](?path=/docs/form-overview--docs).

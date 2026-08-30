@@ -1,12 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useId } from "react";
-import { Description } from "../field/description";
-import {
-	Checkbox,
-	CheckboxIcon,
-	CheckboxIndicator,
-	CheckboxRoot,
-} from "./checkbox";
+import { Checkbox } from "./checkbox";
 
 const meta = {
 	component: Checkbox,
@@ -16,6 +9,20 @@ const meta = {
 		controls: {
 			include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
 		},
+		docs: {
+			controls: {
+				include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
+			},
+			argTypes: {
+				include: ["isDisabled", "isReadOnly", "isIndeterminate", "isInvalid"],
+			},
+		},
+	},
+	argTypes: {
+		isDisabled: { control: { type: "boolean" } },
+		isReadOnly: { control: { type: "boolean" } },
+		isIndeterminate: { control: { type: "boolean" } },
+		isInvalid: { control: { type: "boolean" } },
 	},
 } satisfies Meta<typeof Checkbox>;
 
@@ -28,47 +35,28 @@ export const Default: Story = {
 	args: {
 		children: "Accept terms and conditions",
 	},
-	render: (props) => {
-		return <Checkbox {...props} />;
+};
+
+/** A checkbox in the indeterminate state, shown when only a subset of related options is selected. */
+export const Indeterminate: Story = {
+	args: {
+		isIndeterminate: true,
+		children: "Select all",
 	},
 };
 
-/** A checkbox with a description below the label, using `CheckboxRoot` to group the checkbox and its help text. */
-export const WithDescription: Story = {
+/** A checkbox that is disabled and cannot be toggled. */
+export const Disabled: Story = {
 	args: {
-		...Default.args,
-	},
-	render: (props) => {
-		const id = useId();
-
-		return (
-			<CheckboxRoot>
-				<Checkbox {...props} aria-describedby={id} />
-				<Description id={id}>
-					By clicking this checkbox, you agree to the terms and conditions.
-				</Description>
-			</CheckboxRoot>
-		);
+		isDisabled: true,
+		children: "Accept terms and conditions",
 	},
 };
 
-/** A checkbox with a custom indicator rendered via the `indicator` render prop, for full control over the check icon. */
-export const CustomIndicator: Story = {
+/** A checkbox in the invalid state, styled to indicate a validation error. */
+export const Invalid: Story = {
 	args: {
-		...Default.args,
-	},
-	render: ({ children, ...props }) => {
-		return (
-			<Checkbox
-				{...props}
-				indicator={(renderProps) => (
-					<CheckboxIndicator renderProps={renderProps}>
-						<CheckboxIcon {...renderProps} />
-					</CheckboxIndicator>
-				)}
-			>
-				{children}
-			</Checkbox>
-		);
+		isInvalid: true,
+		children: "Accept terms and conditions",
 	},
 };

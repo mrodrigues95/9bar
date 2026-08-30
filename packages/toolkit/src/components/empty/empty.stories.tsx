@@ -1,5 +1,5 @@
-import { BookOpenIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BookOpen, Users } from "lucide-react";
 import { Button } from "../button/button";
 import {
 	Empty,
@@ -17,6 +17,10 @@ const meta = {
 		controls: {
 			include: [],
 		},
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof Empty>;
 
@@ -26,23 +30,43 @@ type Story = StoryObj<typeof Empty>;
 
 /** A complete empty state with an icon, title, description, and action buttons, showing the standard composition pattern. */
 export const Default: Story = {
-	args: {},
 	render: (props) => (
 		<Empty {...props}>
 			<EmptyHeader>
-				<EmptyMedia>
-					<UserGroupIcon />
+				<EmptyMedia variant="icon">
+					<Users />
 				</EmptyMedia>
 				<EmptyTitle>No upcoming meetings</EmptyTitle>
 				<EmptyDescription>Create a meeting to get started.</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<Button size="sm" variant="solid">
+				<Button size="sm" variant="default">
 					Create meeting
 				</Button>
 				<Button size="sm" variant="outline">
-					<BookOpenIcon />
+					<BookOpen />
 					View docs
+				</Button>
+			</EmptyContent>
+		</Empty>
+	),
+};
+
+/** An empty state with media rendered in the default variant, without a tinted background. */
+export const MediaDefault: Story = {
+	render: (props) => (
+		<Empty {...props}>
+			<EmptyHeader>
+				<EmptyMedia variant="default">
+					<Users />
+				</EmptyMedia>
+				<EmptyTitle>No team members yet</EmptyTitle>
+				<EmptyDescription>Invite your team to get started.</EmptyDescription>
+			</EmptyHeader>
+			<EmptyContent>
+				<Button size="sm" variant="outline">
+					<Users />
+					Invite team
 				</Button>
 			</EmptyContent>
 		</Empty>

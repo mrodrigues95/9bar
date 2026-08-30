@@ -1,5 +1,5 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { PlusIcon } from "lucide-react";
 import { Button } from "./button";
 
 const meta = {
@@ -7,7 +7,38 @@ const meta = {
 	title: "Button",
 	args: { children: "Press me!" },
 	parameters: {
-		controls: { include: ["children", "variant", "size", "isDisabled"] },
+		controls: { include: ["variant", "size", "isDisabled"] },
+		docs: {
+			controls: { include: ["variant", "size", "isDisabled"] },
+			argTypes: { include: ["variant", "size", "isDisabled"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"outline",
+				"secondary",
+				"ghost",
+				"destructive",
+				"link",
+			],
+		},
+		size: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"xs",
+				"sm",
+				"lg",
+				"icon",
+				"icon-xs",
+				"icon-sm",
+				"icon-lg",
+			],
+		},
+		isDisabled: { control: { type: "boolean" } },
 	},
 } satisfies Meta<typeof Button>;
 
@@ -22,30 +53,27 @@ export const Default: Story = {
 	},
 };
 
-/** Compares all available button variants side by side: `ghost`, `danger`, `default`, `outline`, `solid`, `solidBlue`, and `link`. */
+/** Compares all available button variants side by side: `default`, `secondary`, `outline`, `ghost`, `destructive`, and `link`. */
 export const Variants: Story = {
 	args: {
 		isDisabled: false,
 	},
 	render: (props) => (
 		<div className="flex items-center space-x-2">
-			<Button variant="ghost" {...props}>
-				Ghost
-			</Button>
-			<Button variant="danger" {...props}>
-				Danger
-			</Button>
 			<Button variant="default" {...props}>
 				Default
+			</Button>
+			<Button variant="secondary" {...props}>
+				Secondary
 			</Button>
 			<Button variant="outline" {...props}>
 				Outline
 			</Button>
-			<Button variant="solid" {...props}>
-				Solid
+			<Button variant="ghost" {...props}>
+				Ghost
 			</Button>
-			<Button variant="solidBlue" {...props}>
-				Solid Blue
+			<Button variant="destructive" {...props}>
+				Destructive
 			</Button>
 			<Button variant="link" {...props}>
 				Link

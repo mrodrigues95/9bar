@@ -18,6 +18,10 @@ const meta = {
 	title: "Pagination",
 	parameters: {
 		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
 	},
 } satisfies Meta<typeof Pagination>;
 
@@ -157,7 +161,7 @@ export const DisabledState: Story = {
 					</PaginationButton>
 				</PaginationItem>
 				<PaginationItem>
-					<PaginationEllipsis isDisabled />
+					<PaginationEllipsis />
 				</PaginationItem>
 				<PaginationItem>
 					<PaginationButton isDisabled aria-label="Go to page 10">

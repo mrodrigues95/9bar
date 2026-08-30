@@ -1,14 +1,14 @@
 import {
 	Button,
 	Card,
+	CardContent,
 	CardFooter,
 	CardHeader,
-	CardPanel,
 	Heading,
 	Text,
-} from "@9bar/toolkit";
-import { PlusIcon } from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import { Link } from "../../../components";
 import {
 	FilterBar,
@@ -94,7 +94,7 @@ const Recipe = () => {
 			<Heading as="h1" variant="title">
 				Recipes
 			</Heading>
-			<Card render={<section />}>
+			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-row items-center justify-between">
 						<div className="flex flex-col gap-0.5">
@@ -105,8 +105,8 @@ const Recipe = () => {
 								Create, edit, and track your favorite brewing methods.
 							</Text>
 						</div>
-						<Link variant="solid" to="/recipes/new">
-							<PlusIcon />
+						<Link variant="default" to="/recipes/new">
+							<Plus />
 							Create Recipe
 						</Link>
 					</div>
@@ -130,9 +130,9 @@ const Recipe = () => {
 						</FilterBar>
 					</div>
 				</CardHeader>
-				<CardPanel>
+				<CardContent>
 					<RecipesList />
-				</CardPanel>
+				</CardContent>
 				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
 					<Pagination />
 				</CardFooter>

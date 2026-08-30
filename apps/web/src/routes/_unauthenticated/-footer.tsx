@@ -1,6 +1,6 @@
-import { Text } from "@9bar/toolkit";
-import { ArrowRightIcon } from "@heroicons/react/20/solid";
+import { Text } from "@9bar/toolkit/components";
 import { useLocation } from "@tanstack/react-router";
+import { ArrowRightIcon } from "lucide-react";
 import { Link } from "../../components";
 import type { FileRouteTypes } from "../../routeTree.gen";
 

@@ -28,6 +28,11 @@
 		"lint:ci": "biome ci .",
 		"typecheck": "pnpm -r typecheck"
 	},
+	"intent": {
+		"skills": [
+			"@tanstack/*"
+		]
+	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.5",
 		"@commitlint/cli": "^21.2.1",

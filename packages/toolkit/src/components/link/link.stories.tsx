@@ -5,7 +5,40 @@ const meta = {
 	component: Link,
 	title: "Link",
 	args: { children: "Press me!", href: "#" },
-	parameters: { controls: { include: ["variant", "size", "isDisabled"] } },
+	parameters: {
+		controls: { include: ["variant", "size", "isDisabled"] },
+		docs: {
+			controls: { include: ["variant", "size", "isDisabled"] },
+			argTypes: { include: ["variant", "size", "isDisabled"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"outline",
+				"secondary",
+				"ghost",
+				"destructive",
+				"link",
+			],
+		},
+		size: {
+			control: { type: "select" },
+			options: [
+				"default",
+				"xs",
+				"sm",
+				"lg",
+				"icon",
+				"icon-xs",
+				"icon-sm",
+				"icon-lg",
+			],
+		},
+		isDisabled: { control: { type: "boolean" } },
+	},
 } satisfies Meta<typeof Link>;
 
 export default meta;

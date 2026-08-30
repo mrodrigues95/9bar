@@ -1,23 +1,22 @@
-import {
-	Cog6ToothIcon,
-	DocumentIcon,
-	HomeIcon,
-	MagnifyingGlassCircleIcon,
-} from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "./tabs";
+import { Cog, FileText, Home, Search } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 const meta = {
 	title: "Tabs",
 	component: Tabs,
 	parameters: {
 		layout: "fullscreen",
-		controls: { include: ["variant", "orientation", "color"] },
+		controls: { include: ["orientation"] },
+		docs: {
+			controls: { include: ["orientation"] },
+			argTypes: { include: ["orientation"] },
+		},
 	},
 	argTypes: {
-		variant: {
-			control: "select",
-			options: ["underline"],
+		orientation: {
+			control: { type: "select" },
+			options: ["horizontal", "vertical"],
 		},
 	},
 } satisfies Meta<typeof Tabs>;
@@ -25,39 +24,32 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A horizontal underline tab bar with icon+label tabs and corresponding content panels. Use the controls to change variant, orientation, and color. */
+/** A tab bar with icon+label triggers and corresponding content panels. Use the controls to change orientation. */
 export const Default: Story = {
-	args: {
-		variant: "underline",
-		orientation: "horizontal",
-	},
 	render: (props) => (
-		<Tabs {...props} className="p-4">
-			<TabList aria-label="Tabs">
-				<Tab id="home">
-					<HomeIcon />
+		<Tabs {...props} defaultSelectedKey="home" className="p-4">
+			<TabsList>
+				<TabsTrigger id="home">
+					<Home />
 					Home
-				</Tab>
-				<Tab id="files">
-					<DocumentIcon />
+				</TabsTrigger>
+				<TabsTrigger id="files">
+					<FileText />
 					Files
-				</Tab>
-				<Tab id="search">
-					<MagnifyingGlassCircleIcon />
+				</TabsTrigger>
+				<TabsTrigger id="search">
+					<Search />
 					Search
-				</Tab>
-				<Tab id="settings">
-					<Cog6ToothIcon />
+				</TabsTrigger>
+				<TabsTrigger id="settings">
+					<Cog />
 					Settings
-				</Tab>
-			</TabList>
-
-			<TabPanels>
-				<TabPanel id="home">Home content</TabPanel>
-				<TabPanel id="files">Files content</TabPanel>
-				<TabPanel id="search">Search content</TabPanel>
-				<TabPanel id="settings">Settings content</TabPanel>
-			</TabPanels>
+				</TabsTrigger>
+			</TabsList>
+			<TabsContent id="home">Home content</TabsContent>
+			<TabsContent id="files">Files content</TabsContent>
+			<TabsContent id="search">Search content</TabsContent>
+			<TabsContent id="settings">Settings content</TabsContent>
 		</Tabs>
 	),
 };

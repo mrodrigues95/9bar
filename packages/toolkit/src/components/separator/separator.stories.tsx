@@ -6,8 +6,16 @@ const meta = {
 	title: "Separator",
 	component: Separator,
 	parameters: {
-		controls: {
-			include: ["variant", "orientation"],
+		controls: { include: ["orientation"] },
+		docs: {
+			controls: { include: ["orientation"] },
+			argTypes: { include: ["orientation"] },
+		},
+	},
+	argTypes: {
+		orientation: {
+			control: { type: "select" },
+			options: ["horizontal", "vertical"],
 		},
 	},
 } satisfies Meta<typeof Separator>;
@@ -37,19 +45,6 @@ export const Vertical: Story = {
 	),
 };
 
-/** Uses the `middle` variant to inset the separator within a bordered container, leaving side margins. */
-export const Middle: Story = {
-	render: (props) => (
-		<div className="w-96 rounded-lg border border-border">
-			<div className="p-4">First item</div>
-			<Separator {...props} variant="middle" />
-			<div className="p-4">Second item</div>
-			<Separator {...props} variant="middle" />
-			<div className="p-4">Third item</div>
-		</div>
-	),
-};
-
 /** A contact list where separators divide individual records inside a card. */
 export const ListExample: Story = {
 	render: (props) => (
@@ -57,21 +52,21 @@ export const ListExample: Story = {
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">John Doe</div>
-					<div className="text-muted text-xs">john@example.com</div>
+					<div className="text-muted-foreground text-xs">john@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">Jane Smith</div>
-					<div className="text-muted text-xs">jane@example.com</div>
+					<div className="text-muted-foreground text-xs">jane@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
 					<div className="font-medium text-sm">Bob Johnson</div>
-					<div className="text-muted text-xs">bob@example.com</div>
+					<div className="text-muted-foreground text-xs">bob@example.com</div>
 				</div>
 			</div>
 		</div>

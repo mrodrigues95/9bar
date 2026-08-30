@@ -13,7 +13,13 @@ import { useAppForm, withForm } from "./utils/form";
 const meta = {
 	component: Form,
 	title: "Form",
-	parameters: { controls: { include: [] } },
+	parameters: {
+		controls: { include: [] },
+		docs: {
+			controls: { include: [] },
+			argTypes: { include: [] },
+		},
+	},
 } satisfies Meta<typeof Form>;
 
 export default meta;
@@ -97,7 +103,7 @@ export const HTMLValidation: Story = {
 				<Checkbox value="sms">SMS alerts</Checkbox>
 				<Checkbox value="newsletter">Monthly newsletter</Checkbox>
 			</CheckboxGroupField>
-			<Button type="submit" variant="solid">
+			<Button type="submit" variant="default">
 				Submit
 			</Button>
 		</Form>
@@ -179,6 +185,7 @@ export const ComposedForm: Story = {
 					e.preventDefault();
 					form.handleSubmit();
 				}}
+				validationBehavior="aria"
 			>
 				<form.AppForm>
 					<form.AppField name="firstName">
@@ -259,7 +266,7 @@ export const ComposedForm: Story = {
 							</field.CheckboxGroup>
 						)}
 					</form.AppField>
-					<form.SubmitButton variant="solid">Submit</form.SubmitButton>
+					<form.SubmitButton variant="default">Submit</form.SubmitButton>
 				</form.AppForm>
 			</Form>
 		);
@@ -415,7 +422,7 @@ export const WithZodValidation: Story = {
 					)}
 				</form.AppField>
 				<form.AppForm>
-					<form.SubmitButton variant="solid">Register</form.SubmitButton>
+					<form.SubmitButton variant="default">Register</form.SubmitButton>
 				</form.AppForm>
 			</Form>
 		);
@@ -540,7 +547,7 @@ const ContactFormComponent = withForm({
 					)}
 				</form.AppField>
 				<form.AppForm>
-					<form.SubmitButton loadingText="Sending message..." variant="solid">
+					<form.SubmitButton loadingText="Sending message..." variant="default">
 						Send Message
 					</form.SubmitButton>
 				</form.AppForm>
@@ -573,6 +580,7 @@ export const ReusableContactForm: Story = {
 					e.preventDefault();
 					form.handleSubmit();
 				}}
+				validationBehavior="aria"
 			>
 				<ContactFormComponent form={form} title="Get in Touch" />
 			</Form>

@@ -1,4 +1,4 @@
-import { Button, Form, Heading, TextField } from "@9bar/toolkit";
+import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "../../../components";
 
@@ -28,13 +28,18 @@ const SignIn = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<Button type="submit" variant="solid" size="md" className="w-full">
+				<Button
+					type="submit"
+					variant="default"
+					size="default"
+					className="w-full"
+				>
 					Sign in to account
 				</Button>
 			</Form>
 			<hr className="mx-auto my-6 w-1/2 border border-border" />
 			<div>
-				<Button variant="outline" className="w-full" size="md">
+				<Button variant="outline" className="w-full" size="default">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="100"

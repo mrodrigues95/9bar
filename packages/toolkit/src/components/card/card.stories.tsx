@@ -4,10 +4,11 @@ import { TextField } from "../form/fields/text-field";
 import { Form } from "../form/form";
 import {
 	Card,
+	CardAction,
+	CardContent,
 	CardDescription,
 	CardFooter,
 	CardHeader,
-	CardPanel,
 	CardTitle,
 } from "./card";
 
@@ -15,12 +16,16 @@ const meta = {
 	component: Card,
 	title: "Card",
 	parameters: {
-		controls: { include: ["variant"] },
+		controls: { include: ["size"] },
+		docs: {
+			controls: { include: ["size"] },
+			argTypes: { include: ["size"] },
+		},
 	},
 	argTypes: {
-		variant: {
+		size: {
 			control: "select",
-			options: ["default"],
+			options: ["default", "sm"],
 		},
 	},
 } satisfies Meta<typeof Card>;
@@ -28,27 +33,27 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A full card with header, panel, and footer sections showing the standard composition pattern. */
+/** A full card with header, content, and footer sections showing the standard composition pattern. */
 export const Default: Story = {
 	render: (props) => (
-		<Card {...props}>
+		<Card {...props} className="w-full max-w-sm">
 			<CardHeader>
 				<CardTitle>Card Title</CardTitle>
 				<CardDescription>
 					This is a description for the card component.
 				</CardDescription>
 			</CardHeader>
-			<CardPanel>
-				<p className="text-secondary text-sm">
+			<CardContent>
+				<p className="text-muted-foreground text-sm">
 					This is the main content area of the card. You can place any content
 					here.
 				</p>
-			</CardPanel>
-			<CardFooter>
+			</CardContent>
+			<CardFooter className="flex-col gap-2">
 				<Button variant="outline" className="w-full">
 					Cancel
 				</Button>
-				<Button variant="solid" className="w-full">
+				<Button variant="default" className="w-full">
 					Confirm
 				</Button>
 			</CardFooter>
@@ -56,34 +61,56 @@ export const Default: Story = {
 	),
 };
 
-/** A card without a footer, showing that card slots are composable and optional. */
-export const WithoutFooter: Story = {
+/** A card with an action button aligned to the end of its header. */
+export const WithHeaderAction: Story = {
 	render: (props) => (
-		<Card {...props}>
+		<Card {...props} className="w-full max-w-sm">
 			<CardHeader>
-				<CardTitle>Simple Card</CardTitle>
-				<CardDescription>This card has no footer.</CardDescription>
+				<CardTitle>Account Settings</CardTitle>
+				<CardDescription>Manage your account preferences.</CardDescription>
+				<CardAction>
+					<Button variant="ghost" size="sm">
+						Edit
+					</Button>
+				</CardAction>
 			</CardHeader>
-			<CardPanel>
-				<p className="text-secondary text-sm">
-					Cards are flexible. You can use only the slots you need.
+			<CardContent>
+				<p className="text-muted-foreground text-sm">
+					Your account settings are stored securely and synced across devices.
 				</p>
-			</CardPanel>
+			</CardContent>
 		</Card>
 	),
 };
 
-/** A card without a header, containing only a panel and a footer. */
+/** A card without a footer, showing that card slots are composable and optional. */
+export const WithoutFooter: Story = {
+	render: (props) => (
+		<Card {...props} className="w-full max-w-sm">
+			<CardHeader>
+				<CardTitle>Simple Card</CardTitle>
+				<CardDescription>This card has no footer.</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<p className="text-muted-foreground text-sm">
+					Cards are flexible. You can use only the slots you need.
+				</p>
+			</CardContent>
+		</Card>
+	),
+};
+
+/** A card without a header, containing only content and a footer. */
 export const WithoutHeader: Story = {
 	render: (props) => (
-		<Card {...props}>
-			<CardPanel>
-				<p className="text-secondary text-sm">
-					This card doesn't have a header, just content in the panel.
+		<Card {...props} className="w-full max-w-sm">
+			<CardContent>
+				<p className="text-muted-foreground text-sm">
+					This card doesn't have a header, just content.
 				</p>
-			</CardPanel>
+			</CardContent>
 			<CardFooter>
-				<Button variant="solid" className="w-full">
+				<Button variant="default" className="w-full">
 					Action
 				</Button>
 			</CardFooter>
@@ -107,18 +134,17 @@ export const FormCard: Story = {
 					alert(`HTML Form submitted with: ${JSON.stringify(data, null, 2)}`);
 				}}
 			>
-				<CardPanel className="flex flex-col gap-4">
+				<CardContent className="flex flex-col gap-4">
 					<TextField
 						label="Name"
 						inputProps={{
 							name: "name",
 							type: "text",
-							density: "compact",
 						}}
 					/>
-				</CardPanel>
+				</CardContent>
 				<CardFooter>
-					<Button variant="solid" className="w-full">
+					<Button variant="default" className="w-full">
 						Deploy
 					</Button>
 				</CardFooter>
@@ -127,11 +153,11 @@ export const FormCard: Story = {
 	),
 };
 
-/** A card using only the panel slot for minimal content-only layouts like stat dashboards. */
-export const MinimalPanel: Story = {
+/** A card using only the content slot for minimal content-only layouts like stat dashboards. */
+export const MinimalContent: Story = {
 	render: (props) => (
-		<Card {...props}>
-			<CardPanel className="space-y-4">
+		<Card {...props} className="w-full max-w-sm">
+			<CardContent className="space-y-4">
 				<h4 className="font-semibold text-slate-900">Quick Stats</h4>
 				<div className="grid grid-cols-2 gap-4">
 					<div>
@@ -143,7 +169,7 @@ export const MinimalPanel: Story = {
 						<p className="font-semibold text-2xl text-slate-900">567</p>
 					</div>
 				</div>
-			</CardPanel>
+			</CardContent>
 		</Card>
 	),
 };

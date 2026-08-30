@@ -1,5 +1,5 @@
 import * as fs from "node:fs";
-import { Heading, Text } from "@9bar/toolkit";
+import { Heading, Text } from "@9bar/toolkit/components";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Link } from "../components";

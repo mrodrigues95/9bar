@@ -1,4 +1,4 @@
-import { useAppForm } from "@9bar/toolkit";
+import { useAppForm } from "@9bar/toolkit/components";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { recipeFormOpts } from "../-form-sections/form-section";
 import { RecipeForm } from "../-form-sections/recipe-form";

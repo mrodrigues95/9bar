@@ -1,5 +1,5 @@
-import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Settings2 } from "lucide-react";
 import { DialogTrigger } from "react-aria-components";
 import { IconButton } from "../icon-button/icon-button";
 import { Popover } from "./popover";
@@ -9,14 +9,36 @@ const meta = {
 	title: "Popover",
 	parameters: {
 		controls: {
-			include: [
-				"showArrow",
-				"placement",
-				"shouldFlip",
-				"offset",
-				"crossOffset",
+			include: ["placement", "shouldFlip", "offset", "crossOffset"],
+		},
+		docs: {
+			controls: {
+				include: ["placement", "shouldFlip", "offset", "crossOffset"],
+			},
+			argTypes: {
+				include: ["placement", "shouldFlip", "offset", "crossOffset"],
+			},
+		},
+	},
+	argTypes: {
+		placement: {
+			control: { type: "select" },
+			options: [
+				"bottom",
+				"top",
+				"left",
+				"right",
+				"bottom start",
+				"bottom end",
+				"top start",
+				"top end",
+				"start",
+				"end",
 			],
 		},
+		shouldFlip: { control: { type: "boolean" } },
+		offset: { control: { type: "number" } },
+		crossOffset: { control: { type: "number" } },
 	},
 } satisfies Meta<typeof Popover>;
 
@@ -29,8 +51,8 @@ export const Default: Story = {
 	args: {},
 	render: (props) => (
 		<DialogTrigger>
-			<IconButton aria-label="Open settings">
-				<AdjustmentsHorizontalIcon />
+			<IconButton aria-label="Open settings" variant="ghost">
+				<Settings2 />
 			</IconButton>
 			<Popover {...props}>
 				<div className="p-4">

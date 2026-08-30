@@ -1,4 +1,4 @@
-import { SelectItem, withForm } from "@9bar/toolkit";
+import { SelectItem, withForm } from "@9bar/toolkit/components";
 import { useStore } from "@tanstack/react-form";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 import { FormSection, recipeFormOpts } from "./form-section";

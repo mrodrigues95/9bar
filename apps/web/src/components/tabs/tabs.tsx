@@ -1,4 +1,4 @@
-import { Tab, type TabProps } from "@9bar/toolkit";
+import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
 import {
 	type RegisteredRouter,
 	type UseLinkPropsOptions,
@@ -12,7 +12,7 @@ type TabLinkProps<
 	TMaskFrom extends string = TFrom,
 	TMaskTo extends string = TFrom,
 > = UseLinkPropsOptions<TRouter, TFrom, TTo, TMaskFrom, TMaskTo> &
-	Pick<TabProps, "id" | "className" | "isDisabled" | "children">;
+	Pick<TabsTriggerProps, "id" | "className" | "isDisabled" | "children">;
 
 export const TabLink = <
 	TRouter extends RegisteredRouter = RegisteredRouter,
@@ -27,27 +27,20 @@ export const TabLink = <
 	const resolvedLinkProps = useLinkProps(props);
 
 	return (
-		<Tab
+		<TabsTrigger
 			{...(id ? { id } : {})}
 			{...(className ? { className } : {})}
 			{...(isDisabled ? { isDisabled } : {})}
 			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
-			render={(domProps) =>
-				"href" in domProps ? (
-					<a
-						{...domProps}
-						href={domProps.href}
-						onClick={(e) => {
-							domProps.onClick?.(e);
-							resolvedLinkProps.onClick?.(e);
-						}}
-					/>
-				) : (
-					<div {...domProps} />
-				)
-			}
+			onClick={(e) => {
+				(
+					resolvedLinkProps.onClick as unknown as
+						| ((e: React.MouseEvent) => void)
+						| undefined
+				)?.(e);
+			}}
 		>
 			{children}
-		</Tab>
+		</TabsTrigger>
 	);
 };

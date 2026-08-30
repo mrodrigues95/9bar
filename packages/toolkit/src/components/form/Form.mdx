@@ -137,7 +137,7 @@ The form system supports three validation strategies. All three surface errors t
 
 ### HTML validation
 
-Use standard HTML attributes (`required`, `type="email"`, `minLength`, etc.) directly on the field components. React Aria handles the constraint validation API and displays errors natively.
+Use standard HTML attributes (`required`, `type="email"`, `minLength`, etc.) directly on the field components. `isRequired`, `isDisabled`, and `isReadOnly` map to the native `required`, `disabled`, and `readOnly` attributes, and the browser's constraint validation API displays errors natively (`Form` defaults to `validationBehavior="native"`).
 
 ```tsx
 <TextField
@@ -184,7 +184,7 @@ const form = useAppForm({
 
 ## Error formatting
 
-Form-connected fields accept an optional `formatErrors` prop. The default formatter handles strings, objects with a `.message` property, and Zod errors. Three built-in formatters are available from `form/utils/errors`:
+Form-connected fields pass `field.state.meta.errors` straight to `FieldError`, which normalizes strings, `{"{ message }"}` objects, and Zod issues and renders them as a list (each error message has `role="alert"`). For non-standard error shapes, pass a `formatErrors` formatter to map the raw errors into displayable error items. A default formatter is available from `form/utils/errors`:
 
 <table className="w-full">
   <thead>
@@ -196,15 +196,7 @@ Form-connected fields accept an optional `formatErrors` prop. The default format
   <tbody>
     <tr>
       <td>`defaultErrorFormatter`</td>
-      <td>Generic fallback (used by default). Handles strings, `{"{ message }"}` objects, and other types.</td>
-    </tr>
-    <tr>
-      <td>`zodErrorFormatter`</td>
-      <td>For `ZodError` arrays specifically.</td>
-    </tr>
-    <tr>
-      <td>`htmlErrorFormatter`</td>
-      <td>For string arrays from HTML constraint validation.</td>
+      <td>Generic fallback. Normalizes strings, `{"{ message }"}` objects, and other types into message items.</td>
     </tr>
   </tbody>
 </table>
@@ -248,7 +240,7 @@ If a field component's layout doesn't work for your use case:
 
 1. **Don't fight it.** Don't try to override the internal structure with CSS or by passing conflicting props.
 2. **Compose from primitives instead.** Import `Label`, `Input`, `Description`, `FieldError`, and `Field` directly and arrange them however you need.
-3. **Use the field components as a reference.** Their source shows how to wire up `aria-describedby`, `FieldErrorContext`, and React Aria's validation state correctly.
+3. **Use the field components as a reference.** Their source shows how to wire up `htmlFor`/`id` label association, `aria-describedby`, and `aria-invalid` correctly.
 
 ### Forwarding props to internals
 
@@ -269,5 +261,6 @@ Every field component exposes `*Props` pass-through props for its composed child
 - **`form.AppForm` wraps form-level components.** The submit button must be rendered inside `<form.AppForm>` so it can access form state (canSubmit, isSubmitting).
 - **Select field children are render functions.** `SelectField` and `FormSelectField` expect `children` to be either static `SelectItem` elements or a render function `(item) => ReactNode` when using the `items` prop.
 - **`InputGroupSelectField` manages a composite value.** Its value is `{ inputValue, selectValue }` — not a single scalar. When using with TanStack Form, the field's `defaultValues` entry must match this shape.
-- **`CheckboxField` validation has a known limitation.** React Aria's individual `Checkbox` component doesn't natively participate in `FieldErrorContext`, so the field manually constructs a `ValidationResult` and provides it via a `Provider`. For complex checkbox validation, prefer `CheckboxGroupField`.
-- **Error formatters are pluggable but rarely needed.** The default formatter handles Zod errors, string errors, and `{ message }` objects. Only pass a custom `formatErrors` if you have a non-standard error shape.
+- **Form-connected errors are gated on touch.** Errors only render after the field has been touched (`isTouched && !isValid`), following the shadcn pattern. Submitting marks every field touched, so submit-time validation errors still appear.
+- **Native vs. TanStack validation.** `Form` defaults to native HTML validation. When combining TanStack Form validators (inline or Zod) with `isRequired`, pass `validationBehavior="aria"` on `Form` so TanStack errors (not native bubbles) drive the UI.
+- **Error formatters are pluggable but rarely needed.** `FieldError` already normalizes Zod issues, strings, and `{ message }` objects. Only pass a custom `formatErrors` if you have a non-standard error shape.

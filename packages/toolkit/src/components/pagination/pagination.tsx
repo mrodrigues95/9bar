@@ -1,243 +1,220 @@
 import {
-	ChevronDoubleLeftIcon,
-	ChevronDoubleRightIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
-} from "@heroicons/react/24/solid";
-import type { ComponentProps } from "react";
-import { composeRenderProps } from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
-import { Button, type ButtonProps } from "../button/button";
+	ChevronsLeftIcon,
+	ChevronsRightIcon,
+	MoreHorizontalIcon,
+} from "lucide-react";
+import type * as React from "react";
+import { LinkButton } from "#components/button";
+import { cn } from "#lib/utils";
 
-const paginationVariants = tv({
-	slots: {
-		nav: "",
-		content: "flex flex-row items-center gap-1",
-		item: "",
-		button: [
-			"size-7 px-2 py-0 text-muted transition-none",
-			"disabled:opacity-50",
-		],
-		ellipsis: [
-			"flex size-7 items-center justify-center text-muted",
-			"data-[disabled]:opacity-50",
-		],
-	},
-	variants: {},
-});
-
-export interface PaginationProps
-	extends ComponentProps<"nav">,
-		VariantProps<typeof paginationVariants> {}
+/** Props for the {@link Pagination} component. */
+export type PaginationProps = React.ComponentProps<"nav">;
 
 /** The root navigation landmark for a set of pagination controls. */
-export const Pagination = ({
-	"aria-label": ariaLabel = "Pagination",
-	children,
-	className,
-	...props
-}: PaginationProps) => {
-	const styles = paginationVariants();
+export const Pagination = ({ className, ...props }: PaginationProps) => {
 	return (
 		<nav
-			aria-label={ariaLabel}
+			aria-label="pagination"
 			data-slot="pagination"
-			className={styles.nav({ className })}
+			className={cn("mx-auto flex w-full justify-center", className)}
 			{...props}
-		>
-			{children}
-		</nav>
+		/>
 	);
 };
 
-export interface PaginationContentProps
-	extends ComponentProps<"ul">,
-		VariantProps<typeof paginationVariants> {}
+/** Props for the {@link PaginationContent} component. */
+export type PaginationContentProps = React.ComponentProps<"ul">;
 
 /** A horizontal list that lays out {@link PaginationItem} elements. */
 export const PaginationContent = ({
-	children,
 	className,
 	...props
 }: PaginationContentProps) => {
-	const styles = paginationVariants();
 	return (
 		<ul
 			data-slot="pagination-content"
-			className={styles.content({ className })}
+			className={cn("flex items-center gap-0.5", className)}
 			{...props}
-		>
-			{children}
-		</ul>
+		/>
 	);
 };
 
-export interface PaginationItemProps
-	extends ComponentProps<"li">,
-		VariantProps<typeof paginationVariants> {}
+/** Props for the {@link PaginationItem} component. */
+export type PaginationItemProps = React.ComponentProps<"li">;
 
 /** A list item wrapper for a single pagination control (button or ellipsis). */
-export const PaginationItem = ({
-	children,
+export const PaginationItem = ({ ...props }: PaginationItemProps) => {
+	return <li data-slot="pagination-item" {...props} />;
+};
+
+/** Props for the {@link PaginationLink} component. */
+export type PaginationLinkProps = {
+	isActive?: boolean;
+} & Omit<React.ComponentProps<typeof LinkButton>, "variant">;
+
+/** A page-number link within a {@link PaginationContent}, styled to indicate the active page. */
+export const PaginationLink = ({
 	className,
+	isActive,
+	size = "icon",
 	...props
-}: PaginationItemProps) => {
-	const styles = paginationVariants();
+}: PaginationLinkProps) => {
 	return (
-		<li
-			data-slot="pagination-item"
-			className={styles.item({ className })}
+		<LinkButton
+			variant={isActive ? "outline" : "ghost"}
+			size={size}
+			className={cn(className)}
+			aria-current={isActive ? "page" : undefined}
+			data-slot="pagination-link"
+			data-active={isActive}
 			{...props}
-		>
-			{children}
-		</li>
+		/>
 	);
 };
 
-export interface PaginationButtonProps
-	extends Omit<ButtonProps, "size">,
-		VariantProps<typeof paginationVariants> {
+/** Props for the {@link PaginationPrevious} component. */
+export type PaginationPreviousProps = React.ComponentProps<
+	typeof PaginationLink
+> & {
+	text?: string;
+};
+
+/** A link that navigates to the previous page. */
+export const PaginationPrevious = ({
+	className,
+	text = "Previous",
+	...props
+}: PaginationPreviousProps) => {
+	return (
+		<PaginationLink
+			aria-label="Go to previous page"
+			size="default"
+			className={cn("pl-2!", className)}
+			{...props}
+		>
+			<ChevronLeftIcon data-icon="inline-start" />
+			<span className="hidden sm:block">{text}</span>
+		</PaginationLink>
+	);
+};
+
+/** Props for the {@link PaginationNext} component. */
+export type PaginationNextProps = React.ComponentProps<
+	typeof PaginationLink
+> & {
+	text?: string;
+};
+
+/** A link that navigates to the next page. */
+export const PaginationNext = ({
+	className,
+	text = "Next",
+	...props
+}: PaginationNextProps) => {
+	return (
+		<PaginationLink
+			aria-label="Go to next page"
+			size="default"
+			className={cn("pr-2!", className)}
+			{...props}
+		>
+			<span className="hidden sm:block">{text}</span>
+			<ChevronRightIcon data-icon="inline-end" />
+		</PaginationLink>
+	);
+};
+
+/** Props for the {@link PaginationEllipsis} component. */
+export type PaginationEllipsisProps = React.ComponentProps<"span">;
+
+/** A non-interactive indicator representing omitted page numbers between visible ranges. */
+export const PaginationEllipsis = ({
+	className,
+	...props
+}: PaginationEllipsisProps) => {
+	return (
+		<span
+			aria-hidden
+			data-slot="pagination-ellipsis"
+			className={cn(
+				"flex size-7 items-center justify-center [&_svg:not([class*='size-'])]:size-3.5",
+				className,
+			)}
+			{...props}
+		>
+			<MoreHorizontalIcon />
+			<span className="sr-only">More pages</span>
+		</span>
+	);
+};
+
+/** Props for the {@link PaginationButton} component. */
+export type PaginationButtonProps = Omit<PaginationLinkProps, "size"> & {
 	/** Whether this button represents the currently active page. */
 	isActive?: boolean;
-}
+};
 
 /** A button representing a single page number within the pagination bar. */
 export const PaginationButton = ({
 	isActive = false,
-	children,
 	className,
+	children,
 	...props
 }: PaginationButtonProps) => {
-	const styles = paginationVariants();
-
 	return (
-		<Button
-			data-slot="pagination-button"
-			{...(isActive
-				? { "aria-current": "page" as const, variant: "outline" }
-				: { variant: "ghost" })}
+		<PaginationLink
+			isActive={isActive}
+			className={cn("size-7 p-0", className)}
 			{...props}
-			className={composeRenderProps(className, (className, renderProps) =>
-				styles.button({ ...renderProps, className }),
-			)}
 		>
 			{children}
-		</Button>
+		</PaginationLink>
 	);
 };
 
-export interface PaginationPreviousProps
-	extends Omit<PaginationButtonProps, "children"> {
-	"aria-label"?: string;
-	/** Whether to display a text label alongside the icon. */
-	showLabel?: boolean;
-}
+/** Props for the {@link PaginationFirst} component. */
+export type PaginationFirstProps = Omit<
+	PaginationLinkProps,
+	"size" | "children"
+>;
 
-/** A button that navigates to the previous page. */
-export const PaginationPrevious = ({
-	"aria-label": ariaLabel = "Go to previous page",
-	className,
-	...props
-}: PaginationPreviousProps) => {
-	return (
-		<PaginationButton
-			aria-label={ariaLabel}
-			{...(className ? { className } : {})}
-			{...props}
-		>
-			<ChevronLeftIcon />
-		</PaginationButton>
-	);
-};
-
-export interface PaginationNextProps
-	extends Omit<PaginationButtonProps, "children"> {
-	/** Whether to display a text label alongside the icon. */
-	showLabel?: boolean;
-}
-
-/** A button that navigates to the next page. */
-export const PaginationNext = ({
-	"aria-label": ariaLabel = "Go to next page",
-	className,
-	...props
-}: PaginationNextProps) => {
-	return (
-		<PaginationButton
-			aria-label={ariaLabel}
-			{...(className ? { className } : {})}
-			{...props}
-		>
-			<ChevronRightIcon />
-		</PaginationButton>
-	);
-};
-
-export interface PaginationFirstProps
-	extends Omit<PaginationButtonProps, "children"> {}
-
-/** A button that navigates to the first page. */
+/** A link that navigates to the first page. */
 export const PaginationFirst = ({
-	"aria-label": ariaLabel = "Go to first page",
 	className,
 	...props
 }: PaginationFirstProps) => {
 	return (
-		<PaginationButton
-			aria-label={ariaLabel}
-			{...(className ? { className } : {})}
+		<PaginationLink
+			aria-label="Go to first page"
+			className={cn("size-7 p-0", className)}
 			{...props}
 		>
-			<ChevronDoubleLeftIcon />
-		</PaginationButton>
+			<ChevronsLeftIcon />
+		</PaginationLink>
 	);
 };
 
-export interface PaginationLastProps
-	extends Omit<PaginationButtonProps, "children"> {}
+/** Props for the {@link PaginationLast} component. */
+export type PaginationLastProps = Omit<
+	PaginationLinkProps,
+	"size" | "children"
+>;
 
-/** A button that navigates to the last page. */
+/** A link that navigates to the last page. */
 export const PaginationLast = ({
-	"aria-label": ariaLabel = "Go to last page",
 	className,
 	...props
 }: PaginationLastProps) => {
 	return (
-		<PaginationButton
-			aria-label={ariaLabel}
-			{...(className ? { className } : {})}
+		<PaginationLink
+			aria-label="Go to last page"
+			className={cn("size-7 p-0", className)}
 			{...props}
 		>
-			<ChevronDoubleRightIcon />
-		</PaginationButton>
-	);
-};
-
-export interface PaginationEllipsisProps
-	extends ComponentProps<"span">,
-		VariantProps<typeof paginationVariants> {
-	/** Whether the ellipsis should appear visually disabled. */
-	isDisabled?: boolean;
-}
-
-/** A non-interactive indicator representing omitted page numbers between visible ranges. */
-export const PaginationEllipsis = ({
-	children = "...",
-	className,
-	isDisabled = false,
-	...props
-}: PaginationEllipsisProps) => {
-	const styles = paginationVariants();
-	return (
-		<span
-			data-slot="pagination-ellipsis"
-			className={styles.ellipsis({ className })}
-			aria-hidden="true"
-			data-disabled={isDisabled || undefined}
-			{...props}
-		>
-			{children}
-		</span>
+			<ChevronsRightIcon />
+		</PaginationLink>
 	);
 };
 

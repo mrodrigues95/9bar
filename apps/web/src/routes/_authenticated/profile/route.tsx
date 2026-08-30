@@ -1,4 +1,4 @@
-import { Heading, Text } from "@9bar/toolkit";
+import { Heading, Text } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
 
 const Profile = () => {

@@ -1,30 +1,27 @@
+import type { VariantProps } from "class-variance-authority";
 import {
 	Link as AriaLink,
 	type LinkProps as AriaLinkProps,
 	composeRenderProps,
 } from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
 import { buttonVariants } from "../button/button";
 
-export const linkVariants = tv({
-	extend: buttonVariants,
-	defaultVariants: { variant: "link" },
-});
-
+/** Props for the {@link Link} component. */
 export interface LinkProps
 	extends AriaLinkProps,
-		VariantProps<typeof linkVariants> {
+		VariantProps<typeof buttonVariants> {
 	"aria-current"?: "page" | "step" | "location" | "date" | "time" | "true";
 }
 
 /** A navigation element that allows a user to navigate to another page or resource. */
-export const Link = ({ variant, size, ...props }: LinkProps) => {
+export const Link = ({ variant = "link", size, ...props }: LinkProps) => {
 	return (
 		<AriaLink
 			data-slot="link"
 			{...props}
-			className={composeRenderProps(props.className, (className, renderProps) =>
-				linkVariants({ ...renderProps, variant, size, className }),
+			className={composeRenderProps(
+				props.className,
+				(className) => buttonVariants({ variant, size, className }) as string,
 			)}
 		/>
 	);

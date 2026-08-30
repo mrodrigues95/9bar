@@ -1,129 +1,127 @@
-import { CheckIcon, MinusIcon } from "@heroicons/react/24/solid";
-import type { ComponentProps, ReactNode } from "react";
+"use client";
+
+import { CheckIcon, MinusIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import {
-	Checkbox as AriaCheckbox,
-	type CheckboxProps as AriaCheckboxProps,
-	type CheckboxRenderProps as AriaCheckboxRenderProps,
-	composeRenderProps,
+	CheckboxButton as AriaCheckboxButton,
+	CheckboxField as AriaCheckboxField,
+	type CheckboxFieldProps as AriaCheckboxFieldProps,
+	type CheckboxButtonRenderProps,
 } from "react-aria-components";
-import { cn, tv } from "tailwind-variants";
-import { inputDisabled, inputFocusRing } from "../field/input";
+import { cn } from "#lib/utils";
 
-export const checkboxVariants = tv({
-	slots: {
-		root: [
-			"flex flex-col items-start gap-0.5",
-			'[&>[data-slot$="description"]]:ml-6.5',
-			'[&>[data-slot$="error"]]:ml-6.5',
-		],
-		label: [
-			"group relative flex shrink-0 select-none items-center justify-center gap-2 font-normal text-sm",
-			"disabled:pointer-events-none",
-		],
-		indicator: [
-			"inline-flex size-4.5 shrink-0 items-center justify-center rounded-[0.3125rem] border border-border bg-white text-primary shadow-xs",
-			"not-data-[invalid]:not-data-[focus-visible]:hover:border-primary/25",
-			"selected:bg-primary selected:text-white",
-		],
-	},
-});
-
-/** Props for the {@link CheckboxRoot} component. */
-export interface CheckboxRootProps extends ComponentProps<"div"> {}
-
-/** A layout wrapper for a checkbox, its description, and its error message. */
-export const CheckboxRoot = ({ className, ...props }: CheckboxRootProps) => {
-	const { root } = checkboxVariants();
-	return (
-		<div data-slot="checkbox-root" className={root({ className })} {...props} />
-	);
+/** Props for the {@link CheckboxControl} component. */
+export type CheckboxControlProps = {
+	/** The content of the control. Pass a render prop to access the checkbox state. */
+	children?: ReactNode | ((values: CheckboxButtonRenderProps) => ReactNode);
+	/** Additional classes applied to the control. */
+	className?: string;
 };
 
-/** Props for the {@link Checkbox} component. */
-export interface CheckboxProps extends AriaCheckboxProps {
-	/** A custom render function for the checkbox indicator. Receives the current render props (selected, indeterminate, etc.). */
-	indicator?: (renderProps: AriaCheckboxRenderProps) => ReactNode;
-}
-
 /**
- * A checkbox allows a user to select a boolean value. Supports
- * indeterminate state for partially selected groups.
+ * The clickable region of a {@link Checkbox}. Renders the checkbox input semantics
+ * and composes the {@link CheckboxIndicator} with the label.
  */
-export const Checkbox = ({ indicator, ...props }: CheckboxProps) => {
-	const { label } = checkboxVariants();
-
+export const CheckboxControl = ({
+	children,
+	className,
+}: CheckboxControlProps) => {
 	return (
-		<AriaCheckbox
-			data-slot="checkbox"
-			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				label({ className }),
+		<AriaCheckboxButton
+			data-slot="checkbox-control"
+			className={cn(
+				[
+					"group/checkbox flex shrink-0 select-none items-center gap-2 text-sm outline-none",
+				],
+				className,
 			)}
 		>
-			{composeRenderProps(props.children, (children, renderProps) => (
-				<>
-					{indicator?.(renderProps)}
-					{!indicator && (
-						<CheckboxIndicator renderProps={renderProps}>
-							<CheckboxIcon {...renderProps} />
-						</CheckboxIndicator>
-					)}
-					{children}
-				</>
-			))}
-		</AriaCheckbox>
+			{children}
+		</AriaCheckboxButton>
 	);
 };
 
 /** Props for the {@link CheckboxIndicator} component. */
-export interface CheckboxIndicatorProps extends ComponentProps<"div"> {
-	/** The current checkbox render props, used to derive visual state (selected, invalid, etc.). */
-	renderProps?: AriaCheckboxRenderProps;
-	/** The icon or content to display inside the indicator box. */
-	children: ReactNode;
-}
+export type CheckboxIndicatorProps = {
+	/** The icon rendered inside the indicator when the checkbox is checked or indeterminate. */
+	children?: ReactNode;
+	/** Additional classes applied to the indicator box. */
+	className?: string;
+};
 
-/** The visual box of a checkbox that displays the check or indeterminate icon. */
+/** The visual box of a {@link Checkbox}, rendered inside the {@link CheckboxControl}. */
 export const CheckboxIndicator = ({
-	renderProps,
 	children,
 	className,
-	...props
 }: CheckboxIndicatorProps) => {
-	const { indicator } = checkboxVariants();
-	const { isSelected, isIndeterminate, isInvalid, isFocusVisible, isDisabled } =
-		renderProps ?? {};
-
 	return (
-		<div
+		<span
 			data-slot="checkbox-indicator"
-			data-disabled={isDisabled ? "true" : undefined}
-			data-selected={isSelected || isIndeterminate || undefined}
-			data-focus-visible={isFocusVisible ? "true" : undefined}
-			data-invalid={isInvalid ? "true" : undefined}
-			{...props}
+			aria-hidden="true"
 			className={cn(
-				indicator({ className }),
-				inputFocusRing({ variant: "focusVisible" }),
-				inputDisabled(),
+				[
+					"relative flex size-4 shrink-0 items-center justify-center rounded-[4px]",
+					"border border-input transition-shadow",
+					"after:absolute after:-inset-x-3 after:-inset-y-2",
+					"group-data-focus-visible/checkbox:border-ring",
+					"group-data-focus-visible/checkbox:ring-2",
+					"group-data-focus-visible/checkbox:ring-ring/30",
+					"group-data-invalid/checkbox:border-destructive",
+					"group-data-invalid/checkbox:ring-2",
+					"group-data-invalid/checkbox:ring-destructive/20",
+					"group-data-invalid/checkbox:group-data-selected/checkbox:border-primary",
+					"group-data-selected/checkbox:border-primary",
+					"group-data-selected/checkbox:bg-primary",
+					"group-data-selected/checkbox:text-primary-foreground",
+					"dark:bg-input/30",
+					"dark:group-data-selected/checkbox:bg-primary",
+					"dark:group-data-invalid/checkbox:border-destructive/50",
+					"dark:group-data-invalid/checkbox:ring-destructive/40",
+					"[&>svg]:size-3.5 [&>svg]:shrink-0",
+				],
+				className,
 			)}
 		>
 			{children}
-		</div>
+		</span>
 	);
 };
 
-/** Props for the {@link CheckboxIcon} component. */
-export interface CheckboxIconProps extends AriaCheckboxRenderProps {}
+/** Props for the {@link Checkbox} component. */
+export type CheckboxProps = AriaCheckboxFieldProps;
 
-/** Renders a check or minus icon based on the checkbox's selected and indeterminate state. */
-export const CheckboxIcon = ({
-	isIndeterminate,
-	isSelected,
-}: CheckboxIconProps) => {
-	return isIndeterminate ? (
-		<MinusIcon className="size-3.5" />
-	) : isSelected ? (
-		<CheckIcon className="size-3.5" />
-	) : null;
+/**
+ * A control that allows a user to toggle a single option on or off, supporting an
+ * indeterminate state.
+ */
+export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
+	return (
+		<AriaCheckboxField
+			data-slot="checkbox"
+			className={cn(
+				[
+					"flex flex-col gap-1",
+					"data-disabled:cursor-not-allowed data-disabled:opacity-50",
+					"group-has-disabled/field:opacity-50",
+				],
+				className,
+			)}
+			{...props}
+		>
+			<CheckboxControl>
+				{({ isSelected, isIndeterminate }) => (
+					<>
+						<CheckboxIndicator>
+							{isIndeterminate ? (
+								<MinusIcon />
+							) : isSelected ? (
+								<CheckIcon />
+							) : null}
+						</CheckboxIndicator>
+						{children}
+					</>
+				)}
+			</CheckboxControl>
+		</AriaCheckboxField>
+	);
 };

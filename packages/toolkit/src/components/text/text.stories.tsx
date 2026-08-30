@@ -6,7 +6,21 @@ const meta = {
 	component: Text,
 	parameters: {
 		layout: "centered",
-		controls: { include: [] },
+		controls: { include: ["variant", "color"] },
+		docs: {
+			controls: { include: ["variant", "color"] },
+			argTypes: { include: ["variant", "color"] },
+		},
+	},
+	argTypes: {
+		variant: {
+			control: { type: "select" },
+			options: ["body", "body-sm", "body-lg", "caption", "label", "detail"],
+		},
+		color: {
+			control: { type: "select" },
+			options: ["muted", "primary", "secondary"],
+		},
 	},
 	tags: ["autodocs"],
 } satisfies Meta<typeof Text>;
@@ -25,18 +39,22 @@ export const Default: Story = {
 export const Variants: Story = {
 	render: () => (
 		<div className="flex flex-col gap-4">
-			<Text variant="body">
+			<Text variant="body" color="primary">
 				Body - The standard text for paragraphs and content
 			</Text>
-			<Text variant="body-sm">
+			<Text variant="body-sm" color="primary">
 				Body Small - Smaller body text for secondary content
 			</Text>
-			<Text variant="body-lg">Body Large - Larger body text for emphasis</Text>
-			<Text variant="caption">
+			<Text variant="body-lg" color="primary">
+				Body Large - Larger body text for emphasis
+			</Text>
+			<Text variant="caption" color="primary">
 				Caption - Small descriptive text for images or supplementary information
 			</Text>
-			<Text variant="label">Label - Text for form labels and UI elements</Text>
-			<Text variant="detail">
+			<Text variant="label" color="primary">
+				Label - Text for form labels and UI elements
+			</Text>
+			<Text variant="detail" color="primary">
 				Detail - Fine print for metadata and auxiliary information
 			</Text>
 		</div>
@@ -47,16 +65,16 @@ export const Variants: Story = {
 export const SemanticElements: Story = {
 	render: () => (
 		<div className="flex flex-col gap-3">
-			<Text as="p" variant="body">
+			<Text as="p" variant="body" color="primary">
 				This is a paragraph element with body variant
 			</Text>
-			<Text as="span" variant="caption">
+			<Text as="span" variant="caption" color="primary">
 				This is a span element with caption variant
 			</Text>
-			<Text as="label" variant="label">
+			<Text as="label" variant="label" color="primary">
 				This is a label element with label variant
 			</Text>
-			<Text as="div" variant="detail">
+			<Text as="div" variant="detail" color="primary">
 				This is a div element with detail variant
 			</Text>
 		</div>

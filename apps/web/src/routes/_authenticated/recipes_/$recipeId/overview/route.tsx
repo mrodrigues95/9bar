@@ -1,21 +1,17 @@
 import {
 	Button,
 	Card,
+	CardContent,
 	CardHeader,
-	CardPanel,
 	Heading,
 	Menu,
 	MenuItem,
 	MenuSeparator,
 	MenuTrigger,
 	Text,
-} from "@9bar/toolkit";
-import {
-	ChevronDownIcon,
-	PencilIcon,
-	TrashIcon,
-} from "@heroicons/react/24/solid";
+} from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, Pencil, Trash2 } from "lucide-react";
 import { MenuItemLink } from "../../../../../components";
 
 const RecipeNotes = () => {
@@ -112,26 +108,26 @@ const RecipeOverview = () => {
 				<MenuTrigger>
 					<Button variant="outline">
 						Actions
-						<ChevronDownIcon />
+						<ChevronDown />
 					</Button>
 					<Menu>
 						<MenuItemLink to="/recipes/$recipeId/edit" params={{ recipeId }}>
-							<PencilIcon className="size-3" />
+							<Pencil className="size-3" />
 							Edit
 						</MenuItemLink>
 						<MenuSeparator />
-						<MenuItem onAction={() => alert("delete")} variant="danger">
-							<TrashIcon className="size-3" />
+						<MenuItem onAction={() => alert("delete")} variant="destructive">
+							<Trash2 className="size-3" />
 							Delete
 						</MenuItem>
 					</Menu>
 				</MenuTrigger>
 			</CardHeader>
-			<CardPanel className="gap-4">
+			<CardContent className="gap-4">
 				<RecipeStats />
 				<RecipeDetails />
 				<RecipeNotes />
-			</CardPanel>
+			</CardContent>
 		</Card>
 	);
 };

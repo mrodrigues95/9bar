@@ -1,4 +1,4 @@
-import { Form, Separator, withForm } from "@9bar/toolkit";
+import { Form, Separator, withForm } from "@9bar/toolkit/components";
 import { Link } from "../../../../../components";
 import { AdditionalDetailsFormSection } from "./additional-details";
 import { BasicInformationFormSection } from "./basic-information";
@@ -40,7 +40,7 @@ export const RecipeForm = withForm({
 						Cancel
 					</Link>
 					<form.AppForm>
-						<form.SubmitButton variant="solid" loadingText="Saving...">
+						<form.SubmitButton variant="default" loadingText="Saving...">
 							{isCreatingLog && "Create Log"}
 							{isEditingLog && "Save Log"}
 							{isCreatingRecipe && "Create Recipe"}

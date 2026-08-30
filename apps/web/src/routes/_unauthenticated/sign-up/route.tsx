@@ -1,4 +1,4 @@
-import { Button, Form, Heading, TextField } from "@9bar/toolkit";
+import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
 
 const SignUp = () => {
@@ -29,7 +29,12 @@ const SignUp = () => {
 					inputProps={{ minLength: 6 }}
 					isRequired
 				/>
-				<Button type="submit" variant="solid" size="md" className="w-full">
+				<Button
+					type="submit"
+					variant="default"
+					size="default"
+					className="w-full"
+				>
 					Create your account
 				</Button>
 			</Form>

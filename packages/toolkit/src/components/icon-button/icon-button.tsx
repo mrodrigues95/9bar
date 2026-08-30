@@ -1,34 +1,19 @@
-import {
-	Button as AriaButton,
-	type ButtonProps as AriaButtonProps,
-	composeRenderProps,
-} from "react-aria-components";
-import { tv, type VariantProps } from "tailwind-variants";
-import { buttonVariants } from "../button/button";
+import type * as React from "react";
+import { Button, type ButtonProps } from "../button/button";
 
-export const iconButtonVariants = tv({
-	extend: buttonVariants,
-	base: [
-		"relative",
-		"[&_svg]:absolute [&_svg]:top-1/2 [&_svg]:left-1/2 [&_svg]:-translate-x-1/2 [&_svg]:-translate-y-1/2",
-	],
-	variants: {
-		size: {
-			xs: "size-4 [&_svg]:size-2.5",
-			sm: "size-6 [&_svg]:size-4",
-			md: "size-8 [&_svg]:size-5",
-			lg: "size-10 [&_svg]:size-6",
-		},
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "md",
-	},
-});
+const iconButtonSizeMap = {
+	xs: "icon-xs",
+	sm: "icon-sm",
+	md: "icon",
+	lg: "icon-lg",
+} as const;
 
+type IconButtonSize = keyof typeof iconButtonSizeMap;
+
+/** Props for the {@link IconButton} component. */
 export interface IconButtonProps
-	extends Omit<AriaButtonProps, "children">,
-		VariantProps<typeof iconButtonVariants> {
+	extends Omit<ButtonProps, "size" | "children"> {
+	size?: IconButtonSize;
 	/** The icon element to render inside the button. */
 	children: React.ReactNode;
 	/** An accessible label describing the button's action. Required because the button has no visible text. */
@@ -37,20 +22,13 @@ export interface IconButtonProps
 
 /** A button that displays only an icon, requiring an `aria-label` for accessibility. */
 export const IconButton = ({
-	variant,
-	size,
+	size = "md",
 	children,
 	...props
 }: IconButtonProps) => {
 	return (
-		<AriaButton
-			data-slot="icon-button"
-			{...props}
-			className={composeRenderProps(props.className, (className, renderProps) =>
-				iconButtonVariants({ ...renderProps, variant, size, className }),
-			)}
-		>
+		<Button size={iconButtonSizeMap[size]} {...props}>
 			{children}
-		</AriaButton>
+		</Button>
 	);
 };
