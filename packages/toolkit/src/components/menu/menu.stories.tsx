@@ -47,11 +47,11 @@ export const Basic: Story = {
 					<MenuItem onAction={() => {}}>Billing</MenuItem>
 				</MenuGroup>
 				<MenuSeparator />
-				<MenuItem onAction={() => {}}>
+				<MenuItem onAction={() => {}} textValue="Edit recipe">
 					<Pencil />
 					Edit recipe
 				</MenuItem>
-				<MenuItem variant="destructive" onAction={() => {}}>
+				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete recipe">
 					<Trash2 />
 					Delete recipe
 				</MenuItem>
@@ -68,16 +68,16 @@ export const WithShortcut: Story = {
 				Edit
 			</Button>
 			<Menu {...props}>
-				<MenuItem onAction={() => {}}>
+				<MenuItem onAction={() => {}} textValue="Undo">
 					Undo
 					<MenuShortcut>⌘Z</MenuShortcut>
 				</MenuItem>
-				<MenuItem onAction={() => {}}>
+				<MenuItem onAction={() => {}} textValue="Redo">
 					Redo
 					<MenuShortcut>⇧⌘Z</MenuShortcut>
 				</MenuItem>
 				<MenuSeparator />
-				<MenuItem variant="destructive" onAction={() => {}}>
+				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete">
 					Delete
 					<MenuShortcut>⌫</MenuShortcut>
 				</MenuItem>

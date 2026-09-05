@@ -229,10 +229,11 @@ const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: FilterBarChip
 			if (keys === "all") return;
 			const newValues = [...keys].map((k) => k.toString());
 			const newOp = resolveOperator(filter.operatorId, newValues.length, definition.operatorPairs);
-			onUpdate(filter.id, {
-				...(newOp !== filter.operatorId ? { operatorId: newOp } : {}),
-				values: newValues,
-			});
+			const valueChanges = { values: newValues };
+			onUpdate(
+				filter.id,
+				newOp !== filter.operatorId ? { ...valueChanges, operatorId: newOp } : valueChanges,
+			);
 		},
 		[onUpdate, filter.id, filter.operatorId, definition.operatorPairs],
 	);
@@ -353,9 +354,14 @@ export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string
 	...toolbarProps
 }: FilterBarProps<TDefs>) => {
 	const [uncontrolledFilters, setUncontrolledFilters] = useState<Array<Filter>>(
-		() => (defaultFilters as Array<Filter> | undefined) ?? [],
+		() =>
+			// SAFETY: internal state erases the literal filter/operator IDs to string for
+			// implementation simplicity. The runtime shapes are identical; precise IDs flow
+			// back out through the typed context and callbacks.
+			(defaultFilters as Array<Filter> | undefined) ?? [],
 	);
 	const isControlled = controlledFilters !== undefined;
+	// SAFETY: same erasure as above; controlled filters carry the precise IDs at runtime.
 	const filters: Array<Filter> = isControlled
 		? (controlledFilters as Array<Filter>)
 		: uncontrolledFilters;
@@ -525,11 +531,13 @@ export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string
 				</MenuTrigger>
 
 				{children?.(
-					// eslint-disable-next-line react/refs -- `state` only carries callbacks that read refs inside event handlers; the rule cannot see through the render prop
-					state as unknown as FilterBarState<
-						InferFilterId<TDefs[number]>,
-						InferOperatorId<TDefs[number]>
-					>,
+					// SAFETY: the filters in state were built from these exact definitions (see
+					// addFilter/handleAddFilter), so the erased string IDs are the precise literal
+					// IDs at runtime. `state` only carries callbacks that read refs inside event
+					// handlers (the rule cannot see through the render prop), and the internal
+					// state erases the literal IDs (same bridge as the FilterBarContext typing above).
+					// eslint-disable-next-line react/refs, @typescript-eslint/no-explicit-any
+					state as FilterBarState<any, any>,
 				)}
 			</AriaToolbar>
 		</FilterBarContext.Provider>

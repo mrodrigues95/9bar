@@ -114,23 +114,36 @@ interface FormErrors<TFormValues> {
 	fields: { [K in keyof TFormValues]?: string };
 }
 
+/** Form values for the {@link ComposedForm} story. */
+interface ComposedFormValues {
+	firstName: string;
+	lastName: string;
+	email: string;
+	age: string;
+	bio: string;
+	country: string;
+	newsletter: Array<string>;
+	acceptTerms: boolean;
+}
+
 /** A form using TanStack Form's `useAppForm` hook with inline `onChange` validators for client-side validation. */
 export const ComposedForm: Story = {
 	render: (props) => {
+		const defaultValues: ComposedFormValues = {
+			firstName: "",
+			lastName: "",
+			email: "",
+			age: "",
+			bio: "",
+			country: "",
+			newsletter: [],
+			acceptTerms: false,
+		};
 		const form = useAppForm({
-			defaultValues: {
-				firstName: "",
-				lastName: "",
-				email: "",
-				age: "",
-				bio: "",
-				country: "",
-				newsletter: [] as Array<string>,
-				acceptTerms: false,
-			},
+			defaultValues,
 			validators: {
 				onChange: ({ value }) => {
-					const errors: FormErrors<typeof value> = { fields: {} };
+					const errors: FormErrors<ComposedFormValues> = { fields: {} };
 
 					if (!value.firstName) {
 						errors.fields.firstName = "First name is required";
@@ -294,16 +307,17 @@ const schema = z.object({
 /** A form using a Zod schema as the `onChange` validator, demonstrating structured schema-driven validation. */
 export const WithZodValidation: Story = {
 	render: (props) => {
+		const defaultValues: z.infer<typeof schema> = {
+			username: "",
+			email: "",
+			password: "",
+			notificationFrequency: { inputValue: "", selectValue: "day" },
+			bio: "",
+			role: "",
+			preferences: [],
+		};
 		const form = useAppForm({
-			defaultValues: {
-				username: "",
-				email: "",
-				password: "",
-				notificationFrequency: { inputValue: "", selectValue: "day" },
-				bio: "",
-				role: "",
-				preferences: [] as Array<string>,
-			},
+			defaultValues,
 			validators: {
 				onChange: schema,
 			},
@@ -419,15 +433,27 @@ export const WithZodValidation: Story = {
 	},
 };
 
+/** Form values shared by the contact form and the {@link ReusableContactForm} story. */
+interface ContactFormValues {
+	name: string;
+	email: string;
+	subject: string;
+	topic: string;
+	message: string;
+	notifications: Array<string>;
+}
+
+const contactFormDefaultValues: ContactFormValues = {
+	name: "",
+	email: "",
+	subject: "",
+	topic: "",
+	message: "",
+	notifications: [],
+};
+
 const ContactFormComponent = withForm({
-	defaultValues: {
-		name: "",
-		email: "",
-		subject: "",
-		topic: "",
-		message: "",
-		notifications: [] as Array<string>,
-	},
+	defaultValues: contactFormDefaultValues,
 	props: {
 		title: "Contact Us",
 	},
@@ -540,14 +566,7 @@ const ContactFormComponent = withForm({
 export const ReusableContactForm: Story = {
 	render: (props) => {
 		const form = useAppForm({
-			defaultValues: {
-				name: "",
-				email: "",
-				subject: "",
-				topic: "",
-				message: "",
-				notifications: [] as Array<string>,
-			},
+			defaultValues: contactFormDefaultValues,
 			onSubmit: async ({ value }) => {
 				alert(`Contact form submitted: ${JSON.stringify(value, null, 2)}`);
 			},

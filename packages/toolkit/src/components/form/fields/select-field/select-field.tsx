@@ -136,7 +136,7 @@ export const FormSelectField = <T extends object>({
 	formatErrors,
 	...props
 }: FormSelectFieldProps<T>) => {
-	const field = useFieldContext<Key | Array<Key> | null>();
+	const field = useFieldContext<Key | null>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
 	const resolvedErrors = resolveFormFieldErrors(errors, {
 		errorMessage: props.errorMessage,
@@ -149,7 +149,7 @@ export const FormSelectField = <T extends object>({
 			isInvalid={isInvalid}
 			errors={resolvedErrors}
 			name={field.name}
-			selectedKey={field.state.value as Key | null}
+			selectedKey={field.state.value}
 			onBlur={field.handleBlur}
 			onSelectionChange={(value) => field.handleChange(value)}
 		/>

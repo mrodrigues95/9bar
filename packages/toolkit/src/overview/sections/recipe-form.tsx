@@ -11,6 +11,12 @@ import {
 	useAppForm,
 } from "../../components";
 
+/** Validation messages for the fields of the recipe overview form. */
+interface RecipeFormFieldErrors {
+	recipeName?: string;
+	reminders?: string;
+}
+
 /** A realistic "new recipe" form exercising every form-connected field in one composition. */
 export const FormSection = () => {
 	const form = useAppForm({
@@ -19,12 +25,12 @@ export const FormSection = () => {
 			notes: "Chocolate, caramel, and a bright citrus finish.",
 			method: "espresso",
 			dose: { inputValue: "18", selectValue: "g" },
-			reminders: ["low-stock"] as Array<string>,
+			reminders: ["low-stock"],
 			shared: true,
 		},
 		validators: {
 			onChange: ({ value }) => {
-				const fields: { recipeName?: string; reminders?: string } = {};
+				const fields: RecipeFormFieldErrors = {};
 
 				if (!value.recipeName) {
 					fields.recipeName = "Give the recipe a name";

@@ -5,6 +5,7 @@ import type {
 } from "@tanstack/react-router";
 import { useMatches, useRouter } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
+import { z } from "zod";
 import { Breadcrumb as ToolkitBreadcrumb } from "@9bar/toolkit/components";
 import { Breadcrumb, Breadcrumbs } from "../breadcrumbs/breadcrumbs";
 
@@ -34,8 +35,13 @@ const getRouteStaticData = (
 	return route.options?.staticData;
 };
 
+const routerBreadcrumbSchema = z.object({
+	label: z.string(),
+	disabled: z.boolean().optional(),
+});
+
 const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
-	!!value && typeof value === "object" && "label" in value && typeof value.label === "string";
+	routerBreadcrumbSchema.safeParse(value).success;
 
 const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => {
 	const data = match?.loaderData;
@@ -75,6 +81,8 @@ const resolveSuffixParentBreadcrumbs = (
 		const parentSegments = segments.slice(0, i + 1);
 		parentSegments[i] = segment.slice(0, -1);
 
+		// SAFETY: the joined segments are only a candidate route ID; the routesById
+		// lookup below validates it and skips unknown IDs.
 		const parentId = parentSegments.join("/") as keyof TRoutesById;
 		if (seen.has(parentId)) {
 			continue;

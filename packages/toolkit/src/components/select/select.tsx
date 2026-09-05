@@ -21,7 +21,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "#components/input-
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import { cn } from "#lib/utils";
+import { cn, resolveItemTextValue, type ItemLabelProps } from "#lib/utils";
 
 /** Props for the {@link Select} component. */
 export type { SelectProps };
@@ -63,7 +63,7 @@ export const SelectValue = <T extends object>({
 			className={cn("flex flex-1 text-left data-placeholder:text-muted-foreground", className)}
 			{...props}
 		>
-			{typeof children === "function"
+			{children instanceof Function
 				? children
 				: ({ selectedItems, selectedText, defaultChildren }) =>
 						selectedItems.length > 1 ? selectedText : defaultChildren}
@@ -238,15 +238,19 @@ export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
 	);
 };
 
+type SelectItemBaseProps = React.ComponentProps<typeof AriaListBoxItem>;
+
 /** Props for the {@link SelectItem} component. */
-export type SelectItemProps = React.ComponentProps<typeof AriaListBoxItem>;
+export type SelectItemProps = Omit<SelectItemBaseProps, "children" | "textValue"> &
+	ItemLabelProps<SelectItemBaseProps["children"]>;
 
 /** An individual option within a {@link SelectList}. */
 export const SelectItem = ({ className, children, ...props }: SelectItemProps) => {
+	const textValue = resolveItemTextValue(children, props.textValue);
+
 	return (
 		<AriaListBoxItem
 			data-slot="select-item"
-			textValue={typeof children === "string" ? children : undefined}
 			className={cn(
 				[
 					"relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
@@ -261,6 +265,7 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 				className,
 			)}
 			{...props}
+			textValue={textValue}
 		>
 			{composeRenderProps(children, (children, { isSelected }) => (
 				<>

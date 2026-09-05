@@ -13,12 +13,16 @@ const EditRecipe = () => {
 	const navigate = useNavigate();
 	const isConverting = convert === "log";
 
+	const defaultValues = {
+		...recipeToFormValues(recipe),
+	};
+	if (isConverting) {
+		defaultValues.isQuickBrew = false;
+	}
+
 	const form = useAppForm({
 		...recipeFormOpts,
-		defaultValues: {
-			...recipeToFormValues(recipe),
-			...(isConverting ? { isQuickBrew: false } : {}),
-		},
+		defaultValues,
 		onSubmit: async ({ value }) => {
 			console.log("Recipe updated:", value);
 			navigate({

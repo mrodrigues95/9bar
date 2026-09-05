@@ -16,7 +16,7 @@ import {
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import { cn } from "#lib/utils";
+import { cn, resolveItemTextValue, type ItemLabelProps } from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
 export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;
@@ -136,10 +136,13 @@ const menuItemVariants = cva(
 );
 
 /** Props for the {@link MenuItem} component. */
-export type MenuItemProps<T extends object> = AriaMenuItemProps<T> & {
+export type MenuItemProps<T extends object> = Omit<
+	AriaMenuItemProps<T>,
+	"children" | "textValue"
+> & {
 	inset?: boolean;
 	variant?: "default" | "destructive";
-};
+} & ItemLabelProps<AriaMenuItemProps<T>["children"]>;
 
 /** An individual action within a {@link Menu}. */
 export const MenuItem = <T extends object>({
@@ -149,16 +152,18 @@ export const MenuItem = <T extends object>({
 	children,
 	...props
 }: MenuItemProps<T>) => {
+	const textValue = resolveItemTextValue(children, props.textValue);
+
 	return (
 		<AriaMenuItem
 			data-slot="menu-item"
 			data-inset={inset}
 			data-variant={variant}
-			textValue={typeof children === "string" ? children : props.textValue}
 			className={composeRenderProps(className, (className, { selectionMode }) =>
 				cn(menuItemVariants({ selectionMode }), className),
 			)}
 			{...props}
+			textValue={textValue}
 		>
 			{composeRenderProps(children, (children, { isSelected, selectionMode }) => (
 				<>
@@ -190,9 +195,12 @@ export const MenuSub = ({ ...props }: MenuSubProps) => {
 };
 
 /** Props for the {@link MenuSubTrigger} component. */
-export type MenuSubTriggerProps<T extends object> = AriaMenuItemProps<T> & {
+export type MenuSubTriggerProps<T extends object> = Omit<
+	AriaMenuItemProps<T>,
+	"children" | "textValue"
+> & {
 	inset?: boolean;
-};
+} & ItemLabelProps<AriaMenuItemProps<T>["children"]>;
 
 /** The menu item that opens a {@link MenuSub}. */
 export const MenuSubTrigger = <T extends object>({
@@ -201,11 +209,12 @@ export const MenuSubTrigger = <T extends object>({
 	children,
 	...props
 }: MenuSubTriggerProps<T>) => {
+	const textValue = resolveItemTextValue(children, props.textValue);
+
 	return (
 		<AriaMenuItem
 			data-slot="menu-sub-trigger"
 			data-inset={inset}
-			textValue={typeof children === "string" ? children : props.textValue}
 			className={cn(
 				[
 					"flex min-h-7 cursor-default items-center gap-2 rounded-md select-none",
@@ -218,6 +227,7 @@ export const MenuSubTrigger = <T extends object>({
 				className,
 			)}
 			{...props}
+			textValue={textValue}
 		>
 			{composeRenderProps(children, (children) => (
 				<>

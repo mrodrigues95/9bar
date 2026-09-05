@@ -33,7 +33,10 @@ export const TabLink = <
 			{...(isDisabled ? { isDisabled } : {})}
 			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
 			onClick={(e) => {
-				(resolvedLinkProps.onClick as unknown as ((e: React.MouseEvent) => void) | undefined)?.(e);
+				// SAFETY: TabsTrigger forwards the native click event, so the router's composed
+				// click handler receives a real React.MouseEvent at runtime. The single assertion
+				// only recovers the handler type that useLinkProps erases.
+				(resolvedLinkProps.onClick as ((e: React.MouseEvent) => void) | undefined)?.(e);
 			}}
 		>
 			{children}

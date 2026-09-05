@@ -17,9 +17,8 @@ export const Link = ({ variant = "link", size, ...props }: LinkProps) => {
 		<AriaLink
 			data-slot="link"
 			{...props}
-			className={composeRenderProps(
-				props.className,
-				(className) => buttonVariants({ variant, size, className }) as string,
+			className={composeRenderProps(props.className, (className) =>
+				buttonVariants({ variant, size, className }),
 			)}
 		/>
 	);

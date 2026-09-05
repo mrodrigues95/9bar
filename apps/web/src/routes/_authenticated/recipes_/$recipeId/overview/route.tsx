@@ -101,12 +101,12 @@ const RecipeOverview = () => {
 						<ChevronDown />
 					</Button>
 					<Menu>
-						<MenuItemLink to="/recipes/$recipeId/edit" params={{ recipeId }}>
+						<MenuItemLink to="/recipes/$recipeId/edit" params={{ recipeId }} textValue="Edit">
 							<Pencil className="size-3" />
 							Edit
 						</MenuItemLink>
 						<MenuSeparator />
-						<MenuItem onAction={() => alert("delete")} variant="destructive">
+						<MenuItem onAction={() => alert("delete")} variant="destructive" textValue="Delete">
 							<Trash2 className="size-3" />
 							Delete
 						</MenuItem>

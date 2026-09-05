@@ -39,17 +39,17 @@ const MenuDemo = () => (
 			<Menu>
 				<MenuLabel>Shot actions</MenuLabel>
 				<MenuGroup>
-					<MenuItem onAction={() => {}}>
+					<MenuItem onAction={() => {}} textValue="Log shot">
 						Log shot
 						<MenuShortcut>⌘L</MenuShortcut>
 					</MenuItem>
-					<MenuItem onAction={() => {}}>
+					<MenuItem onAction={() => {}} textValue="Edit recipe">
 						Edit recipe
 						<MenuShortcut>⌘E</MenuShortcut>
 					</MenuItem>
 				</MenuGroup>
 				<MenuSeparator />
-				<MenuItem variant="destructive" onAction={() => {}}>
+				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete recipe">
 					Delete recipe
 					<MenuShortcut>⌫</MenuShortcut>
 				</MenuItem>

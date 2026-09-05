@@ -34,6 +34,7 @@
 		"**/dist/**",
 		"**/storybook-static/**",
 		"**/.tanstack/**",
-		"node_modules/**"
+		"node_modules/**",
+		"tools/oxlint/anti-slop/**"
 	]
 }
