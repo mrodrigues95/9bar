@@ -1,10 +1,8 @@
 {
 	"name": "9bar",
 	"version": "1.0.0",
-	"type": "module",
-	"description": "A pnpm workspace for 9bar",
-	"packageManager": "pnpm@11.17.0",
 	"private": true,
+	"description": "A pnpm workspace for 9bar",
 	"license": "GPL-3.0-or-later",
 	"author": {
 		"name": "Marcus Rodrigues",
@@ -14,34 +12,38 @@
 		"packages/*",
 		"apps/*"
 	],
-	"engines": {
-		"pnpm": ">=11.0.0",
-		"npm": "pnpm",
-		"yarn": "pnpm",
-		"node": ">=24.0.0"
-	},
+	"type": "module",
 	"scripts": {
 		"web": "pnpm --filter @9bar/web",
 		"toolkit": "pnpm --filter @9bar/toolkit",
-		"check": "biome check .",
-		"check:fix": "biome check --fix .",
-		"lint:ci": "biome ci .",
+		"lint": "oxlint .",
+		"lint:fix": "oxlint --fix .",
+		"format": "oxfmt",
+		"format:check": "oxfmt --check",
 		"typecheck": "pnpm -r typecheck"
 	},
-	"intent": {
-		"skills": [
-			"@tanstack/*"
-		]
+	"dependencies": {
+		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.5",
 		"@commitlint/cli": "^21.2.1",
 		"@commitlint/config-conventional": "^21.2.0",
 		"@types/node": "^24.13.3",
 		"@typescript/native": "npm:typescript@^7.0.2",
+		"oxfmt": "^0.66.0",
+		"oxlint": "^1.81.0",
 		"typescript": "npm:@typescript/typescript6@^6.0.2"
 	},
-	"dependencies": {
-		"zod": "^4.4.3"
+	"engines": {
+		"node": ">=24.0.0",
+		"npm": "pnpm",
+		"pnpm": ">=11.0.0",
+		"yarn": "pnpm"
+	},
+	"packageManager": "pnpm@11.17.0",
+	"intent": {
+		"skills": [
+			"@tanstack/*"
+		]
 	}
 }

@@ -1,0 +1,20 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "react", "jsx-a11y", "import"],
+	"categories": {
+		"correctness": "error"
+	},
+	"rules": {
+		"typescript/array-type": ["error", { "default": "generic", "readonly": "generic" }],
+		"eslint/no-unused-vars": "error",
+		"react/exhaustive-deps": "error"
+	},
+	"ignorePatterns": [
+		".agents/skills/**",
+		"**/*.gen.*",
+		"**/dist/**",
+		"**/storybook-static/**",
+		"**/.tanstack/**",
+		"node_modules/**"
+	]
+}
