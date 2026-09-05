@@ -205,7 +205,7 @@ export const WithContent: Story = {
 							/>
 						</PaginationItem>
 						{pages.map((item) => {
-							if (typeof item === "string" && item.startsWith("ellipsis")) {
+							if (item === "ellipsis") {
 								return (
 									<PaginationItem key={item}>
 										<PaginationEllipsis />
@@ -217,7 +217,7 @@ export const WithContent: Story = {
 								<PaginationItem key={item}>
 									<PaginationButton
 										isActive={page === item}
-										onPress={() => setPage(item as number)}
+										onPress={() => setPage(item)}
 										aria-label={`Go to page ${item}`}
 									>
 										{item}

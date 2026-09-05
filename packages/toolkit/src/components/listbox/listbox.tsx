@@ -12,7 +12,12 @@ import {
 	Collection,
 	composeRenderProps,
 } from "react-aria-components";
-import { cn, composeTailwindRenderProps } from "../../utils";
+import {
+	cn,
+	composeTailwindRenderProps,
+	resolveItemTextValue,
+	type ItemLabelProps,
+} from "../../utils";
 import { Separator, type SeparatorProps } from "../separator/separator";
 
 export interface ListboxProps<T extends object> extends Omit<
@@ -64,32 +69,35 @@ export const listboxItemVariants = cva(
 	},
 );
 
-export interface ListboxItemProps<T extends object>
-	extends AriaListBoxItemProps<T>, VariantProps<typeof listboxItemVariants> {
-	/** Content rendered before the item label, such as an icon. */
-	startContent?: ReactNode;
-}
+export type ListboxItemProps<T extends object> = Omit<
+	AriaListBoxItemProps<T>,
+	"children" | "textValue"
+> &
+	VariantProps<typeof listboxItemVariants> & {
+		/** Content rendered before the item label, such as an icon. */
+		startContent?: ReactNode;
+	} & ItemLabelProps<AriaListBoxItemProps<T>["children"]>;
 
 /** An individual option within a {@link Listbox}. */
 export const ListboxItem = <T extends object>({
 	variant = "default",
 	startContent,
+	children,
 	...props
 }: ListboxItemProps<T>) => {
-	const textValue =
-		props.textValue || (typeof props.children === "string" ? props.children : undefined);
+	const textValue = resolveItemTextValue(children, props.textValue);
 
 	return (
 		<AriaListBoxItem
 			data-slot="listbox-item"
 			data-variant={variant}
 			{...props}
-			{...(textValue ? { textValue } : {})}
+			textValue={textValue}
 			className={composeRenderProps(props.className, (className, renderProps) =>
 				cn(listboxItemVariants({ ...renderProps, variant, className })),
 			)}
 		>
-			{composeRenderProps(props.children, (children, { isSelected }) => (
+			{composeRenderProps(children, (children, { isSelected }) => (
 				<>
 					{startContent}
 					<div className="group-selected:font-medium flex flex-1 flex-col justify-center truncate">

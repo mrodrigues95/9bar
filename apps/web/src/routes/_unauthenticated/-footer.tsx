@@ -25,6 +25,8 @@ const segmentMap: Partial<Record<FileRouteTypes["to"], TSegmentMap>> = {
 
 export const Footer = () => {
 	const location = useLocation();
+	// SAFETY: the footer only renders on the sign-in/sign-up routes, so the pathname is
+	// always a known route. The lookup yields undefined elsewhere and the component renders null.
 	const segment = segmentMap[location.pathname as FileRouteTypes["to"]];
 
 	if (!segment) {

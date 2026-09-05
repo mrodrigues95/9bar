@@ -67,12 +67,16 @@ export const RecipeLogs = () => {
 									<EllipsisVertical />
 								</IconButton>
 								<Menu>
-									<MenuItem onAction={() => alert("rename")}>
+									<MenuItem onAction={() => alert("rename")} textValue="Edit">
 										<Pencil className="size-3" />
 										Edit
 									</MenuItem>
 									<MenuSeparator />
-									<MenuItem onAction={() => alert("delete")} variant="destructive">
+									<MenuItem
+										onAction={() => alert("delete")}
+										variant="destructive"
+										textValue="Delete"
+									>
 										<Trash2 className="size-3" />
 										Delete
 									</MenuItem>

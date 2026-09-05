@@ -5,8 +5,11 @@ export type TErrorFormatter<TError = unknown> = (
 ) => Array<FieldErrorItem> | string | undefined;
 
 export const defaultErrorFormatter: TErrorFormatter = (errors) => {
+	// SAFETY: this is the documented generic-fallback boundary: raw form-library errors
+	// arrive as unknown and are normalized into messages here. Values outside the
+	// FieldErrorItem contract yield no message instead of crashing.
 	const messages = errors
-		.map((error) => toErrorMessage(error))
+		.map((error) => toErrorMessage(error as FieldErrorItem | null))
 		.filter((err): err is string => !!err);
 
 	return messages.length ? messages : undefined;
@@ -46,12 +49,19 @@ export const normalizeFormErrors = <TError = unknown>(
 	formatErrors?: TErrorFormatter<TError>,
 ): Array<FieldErrorItem> | undefined => {
 	if (!formatErrors) {
+		// SAFETY: without a formatter the caller passes already-displayable errors (strings or
+		// `{ message }` objects). FieldError normalizes each entry again via toErrorMessage, so
+		// non-conforming values yield no message instead of crashing.
 		return errors as Array<FieldErrorItem> | undefined;
 	}
 
 	const formatted = formatErrors(errors);
 
-	return typeof formatted === "string" ? [{ message: formatted }] : formatted;
+	if (formatted === undefined) {
+		return undefined;
+	}
+
+	return Array.isArray(formatted) ? formatted : [{ message: formatted }];
 };
 
 /** The shadcn-style validity state derived from a field's meta: invalid only once the field has been touched. */

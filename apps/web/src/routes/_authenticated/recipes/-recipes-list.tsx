@@ -74,7 +74,11 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					</IconButton>
 					<Menu>
 						{!recipe.isQuickBrew && (
-							<MenuItemLink to="/recipes/$recipeId" params={{ recipeId: String(recipe.id) }}>
+							<MenuItemLink
+								to="/recipes/$recipeId"
+								params={{ recipeId: String(recipe.id) }}
+								textValue="View"
+							>
 								<ArrowRight className="size-3" />
 								View
 							</MenuItemLink>
@@ -92,6 +96,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 										to: "/recipes/$recipeId/edit",
 										params: { recipeId: String(recipe.id) },
 									})}
+							textValue="Edit"
 						>
 							<Pencil className="size-3" />
 							Edit
@@ -101,19 +106,20 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 								to="/recipes/$recipeId/edit"
 								params={{ recipeId: String(recipe.id) }}
 								search={{ convert: "log" }}
+								textValue="Convert to Recipe"
 							>
 								<ArrowRightLeft className="size-3" />
 								Convert to Recipe
 							</MenuItemLink>
 						)}
 						{recipe.isQuickBrew && (
-							<MenuItem onAction={() => alert("rename")}>
+							<MenuItem onAction={() => alert("rename")} textValue="Attach to Recipe">
 								<Paperclip className="size-3" />
 								Attach to Recipe
 							</MenuItem>
 						)}
 						<MenuSeparator />
-						<MenuItem onAction={() => alert("delete")} variant="destructive">
+						<MenuItem onAction={() => alert("delete")} variant="destructive" textValue="Delete">
 							<Trash2 className="size-3" />
 							Delete
 						</MenuItem>
