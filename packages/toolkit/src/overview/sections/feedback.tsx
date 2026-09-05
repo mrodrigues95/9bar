@@ -7,9 +7,7 @@ export const FeedbackSection = () => (
 		<Alert>
 			<Save />
 			<AlertTitle>Recipe saved</AlertTitle>
-			<AlertDescription>
-				Your changes are synced across all devices.
-			</AlertDescription>
+			<AlertDescription>Your changes are synced across all devices.</AlertDescription>
 		</Alert>
 		<Alert variant="info">
 			<Info />
@@ -21,9 +19,7 @@ export const FeedbackSection = () => (
 		<Alert variant="success">
 			<CircleCheck />
 			<AlertTitle>Shot logged</AlertTitle>
-			<AlertDescription>
-				28 s — 36 g yield. Right on target for this recipe.
-			</AlertDescription>
+			<AlertDescription>28 s — 36 g yield. Right on target for this recipe.</AlertDescription>
 		</Alert>
 		<Alert variant="warning">
 			<TriangleAlert />
@@ -35,9 +31,7 @@ export const FeedbackSection = () => (
 		<Alert variant="destructive">
 			<CloudOff />
 			<AlertTitle>Sync failed</AlertTitle>
-			<AlertDescription>
-				Shot log couldn't be uploaded. Retrying in 5 minutes.
-			</AlertDescription>
+			<AlertDescription>Shot log couldn't be uploaded. Retrying in 5 minutes.</AlertDescription>
 		</Alert>
 	</div>
 );

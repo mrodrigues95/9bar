@@ -28,10 +28,7 @@ export const Pagination = ({ className, ...props }: PaginationProps) => {
 export type PaginationContentProps = React.ComponentProps<"ul">;
 
 /** A horizontal list that lays out {@link PaginationItem} elements. */
-export const PaginationContent = ({
-	className,
-	...props
-}: PaginationContentProps) => {
+export const PaginationContent = ({ className, ...props }: PaginationContentProps) => {
 	return (
 		<ul
 			data-slot="pagination-content"
@@ -75,9 +72,7 @@ export const PaginationLink = ({
 };
 
 /** Props for the {@link PaginationPrevious} component. */
-export type PaginationPreviousProps = React.ComponentProps<
-	typeof PaginationLink
-> & {
+export type PaginationPreviousProps = React.ComponentProps<typeof PaginationLink> & {
 	text?: string;
 };
 
@@ -101,18 +96,12 @@ export const PaginationPrevious = ({
 };
 
 /** Props for the {@link PaginationNext} component. */
-export type PaginationNextProps = React.ComponentProps<
-	typeof PaginationLink
-> & {
+export type PaginationNextProps = React.ComponentProps<typeof PaginationLink> & {
 	text?: string;
 };
 
 /** A link that navigates to the next page. */
-export const PaginationNext = ({
-	className,
-	text = "Next",
-	...props
-}: PaginationNextProps) => {
+export const PaginationNext = ({ className, text = "Next", ...props }: PaginationNextProps) => {
 	return (
 		<PaginationLink
 			aria-label="Go to next page"
@@ -130,10 +119,7 @@ export const PaginationNext = ({
 export type PaginationEllipsisProps = React.ComponentProps<"span">;
 
 /** A non-interactive indicator representing omitted page numbers between visible ranges. */
-export const PaginationEllipsis = ({
-	className,
-	...props
-}: PaginationEllipsisProps) => {
+export const PaginationEllipsis = ({ className, ...props }: PaginationEllipsisProps) => {
 	return (
 		<span
 			aria-hidden
@@ -164,27 +150,17 @@ export const PaginationButton = ({
 	...props
 }: PaginationButtonProps) => {
 	return (
-		<PaginationLink
-			isActive={isActive}
-			className={cn("size-7 p-0", className)}
-			{...props}
-		>
+		<PaginationLink isActive={isActive} className={cn("size-7 p-0", className)} {...props}>
 			{children}
 		</PaginationLink>
 	);
 };
 
 /** Props for the {@link PaginationFirst} component. */
-export type PaginationFirstProps = Omit<
-	PaginationLinkProps,
-	"size" | "children"
->;
+export type PaginationFirstProps = Omit<PaginationLinkProps, "size" | "children">;
 
 /** A link that navigates to the first page. */
-export const PaginationFirst = ({
-	className,
-	...props
-}: PaginationFirstProps) => {
+export const PaginationFirst = ({ className, ...props }: PaginationFirstProps) => {
 	return (
 		<PaginationLink
 			aria-label="Go to first page"
@@ -197,22 +173,12 @@ export const PaginationFirst = ({
 };
 
 /** Props for the {@link PaginationLast} component. */
-export type PaginationLastProps = Omit<
-	PaginationLinkProps,
-	"size" | "children"
->;
+export type PaginationLastProps = Omit<PaginationLinkProps, "size" | "children">;
 
 /** A link that navigates to the last page. */
-export const PaginationLast = ({
-	className,
-	...props
-}: PaginationLastProps) => {
+export const PaginationLast = ({ className, ...props }: PaginationLastProps) => {
 	return (
-		<PaginationLink
-			aria-label="Go to last page"
-			className={cn("size-7 p-0", className)}
-			{...props}
-		>
+		<PaginationLink aria-label="Go to last page" className={cn("size-7 p-0", className)} {...props}>
 			<ChevronsRightIcon />
 		</PaginationLink>
 	);
@@ -255,16 +221,10 @@ export const generatePagination = ({
 	};
 
 	const startPages = range(1, Math.min(boundaryCount, totalPages));
-	const endPages = range(
-		Math.max(totalPages - boundaryCount + 1, boundaryCount + 1),
-		totalPages,
-	);
+	const endPages = range(Math.max(totalPages - boundaryCount + 1, boundaryCount + 1), totalPages);
 
 	const siblingsStart = Math.max(
-		Math.min(
-			currentPage - siblingCount,
-			totalPages - boundaryCount - siblingCount * 2 - 1,
-		),
+		Math.min(currentPage - siblingCount, totalPages - boundaryCount - siblingCount * 2 - 1),
 		boundaryCount + 2,
 	);
 

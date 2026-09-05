@@ -51,22 +51,22 @@ export const ListExample: Story = {
 		<div className="w-96 rounded-lg border border-border bg-white">
 			<div className="flex items-center justify-between p-4">
 				<div>
-					<div className="font-medium text-sm">John Doe</div>
-					<div className="text-muted-foreground text-xs">john@example.com</div>
+					<div className="text-sm font-medium">John Doe</div>
+					<div className="text-xs text-muted-foreground">john@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
-					<div className="font-medium text-sm">Jane Smith</div>
-					<div className="text-muted-foreground text-xs">jane@example.com</div>
+					<div className="text-sm font-medium">Jane Smith</div>
+					<div className="text-xs text-muted-foreground">jane@example.com</div>
 				</div>
 			</div>
 			<Separator {...props} />
 			<div className="flex items-center justify-between p-4">
 				<div>
-					<div className="font-medium text-sm">Bob Johnson</div>
-					<div className="text-muted-foreground text-xs">bob@example.com</div>
+					<div className="text-sm font-medium">Bob Johnson</div>
+					<div className="text-xs text-muted-foreground">bob@example.com</div>
 				</div>
 			</div>
 		</div>

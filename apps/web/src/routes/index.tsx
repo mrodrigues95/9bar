@@ -1,16 +1,13 @@
 import * as fs from "node:fs";
-import { Heading, Text } from "@9bar/toolkit/components";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { Heading, Text } from "@9bar/toolkit/components";
 import { Link } from "../components";
 
 const filePath = "count.txt";
 
 async function readCount() {
-	return parseInt(
-		await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
-		10,
-	);
+	return parseInt(await fs.promises.readFile(filePath, "utf-8").catch(() => "0"), 10);
 }
 
 const getCount = createServerFn({

@@ -190,20 +190,12 @@ export const ComposedForm: Story = {
 				<form.AppForm>
 					<form.AppField name="firstName">
 						{(field) => (
-							<field.Input
-								label="First Name"
-								description="Enter your first name"
-								isRequired
-							/>
+							<field.Input label="First Name" description="Enter your first name" isRequired />
 						)}
 					</form.AppField>
 					<form.AppField name="lastName">
 						{(field) => (
-							<field.Input
-								label="Last Name"
-								description="Enter your last name"
-								isRequired
-							/>
+							<field.Input label="Last Name" description="Enter your last name" isRequired />
 						)}
 					</form.AppField>
 					<form.AppField name="age">
@@ -279,9 +271,7 @@ const schema = z.object({
 		.min(3, "[Zod] You must have a length of at least 3")
 		.startsWith("A", "[Zod] Username must start with 'A'"),
 	email: z.email("[Zod] Invalid email address"),
-	password: z
-		.string()
-		.min(8, "[Zod] Password must be at least 8 characters long"),
+	password: z.string().min(8, "[Zod] Password must be at least 8 characters long"),
 	notificationFrequency: z
 		.object({
 			inputValue: z.string(),
@@ -444,7 +434,7 @@ const ContactFormComponent = withForm({
 	render: function Render({ form, title }) {
 		return (
 			<div className="space-y-4">
-				<h2 className="font-semibold text-lg">{title}</h2>
+				<h2 className="text-lg font-semibold">{title}</h2>
 				<form.AppField
 					name="name"
 					validators={{
@@ -469,19 +459,12 @@ const ContactFormComponent = withForm({
 						},
 					}}
 				>
-					{(field) => (
-						<field.Input
-							label="Email"
-							isRequired
-							inputProps={{ type: "email" }}
-						/>
-					)}
+					{(field) => <field.Input label="Email" isRequired inputProps={{ type: "email" }} />}
 				</form.AppField>
 				<form.AppField
 					name="subject"
 					validators={{
-						onChange: ({ value }) =>
-							!value ? "Subject is required" : undefined,
+						onChange: ({ value }) => (!value ? "Subject is required" : undefined),
 					}}
 				>
 					{(field) => <field.Input label="Subject" isRequired />}
@@ -512,8 +495,7 @@ const ContactFormComponent = withForm({
 				<form.AppField
 					name="message"
 					validators={{
-						onChange: ({ value }) =>
-							!value ? "Message is required" : undefined,
+						onChange: ({ value }) => (!value ? "Message is required" : undefined),
 					}}
 				>
 					{(field) => (
@@ -540,9 +522,7 @@ const ContactFormComponent = withForm({
 							description="We'll email you a copy for your records"
 							isRequired
 						>
-							<Checkbox value="sendCopy">
-								Send me a copy of this message
-							</Checkbox>
+							<Checkbox value="sendCopy">Send me a copy of this message</Checkbox>
 						</field.CheckboxGroup>
 					)}
 				</form.AppField>

@@ -1,11 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import {
-	CircleCheck,
-	Info as InfoIcon,
-	TriangleAlert,
-	Users,
-	X,
-} from "lucide-react";
+import { CircleCheck, Info as InfoIcon, TriangleAlert, Users, X } from "lucide-react";
 import { Button } from "../button/button";
 import { IconButton } from "../icon-button/icon-button";
 import { Link } from "../link/link";
@@ -97,9 +91,7 @@ export const DescriptionOnly: Story = {
 	render: (props) => (
 		<Alert {...props}>
 			<InfoIcon />
-			<AlertDescription>
-				This alert only contains a description without a title.
-			</AlertDescription>
+			<AlertDescription>This alert only contains a description without a title.</AlertDescription>
 		</Alert>
 	),
 };
@@ -110,9 +102,7 @@ export const CustomIcon: Story = {
 		<Alert {...props}>
 			<Users />
 			<AlertTitle>Team Invitation</AlertTitle>
-			<AlertDescription>
-				You've been invited to join the team workspace.
-			</AlertDescription>
+			<AlertDescription>You've been invited to join the team workspace.</AlertDescription>
 		</Alert>
 	),
 };
@@ -134,8 +124,7 @@ export const WithDismiss: Story = {
 			<CircleCheck />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
-				You're using 90% of your available storage. Consider upgrading your
-				plan.
+				You're using 90% of your available storage. Consider upgrading your plan.
 			</AlertDescription>
 			<AlertAction>
 				<IconButton aria-label="Close" variant="ghost" size="sm">
@@ -153,8 +142,7 @@ export const WithActionButton: Story = {
 			<TriangleAlert />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
-				You're using 90% of your available storage. Consider upgrading your
-				plan.
+				You're using 90% of your available storage. Consider upgrading your plan.
 			</AlertDescription>
 			<AlertAction>
 				<Button variant="ghost">Upgrade Plan</Button>
@@ -169,9 +157,7 @@ export const WithLinkAction: Story = {
 		<Alert {...props}>
 			<InfoIcon />
 			<AlertTitle>New Feature Available</AlertTitle>
-			<AlertDescription>
-				Check out our new dashboard with enhanced analytics.
-			</AlertDescription>
+			<AlertDescription>Check out our new dashboard with enhanced analytics.</AlertDescription>
 			<AlertAction>
 				<Link size="sm">Learn More</Link>
 			</AlertAction>

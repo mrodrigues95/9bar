@@ -13,7 +13,7 @@ export type InputProps = React.ComponentProps<typeof AriaInput>;
  * other input primitives (such as {@link Textarea}) to avoid duplicated styling.
  */
 export const inputVariants = cva([
-	"w-full rounded-md border border-input bg-input/20 px-2 outline-none transition-colors",
+	"w-full rounded-md border border-input bg-input/20 px-2 transition-colors outline-none",
 	"text-sm placeholder:text-muted-foreground",
 	"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
 	"aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
@@ -34,7 +34,7 @@ export const Input = ({ className, type, ...props }: InputProps) => {
 						inputVariants(),
 						"h-7 min-w-0 py-0.5",
 						"file:inline-flex file:h-6 file:border-0 file:bg-transparent file:font-medium",
-						"file:text-foreground file:text-xs/relaxed",
+						"file:text-xs/relaxed file:text-foreground",
 						"disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
 					],
 					className,

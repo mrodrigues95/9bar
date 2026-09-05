@@ -147,9 +147,7 @@ export const SingleSelection: Story = {
 /** A multi-select menu with independent toggleable items. */
 export const MultipleSelection: Story = {
 	render: (props) => {
-		const [selected, setSelected] = useState<Set<Key>>(
-			new Set(["espresso", "pour-over"]),
-		);
+		const [selected, setSelected] = useState<Set<Key>>(new Set(["espresso", "pour-over"]));
 
 		return (
 			<MenuTrigger>

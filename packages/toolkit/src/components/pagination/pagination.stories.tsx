@@ -46,10 +46,7 @@ export const Default: Story = {
 			<Pagination {...props}>
 				<PaginationContent>
 					<PaginationItem>
-						<PaginationFirst
-							onPress={() => setPage(1)}
-							isDisabled={page === 1}
-						/>
+						<PaginationFirst onPress={() => setPage(1)} isDisabled={page === 1} />
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationPrevious
@@ -85,10 +82,7 @@ export const Default: Story = {
 						/>
 					</PaginationItem>
 					<PaginationItem>
-						<PaginationLast
-							onPress={() => setPage(totalPages)}
-							isDisabled={page === totalPages}
-						/>
+						<PaginationLast onPress={() => setPage(totalPages)} isDisabled={page === totalPages} />
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>
@@ -131,7 +125,7 @@ export const SimplePagination: Story = {
 						</PaginationItem>
 					</PaginationContent>
 				</Pagination>
-				<p className="text-gray-600 text-sm">Current page: {page}</p>
+				<p className="text-sm text-gray-600">Current page: {page}</p>
 			</div>
 		);
 	},
@@ -196,20 +190,10 @@ export const WithContent: Story = {
 		return (
 			<div className="space-y-4">
 				<div className="rounded-md border border-gray-200 p-4 dark:border-gray-700">
-					<p className="text-gray-600 text-sm">
-						Showing{" "}
-						<span className="font-medium text-primary dark:text-slate-50">
-							{startItem}
-						</span>{" "}
-						to{" "}
-						<span className="font-medium text-primary dark:text-slate-50">
-							{endItem}
-						</span>{" "}
-						of{" "}
-						<span className="font-medium text-primary dark:text-slate-50">
-							{totalItems}
-						</span>{" "}
-						items
+					<p className="text-sm text-gray-600">
+						Showing <span className="font-medium text-primary dark:text-slate-50">{startItem}</span>{" "}
+						to <span className="font-medium text-primary dark:text-slate-50">{endItem}</span> of{" "}
+						<span className="font-medium text-primary dark:text-slate-50">{totalItems}</span> items
 					</p>
 				</div>
 				<Pagination {...props}>

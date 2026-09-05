@@ -1,3 +1,22 @@
+import { Plus, X } from "lucide-react";
+import {
+	type ComponentProps,
+	createContext,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import {
+	Group as AriaGroup,
+	Toolbar as AriaToolbar,
+	type ToolbarProps as AriaToolbarProps,
+	type Key,
+	type Selection,
+} from "react-aria-components";
 import {
 	Button,
 	IconButton,
@@ -10,24 +29,6 @@ import {
 	MenuTrigger,
 } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { Plus, X } from "lucide-react";
-import {
-	type ComponentProps,
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import {
-	Group as AriaGroup,
-	Toolbar as AriaToolbar,
-	type ToolbarProps as AriaToolbarProps,
-	type Key,
-	type Selection,
-} from "react-aria-components";
 
 export interface FilterBarOption {
 	id: string;
@@ -49,10 +50,7 @@ export interface FilterBarDefinition<
 		singular: TOperatorId;
 		plural: TOperatorId;
 	}>;
-	formatValue?: (
-		values: ReadonlyArray<string>,
-		options: ReadonlyArray<FilterBarOption>,
-	) => string;
+	formatValue?: (values: ReadonlyArray<string>, options: ReadonlyArray<FilterBarOption>) => string;
 	/** Whether to partition value menu options (selected first, then unselected). Defaults to `true`. */
 	partitionOptions?: boolean;
 }
@@ -74,18 +72,12 @@ export interface FilterBarState<
 	filters: Array<FilterBarFilterState<TFilterId, TOperatorId>>;
 	clearAll: () => void;
 	removeFilter: (id: string) => void;
-	addFilter: (
-		filterId: TFilterId,
-		operatorId: TOperatorId,
-		values?: Array<string>,
-	) => string;
+	addFilter: (filterId: TFilterId, operatorId: TOperatorId, values?: Array<string>) => string;
 	updateOperator: (id: string, operatorId: TOperatorId) => void;
 	updateValues: (id: string, values: Array<string>) => void;
 }
-type InferFilterId<T> =
-	T extends FilterBarDefinition<infer F, string> ? F : never;
-type InferOperatorId<T> =
-	T extends FilterBarDefinition<string, infer O> ? O : never;
+type InferFilterId<T> = T extends FilterBarDefinition<infer F, string> ? F : never;
+type InferOperatorId<T> = T extends FilterBarDefinition<string, infer O> ? O : never;
 
 const resolveOperator = (
 	currentOp: string,
@@ -148,17 +140,15 @@ const partitionFilterOptions = (
 
 export const filterBarVariants = {
 	root: "flex flex-wrap items-center gap-1.5",
-	filter:
-		"flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border",
-	filterLabel:
-		"flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg]:size-3.5",
+	filter: "flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border",
+	filterLabel: "flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg]:size-3.5",
 	filterOperator: "rounded-none font-normal",
 	filterValue: "rounded-none",
 	filterRemove: "",
 	actions: "ml-auto flex items-center gap-1",
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: Type-erased context for generic component
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type-erased context for generic component
 const FilterBarContext = createContext<FilterBarState<any, any> | null>(null);
 
 export const useFilterBarContext = <
@@ -174,10 +164,7 @@ export const useFilterBarContext = <
 
 export interface FilterBarActionsProps extends ComponentProps<"div"> {}
 
-export const FilterBarActions = ({
-	className,
-	...props
-}: FilterBarActionsProps) => {
+export const FilterBarActions = ({ className, ...props }: FilterBarActionsProps) => {
 	return (
 		<div
 			data-slot="filter-bar-actions"
@@ -190,22 +177,12 @@ export const FilterBarActions = ({
 interface FilterBarChipProps {
 	filter: FilterBarFilterState;
 	definition: FilterBarDefinition;
-	onUpdate: (
-		id: string,
-		changes: { operatorId?: string; values?: Array<string> },
-	) => void;
+	onUpdate: (id: string, changes: { operatorId?: string; values?: Array<string> }) => void;
 	onRemove: (id: string) => void;
 }
 
-const FilterBarChip = ({
-	filter,
-	definition,
-	onUpdate,
-	onRemove,
-}: FilterBarChipProps) => {
-	const currentOp = definition.operators.find(
-		(o) => o.id === filter.operatorId,
-	);
+const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: FilterBarChipProps) => {
+	const currentOp = definition.operators.find((o) => o.id === filter.operatorId);
 	const visibleOperators = getVisibleOperators(
 		definition.operators,
 		filter.values.length,
@@ -214,11 +191,7 @@ const FilterBarChip = ({
 
 	const valueLabel = definition.formatValue
 		? definition.formatValue(filter.values, definition.options)
-		: formatValuesDefault(
-				filter.values,
-				definition.options,
-				definition.pluralLabel,
-			);
+		: formatValuesDefault(filter.values, definition.options, definition.pluralLabel);
 
 	const shouldPartition = definition.partitionOptions !== false;
 	const [selectedOptions, unselectedOptions] = shouldPartition
@@ -227,7 +200,9 @@ const FilterBarChip = ({
 
 	// Auto-remove when value menu closes with no selections
 	const selectedKeysRef = useRef(filter.values);
-	selectedKeysRef.current = filter.values;
+	useEffect(() => {
+		selectedKeysRef.current = filter.values;
+	}, [filter.values]);
 
 	const handleValueMenuOpenChange = useCallback(
 		(isOpen: boolean) => {
@@ -253,11 +228,7 @@ const FilterBarChip = ({
 		(keys: Selection) => {
 			if (keys === "all") return;
 			const newValues = [...keys].map((k) => k.toString());
-			const newOp = resolveOperator(
-				filter.operatorId,
-				newValues.length,
-				definition.operatorPairs,
-			);
+			const newOp = resolveOperator(filter.operatorId, newValues.length, definition.operatorPairs);
 			onUpdate(filter.id, {
 				...(newOp !== filter.operatorId ? { operatorId: newOp } : {}),
 				values: newValues,
@@ -272,10 +243,7 @@ const FilterBarChip = ({
 			aria-label={`${definition.label} ${currentOp?.label} ${valueLabel}`}
 			className={filterBarVariants.filter}
 		>
-			<span
-				data-slot="filter-bar-filter-label"
-				className={filterBarVariants.filterLabel}
-			>
+			<span data-slot="filter-bar-filter-label" className={filterBarVariants.filterLabel}>
 				{definition.icon}
 				{definition.label}
 			</span>
@@ -323,9 +291,7 @@ const FilterBarChip = ({
 									{opt.label}
 								</MenuItem>
 							))}
-							{selectedOptions.length > 0 && unselectedOptions.length > 0 && (
-								<MenuSeparator />
-							)}
+							{selectedOptions.length > 0 && unselectedOptions.length > 0 && <MenuSeparator />}
 							{unselectedOptions.map((opt) => (
 								<MenuItem key={opt.id} id={opt.id}>
 									{opt.label}
@@ -361,38 +327,24 @@ export interface FilterBarProps<
 > extends Omit<AriaToolbarProps, "orientation" | "children"> {
 	definitions: TDefs;
 	filters?: Array<
-		FilterBarFilterState<
-			InferFilterId<TDefs[number]>,
-			InferOperatorId<TDefs[number]>
-		>
+		FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
 	>;
 	onFiltersChange?: (
 		filters: Array<
-			FilterBarFilterState<
-				InferFilterId<TDefs[number]>,
-				InferOperatorId<TDefs[number]>
-			>
+			FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
 		>,
 	) => void;
 	defaultFilters?: Array<
-		FilterBarFilterState<
-			InferFilterId<TDefs[number]>,
-			InferOperatorId<TDefs[number]>
-		>
+		FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
 	>;
 	children?: (
-		state: FilterBarState<
-			InferFilterId<TDefs[number]>,
-			InferOperatorId<TDefs[number]>
-		>,
+		state: FilterBarState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>,
 	) => ReactNode;
 }
 
 type Filter = FilterBarFilterState;
 
-export const FilterBar = <
-	TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>,
->({
+export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>>({
 	definitions,
 	filters: controlledFilters,
 	onFiltersChange,
@@ -408,14 +360,13 @@ export const FilterBar = <
 		? (controlledFilters as Array<Filter>)
 		: uncontrolledFilters;
 
-	// biome-ignore lint/suspicious/noExplicitAny: Type-erased ref for generic callback
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type-erased ref for generic callback
 	const onFiltersChangeRef = useRef<any>(onFiltersChange);
-	onFiltersChangeRef.current = onFiltersChange;
+	useEffect(() => {
+		onFiltersChangeRef.current = onFiltersChange;
+	}, [onFiltersChange]);
 
-	const definitionById = useMemo(
-		() => new Map(definitions.map((d) => [d.id, d])),
-		[definitions],
-	);
+	const definitionById = useMemo(() => new Map(definitions.map((d) => [d.id, d])), [definitions]);
 
 	const getDefinition = useCallback(
 		(filterId: string): FilterBarDefinition => {
@@ -444,11 +395,7 @@ export const FilterBar = <
 	);
 
 	const addFilter = useCallback(
-		(
-			filterId: string,
-			operatorId: string,
-			values: Array<string> = [],
-		): string => {
+		(filterId: string, operatorId: string, values: Array<string> = []): string => {
 			const id = crypto.randomUUID();
 			update((current) => [...current, { id, filterId, operatorId, values }]);
 			return id;
@@ -465,18 +412,14 @@ export const FilterBar = <
 
 	const updateOperator = useCallback(
 		(id: string, operatorId: string) => {
-			update((current) =>
-				current.map((f) => (f.id === id ? { ...f, operatorId } : f)),
-			);
+			update((current) => current.map((f) => (f.id === id ? { ...f, operatorId } : f)));
 		},
 		[update],
 	);
 
 	const updateValues = useCallback(
 		(id: string, values: Array<string>) => {
-			update((current) =>
-				current.map((f) => (f.id === id ? { ...f, values } : f)),
-			);
+			update((current) => current.map((f) => (f.id === id ? { ...f, values } : f)));
 		},
 		[update],
 	);
@@ -487,9 +430,7 @@ export const FilterBar = <
 
 	const handleFilterUpdate = useCallback(
 		(id: string, changes: { operatorId?: string; values?: Array<string> }) => {
-			update((current) =>
-				current.map((f) => (f.id === id ? { ...f, ...changes } : f)),
-			);
+			update((current) => current.map((f) => (f.id === id ? { ...f, ...changes } : f)));
 		},
 		[update],
 	);
@@ -506,10 +447,7 @@ export const FilterBar = <
 		[filters, clearAll, removeFilter, addFilter, updateOperator, updateValues],
 	);
 
-	const filtersByFilterId = useMemo(
-		() => new Map(filters.map((f) => [f.filterId, f])),
-		[filters],
-	);
+	const filtersByFilterId = useMemo(() => new Map(filters.map((f) => [f.filterId, f])), [filters]);
 
 	const handleAddFilter = useCallback(
 		(defId: string, keys: Selection) => {
@@ -524,27 +462,14 @@ export const FilterBar = <
 
 			const existing = filtersByFilterId.get(defId);
 			if (existing) {
-				const newOp = resolveOperator(
-					existing.operatorId,
-					values.length,
-					def.operatorPairs,
-				);
+				const newOp = resolveOperator(existing.operatorId, values.length, def.operatorPairs);
 				update((current) =>
-					current.map((f) =>
-						f.id === existing.id ? { ...f, operatorId: newOp, values } : f,
-					),
+					current.map((f) => (f.id === existing.id ? { ...f, operatorId: newOp, values } : f)),
 				);
 			} else {
-				const op = resolveOperator(
-					def.defaultOperatorId,
-					values.length,
-					def.operatorPairs,
-				);
+				const op = resolveOperator(def.defaultOperatorId, values.length, def.operatorPairs);
 				const id = crypto.randomUUID();
-				update((current) => [
-					...current,
-					{ id, filterId: defId, operatorId: op, values },
-				]);
+				update((current) => [...current, { id, filterId: defId, operatorId: op, values }]);
 			}
 		},
 		[definitionById, filtersByFilterId, update],
@@ -569,12 +494,7 @@ export const FilterBar = <
 				))}
 
 				<MenuTrigger>
-					<IconButton
-						data-slot="filter-bar-add"
-						aria-label="Add filter"
-						variant="ghost"
-						size="sm"
-					>
+					<IconButton data-slot="filter-bar-add" aria-label="Add filter" variant="ghost" size="sm">
 						<Plus aria-hidden="true" />
 					</IconButton>
 					<Menu>
@@ -605,6 +525,7 @@ export const FilterBar = <
 				</MenuTrigger>
 
 				{children?.(
+					// eslint-disable-next-line react/refs -- `state` only carries callbacks that read refs inside event handlers; the rule cannot see through the render prop
 					state as unknown as FilterBarState<
 						InferFilterId<TDefs[number]>,
 						InferOperatorId<TDefs[number]>

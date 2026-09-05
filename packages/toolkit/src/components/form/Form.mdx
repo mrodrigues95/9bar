@@ -11,30 +11,45 @@ The toolkit provides a layered form system built on [React Aria Components](http
 The form system has three layers:
 
 <table className="w-full">
-  <thead>
-    <tr>
-      <th>Layer</th>
-      <th>Components</th>
-      <th>Purpose</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>**Primitives**</td>
-      <td>`Label`, `Input`, `Description`, `FieldError`, `Field`</td>
-      <td>Unstyled building blocks. Use these when the pre-built fields don't fit your layout or you need full control.</td>
-    </tr>
-    <tr>
-      <td>**Field components**</td>
-      <td>`TextField`, `TextareaField`, `SelectField`, `CheckboxField`, `CheckboxGroupField`, `InputGroupSelectField`</td>
-      <td>Opinionated compositions that wire up a label, input, description, and error message into a single component. Suitable for most standard forms.</td>
-    </tr>
-    <tr>
-      <td>**Form-connected fields**</td>
-      <td>`FormTextField`, `FormTextareaField`, `FormSelectField`, `FormCheckboxField`, `FormCheckboxGroupField`, `FormInputGroupSelectField`</td>
-      <td>Wrappers around the field components above that automatically bind to a TanStack Form field context — reading values, calling change/blur handlers, and displaying validation errors.</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Layer</th>
+			<th>Components</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>**Primitives**</td>
+			<td>`Label`, `Input`, `Description`, `FieldError`, `Field`</td>
+			<td>
+				Unstyled building blocks. Use these when the pre-built fields don't fit your layout or you
+				need full control.
+			</td>
+		</tr>
+		<tr>
+			<td>**Field components**</td>
+			<td>
+				`TextField`, `TextareaField`, `SelectField`, `CheckboxField`, `CheckboxGroupField`,
+				`InputGroupSelectField`
+			</td>
+			<td>
+				Opinionated compositions that wire up a label, input, description, and error message into a
+				single component. Suitable for most standard forms.
+			</td>
+		</tr>
+		<tr>
+			<td>**Form-connected fields**</td>
+			<td>
+				`FormTextField`, `FormTextareaField`, `FormSelectField`, `FormCheckboxField`,
+				`FormCheckboxGroupField`, `FormInputGroupSelectField`
+			</td>
+			<td>
+				Wrappers around the field components above that automatically bind to a TanStack Form field
+				context — reading values, calling change/blur handlers, and displaying validation errors.
+			</td>
+		</tr>
+	</tbody>
 </table>
 
 ### When to use each layer
@@ -53,13 +68,13 @@ The form system has three layers:
 import { useAppForm } from "@9bar/toolkit";
 
 const form = useAppForm({
-  defaultValues: {
-    email: "",
-    password: "",
-  },
-  onSubmit: async ({ value }) => {
-    await submitToApi(value);
-  },
+	defaultValues: {
+		email: "",
+		password: "",
+	},
+	onSubmit: async ({ value }) => {
+		await submitToApi(value);
+	},
 });
 ```
 
@@ -68,56 +83,61 @@ const form = useAppForm({
 Use `form.AppField` to render a form-connected field. The `name` prop must match a key in `defaultValues`. The render callback receives a `field` object with pre-registered components:
 
 <table className="w-full">
-  <thead>
-    <tr>
-      <th>Accessor</th>
-      <th>Renders</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>`field.Input`</td>
-      <td>`FormTextField`</td>
-    </tr>
-    <tr>
-      <td>`field.Textarea`</td>
-      <td>`FormTextareaField`</td>
-    </tr>
-    <tr>
-      <td>`field.Select`</td>
-      <td>`FormSelectField`</td>
-    </tr>
-    <tr>
-      <td>`field.Checkbox`</td>
-      <td>`FormCheckboxField`</td>
-    </tr>
-    <tr>
-      <td>`field.CheckboxGroup`</td>
-      <td>`FormCheckboxGroupField`</td>
-    </tr>
-    <tr>
-      <td>`field.InputGroupSelect`</td>
-      <td>`FormInputGroupSelectField`</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Accessor</th>
+			<th>Renders</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>`field.Input`</td>
+			<td>`FormTextField`</td>
+		</tr>
+		<tr>
+			<td>`field.Textarea`</td>
+			<td>`FormTextareaField`</td>
+		</tr>
+		<tr>
+			<td>`field.Select`</td>
+			<td>`FormSelectField`</td>
+		</tr>
+		<tr>
+			<td>`field.Checkbox`</td>
+			<td>`FormCheckboxField`</td>
+		</tr>
+		<tr>
+			<td>`field.CheckboxGroup`</td>
+			<td>`FormCheckboxGroupField`</td>
+		</tr>
+		<tr>
+			<td>`field.InputGroupSelect`</td>
+			<td>`FormInputGroupSelectField`</td>
+		</tr>
+	</tbody>
 </table>
 
 ```tsx
-<Form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}>
-  <form.AppField name="email">
-    {(field) => (
-      <field.Input
-        label="Email"
-        description="We'll never share your email."
-        isRequired
-        inputProps={{ type: "email" }}
-      />
-    )}
-  </form.AppField>
+<Form
+	onSubmit={(e) => {
+		e.preventDefault();
+		form.handleSubmit();
+	}}
+>
+	<form.AppField name="email">
+		{(field) => (
+			<field.Input
+				label="Email"
+				description="We'll never share your email."
+				isRequired
+				inputProps={{ type: "email" }}
+			/>
+		)}
+	</form.AppField>
 
-  <form.AppForm>
-    <form.SubmitButton variant="solid">Sign up</form.SubmitButton>
-  </form.AppForm>
+	<form.AppForm>
+		<form.SubmitButton variant="solid">Sign up</form.SubmitButton>
+	</form.AppForm>
 </Form>
 ```
 
@@ -127,7 +147,7 @@ Use `form.AppField` to render a form-connected field. The `name` prop must match
 
 ```tsx
 <form.SubmitButton loadingText="Saving..." variant="solid">
-  Save
+	Save
 </form.SubmitButton>
 ```
 
@@ -140,11 +160,7 @@ The form system supports three validation strategies. All three surface errors t
 Use standard HTML attributes (`required`, `type="email"`, `minLength`, etc.) directly on the field components. `isRequired`, `isDisabled`, and `isReadOnly` map to the native `required`, `disabled`, and `readOnly` attributes, and the browser's constraint validation API displays errors natively (`Form` defaults to `validationBehavior="native"`).
 
 ```tsx
-<TextField
-  isRequired
-  label="Email"
-  inputProps={{ type: "email", name: "email" }}
-/>
+<TextField isRequired label="Email" inputProps={{ type: "email", name: "email" }} />
 ```
 
 ### Inline validators (TanStack Form)
@@ -153,13 +169,12 @@ Pass an `onChange` or `onBlur` validator to `form.AppField`. Return a string to 
 
 ```tsx
 <form.AppField
-  name="username"
-  validators={{
-    onChange: ({ value }) =>
-      value.length < 3 ? "Must be at least 3 characters" : undefined,
-  }}
+	name="username"
+	validators={{
+		onChange: ({ value }) => (value.length < 3 ? "Must be at least 3 characters" : undefined),
+	}}
 >
-  {(field) => <field.Input label="Username" />}
+	{(field) => <field.Input label="Username" />}
 </form.AppField>
 ```
 
@@ -171,14 +186,16 @@ Pass a Zod schema as the `onChange` validator at the form level. TanStack Form m
 import z from "zod";
 
 const schema = z.object({
-  email: z.email("Invalid email"),
-  password: z.string().min(8, "Minimum 8 characters"),
+	email: z.email("Invalid email"),
+	password: z.string().min(8, "Minimum 8 characters"),
 });
 
 const form = useAppForm({
-  defaultValues: { email: "", password: "" },
-  validators: { onChange: schema },
-  onSubmit: async ({ value }) => { /* ... */ },
+	defaultValues: { email: "", password: "" },
+	validators: { onChange: schema },
+	onSubmit: async ({ value }) => {
+		/* ... */
+	},
 });
 ```
 
@@ -187,18 +204,21 @@ const form = useAppForm({
 Form-connected fields pass `field.state.meta.errors` straight to `FieldError`, which normalizes strings, `{"{ message }"}` objects, and Zod issues and renders them as a list (each error message has `role="alert"`). For non-standard error shapes, pass a `formatErrors` formatter to map the raw errors into displayable error items. A default formatter is available from `form/utils/errors`:
 
 <table className="w-full">
-  <thead>
-    <tr>
-      <th>Formatter</th>
-      <th>Use case</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>`defaultErrorFormatter`</td>
-      <td>Generic fallback. Normalizes strings, `{"{ message }"}` objects, and other types into message items.</td>
-    </tr>
-  </tbody>
+	<thead>
+		<tr>
+			<th>Formatter</th>
+			<th>Use case</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>`defaultErrorFormatter`</td>
+			<td>
+				Generic fallback. Normalizes strings, `{"{ message }"}` objects, and other types into
+				message items.
+			</td>
+		</tr>
+	</tbody>
 </table>
 
 ## `withForm` higher-order component
@@ -209,27 +229,27 @@ For reusable form sections that can be shared across routes, use `withForm`. It 
 import { withForm } from "@9bar/toolkit";
 
 const ContactSection = withForm({
-  defaultValues: {
-    name: "",
-    email: "",
-    message: "",
-  },
-  props: { title: "Contact Us" },
-  render: function Render({ form, title }) {
-    return (
-      <>
-        <h2>{title}</h2>
-        <form.AppField name="name">
-          {(field) => <field.Input label="Name" isRequired />}
-        </form.AppField>
-        {/* ... */}
-      </>
-    );
-  },
+	defaultValues: {
+		name: "",
+		email: "",
+		message: "",
+	},
+	props: { title: "Contact Us" },
+	render: function Render({ form, title }) {
+		return (
+			<>
+				<h2>{title}</h2>
+				<form.AppField name="name">
+					{(field) => <field.Input label="Name" isRequired />}
+				</form.AppField>
+				{/* ... */}
+			</>
+		);
+	},
 });
 
 // Usage:
-<ContactSection form={form} title="Get in touch" />
+<ContactSection form={form} title="Get in touch" />;
 ```
 
 ## Field components are opinionated
@@ -248,9 +268,9 @@ Every field component exposes `*Props` pass-through props for its composed child
 
 ```tsx
 <TextField
-  label="Search"
-  inputProps={{ placeholder: "Type to search...", "aria-label": "Search items" }}
-  descriptionProps={{ className: "sr-only" }}
+	label="Search"
+	inputProps={{ placeholder: "Type to search...", "aria-label": "Search items" }}
+	descriptionProps={{ className: "sr-only" }}
 />
 ```
 

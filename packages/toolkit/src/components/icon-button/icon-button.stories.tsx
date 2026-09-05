@@ -15,14 +15,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: { type: "select" },
-			options: [
-				"default",
-				"outline",
-				"secondary",
-				"ghost",
-				"destructive",
-				"link",
-			],
+			options: ["default", "outline", "secondary", "ghost", "destructive", "link"],
 		},
 		size: {
 			control: { type: "select" },

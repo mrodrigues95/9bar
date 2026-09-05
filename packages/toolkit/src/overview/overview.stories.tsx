@@ -40,16 +40,10 @@ export const Preview: Story = {
 				<Section title="Recipe" description="Recipe summary and brew stats">
 					<HeroSection />
 				</Section>
-				<Section
-					title="Forms"
-					description="Every form-connected field in one composition"
-				>
+				<Section title="Forms" description="Every form-connected field in one composition">
 					<FormSection />
 				</Section>
-				<Section
-					title="Brew log"
-					description="Lists, pagination, and empty states"
-				>
+				<Section title="Brew log" description="Lists, pagination, and empty states">
 					<BrewLogSection />
 				</Section>
 				<Section title="Feedback" description="All alert variants">

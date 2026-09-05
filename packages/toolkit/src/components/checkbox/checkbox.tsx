@@ -22,17 +22,12 @@ export type CheckboxControlProps = {
  * The clickable region of a {@link Checkbox}. Renders the checkbox input semantics
  * and composes the {@link CheckboxIndicator} with the label.
  */
-export const CheckboxControl = ({
-	children,
-	className,
-}: CheckboxControlProps) => {
+export const CheckboxControl = ({ children, className }: CheckboxControlProps) => {
 	return (
 		<AriaCheckboxButton
 			data-slot="checkbox-control"
 			className={cn(
-				[
-					"group/checkbox flex shrink-0 select-none items-center gap-2 text-sm outline-none",
-				],
+				["group/checkbox flex shrink-0 items-center gap-2 text-sm outline-none select-none"],
 				className,
 			)}
 		>
@@ -50,10 +45,7 @@ export type CheckboxIndicatorProps = {
 };
 
 /** The visual box of a {@link Checkbox}, rendered inside the {@link CheckboxControl}. */
-export const CheckboxIndicator = ({
-	children,
-	className,
-}: CheckboxIndicatorProps) => {
+export const CheckboxIndicator = ({ children, className }: CheckboxIndicatorProps) => {
 	return (
 		<span
 			data-slot="checkbox-indicator"
@@ -112,11 +104,7 @@ export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 				{({ isSelected, isIndeterminate }) => (
 					<>
 						<CheckboxIndicator>
-							{isIndeterminate ? (
-								<MinusIcon />
-							) : isSelected ? (
-								<CheckIcon />
-							) : null}
+							{isIndeterminate ? <MinusIcon /> : isSelected ? <CheckIcon /> : null}
 						</CheckboxIndicator>
 						{children}
 					</>

@@ -7,7 +7,7 @@ const alertVariants = cva(
 		"group/alert relative grid w-full gap-0.5 rounded-lg border px-2 py-1.5 text-left text-xs/relaxed",
 		"has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18",
 		"has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-1.5",
-		"*:[svg:not([class*='size-'])]:size-3.5 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current",
+		"*:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-3.5",
 	],
 	{
 		variants: {
@@ -46,8 +46,7 @@ const alertVariants = cva(
 );
 
 /** Props for the {@link Alert} component. */
-export type AlertProps = React.ComponentProps<"div"> &
-	VariantProps<typeof alertVariants>;
+export type AlertProps = React.ComponentProps<"div"> & VariantProps<typeof alertVariants>;
 
 /** An alert displays a brief, important message in a way that attracts the user's attention without interrupting their task. Combine with {@link AlertTitle} and {@link AlertDescription}. */
 export const Alert = ({ className, variant, ...props }: AlertProps) => {
@@ -85,16 +84,13 @@ export const AlertTitle = ({ className, ...props }: AlertTitleProps) => {
 export type AlertDescriptionProps = React.ComponentProps<"div">;
 
 /** Supplementary text that provides additional context for the {@link Alert}. */
-export const AlertDescription = ({
-	className,
-	...props
-}: AlertDescriptionProps) => {
+export const AlertDescription = ({ className, ...props }: AlertDescriptionProps) => {
 	return (
 		<div
 			data-slot="alert-description"
 			className={cn(
 				[
-					"text-balance text-muted-foreground text-xs/relaxed",
+					"text-xs/relaxed text-balance text-muted-foreground",
 					"md:text-pretty",
 					"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
 					"[&_p:not(:last-child)]:mb-4",

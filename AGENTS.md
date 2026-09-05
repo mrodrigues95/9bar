@@ -1,30 +1,32 @@
 # AGENTS.md
 
 <!-- intent-skills:start -->
+
 ## Skill Loading
 
 Before editing files for a substantial task:
+
 - Run `pnpm dlx @tanstack/intent@latest list` from the workspace root to see available local skills.
 - If a listed skill matches the task, run `pnpm dlx @tanstack/intent@latest load <package>#<skill>` before changing files.
 - Use the loaded `SKILL.md` guidance while making the change.
 - Monorepos: when working across packages, run the skill check from the workspace root and prefer the local skill for the package being changed.
 - Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
-<!-- intent-skills:end -->
 
+<!-- intent-skills:end -->
 
 ## Project Overview
 
 9bar is a specialty espresso recipe and brew logging web app. TypeScript monorepo:
 
-| Package | Path | Description |
-|---------|------|-------------|
-| `@9bar/web` | `apps/web/` | Full-stack app: TanStack Start, TanStack Router, React 19 |
+| Package         | Path                | Description                                                           |
+| --------------- | ------------------- | --------------------------------------------------------------------- |
+| `@9bar/web`     | `apps/web/`         | Full-stack app: TanStack Start, TanStack Router, React 19             |
 | `@9bar/toolkit` | `packages/toolkit/` | Design system: React Aria Components, Tailwind Variants, Storybook 10 |
 
 ## Tooling
 
 - **pnpm only** — npm and yarn are blocked via `engines`. Always run `pnpm install` from the repo root, never inside a package.
-- **Biome** for linting/formatting — not ESLint/Prettier. Use `pnpm check:fix` to auto-fix.
+- **Oxlint** for linting (`pnpm lint`, auto-fix with `pnpm lint:fix`) and **Oxfmt** for formatting (`pnpm format`, check with `pnpm format:check`) — not ESLint/Prettier/Biome.
 - **Conventional Commits** enforced by commitlint in CI.
 
 ## Commands
@@ -52,6 +54,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commi
 ## Skills
 
 Concern and package-specific guidance lives in `.agents/skills/`. Load the matching skill when the task is in scope:
+
 - `toolkit` — toolkit components, class-string formatting, form system, Storybook, shadcn workflow
 - `web` — web-app conventions not covered by TanStack skills
 - `a11y` — accessibility guidelines for UI work

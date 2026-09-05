@@ -1,5 +1,5 @@
-import { Heading, Text } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
+import { Heading, Text } from "@9bar/toolkit/components";
 
 const Profile = () => {
 	return (
@@ -8,8 +8,8 @@ const Profile = () => {
 				Profile
 			</Heading>
 			<Text as="p" variant="body-lg">
-				Manage your profile settings and preferences. Update your information
-				and customize your experience.
+				Manage your profile settings and preferences. Update your information and customize your
+				experience.
 			</Text>
 		</div>
 	);

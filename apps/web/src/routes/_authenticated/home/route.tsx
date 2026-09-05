@@ -1,3 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Beaker } from "lucide-react";
 import {
 	Alert,
 	AlertAction,
@@ -5,8 +7,6 @@ import {
 	AlertTitle,
 	Heading,
 } from "@9bar/toolkit/components";
-import { createFileRoute } from "@tanstack/react-router";
-import { Beaker } from "lucide-react";
 import { Link } from "../../../components";
 
 const Home = () => {
@@ -18,9 +18,7 @@ const Home = () => {
 			<Alert variant="default">
 				<Beaker />
 				<AlertTitle>Set your machine & grinder</AlertTitle>
-				<AlertDescription>
-					Get tailored recommendations based on your setup.
-				</AlertDescription>
+				<AlertDescription>Get tailored recommendations based on your setup.</AlertDescription>
 				<AlertAction>
 					<Link to="/profile">Set up now</Link>
 				</AlertAction>

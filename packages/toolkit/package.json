@@ -1,9 +1,9 @@
 {
 	"name": "@9bar/toolkit",
 	"version": "1.0.0",
-	"type": "module",
 	"private": true,
 	"description": "Primitive design system for 9bar",
+	"type": "module",
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
 	"imports": {
@@ -20,7 +20,6 @@
 		"./globals.css": "./src/styles/globals.css"
 	},
 	"scripts": {
-		"lint": "eslint .",
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
@@ -57,7 +56,6 @@
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-react-aria-components": "^2.2.0",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
-		"typescript-eslint": "^8.65.0",
 		"vite": "^8.1.5"
 	},
 	"peerDependencies": {

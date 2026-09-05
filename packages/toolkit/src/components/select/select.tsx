@@ -17,11 +17,7 @@ import {
 	type SelectValueProps,
 } from "react-aria-components";
 import { Button, type ButtonProps } from "#components/button";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "#components/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "#components/input-group";
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
@@ -31,30 +27,18 @@ import { cn } from "#lib/utils";
 export type { SelectProps };
 
 /** A dropdown that allows a user to choose one or more options from a collapsible list. Compose {@link SelectTrigger}, {@link SelectValue}, and {@link SelectContent}. */
-export const Select = <
-	T extends object,
-	M extends "single" | "multiple" = "single",
->({
+export const Select = <T extends object, M extends "single" | "multiple" = "single">({
 	className,
 	...props
 }: SelectProps<T, M>) => {
-	return (
-		<AriaSelect
-			data-slot="select"
-			className={cn("w-fit", className)}
-			{...props}
-		/>
-	);
+	return <AriaSelect data-slot="select" className={cn("w-fit", className)} {...props} />;
 };
 
 /** Props for the {@link SelectGroup} component. */
 export type { SelectGroupProps };
 
 /** A semantic group of related {@link SelectItem} elements within a {@link SelectList}. */
-export const SelectGroup = <T extends object>({
-	className,
-	...props
-}: SelectGroupProps<T>) => {
+export const SelectGroup = <T extends object>({ className, ...props }: SelectGroupProps<T>) => {
 	return (
 		<AriaListBoxSection
 			data-slot="select-group"
@@ -76,10 +60,7 @@ export const SelectValue = <T extends object>({
 	return (
 		<AriaSelectValue
 			data-slot="select-value"
-			className={cn(
-				"flex flex-1 text-left data-placeholder:text-muted-foreground",
-				className,
-			)}
+			className={cn("flex flex-1 text-left data-placeholder:text-muted-foreground", className)}
 			{...props}
 		>
 			{typeof children === "function"
@@ -204,15 +185,12 @@ export const SelectPopover = ({
 export type { ListBoxProps };
 
 /** The scrollable list of options rendered inside a {@link SelectContent}. */
-export const SelectList = <T extends object>({
-	className,
-	...props
-}: ListBoxProps<T>) => {
+export const SelectList = <T extends object>({ className, ...props }: ListBoxProps<T>) => {
 	return (
 		<AriaListBox
 			data-slot="select-list"
 			className={cn(
-				"group/select-list max-h-[inherit] overflow-y-auto overflow-x-hidden p-1 outline-hidden",
+				"group/select-list max-h-[inherit] overflow-x-hidden overflow-y-auto p-1 outline-hidden",
 				className,
 			)}
 			{...props}
@@ -228,6 +206,7 @@ export const SelectInput = ({ className, ...props }: SearchFieldProps) => {
 	return (
 		<SearchField
 			{...props}
+			// eslint-disable-next-line jsx-a11y/no-autofocus -- Search input in an open select menu must take focus for keyboard filtering
 			autoFocus
 			data-slot="select-input-wrapper"
 			className={cn("p-1 pb-0", className)}
@@ -263,24 +242,20 @@ export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
 export type SelectItemProps = React.ComponentProps<typeof AriaListBoxItem>;
 
 /** An individual option within a {@link SelectList}. */
-export const SelectItem = ({
-	className,
-	children,
-	...props
-}: SelectItemProps) => {
+export const SelectItem = ({ className, children, ...props }: SelectItemProps) => {
 	return (
 		<AriaListBoxItem
 			data-slot="select-item"
 			textValue={typeof children === "string" ? children : undefined}
 			className={cn(
 				[
-					"relative flex min-h-7 w-full cursor-default select-none items-center gap-2",
+					"relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
 					"rounded-md px-2 py-1 text-xs/relaxed outline-hidden",
 					"focus:bg-accent focus:text-accent-foreground",
 					"not-data-[variant=destructive]:focus:**:text-accent-foreground",
-					"data-disabled:pointer-events-none data-focused:bg-accent data-focused:text-accent-foreground",
+					"data-focused:bg-accent data-focused:text-accent-foreground data-disabled:pointer-events-none",
 					"data-disabled:opacity-50",
-					"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 					"*:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
 				],
 				className,
@@ -289,9 +264,7 @@ export const SelectItem = ({
 		>
 			{composeRenderProps(children, (children, { isSelected }) => (
 				<>
-					<span className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
-						{children}
-					</span>
+					<span className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">{children}</span>
 					<span className="pointer-events-none absolute right-2 flex items-center justify-center">
 						{isSelected ? <CheckIcon className="pointer-events-none" /> : null}
 					</span>
@@ -305,10 +278,7 @@ export const SelectItem = ({
 export type SelectSeparatorProps = React.ComponentProps<typeof Separator>;
 
 /** A divider between {@link SelectGroup} sections within a {@link SelectList}. */
-export const SelectSeparator = ({
-	className,
-	...props
-}: SelectSeparatorProps) => {
+export const SelectSeparator = ({ className, ...props }: SelectSeparatorProps) => {
 	return (
 		<Separator
 			data-slot="select-separator"

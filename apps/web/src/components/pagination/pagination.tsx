@@ -1,3 +1,4 @@
+import { type ReactNode, useState } from "react";
 import {
 	generatePagination,
 	PaginationButton,
@@ -11,7 +12,6 @@ import {
 	Text,
 	Pagination as ToolkitPagination,
 } from "@9bar/toolkit/components";
-import { type ReactNode, useState } from "react";
 
 const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => {
 	return <span className="font-medium text-primary">{children}</span>;
@@ -31,11 +31,9 @@ const PaginationSummary = ({
 
 	return (
 		<Text variant="caption">
-			Showing{" "}
-			<PaginationSummaryHighlight>{startItem}</PaginationSummaryHighlight> to{" "}
+			Showing <PaginationSummaryHighlight>{startItem}</PaginationSummaryHighlight> to{" "}
 			<PaginationSummaryHighlight>{endItem}</PaginationSummaryHighlight> of{" "}
-			<PaginationSummaryHighlight>{totalItems}</PaginationSummaryHighlight>{" "}
-			recipes
+			<PaginationSummaryHighlight>{totalItems}</PaginationSummaryHighlight> recipes
 		</Text>
 	);
 };
@@ -55,18 +53,11 @@ export const Pagination = () => {
 
 	return (
 		<div className="flex w-full items-center justify-between">
-			<PaginationSummary
-				page={page}
-				itemsPerPage={itemsPerPage}
-				totalItems={totalItems}
-			/>
+			<PaginationSummary page={page} itemsPerPage={itemsPerPage} totalItems={totalItems} />
 			<ToolkitPagination>
 				<PaginationContent>
 					<PaginationItem>
-						<PaginationFirst
-							onPress={() => setPage(1)}
-							isDisabled={page === 1}
-						/>
+						<PaginationFirst onPress={() => setPage(1)} isDisabled={page === 1} />
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationPrevious
@@ -102,10 +93,7 @@ export const Pagination = () => {
 						/>
 					</PaginationItem>
 					<PaginationItem>
-						<PaginationLast
-							onPress={() => setPage(totalPages)}
-							isDisabled={page === totalPages}
-						/>
+						<PaginationLast onPress={() => setPage(totalPages)} isDisabled={page === totalPages} />
 					</PaginationItem>
 				</PaginationContent>
 			</ToolkitPagination>

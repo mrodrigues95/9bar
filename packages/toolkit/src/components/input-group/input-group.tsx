@@ -20,7 +20,7 @@ export const InputGroup = ({ className, ...props }: GroupProps) => {
 			className={cn(
 				[
 					"group/input-group relative flex h-7 w-full min-w-0 items-center rounded-md",
-					"border border-input bg-input/20 outline-none transition-colors",
+					"border border-input bg-input/20 transition-colors outline-none",
 					"in-data-[slot=combobox-content]:focus-within:border-inherit",
 					"in-data-[slot=combobox-content]:focus-within:ring-0",
 					"has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-start]]:h-auto",
@@ -49,8 +49,8 @@ export const InputGroup = ({ className, ...props }: GroupProps) => {
 
 const inputGroupAddonVariants = cva(
 	[
-		"flex h-auto cursor-text select-none items-center justify-center gap-1 py-2",
-		"font-medium text-muted-foreground text-xs/relaxed",
+		"flex h-auto cursor-text items-center justify-center gap-1 py-2 select-none",
+		"text-xs/relaxed font-medium text-muted-foreground",
 		"**:data-[slot=kbd]:rounded-[calc(var(--radius-sm)-2px)]",
 		"**:data-[slot=kbd]:bg-muted-foreground/10 **:data-[slot=kbd]:px-1",
 		"**:data-[slot=kbd]:text-[0.625rem]",
@@ -60,10 +60,8 @@ const inputGroupAddonVariants = cva(
 	{
 		variants: {
 			align: {
-				"inline-start":
-					"order-first pl-2 has-[>button]:ml-[-0.275rem] has-[>kbd]:ml-[-0.275rem]",
-				"inline-end":
-					"order-last pr-2 has-[>button]:mr-[-0.275rem] has-[>kbd]:mr-[-0.275rem]",
+				"inline-start": "order-first pl-2 has-[>button]:ml-[-0.275rem] has-[>kbd]:ml-[-0.275rem]",
+				"inline-end": "order-last pr-2 has-[>button]:mr-[-0.275rem] has-[>kbd]:mr-[-0.275rem]",
 				"block-start": [
 					"order-first w-full justify-start px-2 pt-2 group-has-[>input]/input-group:pt-2",
 					"[.border-b]:pb-2",
@@ -101,28 +99,22 @@ export const InputGroupAddon = ({
 };
 
 /** Variants for compact controls rendered inside an {@link InputGroup}. Shared by {@link InputGroupButton} and {@link InputGroupSelectTrigger}. */
-export const inputGroupButtonVariants = cva(
-	"flex items-center gap-2 text-xs/relaxed shadow-none",
-	{
-		variants: {
-			size: {
-				xs: "h-5 gap-1 rounded-[calc(var(--radius-sm)-2px)] px-1 [&>svg:not([class*='size-'])]:size-3",
-				sm: "gap-1",
-				"icon-xs": "size-6 p-0 has-[>svg]:p-0",
-				"icon-sm": "size-7 p-0 has-[>svg]:p-0",
-			},
-		},
-		defaultVariants: {
-			size: "xs",
+export const inputGroupButtonVariants = cva("flex items-center gap-2 text-xs/relaxed shadow-none", {
+	variants: {
+		size: {
+			xs: "h-5 gap-1 rounded-[calc(var(--radius-sm)-2px)] px-1 [&>svg:not([class*='size-'])]:size-3",
+			sm: "gap-1",
+			"icon-xs": "size-6 p-0 has-[>svg]:p-0",
+			"icon-sm": "size-7 p-0 has-[>svg]:p-0",
 		},
 	},
-);
+	defaultVariants: {
+		size: "xs",
+	},
+});
 
 /** Props for the {@link InputGroupButton} component. */
-export type InputGroupButtonProps = Omit<
-	React.ComponentProps<typeof Button>,
-	"size" | "type"
-> &
+export type InputGroupButtonProps = Omit<React.ComponentProps<typeof Button>, "size" | "type"> &
 	VariantProps<typeof inputGroupButtonVariants> & {
 		type?: "button" | "submit" | "reset";
 	};
@@ -178,16 +170,13 @@ export const InputGroupSelectTrigger = ({
 export type InputGroupTextProps = React.ComponentProps<"span">;
 
 /** Static text rendered inside an {@link InputGroup}, such as a unit of measure. */
-export const InputGroupText = ({
-	className,
-	...props
-}: InputGroupTextProps) => {
+export const InputGroupText = ({ className, ...props }: InputGroupTextProps) => {
 	return (
 		<span
 			className={cn(
 				[
-					"flex items-center gap-2 text-muted-foreground text-xs/relaxed",
-					"[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
+					"flex items-center gap-2 text-xs/relaxed text-muted-foreground",
+					"[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
 				],
 				className,
 			)}
@@ -200,10 +189,7 @@ export const InputGroupText = ({
 export type InputGroupInputProps = React.ComponentProps<"input">;
 
 /** The input control embedded in an {@link InputGroup}. */
-export const InputGroupInput = ({
-	className,
-	...props
-}: InputGroupInputProps) => {
+export const InputGroupInput = ({ className, ...props }: InputGroupInputProps) => {
 	return (
 		<Input
 			data-slot="input-group-control"
@@ -223,10 +209,7 @@ export const InputGroupInput = ({
 export type InputGroupTextareaProps = React.ComponentProps<"textarea">;
 
 /** The textarea control embedded in an {@link InputGroup}. */
-export const InputGroupTextarea = ({
-	className,
-	...props
-}: InputGroupTextareaProps) => {
+export const InputGroupTextarea = ({ className, ...props }: InputGroupTextareaProps) => {
 	return (
 		<Textarea
 			data-slot="input-group-control"

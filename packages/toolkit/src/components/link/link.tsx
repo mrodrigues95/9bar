@@ -7,9 +7,7 @@ import {
 import { buttonVariants } from "../button/button";
 
 /** Props for the {@link Link} component. */
-export interface LinkProps
-	extends AriaLinkProps,
-		VariantProps<typeof buttonVariants> {
+export interface LinkProps extends AriaLinkProps, VariantProps<typeof buttonVariants> {
 	"aria-current"?: "page" | "step" | "location" | "date" | "time" | "true";
 }
 

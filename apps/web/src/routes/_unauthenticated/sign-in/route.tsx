@@ -1,5 +1,5 @@
-import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
+import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 import { Link } from "../../../components";
 
 const SignIn = () => {
@@ -28,12 +28,7 @@ const SignIn = () => {
 						Forgot password?
 					</Link>
 				</div>
-				<Button
-					type="submit"
-					variant="default"
-					size="default"
-					className="w-full"
-				>
+				<Button type="submit" variant="default" size="default" className="w-full">
 					Sign in to account
 				</Button>
 			</Form>

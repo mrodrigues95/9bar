@@ -31,10 +31,7 @@ export type MenuProps<T extends object> = Omit<
 	React.ComponentProps<typeof AriaMenu<T>>,
 	"className"
 > &
-	Pick<
-		React.ComponentProps<typeof AriaPopover>,
-		"placement" | "offset" | "crossOffset"
-	> & {
+	Pick<React.ComponentProps<typeof AriaPopover>, "placement" | "offset" | "crossOffset"> & {
 		"data-slot"?: string;
 		className?: string;
 	};
@@ -59,7 +56,7 @@ export const Menu = <T extends object>({
 				popoverVariants(),
 				[
 					"w-(--trigger-width) min-w-32",
-					"overflow-y-auto overflow-x-hidden p-1",
+					"overflow-x-hidden overflow-y-auto p-1",
 					"data-exiting:overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
 				],
@@ -67,7 +64,7 @@ export const Menu = <T extends object>({
 			)}
 		>
 			<AriaMenu<T>
-				className="max-h-[inherit] overflow-y-auto overflow-x-hidden outline-hidden"
+				className="max-h-[inherit] overflow-x-hidden overflow-y-auto outline-hidden"
 				{...props}
 			>
 				{children}
@@ -80,9 +77,7 @@ export const Menu = <T extends object>({
 export type MenuGroupProps<T extends object> = AriaMenuSectionProps<T>;
 
 /** A semantic group of related {@link MenuItem} elements. */
-export const MenuGroup = <T extends object>({
-	...props
-}: MenuGroupProps<T>) => {
+export const MenuGroup = <T extends object>({ ...props }: MenuGroupProps<T>) => {
 	return <AriaMenuSection<T> data-slot="menu-group" {...props} />;
 };
 
@@ -97,11 +92,7 @@ export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
 		<AriaHeader
 			data-slot="menu-label"
 			data-inset={inset}
-			className={cn(
-				listboxSectionHeaderVariants(),
-				"data-inset:pl-7.5",
-				className,
-			)}
+			className={cn(listboxSectionHeaderVariants(), "data-inset:pl-7.5", className)}
 			{...props}
 		/>
 	);
@@ -109,7 +100,7 @@ export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
 
 const menuItemVariants = cva(
 	[
-		"group/menu-item relative flex cursor-default select-none items-center",
+		"group/menu-item relative flex cursor-default items-center select-none",
 		"outline-hidden",
 		"data-disabled:pointer-events-none data-disabled:opacity-50",
 		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
@@ -169,26 +160,23 @@ export const MenuItem = <T extends object>({
 			)}
 			{...props}
 		>
-			{composeRenderProps(
-				children,
-				(children, { isSelected, selectionMode }) => (
-					<>
-						{selectionMode !== "none" ? (
-							<span
-								className="pointer-events-none absolute right-2 flex items-center justify-center"
-								data-slot={
-									selectionMode === "single"
-										? "menu-radio-item-indicator"
-										: "menu-checkbox-item-indicator"
-								}
-							>
-								{isSelected ? <CheckIcon /> : null}
-							</span>
-						) : null}
-						{children}
-					</>
-				),
-			)}
+			{composeRenderProps(children, (children, { isSelected, selectionMode }) => (
+				<>
+					{selectionMode !== "none" ? (
+						<span
+							className="pointer-events-none absolute right-2 flex items-center justify-center"
+							data-slot={
+								selectionMode === "single"
+									? "menu-radio-item-indicator"
+									: "menu-checkbox-item-indicator"
+							}
+						>
+							{isSelected ? <CheckIcon /> : null}
+						</span>
+					) : null}
+					{children}
+				</>
+			))}
 		</AriaMenuItem>
 	);
 };
@@ -220,12 +208,12 @@ export const MenuSubTrigger = <T extends object>({
 			textValue={typeof children === "string" ? children : props.textValue}
 			className={cn(
 				[
-					"flex min-h-7 cursor-default select-none items-center gap-2 rounded-md",
+					"flex min-h-7 cursor-default items-center gap-2 rounded-md select-none",
 					"px-2 py-1 text-xs outline-hidden",
 					"focus:bg-accent focus:text-accent-foreground",
 					"not-data-[variant=destructive]:focus:**:text-accent-foreground",
-					"data-open:bg-accent data-inset:pl-7.5 data-open:text-accent-foreground",
-					"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+					"data-inset:pl-7.5 data-open:bg-accent data-open:text-accent-foreground",
+					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 				],
 				className,
 			)}
@@ -288,7 +276,7 @@ export const MenuShortcut = ({ className, ...props }: MenuShortcutProps) => {
 			data-slot="menu-shortcut"
 			className={cn(
 				[
-					"ml-auto text-[0.625rem] text-muted-foreground tracking-widest",
+					"ml-auto text-[0.625rem] tracking-widest text-muted-foreground",
 					"group-focus/menu-item:text-accent-foreground",
 				],
 				className,

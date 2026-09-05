@@ -7,10 +7,7 @@ export const AdditionalDetailsFormSection = withForm({
 	render: function Render({ form }) {
 		const { isCreatingRecipe } = useRecipeFormMode();
 		return (
-			<FormSection
-				title="Additional Details"
-				panelProps={{ className: "flex" }}
-			>
+			<FormSection title="Additional Details" panelProps={{ className: "flex" }}>
 				{isCreatingRecipe && (
 					<form.AppField name="isQuickBrew">
 						{(field) => (

@@ -1,9 +1,6 @@
-import { useAppForm } from "@9bar/toolkit/components";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
-import {
-	recipeFormOpts,
-	recipeToFormValues,
-} from "../../../../-form-sections/form-section";
+import { useAppForm } from "@9bar/toolkit/components";
+import { recipeFormOpts, recipeToFormValues } from "../../../../-form-sections/form-section";
 import { RecipeForm } from "../../../../-form-sections/recipe-form";
 
 const EditLog = () => {
@@ -29,14 +26,11 @@ const EditLog = () => {
 	return <RecipeForm form={form} />;
 };
 
-export const Route = createFileRoute(
-	"/_authenticated/recipes_/_form/$recipeId_/logs/$logId/edit",
-)({
+export const Route = createFileRoute("/_authenticated/recipes_/_form/$recipeId_/logs/$logId/edit")({
 	staticData: { breadcrumb: { label: "Edit" } },
 	loader: ({ context, params }) => {
 		const log =
-			context.recipe.isQuickBrew &&
-			context.recipe.log.id === Number(params.logId)
+			context.recipe.isQuickBrew && context.recipe.log.id === Number(params.logId)
 				? context.recipe.log
 				: null;
 		if (!log) {

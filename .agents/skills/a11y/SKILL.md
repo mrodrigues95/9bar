@@ -109,7 +109,7 @@ Use these variants to style interactive states. They ensure visual feedback alig
 
 ## Linting
 
-- The web app (`apps/web/`) has Biome's recommended `a11y` rules enabled.
+- Oxlint's `jsx-a11y` plugin runs at `error` severity across the whole repo (root `.oxlintrc.json`).
 - The Storybook `@storybook/addon-a11y` addon runs [axe-core](https://github.com/dequelabs/axe-core) audits on every story in the toolkit.
 
 ## Checklist for New Components

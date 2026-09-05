@@ -18,9 +18,7 @@ import {
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link TextField} component. */
-export interface TextFieldProps
-	extends Omit<InputProps, "className">,
-		FieldComponentProps {
+export interface TextFieldProps extends Omit<InputProps, "className">, FieldComponentProps {
 	/** Additional props forwarded to the `FieldLabel` component. */
 	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the `Input` component. */
@@ -56,25 +54,12 @@ export const TextField = ({
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field
-			data-slot="text-field"
-			data-invalid={isInvalid || undefined}
-			className={className}
-		>
+		<Field data-slot="text-field" data-invalid={isInvalid || undefined} className={className}>
 			{label && (
-				<FieldLabel
-					data-slot="text-field-label"
-					htmlFor={id ?? controlId}
-					{...labelProps}
-				>
+				<FieldLabel data-slot="text-field-label" htmlFor={id ?? controlId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
@@ -120,11 +105,7 @@ export interface FormTextFieldProps extends Omit<TextFieldProps, "label"> {
 }
 
 /** A form-connected text field that reads its value, change handlers, and validation errors from the nearest field context. */
-export const FormTextField = ({
-	inputProps,
-	formatErrors,
-	...props
-}: FormTextFieldProps) => {
+export const FormTextField = ({ inputProps, formatErrors, ...props }: FormTextFieldProps) => {
 	const field = useFieldContext<string>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
 	const resolvedErrors = resolveFormFieldErrors(errors, {

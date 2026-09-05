@@ -18,9 +18,7 @@ import {
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link TextareaField} component. */
-export interface TextareaFieldProps
-	extends Omit<TextareaProps, "className">,
-		FieldComponentProps {
+export interface TextareaFieldProps extends Omit<TextareaProps, "className">, FieldComponentProps {
 	/** Additional props forwarded to the `FieldLabel` component. */
 	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the `Textarea` component. */
@@ -56,25 +54,12 @@ export const TextareaField = ({
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field
-			data-slot="textarea-field"
-			data-invalid={isInvalid || undefined}
-			className={className}
-		>
+		<Field data-slot="textarea-field" data-invalid={isInvalid || undefined} className={className}>
 			{label && (
-				<FieldLabel
-					data-slot="textarea-field-label"
-					htmlFor={id ?? controlId}
-					{...labelProps}
-				>
+				<FieldLabel data-slot="textarea-field-label" htmlFor={id ?? controlId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
@@ -112,8 +97,7 @@ export const TextareaField = ({
 };
 
 /** Props for the {@link FormTextareaField} component. */
-export interface FormTextareaFieldProps
-	extends Omit<TextareaFieldProps, "label"> {
+export interface FormTextareaFieldProps extends Omit<TextareaFieldProps, "label"> {
 	/** The label text displayed above the textarea. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */

@@ -1,10 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import {
-	TextArea as AriaTextarea,
-	composeRenderProps,
-} from "react-aria-components";
+import { TextArea as AriaTextarea, composeRenderProps } from "react-aria-components";
 import { inputVariants } from "#components/input";
 import { cn } from "#lib/utils";
 
@@ -20,7 +17,7 @@ export const Textarea = ({ className, ...props }: TextareaProps) => {
 				cn(
 					[
 						inputVariants(),
-						"field-sizing-content flex min-h-16 resize-none py-2",
+						"flex field-sizing-content min-h-16 resize-none py-2",
 						"disabled:cursor-not-allowed disabled:opacity-50",
 					],
 					className,

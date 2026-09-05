@@ -1,4 +1,3 @@
-import { Breadcrumb as ToolkitBreadcrumb } from "@9bar/toolkit/components";
 import type {
 	AnyRouteMatch,
 	RegisteredRouter,
@@ -6,6 +5,7 @@ import type {
 } from "@tanstack/react-router";
 import { useMatches, useRouter } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
+import { Breadcrumb as ToolkitBreadcrumb } from "@9bar/toolkit/components";
 import { Breadcrumb, Breadcrumbs } from "../breadcrumbs/breadcrumbs";
 
 export interface RouterBreadcrumb {
@@ -35,14 +35,9 @@ const getRouteStaticData = (
 };
 
 const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
-	!!value &&
-	typeof value === "object" &&
-	"label" in value &&
-	typeof value.label === "string";
+	!!value && typeof value === "object" && "label" in value && typeof value.label === "string";
 
-const getLoaderBreadcrumb = (
-	match?: AnyRouteMatch,
-): RouterBreadcrumb | null => {
+const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => {
 	const data = match?.loaderData;
 	return isRouterBreadcrumb(data?.breadcrumb) ? data.breadcrumb : null;
 };
@@ -92,8 +87,7 @@ const resolveSuffixParentBreadcrumbs = (
 
 		const parentMatch = matches.find((m) => m.id === parentId);
 		const parentStaticData = getRouteStaticData(route);
-		const parentBreadcrumb =
-			getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
+		const parentBreadcrumb = getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
 
 		if (parentBreadcrumb?.label) {
 			seen.add(parentId);
@@ -121,16 +115,10 @@ const useAppBreadcrumbs = () => {
 					continue;
 				}
 
-				const parentBreadcrumbs = resolveSuffixParentBreadcrumbs(
-					match,
-					matches,
-					routesById,
-					seen,
-				);
+				const parentBreadcrumbs = resolveSuffixParentBreadcrumbs(match, matches, routesById, seen);
 				breadcrumbs.push(...parentBreadcrumbs);
 
-				const breadcrumb =
-					getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
+				const breadcrumb = getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
 				if (!breadcrumb?.label) {
 					continue;
 				}
@@ -149,8 +137,7 @@ const useAppBreadcrumbs = () => {
 	});
 };
 
-interface AppBreadcrumbsProps
-	extends ComponentProps<typeof ToolkitBreadcrumb> {}
+interface AppBreadcrumbsProps extends ComponentProps<typeof ToolkitBreadcrumb> {}
 
 export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 	const breadcrumbs = useAppBreadcrumbs();

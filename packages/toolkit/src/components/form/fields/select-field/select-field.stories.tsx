@@ -15,35 +15,14 @@ const meta = {
 	title: "Form/SelectField",
 	parameters: {
 		controls: {
-			include: [
-				"isDisabled",
-				"isInvalid",
-				"isRequired",
-				"placeholder",
-				"label",
-				"description",
-			],
+			include: ["isDisabled", "isInvalid", "isRequired", "placeholder", "label", "description"],
 		},
 		docs: {
 			controls: {
-				include: [
-					"isDisabled",
-					"isInvalid",
-					"isRequired",
-					"placeholder",
-					"label",
-					"description",
-				],
+				include: ["isDisabled", "isInvalid", "isRequired", "placeholder", "label", "description"],
 			},
 			argTypes: {
-				include: [
-					"isDisabled",
-					"isInvalid",
-					"isRequired",
-					"placeholder",
-					"label",
-					"description",
-				],
+				include: ["isDisabled", "isInvalid", "isRequired", "placeholder", "label", "description"],
 			},
 		},
 	},

@@ -5,13 +5,12 @@ import { cn } from "#lib/utils";
 const headingVariants = cva("text-primary", {
 	variants: {
 		variant: {
-			heading:
-				"font-semibold text-2xl leading-tight tracking-tight sm:text-3xl",
-			subheading: "font-semibold text-base leading-snug sm:text-lg",
-			title: "font-semibold text-xl leading-tight sm:text-2xl",
-			subtitle: "font-medium text-lg leading-normal sm:text-xl",
-			section: "font-semibold text-base leading-normal",
-			subsection: "font-medium text-sm leading-normal",
+			heading: "text-2xl leading-tight font-semibold tracking-tight sm:text-3xl",
+			subheading: "text-base leading-snug font-semibold sm:text-lg",
+			title: "text-xl leading-tight font-semibold sm:text-2xl",
+			subtitle: "text-lg leading-normal font-medium sm:text-xl",
+			section: "text-base leading-normal font-semibold",
+			subsection: "text-sm leading-normal font-medium",
 		},
 	},
 	defaultVariants: {
@@ -20,19 +19,13 @@ const headingVariants = cva("text-primary", {
 });
 
 export interface HeadingProps
-	extends Omit<TextProps, "elementType">,
-		VariantProps<typeof headingVariants> {
+	extends Omit<TextProps, "elementType">, VariantProps<typeof headingVariants> {
 	/** The HTML element type to render. Defaults to `"h1"`. */
 	as?: string;
 }
 
 /** A typographic heading component that maps visual variants to semantic HTML heading levels. */
-export const Heading = ({
-	as = "h1",
-	variant,
-	className,
-	...props
-}: HeadingProps) => {
+export const Heading = ({ as = "h1", variant, className, ...props }: HeadingProps) => {
 	return (
 		<Text
 			data-slot="heading"

@@ -1,3 +1,5 @@
+import type { RegisteredRouter } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import {
 	BreadcrumbItem as ToolkitBreadcrumbItem,
 	BreadcrumbList as ToolkitBreadcrumbList,
@@ -5,8 +7,6 @@ import {
 	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
 } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import type { RegisteredRouter } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 import { Link, type LinkProps } from "../link/link";
 
 export type BreadcrumbProps<
@@ -29,9 +29,7 @@ export function Breadcrumb({
 	isDisabled,
 }: BreadcrumbProps): ReactNode {
 	return (
-		<ToolkitBreadcrumbItem
-			className={cn("disabled:[&_svg]:opacity-50", className) ?? ""}
-		>
+		<ToolkitBreadcrumbItem className={cn("disabled:[&_svg]:opacity-50", className) ?? ""}>
 			{({ isCurrent }) =>
 				isCurrent ? (
 					<ToolkitBreadcrumbPage className={cn("text-muted", className) ?? ""}>
@@ -60,8 +58,7 @@ export function Breadcrumb({
 	);
 }
 
-export interface BreadcrumbsProps<T extends object>
-	extends ToolkitBreadcrumbsProps<T> {}
+export interface BreadcrumbsProps<T extends object> extends ToolkitBreadcrumbsProps<T> {}
 
 export const Breadcrumbs = <T extends object>(props: BreadcrumbsProps<T>) => {
 	return <ToolkitBreadcrumbList {...props} />;

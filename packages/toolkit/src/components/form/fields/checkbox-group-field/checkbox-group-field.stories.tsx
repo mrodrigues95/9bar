@@ -7,35 +7,14 @@ const meta = {
 	title: "Form/CheckboxGroupField",
 	parameters: {
 		controls: {
-			include: [
-				"isDisabled",
-				"isInvalid",
-				"isReadOnly",
-				"isRequired",
-				"label",
-				"description",
-			],
+			include: ["isDisabled", "isInvalid", "isReadOnly", "isRequired", "label", "description"],
 		},
 		docs: {
 			controls: {
-				include: [
-					"isDisabled",
-					"isInvalid",
-					"isReadOnly",
-					"isRequired",
-					"label",
-					"description",
-				],
+				include: ["isDisabled", "isInvalid", "isReadOnly", "isRequired", "label", "description"],
 			},
 			argTypes: {
-				include: [
-					"isDisabled",
-					"isInvalid",
-					"isReadOnly",
-					"isRequired",
-					"label",
-					"description",
-				],
+				include: ["isDisabled", "isInvalid", "isReadOnly", "isRequired", "label", "description"],
 			},
 		},
 	},

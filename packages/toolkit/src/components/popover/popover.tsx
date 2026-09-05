@@ -21,7 +21,7 @@ export const popoverVariants = cva([
 	"data-entering:animate-in data-exiting:animate-out",
 	"z-50 origin-(--trigger-anchor-point)",
 	"rounded-lg bg-popover text-popover-foreground",
-	"shadow-md outline-hidden ring-1 ring-foreground/10",
+	"shadow-md ring-1 ring-foreground/10 outline-hidden",
 	"duration-100",
 ]);
 
@@ -56,11 +56,7 @@ export const Popover = ({
 			placement={placement}
 			offset={offset}
 			crossOffset={crossOffset}
-			className={cn(
-				popoverVariants(),
-				"flex w-72 flex-col gap-4 p-2.5 text-xs",
-				className,
-			)}
+			className={cn(popoverVariants(), "flex w-72 flex-col gap-4 p-2.5 text-xs", className)}
 			{...props}
 		/>
 	);
@@ -88,7 +84,7 @@ export const PopoverTitle = ({ className, ...props }: PopoverTitleProps) => {
 	return (
 		<Heading
 			data-slot="popover-title"
-			className={cn("font-medium text-sm", className)}
+			className={cn("text-sm font-medium", className)}
 			{...props}
 		/>
 	);
@@ -98,10 +94,7 @@ export const PopoverTitle = ({ className, ...props }: PopoverTitleProps) => {
 export type PopoverDescriptionProps = React.ComponentProps<"div">;
 
 /** Supporting text that explains a {@link Popover}'s purpose or content. */
-export const PopoverDescription = ({
-	className,
-	...props
-}: PopoverDescriptionProps) => {
+export const PopoverDescription = ({ className, ...props }: PopoverDescriptionProps) => {
 	return (
 		<div
 			data-slot="popover-description"

@@ -46,9 +46,7 @@ export const FormSection = () => {
 		<Card>
 			<CardHeader>
 				<CardTitle>Recipe details</CardTitle>
-				<CardDescription>
-					Every form-connected field composed in a single form.
-				</CardDescription>
+				<CardDescription>Every form-connected field composed in a single form.</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<Form
@@ -76,9 +74,7 @@ export const FormSection = () => {
 											{ id: "moka-pot", name: "Moka pot" },
 										]}
 									>
-										{(item) => (
-											<SelectItem id={item.id}>{item.name}</SelectItem>
-										)}
+										{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 									</field.Select>
 								)}
 							</form.AppField>
@@ -104,9 +100,7 @@ export const FormSection = () => {
 									>
 										<Checkbox value="morning-shot">Morning shot log</Checkbox>
 										<Checkbox value="low-stock">Low bean stock alerts</Checkbox>
-										<Checkbox value="grinder-check">
-											Weekly grinder check
-										</Checkbox>
+										<Checkbox value="grinder-check">Weekly grinder check</Checkbox>
 									</field.CheckboxGroup>
 								)}
 							</form.AppField>

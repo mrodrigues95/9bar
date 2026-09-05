@@ -1,5 +1,5 @@
-import { SelectItem, withForm } from "@9bar/toolkit/components";
 import { useStore } from "@tanstack/react-form";
+import { SelectItem, withForm } from "@9bar/toolkit/components";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 import { FormSection, recipeFormOpts } from "./form-section";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
@@ -13,10 +13,7 @@ export const BasicInformationFormSection = withForm({
 			isEditingLog,
 		} = useRecipeFormMode();
 
-		const isQuickBrew = useStore(
-			form.store,
-			(state) => state.values.isQuickBrew,
-		);
+		const isQuickBrew = useStore(form.store, (state) => state.values.isQuickBrew);
 
 		let isDisabled = false;
 		if (isCreatingLog) {

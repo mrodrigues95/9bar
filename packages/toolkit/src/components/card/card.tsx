@@ -14,7 +14,7 @@ export const Card = ({ className, size = "default", ...props }: CardProps) => {
 			data-size={size}
 			className={cn(
 				[
-					"group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-card-foreground text-xs/relaxed ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]",
+					"group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]",
 					"data-[size=sm]:[--card-spacing:--spacing(3)]",
 					"has-[>img:first-child]:pt-0",
 					"*:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
@@ -56,7 +56,7 @@ export const CardTitle = ({ className, ...props }: CardTitleProps) => {
 	return (
 		<div
 			data-slot="card-title"
-			className={cn("font-heading font-medium text-sm", className)}
+			className={cn("font-heading text-sm font-medium", className)}
 			{...props}
 		/>
 	);
@@ -66,14 +66,11 @@ export const CardTitle = ({ className, ...props }: CardTitleProps) => {
 export type CardDescriptionProps = React.ComponentProps<"div">;
 
 /** Supporting text displayed beneath a {@link CardTitle}. */
-export const CardDescription = ({
-	className,
-	...props
-}: CardDescriptionProps) => {
+export const CardDescription = ({ className, ...props }: CardDescriptionProps) => {
 	return (
 		<div
 			data-slot="card-description"
-			className={cn("text-muted-foreground text-xs/relaxed", className)}
+			className={cn("text-xs/relaxed text-muted-foreground", className)}
 			{...props}
 		/>
 	);
@@ -87,10 +84,7 @@ export const CardAction = ({ className, ...props }: CardActionProps) => {
 	return (
 		<div
 			data-slot="card-action"
-			className={cn(
-				"col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-				className,
-			)}
+			className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
 			{...props}
 		/>
 	);
@@ -102,11 +96,7 @@ export type CardContentProps = React.ComponentProps<"div">;
 /** The main body of a {@link Card}. */
 export const CardContent = ({ className, ...props }: CardContentProps) => {
 	return (
-		<div
-			data-slot="card-content"
-			className={cn("px-(--card-spacing)", className)}
-			{...props}
-		/>
+		<div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />
 	);
 };
 
