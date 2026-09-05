@@ -1,3 +1,5 @@
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { EllipsisVertical, Fingerprint, Pencil, Plus, Trash2 } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -11,14 +13,6 @@ import {
 	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import {
-	EllipsisVertical,
-	Fingerprint,
-	Pencil,
-	Plus,
-	Trash2,
-} from "lucide-react";
 import { Link, List, ListItem, Pagination } from "../../../../../components";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 
@@ -52,10 +46,7 @@ export const RecipeLogs = () => {
 				<List>
 					<ListItem className="justify-between">
 						<div className="flex flex-col">
-							<Text
-								variant="body-sm"
-								className="flex items-center gap-1 text-blue-950"
-							>
+							<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
 								<Fingerprint className="size-4" />
 								{machine.name} · {grinder.name}
 							</Text>
@@ -66,8 +57,7 @@ export const RecipeLogs = () => {
 								{recipe.snapshot.beans}
 							</Text>
 							<Text variant="body-sm" className="text-xs">
-								{recipe.snapshot.dose}g → {recipe.snapshot.yield}g ·{" "}
-								{recipe.snapshot.brewTime}
+								{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
 								{recipe.snapshot.brewTimeUnit}
 							</Text>
 						</div>
@@ -82,10 +72,7 @@ export const RecipeLogs = () => {
 										Edit
 									</MenuItem>
 									<MenuSeparator />
-									<MenuItem
-										onAction={() => alert("delete")}
-										variant="destructive"
-									>
+									<MenuItem onAction={() => alert("delete")} variant="destructive">
 										<Trash2 className="size-3" />
 										Delete
 									</MenuItem>
@@ -102,8 +89,6 @@ export const RecipeLogs = () => {
 	);
 };
 
-export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/logs")(
-	{
-		component: RecipeLogs,
-	},
-);
+export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/logs")({
+	component: RecipeLogs,
+});

@@ -11,8 +11,7 @@ const iconButtonSizeMap = {
 type IconButtonSize = keyof typeof iconButtonSizeMap;
 
 /** Props for the {@link IconButton} component. */
-export interface IconButtonProps
-	extends Omit<ButtonProps, "size" | "children"> {
+export interface IconButtonProps extends Omit<ButtonProps, "size" | "children"> {
 	size?: IconButtonSize;
 	/** The icon element to render inside the button. */
 	children: React.ReactNode;
@@ -21,11 +20,7 @@ export interface IconButtonProps
 }
 
 /** A button that displays only an icon, requiring an `aria-label` for accessibility. */
-export const IconButton = ({
-	size = "md",
-	children,
-	...props
-}: IconButtonProps) => {
+export const IconButton = ({ size = "md", children, ...props }: IconButtonProps) => {
 	return (
 		<Button size={iconButtonSizeMap[size]} {...props}>
 			{children}

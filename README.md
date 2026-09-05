@@ -4,9 +4,9 @@ Specialty espresso recipe and brew logging web app.
 
 ## Packages
 
-| Package | Path | Description |
-|---------|------|-------------|
-| `@9bar/web` | `apps/web/` | Full-stack app: TanStack Start, TanStack Router, React 19 |
+| Package         | Path                | Description                                                           |
+| --------------- | ------------------- | --------------------------------------------------------------------- |
+| `@9bar/web`     | `apps/web/`         | Full-stack app: TanStack Start, TanStack Router, React 19             |
 | `@9bar/toolkit` | `packages/toolkit/` | Design system: React Aria Components, Tailwind Variants, Storybook 10 |
 
 ## Development

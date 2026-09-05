@@ -1,9 +1,9 @@
-import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
 import {
 	type RegisteredRouter,
 	type UseLinkPropsOptions,
 	useLinkProps,
 } from "@tanstack/react-router";
+import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
 
 type TabLinkProps<
 	TRouter extends RegisteredRouter = RegisteredRouter,
@@ -33,11 +33,7 @@ export const TabLink = <
 			{...(isDisabled ? { isDisabled } : {})}
 			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
 			onClick={(e) => {
-				(
-					resolvedLinkProps.onClick as unknown as
-						| ((e: React.MouseEvent) => void)
-						| undefined
-				)?.(e);
+				(resolvedLinkProps.onClick as unknown as ((e: React.MouseEvent) => void) | undefined)?.(e);
 			}}
 		>
 			{children}

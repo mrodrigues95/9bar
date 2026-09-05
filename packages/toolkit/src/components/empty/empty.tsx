@@ -11,7 +11,7 @@ export const Empty = ({ className, ...props }: EmptyProps) => {
 		<div
 			data-slot="empty"
 			className={cn(
-				"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 text-balance rounded-xl border-dashed p-6 text-center",
+				"flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border-dashed p-6 text-center text-balance",
 				className,
 			)}
 			{...props}
@@ -55,15 +55,10 @@ const emptyMediaVariants = cva(
 );
 
 /** Props for the {@link EmptyMedia} component. */
-export type EmptyMediaProps = React.ComponentProps<"div"> &
-	VariantProps<typeof emptyMediaVariants>;
+export type EmptyMediaProps = React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>;
 
 /** The visual (icon or illustration) displayed above an {@link Empty} state. */
-export const EmptyMedia = ({
-	className,
-	variant = "default",
-	...props
-}: EmptyMediaProps) => {
+export const EmptyMedia = ({ className, variant = "default", ...props }: EmptyMediaProps) => {
 	return (
 		<div
 			data-slot="empty-icon"
@@ -82,10 +77,7 @@ export const EmptyTitle = ({ className, ...props }: EmptyTitleProps) => {
 	return (
 		<div
 			data-slot="empty-title"
-			className={cn(
-				"font-heading font-medium text-sm tracking-tight",
-				className,
-			)}
+			className={cn("font-heading text-sm font-medium tracking-tight", className)}
 			{...props}
 		/>
 	);
@@ -95,15 +87,12 @@ export const EmptyTitle = ({ className, ...props }: EmptyTitleProps) => {
 export type EmptyDescriptionProps = React.ComponentProps<"p">;
 
 /** Supporting text that explains an {@link Empty} state. */
-export const EmptyDescription = ({
-	className,
-	...props
-}: EmptyDescriptionProps) => {
+export const EmptyDescription = ({ className, ...props }: EmptyDescriptionProps) => {
 	return (
 		<div
 			data-slot="empty-description"
 			className={cn(
-				"text-muted-foreground text-xs/relaxed [&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+				"text-xs/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
 				className,
 			)}
 			{...props}
@@ -120,7 +109,7 @@ export const EmptyContent = ({ className, ...props }: EmptyContentProps) => {
 		<div
 			data-slot="empty-content"
 			className={cn(
-				"flex w-full min-w-0 max-w-sm flex-col items-center gap-2 text-balance text-xs/relaxed",
+				"flex w-full max-w-sm min-w-0 flex-col items-center gap-2 text-xs/relaxed text-balance",
 				className,
 			)}
 			{...props}

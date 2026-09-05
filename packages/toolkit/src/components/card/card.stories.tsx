@@ -39,14 +39,11 @@ export const Default: Story = {
 		<Card {...props} className="w-full max-w-sm">
 			<CardHeader>
 				<CardTitle>Card Title</CardTitle>
-				<CardDescription>
-					This is a description for the card component.
-				</CardDescription>
+				<CardDescription>This is a description for the card component.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<p className="text-muted-foreground text-sm">
-					This is the main content area of the card. You can place any content
-					here.
+				<p className="text-sm text-muted-foreground">
+					This is the main content area of the card. You can place any content here.
 				</p>
 			</CardContent>
 			<CardFooter className="flex-col gap-2">
@@ -75,7 +72,7 @@ export const WithHeaderAction: Story = {
 				</CardAction>
 			</CardHeader>
 			<CardContent>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					Your account settings are stored securely and synced across devices.
 				</p>
 			</CardContent>
@@ -92,7 +89,7 @@ export const WithoutFooter: Story = {
 				<CardDescription>This card has no footer.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					Cards are flexible. You can use only the slots you need.
 				</p>
 			</CardContent>
@@ -105,7 +102,7 @@ export const WithoutHeader: Story = {
 	render: (props) => (
 		<Card {...props} className="w-full max-w-sm">
 			<CardContent>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					This card doesn't have a header, just content.
 				</p>
 			</CardContent>
@@ -161,12 +158,12 @@ export const MinimalContent: Story = {
 				<h4 className="font-semibold text-slate-900">Quick Stats</h4>
 				<div className="grid grid-cols-2 gap-4">
 					<div>
-						<p className="text-slate-600 text-xs">Views</p>
-						<p className="font-semibold text-2xl text-slate-900">1,234</p>
+						<p className="text-xs text-slate-600">Views</p>
+						<p className="text-2xl font-semibold text-slate-900">1,234</p>
 					</div>
 					<div>
-						<p className="text-slate-600 text-xs">Clicks</p>
-						<p className="font-semibold text-2xl text-slate-900">567</p>
+						<p className="text-xs text-slate-600">Clicks</p>
+						<p className="text-2xl font-semibold text-slate-900">567</p>
 					</div>
 				</div>
 			</CardContent>

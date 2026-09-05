@@ -14,14 +14,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: { type: "select" },
-			options: [
-				"title",
-				"heading",
-				"subheading",
-				"subtitle",
-				"section",
-				"subsection",
-			],
+			options: ["title", "heading", "subheading", "subtitle", "section", "subsection"],
 		},
 		as: { control: { type: "text" } },
 	},
@@ -94,11 +87,7 @@ export const RealWorldExample: Story = {
 				<Heading as="h1" variant="heading" className="text-center">
 					Welcome to Toolkit
 				</Heading>
-				<Heading
-					as="p"
-					variant="subheading"
-					className="text-center text-gray-600"
-				>
+				<Heading as="p" variant="subheading" className="text-center text-gray-600">
 					Build modern web applications with ease
 				</Heading>
 			</div>
@@ -112,15 +101,13 @@ export const RealWorldExample: Story = {
 						<Heading as="h3" variant="section">
 							Fast Development
 						</Heading>
-						<p className="text-gray-600 text-sm">
-							Get started quickly with our toolkit
-						</p>
+						<p className="text-sm text-gray-600">Get started quickly with our toolkit</p>
 					</div>
 					<div>
 						<Heading as="h3" variant="section">
 							Type Safe
 						</Heading>
-						<p className="text-gray-600 text-sm">
+						<p className="text-sm text-gray-600">
 							Built with TypeScript for better developer experience
 						</p>
 					</div>

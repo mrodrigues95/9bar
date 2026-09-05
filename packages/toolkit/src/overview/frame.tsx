@@ -31,10 +31,8 @@ export interface SectionProps {
 export const Section = ({ title, description, children }: SectionProps) => (
 	<section className="flex flex-col gap-4 py-10">
 		<div className="flex flex-col gap-1">
-			<h2 className="font-semibold text-sm tracking-tight">{title}</h2>
-			{description ? (
-				<p className="text-muted-foreground text-sm">{description}</p>
-			) : null}
+			<h2 className="text-sm font-semibold tracking-tight">{title}</h2>
+			{description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
 		</div>
 		{children}
 	</section>
@@ -46,7 +44,7 @@ const AppHeader = () => (
 		<div className="flex items-center justify-between gap-4">
 			<div className="flex items-center gap-2">
 				<Coffee className="size-5" aria-hidden />
-				<span className="font-semibold text-sm tracking-tight">9bar</span>
+				<span className="text-sm font-semibold tracking-tight">9bar</span>
 			</div>
 			<div className="flex items-center gap-1">
 				<IconButton aria-label="Search" variant="ghost">

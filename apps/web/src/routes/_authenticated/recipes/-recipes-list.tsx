@@ -1,12 +1,3 @@
-import {
-	Badge,
-	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
-	Text,
-} from "@9bar/toolkit/components";
 import { parseAbsolute } from "@internationalized/date";
 import {
 	ArrowRight,
@@ -17,13 +8,17 @@ import {
 	Pencil,
 	Trash2,
 } from "lucide-react";
-import { List, ListItem, MenuItemLink } from "../../../components";
 import {
-	GRINDER_OPTIONS,
-	MACHINE_OPTIONS,
-	recipes,
-	type TRecipeGraph,
-} from "../../../utils/data";
+	Badge,
+	IconButton,
+	Menu,
+	MenuItem,
+	MenuSeparator,
+	MenuTrigger,
+	Text,
+} from "@9bar/toolkit/components";
+import { List, ListItem, MenuItemLink } from "../../../components";
+import { GRINDER_OPTIONS, MACHINE_OPTIONS, recipes, type TRecipeGraph } from "../../../utils/data";
 
 const formatShotAt = (shotAt: string) => {
 	const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -47,10 +42,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 	return (
 		<ListItem className="justify-between">
 			<div className="flex flex-col">
-				<Text
-					variant="body-sm"
-					className="flex items-center gap-1 text-blue-950"
-				>
+				<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
 					<Fingerprint className="size-4" />
 					{machine.name} · {grinder.name}
 				</Text>
@@ -63,8 +55,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					{recipe.snapshot.beans}
 				</Text>
 				<Text variant="body-sm" className="text-xs">
-					{recipe.snapshot.dose}g → {recipe.snapshot.yield}g ·{" "}
-					{recipe.snapshot.brewTime}
+					{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
 					{recipe.snapshot.brewTimeUnit}
 				</Text>
 				{recipe.isQuickBrew && (
@@ -83,10 +74,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					</IconButton>
 					<Menu>
 						{!recipe.isQuickBrew && (
-							<MenuItemLink
-								to="/recipes/$recipeId"
-								params={{ recipeId: String(recipe.id) }}
-							>
+							<MenuItemLink to="/recipes/$recipeId" params={{ recipeId: String(recipe.id) }}>
 								<ArrowRight className="size-3" />
 								View
 							</MenuItemLink>

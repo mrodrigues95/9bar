@@ -106,9 +106,7 @@ export const WithSections: Story = {
 							<SelectGroup id={section.name}>
 								<SelectLabel>{section.name}</SelectLabel>
 								<Collection items={section.children}>
-									{(item) => (
-										<SelectItem id={item.name}>{item.name}</SelectItem>
-									)}
+									{(item) => <SelectItem id={item.name}>{item.name}</SelectItem>}
 								</Collection>
 							</SelectGroup>
 						)}

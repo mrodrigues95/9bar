@@ -1,15 +1,8 @@
-import { useAppForm } from "@9bar/toolkit/components";
-import {
-	createFileRoute,
-	useNavigate,
-	useRouteContext,
-} from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouteContext } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import {
-	recipeFormOpts,
-	recipeToFormValues,
-} from "../../-form-sections/form-section";
+import { useAppForm } from "@9bar/toolkit/components";
+import { recipeFormOpts, recipeToFormValues } from "../../-form-sections/form-section";
 import { RecipeForm } from "../../-form-sections/recipe-form";
 
 const EditRecipe = () => {
@@ -42,9 +35,7 @@ const searchSchema = z.object({
 	convert: z.enum(["log"]).optional(),
 });
 
-export const Route = createFileRoute(
-	"/_authenticated/recipes_/_form/$recipeId_/edit",
-)({
+export const Route = createFileRoute("/_authenticated/recipes_/_form/$recipeId_/edit")({
 	staticData: { breadcrumb: { label: "Edit" } },
 	validateSearch: zodValidator(searchSchema),
 	component: EditRecipe,

@@ -28,11 +28,7 @@ export type FieldLegendProps = React.ComponentProps<"legend"> & {
 };
 
 /** A caption for a {@link FieldSet}, rendered as a `<legend>`. */
-export const FieldLegend = ({
-	className,
-	variant = "legend",
-	...props
-}: FieldLegendProps) => {
+export const FieldLegend = ({ className, variant = "legend", ...props }: FieldLegendProps) => {
 	return (
 		<legend
 			data-slot="field-legend"
@@ -65,44 +61,36 @@ export const FieldGroup = ({ className, ...props }: FieldGroupProps) => {
 	);
 };
 
-const fieldVariants = cva(
-	"group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
-	{
-		variants: {
-			orientation: {
-				vertical: "flex-col *:w-full [&>.sr-only]:w-auto",
-				horizontal: [
-					"flex-row items-center",
-					"has-[>[data-slot=field-content]]:items-start",
-					"has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-					"*:data-[slot=field-label]:flex-auto",
-				],
-				responsive: [
-					"flex-col",
-					"*:w-full [&>.sr-only]:w-auto",
-					"@md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto",
-					"@md/field-group:has-[>[data-slot=field-content]]:items-start",
-					"@md/field-group:*:data-[slot=field-label]:flex-auto",
-					"@md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-				],
-			},
-		},
-		defaultVariants: {
-			orientation: "vertical",
+const fieldVariants = cva("group/field flex w-full gap-2 data-[invalid=true]:text-destructive", {
+	variants: {
+		orientation: {
+			vertical: "flex-col *:w-full [&>.sr-only]:w-auto",
+			horizontal: [
+				"flex-row items-center",
+				"has-[>[data-slot=field-content]]:items-start",
+				"has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+				"*:data-[slot=field-label]:flex-auto",
+			],
+			responsive: [
+				"flex-col",
+				"*:w-full [&>.sr-only]:w-auto",
+				"@md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto",
+				"@md/field-group:has-[>[data-slot=field-content]]:items-start",
+				"@md/field-group:*:data-[slot=field-label]:flex-auto",
+				"@md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+			],
 		},
 	},
-);
+	defaultVariants: {
+		orientation: "vertical",
+	},
+});
 
 /** Props for the {@link Field} component. */
-export type FieldProps = React.ComponentProps<"div"> &
-	VariantProps<typeof fieldVariants>;
+export type FieldProps = React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>;
 
 /** A layout wrapper that associates a label, control, description, and error message for a single form field. */
-export const Field = ({
-	className,
-	orientation = "vertical",
-	...props
-}: FieldProps) => {
+export const Field = ({ className, orientation = "vertical", ...props }: FieldProps) => {
 	return (
 		<div
 			data-slot="field"
@@ -121,10 +109,7 @@ export const FieldContent = ({ className, ...props }: FieldContentProps) => {
 	return (
 		<div
 			data-slot="field-content"
-			className={cn(
-				"group/field-content flex flex-1 flex-col gap-0.5 leading-snug",
-				className,
-			)}
+			className={cn("group/field-content flex flex-1 flex-col gap-0.5 leading-snug", className)}
 			{...props}
 		/>
 	);
@@ -162,7 +147,7 @@ export const FieldTitle = ({ className, ...props }: FieldTitleProps) => {
 		<div
 			data-slot="field-label"
 			className={cn(
-				"flex w-fit items-center gap-2 font-medium text-xs/relaxed",
+				"flex w-fit items-center gap-2 text-xs/relaxed font-medium",
 				"group-data-[disabled=true]/field:opacity-50",
 				className,
 			)}
@@ -175,19 +160,16 @@ export const FieldTitle = ({ className, ...props }: FieldTitleProps) => {
 export type FieldDescriptionProps = React.ComponentProps<"p">;
 
 /** Help text that describes a field, displayed below the control. */
-export const FieldDescription = ({
-	className,
-	...props
-}: FieldDescriptionProps) => {
+export const FieldDescription = ({ className, ...props }: FieldDescriptionProps) => {
 	return (
 		<p
 			data-slot="field-description"
 			className={cn(
-				"text-left font-normal text-muted-foreground text-xs/relaxed leading-normal",
+				"text-left text-xs/relaxed leading-normal font-normal text-muted-foreground",
 				"group-has-data-horizontal/field:text-balance",
 				"[[data-variant=legend]+&]:-mt-1.5",
-				"nth-last-2:-mt-1 last:mt-0",
-				"[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
+				"last:mt-0 nth-last-2:-mt-1",
+				"[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
 				className,
 			)}
 			{...props}
@@ -201,11 +183,7 @@ export type FieldSeparatorProps = React.ComponentProps<"div"> & {
 };
 
 /** A horizontal divider with optional centered text, used to split groups of fields. */
-export const FieldSeparator = ({
-	children,
-	className,
-	...props
-}: FieldSeparatorProps) => {
+export const FieldSeparator = ({ children, className, ...props }: FieldSeparatorProps) => {
 	return (
 		<div
 			data-slot="field-separator"
@@ -283,12 +261,7 @@ export interface FieldComponentProps {
 }
 
 /** An error message for a form field, rendered when validation fails. Accepts an `errors` array from a form library such as TanStack Form. */
-export const FieldError = ({
-	className,
-	children,
-	errors,
-	...props
-}: FieldErrorProps) => {
+export const FieldError = ({ className, children, errors, ...props }: FieldErrorProps) => {
 	const content = useMemo(() => {
 		if (children) {
 			return children;
@@ -328,7 +301,7 @@ export const FieldError = ({
 		<div
 			role="alert"
 			data-slot="field-error"
-			className={cn("font-normal text-destructive text-xs/relaxed", className)}
+			className={cn("text-xs/relaxed font-normal text-destructive", className)}
 			{...props}
 		>
 			{content}
@@ -343,8 +316,6 @@ export const getFieldDescribedBy = (
 	showError: boolean,
 	errorId: string,
 ) => {
-	const ids = [hasDescription && descriptionId, showError && errorId].filter(
-		Boolean,
-	);
+	const ids = [hasDescription && descriptionId, showError && errorId].filter(Boolean);
 	return ids.length ? ids.join(" ") : undefined;
 };

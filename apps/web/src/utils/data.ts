@@ -38,11 +38,9 @@ export interface TLog {
 	updatedAt: string;
 }
 
-export interface TLogEntry
-	extends Omit<TLog, "recipeSnapshotId" | "recipeId"> {}
+export interface TLogEntry extends Omit<TLog, "recipeSnapshotId" | "recipeId"> {}
 
-export interface TRecipeGraphBase
-	extends Omit<TRecipe, "recipeSnapshotId" | "isQuickBrew"> {
+export interface TRecipeGraphBase extends Omit<TRecipe, "recipeSnapshotId" | "isQuickBrew"> {
 	snapshot: TRecipeSnapshot;
 }
 

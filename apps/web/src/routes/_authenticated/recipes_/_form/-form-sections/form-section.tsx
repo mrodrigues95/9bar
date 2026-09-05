@@ -1,3 +1,6 @@
+import { formOptions } from "@tanstack/react-form";
+import type { ComponentProps, ReactNode } from "react";
+import z from "zod";
 import {
 	Card,
 	CardContent,
@@ -6,23 +9,14 @@ import {
 	type TInputGroupSelectFieldValue,
 } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { formOptions } from "@tanstack/react-form";
-import type { ComponentProps, ReactNode } from "react";
-import z from "zod";
 import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
 
 export interface TRecipeFormValues
-	extends Pick<TRecipeGraph, "isQuickBrew" | "name">,
+	extends
+		Pick<TRecipeGraph, "isQuickBrew" | "name">,
 		Pick<
 			TRecipeSnapshot,
-			| "machine"
-			| "grinder"
-			| "grindSize"
-			| "dose"
-			| "yield"
-			| "beans"
-			| "pressure"
-			| "notes"
+			"machine" | "grinder" | "grindSize" | "dose" | "yield" | "beans" | "pressure" | "notes"
 		> {
 	brewTime: TInputGroupSelectFieldValue<number, "s" | "m">;
 	temperature: TInputGroupSelectFieldValue<number, "C" | "F">;
@@ -35,9 +29,7 @@ const coercedNumber = (checks: (n: z.ZodNumber) => z.ZodNumber = (n) => n) =>
 		checks(z.number()),
 	);
 
-const inputGroupSelectValue = <
-	const T extends readonly [string, ...Array<string>],
->(
+const inputGroupSelectValue = <const T extends readonly [string, ...Array<string>]>(
 	selectValue: T,
 	message: string,
 ) =>
@@ -61,14 +53,8 @@ export const recipeFormSchema = z
 		dose: coercedNumber((n) => n.min(0, "Dose cannot be negative")),
 		yield: coercedNumber((n) => n.min(0, "Yield cannot be negative")),
 		brewTime: inputGroupSelectValue(["s", "m"], "Brew time cannot be negative"),
-		temperature: inputGroupSelectValue(
-			["C", "F"],
-			"Temperature cannot be negative",
-		),
-		beans: z
-			.string()
-			.min(1, "Beans is required")
-			.max(150, "Beans cannot exceed 150 characters"),
+		temperature: inputGroupSelectValue(["C", "F"], "Temperature cannot be negative"),
+		beans: z.string().min(1, "Beans is required").max(150, "Beans cannot exceed 150 characters"),
 		pressure: coercedNumber((n) => n.min(0, "Pressure cannot be negative")),
 		notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 	})
@@ -140,10 +126,7 @@ export const FormSection = ({
 			</CardHeader>
 			<CardContent
 				{...panelProps}
-				className={cn(
-					"grid grid-cols-1 gap-6 sm:grid-cols-2",
-					panelProps?.className,
-				)}
+				className={cn("grid grid-cols-1 gap-6 sm:grid-cols-2", panelProps?.className)}
 			>
 				{children}
 			</CardContent>

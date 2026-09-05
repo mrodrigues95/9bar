@@ -26,11 +26,7 @@ export const FormSubmitButton = ({
 			})}
 		>
 			{({ canSubmit, isSubmitting }) => (
-				<Button
-					{...props}
-					type="submit"
-					isDisabled={!canSubmit || Boolean(props.isDisabled)}
-				>
+				<Button {...props} type="submit" isDisabled={!canSubmit || Boolean(props.isDisabled)}>
 					{isSubmitting ? loadingText : children}
 				</Button>
 			)}

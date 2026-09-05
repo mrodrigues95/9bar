@@ -1,17 +1,8 @@
-import { Heading, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
-import {
-	createFileRoute,
-	Outlet,
-	redirect,
-	useMatchRoute,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useMatchRoute } from "@tanstack/react-router";
 import { FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
-import {
-	AppBreadcrumbs,
-	TabLink,
-	withBreadcrumb,
-} from "../../../../components";
+import { Heading, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
+import { AppBreadcrumbs, TabLink, withBreadcrumb } from "../../../../components";
 import { recipes } from "../../../../utils/data";
 import { objectKeys } from "../../../../utils/utils";
 

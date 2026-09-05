@@ -21,10 +21,8 @@ import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link CheckboxGroupField} component. */
 export interface CheckboxGroupFieldProps
-	extends Omit<
-			React.ComponentProps<typeof CheckboxGroup>,
-			"children" | "className"
-		>,
+	extends
+		Omit<React.ComponentProps<typeof CheckboxGroup>, "children" | "className">,
 		FieldComponentProps {
 	/** The checkbox items to display in the group. */
 	children: ReactNode;
@@ -57,22 +55,13 @@ export const CheckboxGroupField = ({
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
 		<CheckboxGroup
 			data-slot="checkbox-group-field"
 			data-invalid={isInvalid || undefined}
-			className={cn(
-				"flex flex-col gap-2",
-				"data-[invalid=true]:text-destructive",
-				className,
-			)}
+			className={cn("flex flex-col gap-2", "data-[invalid=true]:text-destructive", className)}
 			{...props}
 			isInvalid={isInvalid}
 			aria-describedby={describedBy}
@@ -111,10 +100,7 @@ export interface FormCheckboxGroupFieldProps extends CheckboxGroupFieldProps {
 }
 
 /** A form-connected checkbox group field that reads its value, change handlers, and validation errors from the nearest field context. */
-export const FormCheckboxGroupField = ({
-	formatErrors,
-	...props
-}: FormCheckboxGroupFieldProps) => {
+export const FormCheckboxGroupField = ({ formatErrors, ...props }: FormCheckboxGroupFieldProps) => {
 	const field = useFieldContext<Array<string>>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
 	const resolvedErrors = resolveFormFieldErrors(errors, {

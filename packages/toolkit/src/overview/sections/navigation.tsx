@@ -34,9 +34,7 @@ export const NavigationSection = () => (
 			<TabsContent id="overview">
 				Brew ratio, dose, and target extraction for this recipe.
 			</TabsContent>
-			<TabsContent id="shots">
-				Every logged shot with notes and ratings, newest first.
-			</TabsContent>
+			<TabsContent id="shots">Every logged shot with notes and ratings, newest first.</TabsContent>
 			<TabsContent id="settings">
 				Grinder, machine, and reminder preferences for this recipe.
 			</TabsContent>

@@ -1,9 +1,9 @@
-import { Link as ToolkitLink } from "@9bar/toolkit/components";
 import {
 	createLink,
 	type RegisteredRouter,
 	type ValidateLinkOptions,
 } from "@tanstack/react-router";
+import { Link as ToolkitLink } from "@9bar/toolkit/components";
 
 export const Link = createLink(ToolkitLink);
 

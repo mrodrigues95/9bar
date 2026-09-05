@@ -30,8 +30,7 @@ import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link SelectField} component. */
 export interface SelectFieldProps<T extends object>
-	extends Omit<SelectProps<T>, "children">,
-		FieldComponentProps {
+	extends Omit<SelectProps<T>, "children">, FieldComponentProps {
 	/** The collection of items to display in the select list. */
 	items?: Iterable<T>;
 	/** A render function or static elements for the select options. */
@@ -75,34 +74,16 @@ export const SelectField = <T extends object>({
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field
-			data-slot="select-field"
-			data-invalid={isInvalid || undefined}
-			className={className}
-		>
+		<Field data-slot="select-field" data-invalid={isInvalid || undefined} className={className}>
 			{label && (
-				<FieldLabel
-					data-slot="select-field-label"
-					id={labelId}
-					htmlFor={triggerId}
-					{...labelProps}
-				>
+				<FieldLabel data-slot="select-field-label" id={labelId} htmlFor={triggerId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
-			<Select
-				{...props}
-				isInvalid={isInvalid}
-				aria-labelledby={label ? labelId : undefined}
-			>
+			<Select {...props} isInvalid={isInvalid} aria-labelledby={label ? labelId : undefined}>
 				<SelectTrigger
 					id={triggerId}
 					data-slot="select-field-trigger"
@@ -112,8 +93,7 @@ export const SelectField = <T extends object>({
 				>
 					<SelectValue<T> data-slot="select-field-value" {...selectValueProps}>
 						{renderValue ??
-							(({ selectedText, defaultChildren }) =>
-								selectedText || defaultChildren)}
+							(({ selectedText, defaultChildren }) => selectedText || defaultChildren)}
 					</SelectValue>
 				</SelectTrigger>
 				<SelectContent data-slot="select-field-content">
@@ -144,8 +124,7 @@ export const SelectField = <T extends object>({
 };
 
 /** Props for the {@link FormSelectField} component. */
-export interface FormSelectFieldProps<T extends object>
-	extends Omit<SelectFieldProps<T>, "label"> {
+export interface FormSelectFieldProps<T extends object> extends Omit<SelectFieldProps<T>, "label"> {
 	/** The label text displayed above the select trigger. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */

@@ -25,9 +25,7 @@ export const HeroSection = () => (
 		<Card>
 			<CardHeader>
 				<CardTitle>Honey Blend Espresso</CardTitle>
-				<CardDescription>
-					Dialed-in house espresso, last brewed this morning
-				</CardDescription>
+				<CardDescription>Dialed-in house espresso, last brewed this morning</CardDescription>
 				<CardAction>
 					<div className="flex items-center gap-2">
 						<IconButton aria-label="Share recipe" variant="ghost">

@@ -16,9 +16,7 @@ import {
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link CheckboxField} component. */
-export interface CheckboxFieldProps
-	extends Omit<CheckboxProps, "children">,
-		FieldComponentProps {}
+export interface CheckboxFieldProps extends Omit<CheckboxProps, "children">, FieldComponentProps {}
 
 /**
  * A checkbox field composes a checkbox with a label, description, and error
@@ -38,12 +36,7 @@ export const CheckboxField = ({
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
 		<Field data-slot="checkbox-field" data-invalid={isInvalid || undefined}>
@@ -77,8 +70,7 @@ export const CheckboxField = ({
 };
 
 /** Props for the {@link FormCheckboxField} component. */
-export interface FormCheckboxFieldProps
-	extends Omit<CheckboxFieldProps, "label"> {
+export interface FormCheckboxFieldProps extends Omit<CheckboxFieldProps, "label"> {
 	/** The label text displayed beside the checkbox. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */
@@ -86,10 +78,7 @@ export interface FormCheckboxFieldProps
 }
 
 /** A form-connected checkbox field that reads its value, change handlers, and validation errors from the nearest field context. */
-export const FormCheckboxField = ({
-	formatErrors,
-	...props
-}: FormCheckboxFieldProps) => {
+export const FormCheckboxField = ({ formatErrors, ...props }: FormCheckboxFieldProps) => {
 	const field = useFieldContext<boolean>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
 	const resolvedErrors = resolveFormFieldErrors(errors, {

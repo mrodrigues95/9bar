@@ -1,3 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import {
 	Button,
 	Card,
@@ -7,8 +9,6 @@ import {
 	Heading,
 	Text,
 } from "@9bar/toolkit/components";
-import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
 import { Link } from "../../../components";
 import {
 	FilterBar,
@@ -101,9 +101,7 @@ const Recipe = () => {
 							<Heading as="h2" variant="section">
 								Your private recipes
 							</Heading>
-							<Text variant="body-sm">
-								Create, edit, and track your favorite brewing methods.
-							</Text>
+							<Text variant="body-sm">Create, edit, and track your favorite brewing methods.</Text>
 						</div>
 						<Link variant="default" to="/recipes/new">
 							<Plus />
@@ -111,10 +109,7 @@ const Recipe = () => {
 						</Link>
 					</div>
 					<div className="rounded-md bg-slate-50 px-2.5 py-2">
-						<FilterBar
-							definitions={FILTER_DEFINITIONS}
-							aria-label="Recipe filters"
-						>
+						<FilterBar definitions={FILTER_DEFINITIONS} aria-label="Recipe filters">
 							{(state) =>
 								!!state.filters.length && (
 									<FilterBarActions>

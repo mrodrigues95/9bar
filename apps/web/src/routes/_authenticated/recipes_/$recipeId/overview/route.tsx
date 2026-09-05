@@ -1,3 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, Pencil, Trash2 } from "lucide-react";
 import {
 	Button,
 	Card,
@@ -10,8 +12,6 @@ import {
 	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
-import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown, Pencil, Trash2 } from "lucide-react";
 import { MenuItemLink } from "../../../../../components";
 
 const RecipeNotes = () => {
@@ -36,12 +36,7 @@ const RecipeDetails = () => {
 				{ id: "ratio", label: "Ratio", description: "1:2" },
 			].map(({ id, label, description }) => (
 				<div key={id} className="flex w-full gap-0.5">
-					<Text
-						as="dt"
-						variant="body-sm"
-						className="font-medium"
-						color="primary"
-					>
+					<Text as="dt" variant="body-sm" className="font-medium" color="primary">
 						{label}:
 					</Text>
 					<Text as="dd" variant="body-sm" color="secondary">
@@ -71,12 +66,7 @@ const RecipeStats = () => {
 					<Text as="dt" variant="body-sm" color="muted">
 						{label}
 					</Text>
-					<Text
-						as="dd"
-						variant="body-sm"
-						color="secondary"
-						className="font-semibold"
-					>
+					<Text as="dd" variant="body-sm" color="secondary" className="font-semibold">
 						{description}
 					</Text>
 				</div>
@@ -132,6 +122,6 @@ const RecipeOverview = () => {
 	);
 };
 
-export const Route = createFileRoute(
-	"/_authenticated/recipes_/$recipeId/overview",
-)({ component: RecipeOverview });
+export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/overview")({
+	component: RecipeOverview,
+});

@@ -54,17 +54,15 @@ export interface TInputGroupSelectFieldValue<
 
 /** Props for the {@link InputGroupSelectField} component. */
 export interface InputGroupSelectFieldProps
-	extends Omit<InputGroupProps, "children" | "aria-label" | "aria-labelledby">,
+	extends
+		Omit<InputGroupProps, "children" | "aria-label" | "aria-labelledby">,
 		FieldComponentProps {
 	/** The collection of items to display in the select dropdown. */
 	items: Array<TInputGroupSelectFieldItem>;
 	/** Additional props forwarded to the `FieldLabel` component. */
 	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the text input. */
-	inputProps?: Omit<
-		InputGroupInputProps,
-		"value" | "onChange" | "onBlur" | "name"
-	>;
+	inputProps?: Omit<InputGroupInputProps, "value" | "onChange" | "onBlur" | "name">;
 	/** Additional props forwarded to the `Select` component. */
 	selectProps?: Omit<
 		SelectProps<TInputGroupSelectFieldItem>,
@@ -112,18 +110,10 @@ export const InputGroupSelectField = ({
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
 	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(
-		!!description,
-		descriptionId,
-		showError,
-		errorId,
-	);
+	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field
-			data-slot="input-group-select-field"
-			data-invalid={isInvalid || undefined}
-		>
+		<Field data-slot="input-group-select-field" data-invalid={isInvalid || undefined}>
 			{label && (
 				<FieldLabel
 					id={labelId}
@@ -152,10 +142,7 @@ export const InputGroupSelectField = ({
 					aria-invalid={isInvalid || undefined}
 					aria-describedby={describedBy}
 				/>
-				<InputGroupAddon
-					data-slot="input-group-select-field-addon"
-					align="inline-end"
-				>
+				<InputGroupAddon data-slot="input-group-select-field-addon" align="inline-end">
 					<Select
 						data-slot="input-group-select-field-select"
 						{...selectProps}
@@ -177,15 +164,9 @@ export const InputGroupSelectField = ({
 							<SelectValue data-slot="input-group-select-field-select-value" />
 						</InputGroupSelectTrigger>
 						<SelectContent data-slot="input-group-select-field-select-content">
-							<SelectList
-								data-slot="input-group-select-field-select-list"
-								items={items}
-							>
+							<SelectList data-slot="input-group-select-field-select-list" items={items}>
 								{(item) => (
-									<SelectItem
-										data-slot="input-group-select-field-select-item"
-										id={item.id}
-									>
+									<SelectItem data-slot="input-group-select-field-select-item" id={item.id}>
 										{item.label}
 									</SelectItem>
 								)}
@@ -216,11 +197,10 @@ export const InputGroupSelectField = ({
 };
 
 /** Props for the {@link FormInputGroupSelectField} component. */
-export interface FormInputGroupSelectFieldProps
-	extends Omit<
-		InputGroupSelectFieldProps,
-		"value" | "onInputChange" | "onSelectChange" | "onBlur" | "name"
-	> {
+export interface FormInputGroupSelectFieldProps extends Omit<
+	InputGroupSelectFieldProps,
+	"value" | "onInputChange" | "onSelectChange" | "onBlur" | "name"
+> {
 	/** A custom error formatter for converting form validation errors to displayable error items. */
 	formatErrors?: TErrorFormatter;
 }
@@ -244,12 +224,8 @@ export const FormInputGroupSelectField = ({
 			errors={resolvedErrors}
 			name={field.name}
 			value={field.state.value}
-			onInputChange={(value) =>
-				field.handleChange({ ...field.state.value, inputValue: value })
-			}
-			onSelectChange={(value) =>
-				field.handleChange({ ...field.state.value, selectValue: value })
-			}
+			onInputChange={(value) => field.handleChange({ ...field.state.value, inputValue: value })}
+			onSelectChange={(value) => field.handleChange({ ...field.state.value, selectValue: value })}
 			onBlur={field.handleBlur}
 		/>
 	);

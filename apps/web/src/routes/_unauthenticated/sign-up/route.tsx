@@ -1,5 +1,5 @@
-import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 import { createFileRoute } from "@tanstack/react-router";
+import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
 
 const SignUp = () => {
 	return (
@@ -8,12 +8,7 @@ const SignUp = () => {
 				Sign Up
 			</Heading>
 			<Form className="w-full">
-				<TextField
-					name="name"
-					label="Name"
-					inputProps={{ maxLength: 70 }}
-					isRequired
-				/>
+				<TextField name="name" label="Name" inputProps={{ maxLength: 70 }} isRequired />
 				<TextField
 					name="email"
 					type="email"
@@ -29,12 +24,7 @@ const SignUp = () => {
 					inputProps={{ minLength: 6 }}
 					isRequired
 				/>
-				<Button
-					type="submit"
-					variant="default"
-					size="default"
-					className="w-full"
-				>
+				<Button type="submit" variant="default" size="default" className="w-full">
 					Create your account
 				</Button>
 			</Form>

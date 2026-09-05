@@ -43,8 +43,7 @@ const config: StorybookConfig = {
 				allowSyntheticDefaultImports: false,
 				esModuleInterop: false,
 			},
-			propFilter: (prop) =>
-				!prop.name.startsWith("aria-") && !excludedProps.has(prop.name),
+			propFilter: (prop) => !prop.name.startsWith("aria-") && !excludedProps.has(prop.name),
 		},
 	},
 };

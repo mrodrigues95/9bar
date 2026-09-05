@@ -20,11 +20,7 @@ const separatorVariants = cva("block shrink-0 border-0 bg-border", {
 export type SeparatorProps = React.ComponentProps<typeof AriaSeparator>;
 
 /** A visual divider between content, rendered as a horizontal or vertical line. */
-export const Separator = ({
-	className,
-	orientation = "horizontal",
-	...props
-}: SeparatorProps) => {
+export const Separator = ({ className, orientation = "horizontal", ...props }: SeparatorProps) => {
 	return (
 		<AriaSeparator
 			data-slot="separator"

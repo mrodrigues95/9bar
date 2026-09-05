@@ -3,13 +3,7 @@ import { CircleAlert, Search } from "lucide-react";
 import { useId } from "react";
 import { Field } from "../field/field";
 import { Label } from "../label/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectList,
-	SelectValue,
-} from "../select/select";
+import { Select, SelectContent, SelectItem, SelectList, SelectValue } from "../select/select";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -80,21 +74,9 @@ export const WithVisibleLabel: Story = {
 export const WithMultipleInputs: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Serial Number" className="max-w-40" {...props}>
-			<InputGroupInput
-				aria-label="First 3 digits"
-				maxLength={3}
-				placeholder="000"
-			/>
-			<InputGroupInput
-				aria-label="Middle 2 digits"
-				maxLength={2}
-				placeholder="00"
-			/>
-			<InputGroupInput
-				aria-label="Last 4 digits"
-				maxLength={4}
-				placeholder="0000"
-			/>
+			<InputGroupInput aria-label="First 3 digits" maxLength={3} placeholder="000" />
+			<InputGroupInput aria-label="Middle 2 digits" maxLength={2} placeholder="00" />
+			<InputGroupInput aria-label="Last 4 digits" maxLength={4} placeholder="0000" />
 		</InputGroup>
 	),
 };
@@ -124,11 +106,7 @@ export const WithStartAndEndText: Story = {
 			<InputGroupAddon>
 				<InputGroupText>https://</InputGroupText>
 			</InputGroupAddon>
-			<InputGroupInput
-				aria-label="URL value"
-				type="text"
-				placeholder="example"
-			/>
+			<InputGroupInput aria-label="URL value" type="text" placeholder="example" />
 			<InputGroupAddon align="inline-end">
 				<InputGroupText>.com</InputGroupText>
 			</InputGroupAddon>
@@ -140,10 +118,7 @@ export const WithStartAndEndText: Story = {
 export const WithButton: Story = {
 	render: (props) => (
 		<InputGroup aria-label="Search" className="max-w-64" {...props}>
-			<InputGroupInput
-				aria-label="Search terms"
-				placeholder="Search recipes..."
-			/>
+			<InputGroupInput aria-label="Search terms" placeholder="Search recipes..." />
 			<InputGroupAddon align="inline-end">
 				<InputGroupButton variant="ghost" size="icon-xs" aria-label="Search">
 					<Search />

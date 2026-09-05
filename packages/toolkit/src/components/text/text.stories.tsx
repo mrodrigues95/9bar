@@ -90,9 +90,8 @@ export const RealWorldExample: Story = {
 					Welcome to our platform! We're excited to have you here.
 				</Text>
 				<Text as="p" variant="body">
-					Our mission is to make web development accessible and enjoyable for
-					everyone. With our toolkit, you can build beautiful, accessible
-					applications with ease.
+					Our mission is to make web development accessible and enjoyable for everyone. With our
+					toolkit, you can build beautiful, accessible applications with ease.
 				</Text>
 			</div>
 
@@ -104,14 +103,10 @@ export const RealWorldExample: Story = {
 					<Text variant="detail">SKU: 12345</Text>
 				</div>
 				<Text as="p" variant="body-sm" className="text-slate-600">
-					This component library provides a complete set of accessible,
-					composable primitives for building modern web applications.
+					This component library provides a complete set of accessible, composable primitives for
+					building modern web applications.
 				</Text>
-				<Text
-					as="p"
-					variant="caption"
-					className="mt-4 border-gray-100 border-t pt-4"
-				>
+				<Text as="p" variant="caption" className="mt-4 border-t border-gray-100 pt-4">
 					Last updated: October 11, 2025
 				</Text>
 			</div>

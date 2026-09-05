@@ -60,12 +60,7 @@ export const DynamicContent: Story = {
 		];
 
 		return (
-			<Listbox
-				{...props}
-				aria-label="Animals"
-				items={options}
-				selectionMode="single"
-			>
+			<Listbox {...props} aria-label="Animals" items={options} selectionMode="single">
 				{(item) => <ListboxItem id={item.id}>{item.name}</ListboxItem>}
 			</Listbox>
 		);
@@ -76,11 +71,7 @@ export const DynamicContent: Story = {
 export const WithDescriptions: Story = {
 	render: (props) => (
 		<Listbox {...props} aria-label="Permissions" selectionMode="single">
-			<ListboxItem
-				id="read"
-				textValue="Read"
-				startContent={<BookOpen className="size-3.5" />}
-			>
+			<ListboxItem id="read" textValue="Read" startContent={<BookOpen className="size-3.5" />}>
 				<Text slot="label" color="primary" variant="detail">
 					Read
 				</Text>
@@ -88,11 +79,7 @@ export const WithDescriptions: Story = {
 					Read only
 				</Text>
 			</ListboxItem>
-			<ListboxItem
-				id="write"
-				textValue="Write"
-				startContent={<Pencil className="size-3.5" />}
-			>
+			<ListboxItem id="write" textValue="Write" startContent={<Pencil className="size-3.5" />}>
 				<Text slot="label" color="primary" variant="detail">
 					Write
 				</Text>
@@ -100,11 +87,7 @@ export const WithDescriptions: Story = {
 					Read and write only
 				</Text>
 			</ListboxItem>
-			<ListboxItem
-				id="admin"
-				textValue="Admin"
-				startContent={<Key className="size-3.5" />}
-			>
+			<ListboxItem id="admin" textValue="Admin" startContent={<Key className="size-3.5" />}>
 				<Text slot="label" color="primary" variant="detail">
 					Admin
 				</Text>
@@ -168,9 +151,8 @@ export const MultipleSelection: Story = {
 					<ListboxItem id="egg">Egg Salad</ListboxItem>
 					<ListboxItem id="ham">Ham</ListboxItem>
 				</Listbox>
-				<p className="text-gray-600 text-sm">
-					Current selection:{" "}
-					{selected === "all" ? "all" : [...selected].join(", ")}
+				<p className="text-sm text-gray-600">
+					Current selection: {selected === "all" ? "all" : [...selected].join(", ")}
 				</p>
 			</div>
 		);
@@ -180,11 +162,7 @@ export const MultipleSelection: Story = {
 /** Shows the placeholder rendered by `renderEmptyState` when the listbox has no items. */
 export const EmptyState: Story = {
 	render: (props) => (
-		<Listbox
-			{...props}
-			aria-label="Search results"
-			renderEmptyState={() => "No results found."}
-		>
+		<Listbox {...props} aria-label="Search results" renderEmptyState={() => "No results found."}>
 			{[]}
 		</Listbox>
 	),

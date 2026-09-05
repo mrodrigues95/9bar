@@ -16,10 +16,7 @@ export const Tabs = ({ className, ...props }: TabsProps) => {
 	return (
 		<AriaTabs
 			data-slot="tabs"
-			className={cn(
-				"group/tabs flex gap-2 data-horizontal:flex-col",
-				className,
-			)}
+			className={cn("group/tabs flex gap-2 data-horizontal:flex-col", className)}
 			{...props}
 		/>
 	);
@@ -51,11 +48,7 @@ export type TabsListProps = React.ComponentProps<typeof AriaTabList> &
 	VariantProps<typeof tabsListVariants>;
 
 /** A horizontal or vertical bar containing the {@link TabsTrigger} elements that control panel visibility. */
-export const TabsList = ({
-	className,
-	variant = "default",
-	...props
-}: TabsListProps) => {
+export const TabsList = ({ className, variant = "default", ...props }: TabsListProps) => {
 	return (
 		<AriaTabList
 			data-slot="tabs-list"
@@ -77,8 +70,8 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 			className={cn(
 				[
 					"relative inline-flex h-[calc(100%-1px)] flex-1 cursor-default items-center justify-center",
-					"gap-1.5 whitespace-nowrap rounded-md border border-transparent px-1.5 py-0.5",
-					"font-medium text-foreground/60 text-xs transition-all",
+					"gap-1.5 rounded-md border border-transparent px-1.5 py-0.5 whitespace-nowrap",
+					"text-xs font-medium text-foreground/60 transition-all",
 					"hover:text-foreground",
 					"focus-visible:border-ring focus-visible:outline-1 focus-visible:outline-ring",
 					"focus-visible:ring-[3px] focus-visible:ring-ring/50",
@@ -88,7 +81,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 					"group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start",
 					"group-data-vertical/tabs:py-[calc(--spacing(1.25))]",
 					"dark:text-muted-foreground dark:hover:text-foreground",
-					"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 				],
 				[
 					"group-data-[variant=line]/tabs-list:bg-transparent",
@@ -104,7 +97,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 				[
 					"after:absolute after:bg-foreground after:opacity-0 after:transition-opacity",
 					"group-data-horizontal/tabs:after:inset-x-0 group-data-vertical/tabs:after:inset-y-0",
-					"group-data-vertical/tabs:after:-right-1 group-data-horizontal/tabs:after:bottom-[-5px]",
+					"group-data-horizontal/tabs:after:bottom-[-5px] group-data-vertical/tabs:after:-right-1",
 					"group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:w-0.5",
 					"group-data-[variant=line]/tabs-list:data-selected:after:opacity-100",
 				],

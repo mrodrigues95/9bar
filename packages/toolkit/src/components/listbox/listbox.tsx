@@ -15,14 +15,13 @@ import {
 import { cn, composeTailwindRenderProps } from "../../utils";
 import { Separator, type SeparatorProps } from "../separator/separator";
 
-export interface ListboxProps<T extends object>
-	extends Omit<AriaListBoxProps<T>, "layout" | "orientation"> {}
+export interface ListboxProps<T extends object> extends Omit<
+	AriaListBoxProps<T>,
+	"layout" | "orientation"
+> {}
 
 /** A list of options that allows single or multiple selection. */
-export const Listbox = <T extends object>({
-	children,
-	...props
-}: ListboxProps<T>) => {
+export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T>) => {
 	return (
 		<AriaListBox
 			data-slot="listbox"
@@ -39,7 +38,7 @@ export const Listbox = <T extends object>({
 
 export const listboxItemVariants = cva(
 	[
-		"group relative flex min-h-7 w-full cursor-default select-none items-center gap-2",
+		"group relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
 		"rounded-md py-1 pr-8 pl-2 text-xs/relaxed outline-hidden",
 		"[&[href]]:cursor-pointer",
 		"hover:bg-foreground/10",
@@ -50,7 +49,7 @@ export const listboxItemVariants = cva(
 		"data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive",
 		"dark:data-[variant=destructive]:focus:bg-destructive/20",
 		"data-[variant=destructive]:*:[svg]:text-destructive",
-		"[&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+		"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 	],
 	{
 		variants: {
@@ -66,8 +65,7 @@ export const listboxItemVariants = cva(
 );
 
 export interface ListboxItemProps<T extends object>
-	extends AriaListBoxItemProps<T>,
-		VariantProps<typeof listboxItemVariants> {
+	extends AriaListBoxItemProps<T>, VariantProps<typeof listboxItemVariants> {
 	/** Content rendered before the item label, such as an icon. */
 	startContent?: ReactNode;
 }
@@ -79,8 +77,7 @@ export const ListboxItem = <T extends object>({
 	...props
 }: ListboxItemProps<T>) => {
 	const textValue =
-		props.textValue ||
-		(typeof props.children === "string" ? props.children : undefined);
+		props.textValue || (typeof props.children === "string" ? props.children : undefined);
 
 	return (
 		<AriaListBoxItem
@@ -95,7 +92,7 @@ export const ListboxItem = <T extends object>({
 			{composeRenderProps(props.children, (children, { isSelected }) => (
 				<>
 					{startContent}
-					<div className="flex flex-1 flex-col justify-center truncate group-selected:font-medium">
+					<div className="group-selected:font-medium flex flex-1 flex-col justify-center truncate">
 						{children}
 					</div>
 					<span className="pointer-events-none absolute right-2 flex items-center justify-center">
@@ -107,8 +104,7 @@ export const ListboxItem = <T extends object>({
 	);
 };
 
-export interface ListboxSectionProps<T extends object>
-	extends AriaListBoxSectionProps<T> {
+export interface ListboxSectionProps<T extends object> extends AriaListBoxSectionProps<T> {
 	/** A header element rendered above the section items. */
 	title?: ReactNode;
 }
@@ -137,24 +133,15 @@ export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
  * Shared styles for collection section headers, reused by {@link ListboxSectionHeader}
  * and other list-based primitives (such as select and menu labels) to avoid duplication.
  */
-export const listboxSectionHeaderVariants = cva(
-	"px-2 py-1.5 text-muted-foreground text-xs",
-);
+export const listboxSectionHeaderVariants = cva("px-2 py-1.5 text-xs text-muted-foreground");
 
 /** A styled header rendered above a {@link ListboxSection}. */
-export const ListboxSectionHeader = ({
-	title,
-	...props
-}: ListboxSectionHeaderProps) => {
+export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderProps) => {
 	return (
 		<AriaHeader
 			data-slot="listbox-section-header"
 			{...props}
-			className={cn(
-				listboxSectionHeaderVariants(),
-				"truncate",
-				props.className,
-			)}
+			className={cn(listboxSectionHeaderVariants(), "truncate", props.className)}
 		>
 			{title}
 		</AriaHeader>
@@ -164,10 +151,7 @@ export const ListboxSectionHeader = ({
 export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
 
 /** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
-export const ListboxSeparator = ({
-	className,
-	...props
-}: ListboxSeparatorProps) => {
+export const ListboxSeparator = ({ className, ...props }: ListboxSeparatorProps) => {
 	return (
 		<Separator
 			data-slot="listbox-separator"

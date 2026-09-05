@@ -93,20 +93,9 @@ export const VariantsSection = () => (
 				<Checkbox isInvalid>Invalid</Checkbox>
 			</Strip>
 			<Strip label="Text field states">
-				<TextField
-					label="Default"
-					inputProps={{ defaultValue: "Honey Blend" }}
-				/>
-				<TextField
-					label="Disabled"
-					isDisabled
-					inputProps={{ defaultValue: "Honey Blend" }}
-				/>
-				<TextField
-					label="Readonly"
-					isReadOnly
-					inputProps={{ defaultValue: "Honey Blend" }}
-				/>
+				<TextField label="Default" inputProps={{ defaultValue: "Honey Blend" }} />
+				<TextField label="Disabled" isDisabled inputProps={{ defaultValue: "Honey Blend" }} />
+				<TextField label="Readonly" isReadOnly inputProps={{ defaultValue: "Honey Blend" }} />
 				<TextField
 					label="Invalid"
 					isInvalid
