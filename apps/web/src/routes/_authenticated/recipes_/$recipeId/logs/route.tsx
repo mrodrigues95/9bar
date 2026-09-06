@@ -16,7 +16,7 @@ import {
 import { Link, List, ListItem, Pagination } from "../../../../../components";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 
-export const RecipeLogs = () => {
+const RecipeLogs = () => {
 	const { recipe } = useLoaderData({
 		from: "/_authenticated/recipes_/$recipeId",
 	});
