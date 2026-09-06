@@ -1,13 +1,16 @@
-import type { RegisteredRouter } from "@tanstack/react-router";
+import { createLink, type RegisteredRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import {
 	BreadcrumbItem as ToolkitBreadcrumbItem,
+	BreadcrumbLink as ToolkitBreadcrumbLink,
 	BreadcrumbList as ToolkitBreadcrumbList,
 	BreadcrumbPage as ToolkitBreadcrumbPage,
 	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
 } from "@9bar/toolkit/components";
-import { cn } from "@9bar/toolkit/utils";
-import { Link, type LinkProps } from "../link/link";
+import type { LinkProps } from "../link/link";
+
+/** A routing-aware crumb link that keeps the toolkit's default breadcrumb styling. */
+const BreadcrumbLink = createLink(ToolkitBreadcrumbLink);
 
 export type BreadcrumbProps<
 	TRouter extends RegisteredRouter = RegisteredRouter,
@@ -29,29 +32,19 @@ export function Breadcrumb({
 	isDisabled,
 }: BreadcrumbProps): ReactNode {
 	return (
-		<ToolkitBreadcrumbItem className={cn("disabled:[&_svg]:opacity-50", className) ?? ""}>
+		<ToolkitBreadcrumbItem className={className}>
 			{({ isCurrent }) =>
 				isCurrent ? (
-					<ToolkitBreadcrumbPage className={cn("text-muted", className) ?? ""}>
-						{children}
-					</ToolkitBreadcrumbPage>
+					<ToolkitBreadcrumbPage className={className}>{children}</ToolkitBreadcrumbPage>
 				) : (
-					<Link
+					<BreadcrumbLink
 						to={to}
-						{...(isDisabled && { isDisabled: true })}
 						activeOptions={{ exact: true, ...activeOptions }}
-						className={
-							cn(
-								"p-0 text-muted",
-								"hover:text-slate-900",
-								"focus-visible:text-slate-900",
-								"current:text-slate-900 current:disabled:opacity-100",
-								className,
-							) ?? ""
-						}
+						{...(isDisabled && { isDisabled: true })}
+						className={className}
 					>
 						{children}
-					</Link>
+					</BreadcrumbLink>
 				)
 			}
 		</ToolkitBreadcrumbItem>

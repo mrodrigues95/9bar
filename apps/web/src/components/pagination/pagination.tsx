@@ -52,9 +52,9 @@ export const Pagination = () => {
 	});
 
 	return (
-		<div className="flex w-full items-center justify-between">
+		<div className="flex w-full items-center justify-between gap-4">
 			<PaginationSummary page={page} itemsPerPage={itemsPerPage} totalItems={totalItems} />
-			<ToolkitPagination>
+			<ToolkitPagination className="mx-0 w-auto">
 				<PaginationContent>
 					<PaginationItem>
 						<PaginationFirst onPress={() => setPage(1)} isDisabled={page === 1} />
