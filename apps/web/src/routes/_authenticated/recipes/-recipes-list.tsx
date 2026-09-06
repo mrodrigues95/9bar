@@ -3,6 +3,7 @@ import {
 	ArrowRight,
 	ArrowRightLeft,
 	EllipsisVertical,
+	FileText,
 	Fingerprint,
 	Paperclip,
 	Pencil,
@@ -65,7 +66,8 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 				)}
 			</div>
 			<div className="flex items-center gap-1">
-				<Badge variant={recipe.isQuickBrew ? "secondary" : "outline"}>
+				<Badge variant="outline">
+					{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
