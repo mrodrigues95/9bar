@@ -4,10 +4,16 @@ export const resolveOperator = (
 	valueCount: number,
 	operatorPairs?: ReadonlyArray<{ singular: string; plural: string }>,
 ): string => {
-	if (!operatorPairs) return currentOp;
+	if (!operatorPairs) {
+		return currentOp;
+	}
 	for (const { singular, plural } of operatorPairs) {
-		if (currentOp === singular && valueCount > 1) return plural;
-		if (currentOp === plural && valueCount <= 1) return singular;
+		if (currentOp === singular && valueCount > 1) {
+			return plural;
+		}
+		if (currentOp === plural && valueCount <= 1) {
+			return singular;
+		}
 	}
 	return currentOp;
 };

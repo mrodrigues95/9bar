@@ -102,7 +102,9 @@ export const BrewLogSection = () => {
 
 	const resultFilter = filters.find((f) => f.filterId === "result");
 	const visibleEntries = logEntries.filter((entry) => {
-		if (!resultFilter || resultFilter.values.length === 0) return true;
+		if (!resultFilter || resultFilter.values.length === 0) {
+			return true;
+		}
 		const matches = resultFilter.values.includes(entry.resultId);
 		return resultFilter.operatorId === "is-not" ? !matches : matches;
 	});

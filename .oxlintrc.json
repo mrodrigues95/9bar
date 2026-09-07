@@ -6,6 +6,7 @@
 	},
 	"rules": {
 		"typescript/array-type": ["error", { "default": "generic", "readonly": "generic" }],
+		"eslint/curly": "error",
 		"eslint/no-unused-vars": "error",
 		"react/exhaustive-deps": "error",
 		"anti-slop/no-chained-type-assertions": "error",
