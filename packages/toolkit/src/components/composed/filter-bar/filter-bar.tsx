@@ -18,11 +18,19 @@ import { cn } from "#lib/utils";
 import { FilterBarChip } from "./filter-bar-chip";
 import { FilterBarContext } from "./filter-bar-context";
 import type { FilterBarDefinition, FilterBarFilterState, FilterBarState } from "./filter-bar-types";
-import { getDefinition, resolveOperator } from "./filter-bar-utils";
-import { filterBarVariants } from "./filter-bar-variants";
+import { resolveOperator } from "./utils";
 
 type InferFilterId<T> = T extends FilterBarDefinition<infer F, string> ? F : never;
 type InferOperatorId<T> = T extends FilterBarDefinition<string, infer O> ? O : never;
+
+/** Filter array with literal IDs inferred from the definitions tuple. */
+type InferredFilters<TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>> = Array<
+	FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
+>;
+
+/** Toolbar state with literal IDs inferred from the definitions tuple. */
+type InferredState<TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>> =
+	FilterBarState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>;
 
 /** Props for the {@link FilterBar} component. */
 export interface FilterBarProps<
@@ -31,26 +39,16 @@ export interface FilterBarProps<
 	/** The filterable dimensions users can add filters from. */
 	definitions: TDefs;
 	/** Controlled filter state. Omit for uncontrolled usage with `defaultFilters`. */
-	filters?: Array<
-		FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
-	>;
+	filters?: InferredFilters<TDefs>;
 	/** Called whenever the filter state changes (controlled and uncontrolled). */
-	onFiltersChange?: (
-		filters: Array<
-			FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
-		>,
-	) => void;
+	onFiltersChange?: (filters: InferredFilters<TDefs>) => void;
 	/** Initial filters for uncontrolled usage. */
-	defaultFilters?: Array<
-		FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
-	>;
+	defaultFilters?: InferredFilters<TDefs>;
 	/**
 	 * Render prop for toolbar actions (e.g. a "Clear all" button inside
 	 * {@link FilterBarActions}), receiving the current {@link FilterBarState}.
 	 */
-	children?: (
-		state: FilterBarState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>,
-	) => ReactNode;
+	children?: (state: InferredState<TDefs>) => ReactNode;
 }
 
 type Filter = FilterBarFilterState;
@@ -185,7 +183,7 @@ export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string
 				orientation="horizontal"
 				data-slot="filter-bar"
 				{...toolbarProps}
-				className={cn(filterBarVariants.root, toolbarProps.className) ?? ""}
+				className={cn("flex flex-wrap items-center gap-1.5", toolbarProps.className)}
 			>
 				{filters.map((filter) => (
 					<FilterBarChip
@@ -240,4 +238,16 @@ export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string
 			</AriaToolbar>
 		</FilterBarContext.Provider>
 	);
+};
+
+/** Reads a definition from the lookup map, throwing for unknown filter ids. */
+const getDefinition = (
+	definitionById: ReadonlyMap<string, FilterBarDefinition>,
+	filterId: string,
+): FilterBarDefinition => {
+	const def = definitionById.get(filterId);
+	if (!def) {
+		throw new Error(`Unknown filter definition: ${filterId}`);
+	}
+	return def;
 };

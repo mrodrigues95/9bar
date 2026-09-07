@@ -4,14 +4,12 @@ import { Group as AriaGroup, type Key, type Selection } from "react-aria-compone
 import { Button } from "#components/button";
 import { IconButton } from "#components/icon-button";
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from "#components/menu";
-import type { FilterBarDefinition, FilterBarFilterState } from "./filter-bar-types";
-import {
-	formatValuesDefault,
-	getVisibleOperators,
-	partitionFilterOptions,
-	resolveOperator,
-} from "./filter-bar-utils";
-import { filterBarVariants } from "./filter-bar-variants";
+import type {
+	FilterBarDefinition,
+	FilterBarFilterState,
+	FilterBarOption,
+} from "./filter-bar-types";
+import { resolveOperator } from "./utils";
 
 interface FilterBarChipProps {
 	filter: FilterBarFilterState;
@@ -81,9 +79,12 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 		<AriaGroup
 			data-slot="filter-bar-filter"
 			aria-label={`${definition.label} ${currentOp?.label} ${valueLabel}`}
-			className={filterBarVariants.filter}
+			className="flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border"
 		>
-			<span data-slot="filter-bar-filter-label" className={filterBarVariants.filterLabel}>
+			<span
+				data-slot="filter-bar-filter-label"
+				className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg]:size-3.5"
+			>
 				{definition.icon}
 				{definition.label}
 			</span>
@@ -93,7 +94,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 					data-slot="filter-bar-filter-operator"
 					variant="ghost"
 					size="xs"
-					className={filterBarVariants.filterOperator}
+					className="rounded-none font-normal"
 				>
 					{currentOp?.label}
 				</Button>
@@ -115,7 +116,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 					data-slot="filter-bar-filter-value"
 					variant="ghost"
 					size="xs"
-					className={filterBarVariants.filterValue}
+					className="rounded-none"
 				>
 					{filter.values.length > 0 ? valueLabel : "\u2026"}
 				</Button>
@@ -160,4 +161,53 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 			</IconButton>
 		</AriaGroup>
 	);
+};
+
+/** Hides the inapplicable half of each operator pair for the current selection count. */
+const getVisibleOperators = (
+	operators: ReadonlyArray<{ id: string; label: string }>,
+	valueCount: number,
+	operatorPairs?: ReadonlyArray<{ singular: string; plural: string }>,
+): Array<{ id: string; label: string }> => {
+	if (!operatorPairs) return [...operators];
+	return operators.filter((op) => {
+		const pair = operatorPairs.find(
+			({ singular, plural }) => singular === op.id || plural === op.id,
+		);
+		if (!pair) return true;
+		return valueCount > 1 ? op.id !== pair.singular : op.id !== pair.plural;
+	});
+};
+
+/** Default chip label: the option label for one value, `"N <pluralLabel>"` for several. */
+const formatValuesDefault = (
+	values: ReadonlyArray<string>,
+	options: ReadonlyArray<FilterBarOption>,
+	pluralLabel: string,
+): string => {
+	if (values.length === 0) return "";
+	if (values.length === 1) {
+		const firstValue = values[0] ?? "";
+		const opt = options.find((o) => o.id === firstValue);
+		return opt?.label ?? firstValue;
+	}
+	return `${values.length} ${pluralLabel}`;
+};
+
+/** Splits options into selected-first and unselected groups for the value menu. */
+const partitionFilterOptions = (
+	options: ReadonlyArray<FilterBarOption>,
+	values: ReadonlyArray<string>,
+): [Array<FilterBarOption>, Array<FilterBarOption>] => {
+	const selectedSet = new Set(values);
+	const selected: Array<FilterBarOption> = [];
+	const unselected: Array<FilterBarOption> = [];
+	for (const opt of options) {
+		if (selectedSet.has(opt.id)) {
+			selected.push(opt);
+		} else {
+			unselected.push(opt);
+		}
+	}
+	return [selected, unselected];
 };
