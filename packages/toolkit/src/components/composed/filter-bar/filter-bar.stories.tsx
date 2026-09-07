@@ -65,9 +65,7 @@ export const Empty: Story = {
 export const WithDefaultFilter: Story = {
 	args: {
 		...Empty.args,
-		defaultFilters: [
-			{ id: "default-status", filterId: "status", operatorId: "is", values: ["active"] },
-		],
+		defaultFilters: [{ filterId: "status", operatorId: "is", values: ["active"] }],
 	},
 };
 
@@ -77,16 +75,11 @@ export const Controlled: Story = {
 		definitions: DEFINITIONS,
 		"aria-label": "Example filters",
 	},
-	render: () => {
+	render: (props) => {
 		const [filters, setFilters] = useState<Array<FilterBarFilterState>>([]);
 		return (
 			<div className="flex flex-col gap-2">
-				<FilterBar
-					definitions={DEFINITIONS}
-					aria-label="Example filters"
-					filters={filters}
-					onFiltersChange={setFilters}
-				>
+				<FilterBar {...props} filters={filters} onFiltersChange={setFilters}>
 					{(state) =>
 						state.filters.length > 0 && (
 							<FilterBarActions>

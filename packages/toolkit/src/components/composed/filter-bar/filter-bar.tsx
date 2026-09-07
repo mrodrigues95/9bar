@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
 	Toolbar as AriaToolbar,
 	type ToolbarProps as AriaToolbarProps,
@@ -16,227 +16,140 @@ import {
 } from "#components/menu";
 import { cn } from "#lib/utils";
 import { FilterBarChip } from "./filter-bar-chip";
-import { FilterBarContext } from "./filter-bar-context";
 import type { FilterBarDefinition, FilterBarFilterState, FilterBarState } from "./filter-bar-types";
 import { resolveOperator } from "./utils";
 
-type InferFilterId<T> = T extends FilterBarDefinition<infer F, string> ? F : never;
-type InferOperatorId<T> = T extends FilterBarDefinition<string, infer O> ? O : never;
-
-/** Filter array with literal IDs inferred from the definitions tuple. */
-type InferredFilters<TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>> = Array<
-	FilterBarFilterState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>
->;
-
-/** Toolbar state with literal IDs inferred from the definitions tuple. */
-type InferredState<TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>> =
-	FilterBarState<InferFilterId<TDefs[number]>, InferOperatorId<TDefs[number]>>;
-
 /** Props for the {@link FilterBar} component. */
-export interface FilterBarProps<
-	TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>,
-> extends Omit<AriaToolbarProps, "orientation" | "children"> {
+export interface FilterBarProps extends Omit<AriaToolbarProps, "orientation" | "children"> {
 	/** The filterable dimensions users can add filters from. */
-	definitions: TDefs;
+	definitions: ReadonlyArray<FilterBarDefinition>;
 	/** Controlled filter state. Omit for uncontrolled usage with `defaultFilters`. */
-	filters?: InferredFilters<TDefs>;
+	filters?: Array<FilterBarFilterState>;
 	/** Called whenever the filter state changes (controlled and uncontrolled). */
-	onFiltersChange?: (filters: InferredFilters<TDefs>) => void;
+	onFiltersChange?: (filters: Array<FilterBarFilterState>) => void;
 	/** Initial filters for uncontrolled usage. */
-	defaultFilters?: InferredFilters<TDefs>;
+	defaultFilters?: Array<FilterBarFilterState>;
 	/**
 	 * Render prop for toolbar actions (e.g. a "Clear all" button inside
 	 * {@link FilterBarActions}), receiving the current {@link FilterBarState}.
 	 */
-	children?: (state: InferredState<TDefs>) => ReactNode;
+	children?: (state: FilterBarState) => ReactNode;
 }
-
-type Filter = FilterBarFilterState;
 
 /**
  * An opinionated filter toolbar: active filters render as chips with operator
  * and value menus, and a menu button adds new filters from `definitions`.
  * Composes {@link Button}, {@link IconButton}, and {@link Menu} primitives.
  * Supports controlled (`filters` + `onFiltersChange`) and uncontrolled
- * (`defaultFilters`) usage.
+ * (`defaultFilters`) usage. At most one filter exists per definition.
+ * Memoized by the React Compiler; manual `useMemo`/`useCallback` omitted.
  */
-export const FilterBar = <TDefs extends ReadonlyArray<FilterBarDefinition<string, string>>>({
+export const FilterBar = ({
 	definitions,
 	filters: controlledFilters,
 	onFiltersChange,
 	defaultFilters,
 	children,
 	...toolbarProps
-}: FilterBarProps<TDefs>) => {
-	const [uncontrolledFilters, setUncontrolledFilters] = useState<Array<Filter>>(
+}: FilterBarProps) => {
+	const [uncontrolledFilters, setUncontrolledFilters] = useState<Array<FilterBarFilterState>>(
 		() => defaultFilters ?? [],
 	);
 	const isControlled = controlledFilters !== undefined;
-	const filters: Array<Filter> = isControlled ? controlledFilters : uncontrolledFilters;
+	const filters: Array<FilterBarFilterState> = isControlled
+		? controlledFilters
+		: uncontrolledFilters;
 
-	const onFiltersChangeRef = useRef<any>(onFiltersChange);
-	useEffect(() => {
-		onFiltersChangeRef.current = onFiltersChange;
-	}, [onFiltersChange]);
+	const definitionById = new Map(definitions.map((d) => [d.id, d]));
 
-	const definitionById = useMemo(() => new Map(definitions.map((d) => [d.id, d])), [definitions]);
+	// Computes the next state eagerly so the updater stays pure: StrictMode
+	// double-invokes updater functions, so notifying inside one would call
+	// `onFiltersChange` twice. All callers are discrete UI events, so the
+	// closure snapshot is always fresh.
+	const update = (
+		getNext: (current: Array<FilterBarFilterState>) => Array<FilterBarFilterState>,
+	) => {
+		const next = getNext(filters);
+		if (!isControlled) {
+			setUncontrolledFilters(next);
+		}
+		onFiltersChange?.(next);
+	};
 
-	const update = useCallback(
-		(getNext: (current: Array<Filter>) => Array<Filter>) => {
-			if (!isControlled) {
-				setUncontrolledFilters((prev) => {
-					const next = getNext(prev);
-					onFiltersChangeRef.current?.(next);
-					return next;
-				});
-			} else {
-				onFiltersChangeRef.current?.(getNext(filters));
-			}
-		},
-		[isControlled, filters],
-	);
+	const state: FilterBarState = { filters, clearAll: () => update(() => []) };
+	const filtersByFilterId = new Map(filters.map((f) => [f.filterId, f]));
 
-	const addFilter = useCallback(
-		(filterId: string, operatorId: string, values: Array<string> = []): string => {
-			const id = crypto.randomUUID();
-			update((current) => [...current, { id, filterId, operatorId, values }]);
-			return id;
-		},
-		[update],
-	);
+	const onAddFilter = (defId: string, keys: Selection) => {
+		if (keys === "all") {
+			return;
+		}
+		const values = [...keys].map((k) => k.toString());
+		const def = definitionById.get(defId);
+		if (!def) {
+			return;
+		}
 
-	const removeFilter = useCallback(
-		(id: string) => {
-			update((current) => current.filter((f) => f.id !== id));
-		},
-		[update],
-	);
-
-	const updateOperator = useCallback(
-		(id: string, operatorId: string) => {
-			update((current) => current.map((f) => (f.id === id ? { ...f, operatorId } : f)));
-		},
-		[update],
-	);
-
-	const updateValues = useCallback(
-		(id: string, values: Array<string>) => {
-			update((current) => current.map((f) => (f.id === id ? { ...f, values } : f)));
-		},
-		[update],
-	);
-
-	const clearAll = useCallback(() => {
-		update(() => []);
-	}, [update]);
-
-	const handleFilterUpdate = useCallback(
-		(id: string, changes: { operatorId?: string; values?: Array<string> }) => {
-			update((current) => current.map((f) => (f.id === id ? { ...f, ...changes } : f)));
-		},
-		[update],
-	);
-
-	const state = useMemo(
-		() => ({
-			filters,
-			clearAll,
-			removeFilter,
-			addFilter,
-			updateOperator,
-			updateValues,
-		}),
-		[filters, clearAll, removeFilter, addFilter, updateOperator, updateValues],
-	);
-
-	const filtersByFilterId = useMemo(() => new Map(filters.map((f) => [f.filterId, f])), [filters]);
-
-	const handleAddFilter = useCallback(
-		(defId: string, keys: Selection) => {
-			if (keys === "all") {
-				return;
-			}
-			const values = [...keys].map((k) => k.toString());
-			const def = definitionById.get(defId);
-			if (!def) {
-				return;
-			}
-
-			const existing = filtersByFilterId.get(defId);
-			if (existing) {
-				const newOp = resolveOperator(existing.operatorId, values.length, def.operatorPairs);
-				update((current) =>
-					current.map((f) => (f.id === existing.id ? { ...f, operatorId: newOp, values } : f)),
-				);
-			} else {
-				const op = resolveOperator(def.defaultOperatorId, values.length, def.operatorPairs);
-				const id = crypto.randomUUID();
-				update((current) => [...current, { id, filterId: defId, operatorId: op, values }]);
-			}
-		},
-		[definitionById, filtersByFilterId, update],
-	);
+		const existing = filtersByFilterId.get(defId);
+		if (existing) {
+			const newOp = resolveOperator(existing.operatorId, values.length, def.operatorPairs);
+			update((current) =>
+				current.map((f) => (f.filterId === defId ? { ...f, operatorId: newOp, values } : f)),
+			);
+		} else {
+			const op = resolveOperator(def.defaultOperatorId, values.length, def.operatorPairs);
+			update((current) => [...current, { filterId: defId, operatorId: op, values }]);
+		}
+	};
 
 	return (
-		<FilterBarContext.Provider value={state}>
-			<AriaToolbar
-				orientation="horizontal"
-				data-slot="filter-bar"
-				{...toolbarProps}
-				className={cn("flex flex-wrap items-center gap-1.5", toolbarProps.className)}
-			>
-				{filters.map((filter) => (
-					<FilterBarChip
-						key={filter.id}
-						filter={filter}
-						definition={getDefinition(definitionById, filter.filterId)}
-						onUpdate={handleFilterUpdate}
-						onRemove={removeFilter}
-					/>
-				))}
+		<AriaToolbar
+			orientation="horizontal"
+			data-slot="filter-bar"
+			{...toolbarProps}
+			className={cn("flex flex-wrap items-center gap-1.5", toolbarProps.className)}
+		>
+			{filters.map((filter) => (
+				<FilterBarChip
+					key={filter.filterId}
+					filter={filter}
+					definition={getDefinition(definitionById, filter.filterId)}
+					onUpdate={(filterId, changes) =>
+						update((current) =>
+							current.map((f) => (f.filterId === filterId ? { ...f, ...changes } : f)),
+						)
+					}
+					onRemove={(filterId) =>
+						update((current) => current.filter((f) => f.filterId !== filterId))
+					}
+				/>
+			))}
 
-				<MenuTrigger>
-					<IconButton data-slot="filter-bar-add" aria-label="Add filter" variant="ghost" size="sm">
-						<Plus aria-hidden="true" />
-					</IconButton>
-					<Menu>
-						{definitions.map((def) => (
-							<MenuSub key={def.id}>
-								<MenuSubTrigger textValue={def.label}>
-									{def.icon && (
-										<span className="[&_svg]:size-4" aria-hidden="true">
-											{def.icon}
-										</span>
-									)}
-									{def.label}
-								</MenuSubTrigger>
-								<MenuSubContent
-									selectionMode="multiple"
-									selectedKeys={filtersByFilterId.get(def.id)?.values ?? []}
-									onSelectionChange={(keys) => handleAddFilter(def.id, keys)}
-								>
-									{def.options.map((opt) => (
-										<MenuItem key={opt.id} id={opt.id}>
-											{opt.label}
-										</MenuItem>
-									))}
-								</MenuSubContent>
-							</MenuSub>
-						))}
-					</Menu>
-				</MenuTrigger>
+			<MenuTrigger>
+				<IconButton data-slot="filter-bar-add" aria-label="Add filter" variant="ghost" size="sm">
+					<Plus aria-hidden="true" />
+				</IconButton>
+				<Menu>
+					{definitions.map((def) => (
+						<MenuSub key={def.id}>
+							<MenuSubTrigger textValue={def.label}>{def.label}</MenuSubTrigger>
+							<MenuSubContent
+								selectionMode="multiple"
+								selectedKeys={filtersByFilterId.get(def.id)?.values ?? []}
+								onSelectionChange={(keys) => onAddFilter(def.id, keys)}
+							>
+								{def.options.map((opt) => (
+									<MenuItem key={opt.id} id={opt.id}>
+										{opt.label}
+									</MenuItem>
+								))}
+							</MenuSubContent>
+						</MenuSub>
+					))}
+				</Menu>
+			</MenuTrigger>
 
-				{children?.(
-					// SAFETY: the filters in state were built from these exact definitions (see
-					// addFilter/handleAddFilter), so the erased string IDs are the precise literal
-					// IDs at runtime. `state` only carries callbacks that read refs inside event
-					// handlers (the rule cannot see through the render prop), and the internal
-					// state erases the literal IDs (same bridge as the FilterBarContext typing above).
-					// eslint-disable-next-line react/refs
-					state as FilterBarState<any, any>,
-				)}
-			</AriaToolbar>
-		</FilterBarContext.Provider>
+			{children?.(state)}
+		</AriaToolbar>
 	);
 };
 

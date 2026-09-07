@@ -1,6 +1,8 @@
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
+import babel from "@rolldown/plugin-babel";
 import type { StorybookConfig } from "@storybook/react-vite";
+import { reactCompilerPreset } from "@vitejs/plugin-react";
 
 const require = createRequire(import.meta.url);
 
@@ -33,7 +35,12 @@ const config: StorybookConfig = {
 	],
 	framework: {
 		name: getAbsolutePath("@storybook/react-vite"),
-		options: {},
+		options: { strictMode: true },
+	},
+	viteFinal: (config) => {
+		config.plugins ??= [];
+		config.plugins.push(babel({ presets: [reactCompilerPreset()] }));
+		return config;
 	},
 	typescript: {
 		reactDocgen: "react-docgen-typescript",
