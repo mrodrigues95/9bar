@@ -9,12 +9,12 @@ import {
 	Heading,
 	Text,
 } from "@9bar/toolkit/components";
-import { Link } from "../../../components";
 import {
 	FilterBar,
 	FilterBarActions,
 	type FilterBarDefinition,
-} from "../../../components/filter-bar/filter-bar";
+} from "@9bar/toolkit/components/composed";
+import { Link } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../utils/data";
 import { RecipesList } from "./-recipes-list";

@@ -1,13 +1,8 @@
 import { formOptions } from "@tanstack/react-form";
 import type { ComponentProps, ReactNode } from "react";
 import z from "zod";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	type TInputGroupSelectFieldValue,
-} from "@9bar/toolkit/components";
+import { Card, CardContent, CardHeader, CardTitle } from "@9bar/toolkit/components";
+import type { TInputGroupSelectFieldValue } from "@9bar/toolkit/components/composed";
 import { cn } from "@9bar/toolkit/utils";
 import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
 

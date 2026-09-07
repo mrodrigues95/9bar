@@ -10,8 +10,8 @@ import {
 	InputGroupInput,
 	InputGroupText,
 	Text,
-	TextField,
 } from "../../components";
+import { TextField } from "../../components/composed";
 
 /** Properties for the {@link Strip} component. */
 interface StripProps {

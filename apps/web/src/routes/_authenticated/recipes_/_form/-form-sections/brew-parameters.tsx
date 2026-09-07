@@ -1,4 +1,4 @@
-import { withForm } from "@9bar/toolkit/components";
+import { withForm } from "@9bar/toolkit/components/composed";
 import { FormSection, recipeFormOpts } from "./form-section";
 
 const BREW_TIME_UNIT_OPTIONS = [

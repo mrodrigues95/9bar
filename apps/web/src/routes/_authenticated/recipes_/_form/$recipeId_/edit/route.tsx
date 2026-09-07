@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, useRouteContext } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { useAppForm } from "@9bar/toolkit/components";
+import { useAppForm } from "@9bar/toolkit/components/composed";
 import { recipeFormOpts, recipeToFormValues } from "../../-form-sections/form-section";
 import { RecipeForm } from "../../-form-sections/recipe-form";
 

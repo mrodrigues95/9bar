@@ -7,14 +7,19 @@
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
 	"imports": {
-		"#components/*": "./src/components/*/index.ts",
+		"#components/*": "./src/components/primitive/*/index.ts",
+		"#composed/*": "./src/components/composed/*/index.ts",
 		"#hooks/*": "./src/hooks/*.ts",
 		"#lib/*": "./src/utils/*.ts"
 	},
 	"exports": {
 		".": "./src/index.ts",
 		"./components": "./src/components/index.ts",
-		"./components/*": "./src/components/*/index.ts",
+		"./components/*": "./src/components/primitive/*/index.ts",
+		"./components/primitive": "./src/components/primitive/index.ts",
+		"./components/primitive/*": "./src/components/primitive/*/index.ts",
+		"./components/composed": "./src/components/composed/index.ts",
+		"./components/composed/*": "./src/components/composed/*/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./hooks/*": "./src/hooks/*.ts",
 		"./globals.css": "./src/styles/globals.css"

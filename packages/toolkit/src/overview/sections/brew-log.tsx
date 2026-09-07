@@ -30,6 +30,8 @@ import {
 	Separator,
 	Text,
 } from "../../components";
+import { FilterBar } from "../../components/composed";
+import type { FilterBarDefinition, FilterBarFilterState } from "../../components/composed";
 
 /** One row of the recent-shots list. */
 const logEntries = [
@@ -41,6 +43,7 @@ const logEntries = [
 		ratio: "1:2",
 		shotTime: "28 s",
 		result: "Dialed in",
+		resultId: "dialed-in",
 		resultVariant: "default" as const,
 	},
 	{
@@ -51,6 +54,7 @@ const logEntries = [
 		ratio: "1:1.5",
 		shotTime: "22 s",
 		result: "Under-extracted",
+		resultId: "under-extracted",
 		resultVariant: "secondary" as const,
 	},
 	{
@@ -61,13 +65,32 @@ const logEntries = [
 		ratio: "1:2.5",
 		shotTime: "34 s",
 		result: "Sour",
+		resultId: "sour",
 		resultVariant: "destructive" as const,
 	},
 ];
 
+/** Filterable dimensions for the recent-shots list. */
+const RESULT_DEFINITION: FilterBarDefinition = {
+	id: "result",
+	label: "Result",
+	pluralLabel: "results",
+	operators: [
+		{ id: "is", label: "is" },
+		{ id: "is-not", label: "is not" },
+	],
+	defaultOperatorId: "is",
+	options: [
+		{ id: "dialed-in", label: "Dialed in" },
+		{ id: "under-extracted", label: "Under-extracted" },
+		{ id: "sour", label: "Sour" },
+	],
+};
+
 /** The brew log: recent shots list with result badges, pagination, and an empty-state card. */
 export const BrewLogSection = () => {
 	const [page, setPage] = useState(2);
+	const [filters, setFilters] = useState<Array<FilterBarFilterState>>([]);
 	const totalPages = 12;
 
 	const pages = generatePagination({
@@ -75,6 +98,13 @@ export const BrewLogSection = () => {
 		totalPages,
 		siblingCount: 1,
 		boundaryCount: 1,
+	});
+
+	const resultFilter = filters.find((f) => f.filterId === "result");
+	const visibleEntries = logEntries.filter((entry) => {
+		if (!resultFilter || resultFilter.values.length === 0) return true;
+		const matches = resultFilter.values.includes(entry.resultId);
+		return resultFilter.operatorId === "is-not" ? !matches : matches;
 	});
 
 	return (
@@ -90,7 +120,14 @@ export const BrewLogSection = () => {
 					</CardAction>
 				</CardHeader>
 				<CardContent>
-					{logEntries.map((entry, index) => (
+					<FilterBar
+						definitions={[RESULT_DEFINITION]}
+						aria-label="Shot filters"
+						filters={filters}
+						onFiltersChange={setFilters}
+						className="mb-2"
+					/>
+					{visibleEntries.map((entry, index) => (
 						<div key={entry.id}>
 							{index > 0 ? <Separator /> : null}
 							<div className="flex items-center justify-between gap-4 py-3">

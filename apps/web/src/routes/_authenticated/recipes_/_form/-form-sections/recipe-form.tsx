@@ -1,4 +1,5 @@
-import { Form, Separator, withForm } from "@9bar/toolkit/components";
+import { Separator } from "@9bar/toolkit/components";
+import { Form, withForm } from "@9bar/toolkit/components/composed";
 import { Link } from "../../../../../components";
 import { AdditionalDetailsFormSection } from "./additional-details";
 import { BasicInformationFormSection } from "./basic-information";

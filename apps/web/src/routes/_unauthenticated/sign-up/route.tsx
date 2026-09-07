@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Button, Form, Heading, TextField } from "@9bar/toolkit/components";
+import { Button, Heading } from "@9bar/toolkit/components";
+import { Form, TextField } from "@9bar/toolkit/components/composed";
 
 const SignUp = () => {
 	return (
