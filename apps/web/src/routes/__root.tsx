@@ -1,18 +1,20 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { type ReactNode, Suspense } from "react";
+import { StrictMode, type ReactNode, Suspense } from "react";
 import css from "../styles/globals.css?url";
 
 const RootComponent = () => {
 	return (
-		<RootDocument>
-			<div className="flex min-h-screen flex-col">
-				<Suspense>
-					<Outlet />
-				</Suspense>
-				<TanStackRouterDevtools position="bottom-right" />
-			</div>
-		</RootDocument>
+		<StrictMode>
+			<RootDocument>
+				<div className="flex min-h-screen flex-col">
+					<Suspense>
+						<Outlet />
+					</Suspense>
+					<TanStackRouterDevtools position="bottom-right" />
+				</div>
+			</RootDocument>
+		</StrictMode>
 	);
 };
 
