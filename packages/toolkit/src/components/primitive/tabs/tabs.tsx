@@ -91,6 +91,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 				],
 				[
 					"data-selected:bg-background data-selected:text-foreground",
+					"group-data-[variant=default]/tabs-list:data-selected:shadow-sm",
 					"dark:data-selected:border-input dark:data-selected:bg-input/30",
 					"dark:data-selected:text-foreground",
 				],
