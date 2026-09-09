@@ -6,7 +6,7 @@ import {
 	MoreHorizontalIcon,
 } from "lucide-react";
 import type * as React from "react";
-import { LinkButton } from "#components/button";
+import { Link } from "#components/link";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Pagination} component. */
@@ -49,7 +49,7 @@ export const PaginationItem = ({ ...props }: PaginationItemProps) => {
 /** Props for the {@link PaginationLink} component. */
 export type PaginationLinkProps = {
 	isActive?: boolean;
-} & Omit<React.ComponentProps<typeof LinkButton>, "variant">;
+} & Omit<React.ComponentProps<typeof Link>, "variant">;
 
 /** A page-number link within a {@link PaginationContent}, styled to indicate the active page. */
 export const PaginationLink = ({
@@ -59,7 +59,7 @@ export const PaginationLink = ({
 	...props
 }: PaginationLinkProps) => {
 	return (
-		<LinkButton
+		<Link
 			variant={isActive ? "outline" : "ghost"}
 			size={size}
 			className={cn(className)}

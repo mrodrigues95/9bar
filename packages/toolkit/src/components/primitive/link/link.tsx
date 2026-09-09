@@ -4,6 +4,7 @@ import {
 	type LinkProps as AriaLinkProps,
 	composeRenderProps,
 } from "react-aria-components";
+import { cn } from "#lib/utils";
 import { buttonVariants } from "../button/button";
 
 /** Props for the {@link Link} component. */
@@ -18,7 +19,7 @@ export const Link = ({ variant = "link", size, ...props }: LinkProps) => {
 			data-slot="link"
 			{...props}
 			className={composeRenderProps(props.className, (className) =>
-				buttonVariants({ variant, size, className }),
+				cn(buttonVariants({ variant, size, className })),
 			)}
 		/>
 	);

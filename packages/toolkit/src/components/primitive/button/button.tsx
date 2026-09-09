@@ -1,11 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import {
-	Button as AriaButton,
-	type ButtonProps as AriaButtonProps,
-	Link as AriaLink,
-	type LinkProps as AriaLinkProps,
-} from "react-aria-components";
+import { Button as AriaButton, type ButtonProps as AriaButtonProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 export const buttonVariants = cva(
@@ -23,7 +18,7 @@ export const buttonVariants = cva(
 			variant: {
 				default: "bg-primary text-primary-foreground hover:bg-primary/80",
 				outline: [
-					"border-border",
+					"border-border bg-background",
 					"hover:bg-input/50 hover:text-foreground",
 					"aria-expanded:bg-muted aria-expanded:text-foreground",
 					"dark:bg-input/30",
@@ -89,8 +84,8 @@ export type ButtonProps = Omit<AriaButtonProps, "className"> &
 
 /**
  * A button allows a user to perform an action, with mouse, touch, and keyboard
- * interactions. Use `buttonVariants` with a plain `<a>` tag or `LinkButton` to
- * render a button-styled link.
+ * interactions. Use `buttonVariants` with a plain `<a>` tag or the `Link`
+ * primitive to render a button-styled link.
  */
 export const Button = ({
 	className,
@@ -100,33 +95,6 @@ export const Button = ({
 }: ButtonProps) => {
 	return (
 		<AriaButton
-			data-slot="button"
-			data-variant={variant}
-			data-size={size}
-			className={cn(buttonVariants({ variant, size, className }))}
-			{...props}
-		/>
-	);
-};
-
-/** Props for the {@link LinkButton} component. */
-export type LinkButtonProps = Omit<AriaLinkProps, "className"> &
-	VariantProps<typeof buttonVariants> & {
-		className?: string;
-	};
-
-/**
- * A button-styled link rendered as an anchor element, useful for navigating to
- * a route while preserving button semantics.
- */
-export const LinkButton = ({
-	className,
-	variant = "default",
-	size = "default",
-	...props
-}: LinkButtonProps) => {
-	return (
-		<AriaLink
 			data-slot="button"
 			data-variant={variant}
 			data-size={size}
