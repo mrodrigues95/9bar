@@ -122,5 +122,3 @@ export const TabsContent = ({ className, ...props }: TabsContentProps) => {
 		/>
 	);
 };
-
-export { tabsListVariants };

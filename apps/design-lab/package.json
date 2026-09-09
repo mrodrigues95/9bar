@@ -1,0 +1,35 @@
+{
+	"name": "@9bar/design-lab",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Standalone dev-only mockup lab for 9bar web directions",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build && tsc --noEmit",
+		"preview": "vite preview",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@9bar/toolkit": "workspace:*",
+		"@tailwindcss/vite": "^4.3.3",
+		"@tanstack/react-router": "^1.170.18",
+		"@tanstack/react-router-devtools": "^1.167.0",
+		"@tanstack/zod-adapter": "^1.167.0",
+		"lucide-react": "^1.28.0",
+		"react": "^19.2.8",
+		"react-dom": "^19.2.8",
+		"tailwindcss": "^4.3.3",
+		"tailwindcss-react-aria-components": "^2.2.0",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@tanstack/router-plugin": "1.168.23",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"@typescript/native": "npm:typescript@^7.0.2",
+		"@vitejs/plugin-react": "^6.0.4",
+		"typescript": "npm:@typescript/typescript6@^6.0.2",
+		"vite": "^8.1.5"
+	}
+}
