@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
-import { Badge, Heading, Text } from "@9bar/toolkit/components";
-import { AnnotateScope } from "../../components/annotate-scope";
+import { Badge } from "@9bar/toolkit/components";
+import { AnnotateScope } from "../../components/annotate/annotate-scope";
+import { EmptyState } from "../../components/empty-state";
 import { Link } from "../../components/link";
+import { PageHeader } from "../../components/page-header";
 import { designGroups } from "../../components/registry/registry";
 import { VariantCanvas } from "../../components/variant-canvas";
 
@@ -25,37 +27,31 @@ const VariantView = () => {
 
 	if (!entry) {
 		return (
-			<div className="space-y-2">
-				<Heading as="h1" variant="title">
-					Unknown variant “{variantId}”
-				</Heading>
-				<Text variant="body-lg">
-					It may have been renamed. Pick one from the <Link to="/">gallery</Link>.
-				</Text>
-			</div>
+			<EmptyState
+				as="h1"
+				title={`Unknown variant “${variantId}”`}
+				body="It may have been renamed."
+				action={<Link to="/">Back to the gallery</Link>}
+			/>
 		);
 	}
 
 	return (
 		<div className="space-y-4">
-			<div className="flex flex-wrap items-end justify-between gap-3">
-				<div>
-					<div className="flex items-center gap-2">
-						<Badge variant="outline">{entry.kind}</Badge>
-						<Heading as="h1" variant="title">
-							{entry.title}
-						</Heading>
-					</div>
-					<Text variant="body-lg">{entry.description}</Text>
-				</div>
-				<Link
-					to="/$variantId"
-					params={{ variantId: entry.id }}
-					search={annotateOn ? undefined : { annotate: true }}
-				>
-					{annotateOn ? "Done annotating" : "Annotate this variant"}
-				</Link>
-			</div>
+			<PageHeader
+				badge={<Badge variant="outline">{entry.kind}</Badge>}
+				title={entry.title}
+				lede={entry.description}
+				actions={
+					<Link
+						to="/$variantId"
+						params={{ variantId: entry.id }}
+						search={annotateOn ? undefined : { annotate: true }}
+					>
+						{annotateOn ? "Done annotating" : "Annotate this variant"}
+					</Link>
+				}
+			/>
 			<AnnotateScope key={entry.id} variantId={entry.id} enabled={annotateOn}>
 				<VariantCanvas entry={entry} />
 			</AnnotateScope>

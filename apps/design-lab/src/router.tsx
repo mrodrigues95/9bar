@@ -1,23 +1,27 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { Heading } from "@9bar/toolkit/components";
+import { EmptyState } from "./components/empty-state";
+import { Link } from "./components/link";
 import { routeTree } from "./routeTree.gen";
 
-export function createRouter() {
+export const createRouter = () => {
 	const router = createTanStackRouter({
 		routeTree,
 		defaultPreload: "intent",
 		defaultNotFoundComponent: () => {
 			return (
-				<Heading as="h1" variant="title">
-					404! Page not found!
-				</Heading>
+				<EmptyState
+					as="h1"
+					title="404! Page not found!"
+					body="That route does not exist in the lab."
+					action={<Link to="/">Back to the gallery</Link>}
+				/>
 			);
 		},
 		scrollRestoration: true,
 	});
 
 	return router;
-}
+};
 
 declare module "@tanstack/react-router" {
 	interface Register {

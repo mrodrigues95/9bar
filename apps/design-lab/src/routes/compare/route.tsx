@@ -1,23 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { useId, useState, type ReactNode } from "react";
+import { GitCompareArrows } from "lucide-react";
 import { z } from "zod";
-import {
-	Badge,
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	Heading,
-	Text,
-} from "@9bar/toolkit/components";
-import { cn } from "@9bar/toolkit/utils";
-import { AnnotateScope } from "../../components/annotate-scope";
+import { EmptyState } from "../../components/empty-state";
 import { Link } from "../../components/link";
-import { designGroups } from "../../components/registry/registry";
-import { VariantCanvas } from "../../components/variant-canvas";
-import { pinsToMarkdown, readStoredPins } from "../../utils/annotate";
+import { PageHeader } from "../../components/page-header";
+import { Picker } from "../../components/picker";
+import { designGroups, type DesignGroup } from "../../components/registry/registry";
+import { CompareActions } from "./-components/compare-actions";
+import { CompareBoard } from "./-components/compare-board";
+import { ComparePickers, WIDTHS } from "./-components/compare-pickers";
+import { PickerLink } from "./-components/picker-link";
 
 const searchSchema = z.object({
 	group: z.string().optional(),
@@ -27,217 +20,94 @@ const searchSchema = z.object({
 	annotate: z.boolean().optional(),
 });
 
-const WIDTHS = [
-	{ id: "full", label: "Full", className: undefined },
-	{ id: "tablet", label: "Tablet 768", className: "mx-auto max-w-[768px]" },
-	{ id: "mobile", label: "Mobile 390", className: "mx-auto max-w-[390px]" },
-] as const;
+type CompareSearch = z.infer<typeof searchSchema>;
 
-const SLOTS = ["A", "B"] as const;
-
-const PickerGroup = ({ label, children }: { label: string; children: ReactNode }) => {
-	const labelId = useId();
-	return (
-		<nav aria-labelledby={labelId} className="space-y-1">
-			<Text variant="body-sm" id={labelId} className="font-semibold">
-				{label}
-			</Text>
-			<div className="flex flex-wrap items-center gap-1">{children}</div>
-		</nav>
-	);
+const resolveGroup = (id: string | undefined): DesignGroup | undefined => {
+	return designGroups.find((group) => group.id === id) ?? designGroups[0];
 };
 
-const pickerLinkProps = (active: boolean) => {
-	return {
-		variant: active ? "outline" : "ghost",
-		size: "sm",
-		"aria-current": active ? "true" : undefined,
-	} as const;
+const resolveWidth = (id: CompareSearch["w"]) => {
+	return WIDTHS.find((preset) => preset.id === id) ?? WIDTHS[0];
+};
+
+const resolvePair = (group: DesignGroup, search: CompareSearch) => {
+	const { variants } = group;
+	const a = variants.find((variant) => variant.id === search.a) ?? variants[0];
+	const b =
+		variants.find((variant) => variant.id === search.b && variant.id !== a?.id) ??
+		variants.find((variant) => variant.id !== a?.id);
+	if (!a || !b) {
+		return null;
+	}
+	return { a, b };
 };
 
 const CompareDesigns = () => {
 	const search = Route.useSearch();
-	const annotateAll = !!search.annotate;
-	const width = WIDTHS.find((preset) => preset.id === search.w) ?? WIDTHS[0];
-	const widthParam = width.id === "full" ? undefined : width.id;
-	const [copiedAll, setCopiedAll] = useState(false);
+	const group = resolveGroup(search.group);
 
-	const activeGroup = designGroups.find((group) => group.id === search.group) ?? designGroups[0];
-	if (!activeGroup) {
+	if (!group) {
 		return (
-			<div className="space-y-2">
-				<Heading as="h1" variant="title">
-					Compare
-				</Heading>
-				<Text variant="body-lg">
-					No groups yet. Register one in src/components/registry/registry.ts.
-				</Text>
+			<div className="space-y-6">
+				<PageHeader title="Compare" />
+				<EmptyState
+					title="No groups yet"
+					body="Register one in src/components/registry/registry.ts."
+				/>
 			</div>
 		);
 	}
 
-	const { variants } = activeGroup;
-	const activeA = variants.find((variant) => variant.id === search.a) ?? variants[0];
-	const activeB =
-		variants.find((variant) => variant.id === search.b && variant.id !== activeA?.id) ??
-		variants.find((variant) => variant.id !== activeA?.id);
-
-	const copyCombined = () => {
-		if (!activeA || !activeB) {
-			return;
-		}
-		const ids = [activeA.id, activeB.id];
-		const text = ids
-			.map((id) => {
-				return pinsToMarkdown(id, readStoredPins(id));
-			})
-			.join("\n\n---\n\n");
-		const done = () => {
-			setCopiedAll(true);
-			window.setTimeout(() => setCopiedAll(false), 2000);
-		};
-		if (navigator.clipboard?.writeText) {
-			navigator.clipboard.writeText(text).then(done).catch(done);
-		}
-	};
+	const pair = resolvePair(group, search);
+	const width = resolveWidth(search.w);
+	const annotate = !!search.annotate;
 
 	return (
 		<div className="space-y-6">
-			<div className="flex flex-wrap items-center justify-between gap-3">
-				<Heading as="h1" variant="title">
-					Compare
-				</Heading>
-				<div className="flex flex-wrap gap-2">
-					<Button size="sm" variant="outline" onPress={copyCombined}>
-						{copiedAll ? "Copied!" : "Copy A+B for agent"}
-					</Button>
-					<Link
-						to="/compare"
-						search={{
-							group: activeGroup.id,
-							a: search.a,
-							b: search.b,
-							w: widthParam,
-							annotate: annotateAll ? undefined : true,
-						}}
-					>
-						{annotateAll ? "Done annotating" : "Annotate all"}
-					</Link>
-				</div>
-			</div>
+			<PageHeader
+				title="Compare"
+				actions={
+					pair ? <CompareActions a={pair.a} b={pair.b} groupId={group.id} search={search} /> : null
+				}
+			/>
 
-			<PickerGroup label="Groups">
-				{designGroups.map((group) => {
+			<Picker label="Groups">
+				{designGroups.map((option) => {
 					return (
-						<Link
-							{...pickerLinkProps(group.id === activeGroup.id)}
-							key={group.id}
-							to="/compare"
-							search={{ group: group.id, w: widthParam, annotate: search.annotate }}
+						<PickerLink
+							key={option.id}
+							active={option.id === group.id}
+							search={{ ...search, group: option.id }}
 						>
-							{group.title}
-						</Link>
+							{option.title}
+						</PickerLink>
 					);
 				})}
-			</PickerGroup>
+			</Picker>
 
-			{!activeA || !activeB ? (
-				<Card>
-					<CardHeader>
-						<CardTitle>Nothing to compare yet</CardTitle>
-						<Text variant="body-sm">
-							Add another variant to the “{activeGroup.title}” group to unlock side-by-side compare.
-						</Text>
-					</CardHeader>
-				</Card>
-			) : (
+			{pair ? (
 				<>
-					<div className="grid items-start gap-4 xl:grid-cols-2">
-						{SLOTS.map((slot) => {
-							const active = slot === "A" ? activeA : activeB;
-							const other = slot === "A" ? activeB : activeA;
-							return (
-								<PickerGroup key={slot} label={`Variant ${slot}`}>
-									{variants
-										.filter((variant) => variant.id !== other?.id)
-										.map((variant) => {
-											return (
-												<Link
-													{...pickerLinkProps(variant.id === active.id)}
-													key={variant.id}
-													to="/compare"
-													search={{
-														group: activeGroup.id,
-														a: slot === "A" ? variant.id : activeA.id,
-														b: slot === "B" ? variant.id : activeB.id,
-														w: widthParam,
-														annotate: search.annotate,
-													}}
-												>
-													{variant.title}
-												</Link>
-											);
-										})}
-								</PickerGroup>
-							);
-						})}
-					</div>
-
-					<PickerGroup label="Width">
-						{WIDTHS.map((preset) => {
-							return (
-								<Link
-									{...pickerLinkProps(preset.id === width.id)}
-									key={preset.id}
-									to="/compare"
-									search={{
-										group: activeGroup.id,
-										a: activeA.id,
-										b: activeB.id,
-										w: preset.id === "full" ? undefined : preset.id,
-										annotate: search.annotate,
-									}}
-								>
-									{preset.label}
-								</Link>
-							);
-						})}
-					</PickerGroup>
-
-					<div className={cn("grid items-start gap-4 xl:grid-cols-2", width.className)}>
-						{SLOTS.map((slot) => {
-							const entry = slot === "A" ? activeA : activeB;
-							return (
-								<Card key={slot}>
-									<CardHeader>
-										<div className="flex flex-wrap items-center justify-between gap-2">
-											<div className="flex items-center gap-2">
-												<Badge variant="secondary">{slot}</Badge>
-												<Badge variant="outline">{entry.kind}</Badge>
-												<Heading as="h2" variant="subsection">
-													{entry.title}
-												</Heading>
-											</div>
-											<Link
-												to="/$variantId"
-												params={{ variantId: entry.id }}
-												search={annotateAll ? { annotate: true } : undefined}
-											>
-												Open isolated
-											</Link>
-										</div>
-										<Text variant="body-sm">{entry.description}</Text>
-									</CardHeader>
-									<CardContent>
-										<AnnotateScope key={entry.id} variantId={entry.id} enabled={annotateAll}>
-											<VariantCanvas entry={entry} />
-										</AnnotateScope>
-									</CardContent>
-								</Card>
-							);
-						})}
-					</div>
+					<ComparePickers
+						group={group}
+						a={pair.a}
+						b={pair.b}
+						activeWidthId={width.id}
+						search={search}
+					/>
+					<CompareBoard
+						a={pair.a}
+						b={pair.b}
+						widthClassName={width.className}
+						annotate={annotate}
+					/>
 				</>
+			) : (
+				<EmptyState
+					icon={<GitCompareArrows />}
+					title="Nothing to compare yet"
+					body={`Add another variant to the “${group.title}” group to unlock side-by-side compare.`}
+					action={<Link to="/">Back to the gallery</Link>}
+				/>
 			)}
 		</div>
 	);

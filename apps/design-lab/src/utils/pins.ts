@@ -8,6 +8,8 @@ export type FeedbackPin = {
 	comment: string;
 };
 
+export type PinnedTarget = Omit<FeedbackPin, "id" | "variantId" | "comment">;
+
 const storageKey = (variantId: string): string => {
 	return `9bar-design-feedback:${variantId}`;
 };

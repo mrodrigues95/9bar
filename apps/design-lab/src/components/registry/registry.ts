@@ -15,7 +15,7 @@ export type DesignVariantEntry = {
 	component: ComponentType;
 };
 
-type DesignGroup = {
+export type DesignGroup = {
 	id: string;
 	title: string;
 	question: string;
