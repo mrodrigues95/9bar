@@ -43,11 +43,6 @@ const ATTRIBUTE_OPERATOR_PAIRS = [
 	{ singular: "is-not", plural: "is-none-of" },
 ] as const;
 
-export const SET_OPERATOR_PAIRS = [
-	{ singular: "include-all-of", plural: "include-any-of" },
-	{ singular: "exclude-if-all", plural: "exclude-if-any-of" },
-] as const;
-
 const ATTRIBUTE_OPERATORS = [
 	OPERATORS.is,
 	OPERATORS["is-not"],

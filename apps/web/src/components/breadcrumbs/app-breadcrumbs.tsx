@@ -63,7 +63,7 @@ const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => 
  */
 const resolveSuffixParentBreadcrumbs = (
 	match: AnyRouteMatch,
-	matches: Array<AnyRouteMatch>,
+	matchesById: Map<string, AnyRouteMatch>,
 	routesById: TRoutesById,
 	seen: Set<string>,
 ) => {
@@ -93,7 +93,7 @@ const resolveSuffixParentBreadcrumbs = (
 			continue;
 		}
 
-		const parentMatch = matches.find((m) => m.id === parentId);
+		const parentMatch = matchesById.get(parentId);
 		const parentStaticData = getRouteStaticData(route);
 		const parentBreadcrumb = getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
 
@@ -116,6 +116,7 @@ const useAppBreadcrumbs = () => {
 	return useMatches({
 		select: (matches) => {
 			const seen = new Set<string>();
+			const matchesById = new Map(matches.map((match) => [match.id, match]));
 			const breadcrumbs: Array<TAppBreadcrumb> = [];
 
 			for (const match of matches) {
@@ -123,7 +124,12 @@ const useAppBreadcrumbs = () => {
 					continue;
 				}
 
-				const parentBreadcrumbs = resolveSuffixParentBreadcrumbs(match, matches, routesById, seen);
+				const parentBreadcrumbs = resolveSuffixParentBreadcrumbs(
+					match,
+					matchesById,
+					routesById,
+					seen,
+				);
 				breadcrumbs.push(...parentBreadcrumbs);
 
 				const breadcrumb = getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
@@ -169,8 +175,3 @@ export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 		</ToolkitBreadcrumb>
 	);
 };
-
-export const withBreadcrumb = <TData extends Record<string, unknown>>(
-	data: TData,
-	breadcrumb: RouterBreadcrumb,
-) => ({ ...data, breadcrumb });

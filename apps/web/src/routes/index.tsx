@@ -43,10 +43,13 @@ function Home() {
 			<button
 				type="button"
 				className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-				onClick={() => {
-					updateCount({ data: 1 }).then(() => {
-						router.invalidate();
-					});
+				onClick={async () => {
+					try {
+						await updateCount({ data: 1 });
+						await router.invalidate();
+					} catch (error) {
+						console.error("Failed to update count", error);
+					}
 				}}
 			>
 				Add 1 to {state}?
