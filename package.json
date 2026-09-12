@@ -21,7 +21,9 @@
 		"lint:fix": "oxlint --fix .",
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
-		"typecheck": "pnpm -r typecheck"
+		"typecheck": "pnpm -r typecheck",
+		"react-doctor": "react-doctor . --include-untracked",
+		"react-doctor:full": "react-doctor . --scope full"
 	},
 	"dependencies": {
 		"zod": "^4.4.3"
@@ -34,6 +36,7 @@
 		"@typescript/native": "npm:typescript@^7.0.2",
 		"oxfmt": "^0.66.0",
 		"oxlint": "^1.81.0",
+		"react-doctor": "0.9.14",
 		"typescript": "npm:@typescript/typescript6@^6.0.2"
 	},
 	"engines": {

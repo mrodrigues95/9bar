@@ -27,6 +27,7 @@ Before editing files for a substantial task:
 
 - **pnpm only** — npm and yarn are blocked via `engines`. Always run `pnpm install` from the repo root, never inside a package.
 - **Oxlint** for linting (`pnpm lint`, auto-fix with `pnpm lint:fix`) and **Oxfmt** for formatting (`pnpm format`, check with `pnpm format:check`) — not ESLint/Prettier/Biome.
+- **react-doctor** for React diagnostics (`pnpm react-doctor` for issues introduced vs `origin/main`, `pnpm react-doctor:full` for a full audit).
 - **Conventional Commits** enforced by commitlint in CI.
 
 ## Commands

@@ -22,9 +22,12 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - id: react-doctor-version
+        run: echo "spec=$(node -p "require('./package.json').devDependencies['react-doctor']")" >> "$GITHUB_OUTPUT"
       - uses: millionco/react-doctor@v2
         with:
           blocking: error
+          version: ${{ steps.react-doctor-version.outputs.spec }}
           # Empty on purpose: an explicit `project` overrides `projects` in
           # doctor.config.json, and the default "*" would also scan design-lab.
           project: ""
