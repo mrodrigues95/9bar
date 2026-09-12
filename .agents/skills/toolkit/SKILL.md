@@ -80,11 +80,7 @@ Long class strings in `cva()`/`cn()` calls are broken into arrays of shorter str
 - Uses `react-docgen-typescript` for prop tables (aria-* props are filtered out)
 - Autodocs enabled with centered layout
 
-When the `toolkit-sb-mcp` MCP server is available, use its tools to verify component props before use:
-
-- Query `get-documentation` for a component to see all available properties and examples — never assume undocumented props
-- Use `get-storybook-story-instructions` before writing stories
-- Check your work with `run-story-tests`
+When the `toolkit-sb-mcp` MCP server is available, use `get-storybook-story-instructions` before writing stories. Verify a component's props against its source in `src/components/`.
 
 ## Accessibility
 
@@ -96,7 +92,7 @@ First decide the tier with the "Primitive vs Composed" decision test (`<tier>` b
 
 1. Move the generated flat `src/components/<name>.tsx` into `src/components/<tier>/<name>/<name>.tsx` and delete the flat file
 2. Create `src/components/<tier>/<name>/index.ts` with `export * from "./<name>";`
-3. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook docs → MCP `get-documentation`. Add:
+3. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook autodocs prop tables. Add:
    - A descriptive JSDoc on every exported component (use `{@link}` for subcomponent relationships)
    - `/** Props for the {@link X} component. */` on every exported props type
    - Convert `function` declarations to arrow functions (repo convention)

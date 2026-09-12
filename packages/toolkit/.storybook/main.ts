@@ -30,7 +30,12 @@ const config: StorybookConfig = {
 		getAbsolutePath("@chromatic-com/storybook"),
 		getAbsolutePath("@storybook/addon-docs"),
 		getAbsolutePath("@storybook/addon-a11y"),
-		getAbsolutePath("@storybook/addon-mcp"),
+		{
+			name: getAbsolutePath("@storybook/addon-mcp"),
+			options: {
+				toolsets: { dev: true, docs: false, test: false },
+			},
+		},
 		getAbsolutePath("@storybook/addon-themes"),
 	],
 	framework: {
