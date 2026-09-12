@@ -81,11 +81,6 @@ const SAMPLE_RECIPES = [
 
 const TOTAL_PAGES = 12;
 
-/**
- * Ledger direction: dense column-aligned rows with tiny uppercase labels,
- * mono brew parameters, status dots instead of badges, and compact numbered
- * pagination. Most information per pixel of the three.
- */
 export const RecipesListB = () => {
 	const [page, setPage] = useState(1);
 	const pages = generatePagination({

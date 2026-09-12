@@ -32,10 +32,6 @@ const SAMPLE_RECIPES = [
 	},
 ];
 
-/**
- * Section-scoped mock: a recipe cards grid meant to be dropped into a page.
- * Demonstrates that variants can be sections, not just full pages.
- */
 export const RecipeSectionA = () => {
 	return (
 		<section aria-labelledby="recipe-section-a-title" className="mx-auto max-w-5xl">

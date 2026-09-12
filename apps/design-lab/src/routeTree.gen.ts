@@ -10,20 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as VariantIdRouteImport } from './routes/$variantId'
-import { Route as CompareRouteImport } from './routes/compare'
+import { Route as VariantIdRouteRouteImport } from './routes/$variantId/route'
+import { Route as CompareRouteRouteImport } from './routes/compare/route'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VariantIdRoute = VariantIdRouteImport.update({
+const VariantIdRouteRoute = VariantIdRouteRouteImport.update({
   id: '/$variantId',
   path: '/$variantId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CompareRoute = CompareRouteImport.update({
+const CompareRouteRoute = CompareRouteRouteImport.update({
   id: '/compare',
   path: '/compare',
   getParentRoute: () => rootRouteImport,
@@ -31,19 +31,19 @@ const CompareRoute = CompareRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$variantId': typeof VariantIdRoute
-  '/compare': typeof CompareRoute
+  '/$variantId': typeof VariantIdRouteRoute
+  '/compare': typeof CompareRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$variantId': typeof VariantIdRoute
-  '/compare': typeof CompareRoute
+  '/$variantId': typeof VariantIdRouteRoute
+  '/compare': typeof CompareRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$variantId': typeof VariantIdRoute
-  '/compare': typeof CompareRoute
+  '/$variantId': typeof VariantIdRouteRoute
+  '/compare': typeof CompareRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -55,8 +55,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  VariantIdRoute: typeof VariantIdRoute
-  CompareRoute: typeof CompareRoute
+  VariantIdRouteRoute: typeof VariantIdRouteRoute
+  CompareRouteRoute: typeof CompareRouteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -72,14 +72,14 @@ declare module '@tanstack/react-router' {
       id: '/$variantId'
       path: '/$variantId'
       fullPath: '/$variantId'
-      preLoaderRoute: typeof VariantIdRouteImport
+      preLoaderRoute: typeof VariantIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
       id: '/compare'
       path: '/compare'
       fullPath: '/compare'
-      preLoaderRoute: typeof CompareRouteImport
+      preLoaderRoute: typeof CompareRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -87,8 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  VariantIdRoute: VariantIdRoute,
-  CompareRoute: CompareRoute,
+  VariantIdRouteRoute: VariantIdRouteRoute,
+  CompareRouteRoute: CompareRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

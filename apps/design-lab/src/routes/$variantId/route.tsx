@@ -2,20 +2,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { Badge, Heading, Text } from "@9bar/toolkit/components";
-import { Link } from "../components/link";
-import { AnnotateScope } from "./-annotate/annotate-scope";
-import { getVariant } from "./-design-registry";
-import { VariantFrame } from "./-variant-frame";
+import { AnnotateScope } from "../../components/annotate-scope";
+import { Link } from "../../components/link";
+import { designGroups } from "../../components/registry/registry";
+import { VariantCanvas } from "../../components/variant-canvas";
 
 const searchSchema = z.object({
-	annotate: z.string().optional(),
+	annotate: z.boolean().optional(),
 });
 
 const VariantView = () => {
 	const { variantId } = Route.useParams();
 	const { annotate } = Route.useSearch();
-	const entry = getVariant(variantId);
-	const annotateOn = annotate === "1";
+	const entry = designGroups
+		.flatMap((group) => group.variants)
+		.find((variant) => variant.id === variantId);
+	const annotateOn = !!annotate;
 
 	if (!entry) {
 		return (
@@ -30,8 +32,6 @@ const VariantView = () => {
 		);
 	}
 
-	const Variant = entry.component;
-
 	return (
 		<div className="space-y-4">
 			<div className="flex flex-wrap items-end justify-between gap-3">
@@ -44,25 +44,16 @@ const VariantView = () => {
 					</div>
 					<Text variant="body-lg">{entry.description}</Text>
 				</div>
-				{annotateOn ? (
-					<Link to="/$variantId" params={{ variantId: entry.id }}>
-						Done annotating
-					</Link>
-				) : (
-					<Link to="/$variantId" params={{ variantId: entry.id }} search={{ annotate: "1" }}>
-						Annotate this variant
-					</Link>
-				)}
+				<Link
+					to="/$variantId"
+					params={{ variantId: entry.id }}
+					search={annotateOn ? undefined : { annotate: true }}
+				>
+					{annotateOn ? "Done annotating" : "Annotate this variant"}
+				</Link>
 			</div>
-
 			<AnnotateScope variantId={entry.id} enabled={annotateOn}>
-				{entry.surface === "plain" ? (
-					<Variant />
-				) : (
-					<VariantFrame>
-						<Variant />
-					</VariantFrame>
-				)}
+				<VariantCanvas entry={entry} />
 			</AnnotateScope>
 		</div>
 	);

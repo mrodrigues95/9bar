@@ -9,19 +9,16 @@ import {
 	Text,
 } from "@9bar/toolkit/components";
 import {
-	getTargetInfo,
-	pinsToJson,
 	pinsToMarkdown,
 	readStoredPins,
-	storageKey,
+	writeStoredPins,
 	type FeedbackPin,
-	type PinnedTarget,
-} from "./annotate-utils";
+} from "../utils/annotate";
+
+type PinnedTarget = Omit<FeedbackPin, "id" | "variantId" | "comment">;
 
 type AnnotateScopeProps = {
-	/** Variant id — pins are stored per variant. */
 	variantId: string;
-	/** When false, children render untouched with no listeners. */
 	enabled: boolean;
 	children: ReactNode;
 };
@@ -29,32 +26,62 @@ type AnnotateScopeProps = {
 const HOVER_OUTLINE = "2px solid var(--color-ring, #6366f1)";
 const SELECTED_OUTLINE = "2px dashed var(--color-ring, #6366f1)";
 
-/**
- * Click-to-pin wrapper for a design variant. When `enabled`, hovering (or
- * keyboard-focusing) outlines elements and clicking one opens a comment
- * composer. Pins persist to localStorage per variant and export as JSON or
- * agent-ready Markdown — the same shape every time, so pasting back to the
- * agent just works.
- */
+const buildSelector = (el: Element, root: Element): string => {
+	const parts: Array<string> = [];
+	let node: Element | null = el;
+	while (node && node !== root && parts.length < 6) {
+		const id = node.getAttribute("id");
+		if (id) {
+			parts.unshift(`#${CSS.escape(id)}`);
+			break;
+		}
+		const tag = node.tagName.toLowerCase();
+		const slot = node.getAttribute("data-slot");
+		if (slot) {
+			parts.unshift(`${tag}[data-slot="${slot}"]`);
+		} else {
+			const parent = node.parentElement;
+			if (!parent) {
+				parts.unshift(tag);
+				break;
+			}
+			const sameTag = Array.from(parent.children).filter(
+				(sibling) => sibling.tagName === node?.tagName,
+			);
+			if (sameTag.length > 1) {
+				parts.unshift(`${tag}:nth-of-type(${sameTag.indexOf(node) + 1})`);
+			} else {
+				parts.unshift(tag);
+			}
+		}
+		node = node.parentElement;
+	}
+	return parts.length > 0 ? parts.join(" > ") : el.tagName.toLowerCase();
+};
+
+const getTargetInfo = (el: Element, root: Element): PinnedTarget => {
+	const rawText = el.textContent?.replace(/\s+/g, " ").trim() ?? "";
+	const dataSlot = el.closest("[data-slot]")?.getAttribute("data-slot") ?? null;
+	return {
+		selector: buildSelector(el, root),
+		tag: el.tagName.toLowerCase(),
+		dataSlot,
+		textSnippet: rawText.slice(0, 120),
+	};
+};
+
 export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopeProps) => {
 	const [pins, setPins] = useState<Array<FeedbackPin>>(() => readStoredPins(variantId));
 	const [target, setTarget] = useState<PinnedTarget | null>(null);
 	const [draft, setDraft] = useState("");
-	const [copied, setCopied] = useState<"json" | "markdown" | null>(null);
+	const [copied, setCopied] = useState(false);
 	const rootRef = useRef<HTMLDivElement>(null);
 	const composerRef = useRef<HTMLTextAreaElement>(null);
 	const hoveredRef = useRef<Element | null>(null);
 	const selectedRef = useRef<Element | null>(null);
 
 	useEffect(() => {
-		if (typeof window === "undefined") {
-			return;
-		}
-		try {
-			window.localStorage.setItem(storageKey(variantId), JSON.stringify(pins));
-		} catch {
-			// Storage full or unavailable — pins still work for this session.
-		}
+		writeStoredPins(variantId, pins);
 	}, [pins, variantId]);
 
 	useEffect(() => {
@@ -86,9 +113,8 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 		setDraft("");
 	};
 
-	// Escape cancels an in-progress pin.
 	useEffect(() => {
-		if (!enabled || target === null) {
+		if (!enabled || !target) {
 			return;
 		}
 		const onKeyDown = (event: KeyboardEvent) => {
@@ -100,16 +126,15 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 		return () => {
 			window.removeEventListener("keydown", onKeyDown);
 		};
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [enabled, target]);
 
-	// Move focus into the composer when it opens.
 	useEffect(() => {
-		if (target !== null) {
+		if (target) {
 			composerRef.current?.focus();
 		}
 	}, [target]);
 
-	// When annotate turns off, drop transient highlights and drafts.
 	useEffect(() => {
 		if (!enabled) {
 			if (hoveredRef.current) {
@@ -118,7 +143,7 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 			}
 			clearSelection();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally keyed on `enabled` only
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [enabled]);
 
 	if (!enabled) {
@@ -176,26 +201,19 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 		paint(el, SELECTED_OUTLINE);
 		setTarget(getTargetInfo(el, rootRef.current));
 		setDraft("");
-		setCopied(null);
+		setCopied(false);
 	};
 
 	const savePin = () => {
 		const comment = draft.trim();
-		if (target === null || !comment) {
+		if (!target || !comment) {
 			return;
 		}
 		const pin: FeedbackPin = {
+			...target,
 			id: `pin-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
 			variantId,
-			selector: target.selector,
-			tag: target.tag,
-			dataSlot: target.dataSlot,
-			textSnippet: target.textSnippet,
-			htmlSnippet: target.htmlSnippet,
 			comment,
-			url: window.location.href,
-			viewport: `${window.innerWidth}x${window.innerHeight}`,
-			createdAt: new Date().toISOString(),
 		};
 		setPins((prev) => [...prev, pin]);
 		clearSelection();
@@ -227,11 +245,11 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 		}
 	};
 
-	const copyText = (kind: "json" | "markdown") => {
-		const text = kind === "json" ? pinsToJson(pins) : pinsToMarkdown(variantId, pins);
+	const copyMarkdown = () => {
+		const text = pinsToMarkdown(variantId, pins);
 		const done = () => {
-			setCopied(kind);
-			window.setTimeout(() => setCopied(null), 2000);
+			setCopied(true);
+			window.setTimeout(() => setCopied(false), 2000);
 		};
 		if (navigator.clipboard?.writeText) {
 			navigator.clipboard.writeText(text).then(done).catch(done);
@@ -265,7 +283,7 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 					</Text>
 				</output>
 
-				{target !== null && (
+				{target && (
 					<Card>
 						<CardHeader>
 							<CardTitle>New pin</CardTitle>
@@ -342,11 +360,8 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 								})}
 							</ol>
 							<div className="flex flex-wrap gap-2">
-								<Button size="sm" variant="outline" onPress={() => copyText("markdown")}>
-									{copied === "markdown" ? "Copied!" : "Copy for agent"}
-								</Button>
-								<Button size="sm" variant="ghost" onPress={() => copyText("json")}>
-									{copied === "json" ? "Copied!" : "Copy JSON"}
+								<Button size="sm" variant="outline" onPress={copyMarkdown}>
+									{copied ? "Copied!" : "Copy for agent"}
 								</Button>
 								<Button size="sm" variant="ghost" onPress={() => setPins([])}>
 									Clear all

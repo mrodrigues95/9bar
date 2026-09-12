@@ -1,10 +1,6 @@
 import { Coffee, NotebookPen, Search } from "lucide-react";
 import { Badge, Button, Heading, Text } from "@9bar/toolkit/components";
 
-/**
- * Centered hero direction: headline, dual call-to-action, stat strip.
- * Classic, low-risk landing for the home page.
- */
 export const HomeHeroA = () => {
 	return (
 		<section aria-labelledby="hero-a-title" className="mx-auto max-w-2xl py-12 text-center">

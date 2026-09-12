@@ -32,9 +32,9 @@ If any of these is already clear from context, don't ask — assume and state th
 
 ## Scaffolding
 
-- Variant file: `apps/design-lab/src/routes/-variants/<group>/<name>.tsx` exporting a named component with inline sample data, self-contained.
-- Missing-piece scaffold: if the design wants a component the repo lacks, build it co-located at `apps/design-lab/src/routes/-variants/<group>/_local/` — just get it working, no API design, no abstraction. It dies with the variant.
-- Registry: append to `designRegistry` in `apps/design-lab/src/routes/-design-registry.tsx` (`id`, `title`, `groupId`, `kind`, `description`, `surface?`, `component`); add a `groups` table entry for new groups. Gallery, compare, and isolated views pick it up with no routing changes.
+- Variant file: `apps/design-lab/src/components/registry/variants/<name>.tsx` exporting a named component with inline sample data, self-contained.
+- Missing-piece scaffold: if the design wants a component the repo lacks, build it co-located at `apps/design-lab/src/components/registry/variants/_local/` — just get it working, no API design, no abstraction. It dies with the variant.
+- Registry: append to the `variants` array of the matching group in `apps/design-lab/src/components/registry/registry.ts` (`id`, `title`, `kind`, `description`, `surface?`, `component`); add a group entry for a new design question. Gallery, compare, and isolated views pick it up with no routing changes.
 - Reply with the gallery URL (`http://localhost:3001/`) plus the pre-filled compare URL: `http://localhost:3001/compare?group=<id>&a=<first>&b=<second>`.
 
 ## The loop

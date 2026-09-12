@@ -113,11 +113,6 @@ const DEFAULT_FILTERS = [{ filterId: "machine", operatorId: "is", values: ["line
 
 const TOTAL_PAGES = 16;
 
-/**
- * Quiet-rows direction: borderless rows on hairline dividers, quick type
- * tabs plus the FilterBar for machine/grinder, and numbered pagination.
- * The calmest of the three.
- */
 export const RecipesListA = () => {
 	const [activeFilter, setActiveFilter] = useState("all");
 	const [page, setPage] = useState(1);

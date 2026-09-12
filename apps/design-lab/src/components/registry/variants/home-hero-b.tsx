@@ -11,10 +11,6 @@ import {
 	Text,
 } from "@9bar/toolkit/components";
 
-/**
- * Split hero direction: copy on the left, featured recipe card on the right.
- * Shows product flavor up front instead of a bare headline.
- */
 export const HomeHeroB = () => {
 	return (
 		<section

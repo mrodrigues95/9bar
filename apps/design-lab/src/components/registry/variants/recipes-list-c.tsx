@@ -87,11 +87,6 @@ const SAMPLE_RECIPES = [
 
 const TOTAL_PAGES = 12;
 
-/**
- * Sidebar direction: a slim filter rail with grouped options and counts,
- * compact rows, and centered numbered pagination. Closest in spirit to the
- * current page, with the chrome stripped back.
- */
 export const RecipesListC = () => {
 	const [activeFilters, setActiveFilters] = useState<Record<FilterKey, string>>({
 		Type: "all",
