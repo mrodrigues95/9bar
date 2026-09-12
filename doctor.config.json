@@ -1,0 +1,5 @@
+{
+	"$schema": "https://react.doctor/schema/config.json",
+	"projects": ["@9bar/web", "@9bar/toolkit"],
+	"scope": "changed"
+}
