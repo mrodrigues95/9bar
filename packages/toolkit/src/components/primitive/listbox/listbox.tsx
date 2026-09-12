@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
@@ -19,6 +19,7 @@ import {
 	type ItemLabelProps,
 } from "../../../utils";
 import { Separator, type SeparatorProps } from "../separator/separator";
+import { listboxItemVariants, listboxSectionHeaderVariants } from "./styles";
 
 export interface ListboxProps<T extends object> extends Omit<
 	AriaListBoxProps<T>,
@@ -40,34 +41,6 @@ export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T
 		</AriaListBox>
 	);
 };
-
-export const listboxItemVariants = cva(
-	[
-		"group relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
-		"rounded-md py-1 pr-8 pl-2 text-xs/relaxed outline-hidden",
-		"[&[href]]:cursor-pointer",
-		"hover:bg-foreground/10",
-		"focus:bg-foreground/10 focus:text-accent-foreground",
-		"not-data-[variant=destructive]:focus:**:text-accent-foreground",
-		"data-focused:bg-foreground/10 data-focused:text-accent-foreground",
-		"data-disabled:pointer-events-none data-disabled:opacity-50",
-		"data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive",
-		"dark:data-[variant=destructive]:focus:bg-destructive/20",
-		"data-[variant=destructive]:*:[svg]:text-destructive",
-		"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
-	],
-	{
-		variants: {
-			variant: {
-				default: [],
-				danger: ["text-destructive"],
-			},
-		},
-		defaultVariants: {
-			variant: "default",
-		},
-	},
-);
 
 export type ListboxItemProps<T extends object> = Omit<
 	AriaListBoxItemProps<T>,
@@ -141,8 +114,6 @@ export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
  * Shared styles for collection section headers, reused by {@link ListboxSectionHeader}
  * and other list-based primitives (such as select and menu labels) to avoid duplication.
  */
-export const listboxSectionHeaderVariants = cva("px-2 py-1.5 text-xs text-muted-foreground");
-
 /** A styled header rendered above a {@link ListboxSection}. */
 export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderProps) => {
 	return (

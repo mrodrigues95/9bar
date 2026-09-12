@@ -1,8 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";
 import { Label } from "#components/label";
 import { Separator } from "#components/separator";
 import { cn } from "#lib/utils";
+import { fieldVariants } from "./styles";
+import { toErrorMessage, type FieldErrorItem } from "./utils";
 
 /** Props for the {@link FieldSet} component. */
 export type FieldSetProps = React.ComponentProps<"fieldset">;
@@ -60,31 +62,6 @@ export const FieldGroup = ({ className, ...props }: FieldGroupProps) => {
 		/>
 	);
 };
-
-const fieldVariants = cva("group/field flex w-full gap-2 data-[invalid=true]:text-destructive", {
-	variants: {
-		orientation: {
-			vertical: "flex-col *:w-full [&>.sr-only]:w-auto",
-			horizontal: [
-				"flex-row items-center",
-				"has-[>[data-slot=field-content]]:items-start",
-				"has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-				"*:data-[slot=field-label]:flex-auto",
-			],
-			responsive: [
-				"flex-col",
-				"*:w-full [&>.sr-only]:w-auto",
-				"@md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto",
-				"@md/field-group:has-[>[data-slot=field-content]]:items-start",
-				"@md/field-group:*:data-[slot=field-label]:flex-auto",
-				"@md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-			],
-		},
-	},
-	defaultVariants: {
-		orientation: "vertical",
-	},
-});
 
 /** Props for the {@link Field} component. */
 export type FieldProps = React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>;
@@ -207,29 +184,6 @@ export const FieldSeparator = ({ children, className, ...props }: FieldSeparator
 	);
 };
 
-/** A single validation error entry, compatible with TanStack Form's `field.state.meta.errors`. */
-export type FieldErrorItem = { message?: string } | string | undefined;
-
-/**
- * Extracts a human-readable message from a normalized error value (string,
- * `{ message }` object, null, or undefined). Values outside the
- * {@link FieldErrorItem} contract yield no message.
- */
-export const toErrorMessage = (error: FieldErrorItem | null): string | undefined => {
-	if (error === undefined || error === null) {
-		return undefined;
-	}
-
-	// String primitives are never instanceof Object, so this discriminates the
-	// FieldErrorItem union without a runtime typeof check.
-	if (error instanceof Object) {
-		const message = error.message;
-		return message !== undefined && message.length > 0 ? message : undefined;
-	}
-
-	return error.length > 0 ? error : undefined;
-};
-
 /** Props for the {@link FieldError} component. */
 export type FieldErrorProps = React.ComponentProps<"div"> & {
 	errors?: Array<FieldErrorItem>;
@@ -306,15 +260,4 @@ export const FieldError = ({ className, children, errors, ...props }: FieldError
 			{content}
 		</div>
 	);
-};
-
-/** Builds an `aria-describedby` value from the description and error element ids. */
-export const getFieldDescribedBy = (
-	hasDescription: boolean,
-	descriptionId: string,
-	showError: boolean,
-	errorId: string,
-) => {
-	const ids = [hasDescription && descriptionId, showError && errorId].filter(Boolean);
-	return ids.length ? ids.join(" ") : undefined;
 };

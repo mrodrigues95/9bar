@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import {
-	generatePagination,
 	Pagination,
 	PaginationButton,
 	PaginationContent,
@@ -12,6 +11,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "./pagination";
+import { generatePagination } from "./utils";
 
 const meta = {
 	component: Pagination,
