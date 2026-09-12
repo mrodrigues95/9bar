@@ -1,6 +1,7 @@
 node_modules/
 dist/
 build/
+.tanstack/
 *.log
 .env
 .env.local
