@@ -30,10 +30,6 @@ Before editing files for a substantial task:
 - **react-doctor** for React diagnostics (`pnpm react-doctor` for issues introduced vs `origin/main`, `pnpm react-doctor:full` for a full audit).
 - **Conventional Commits** enforced by commitlint in CI.
 
-## Commands
-
-`pnpm web` and `pnpm toolkit` are aliases for `pnpm --filter @9bar/web` and `pnpm --filter @9bar/toolkit`. Use them to run any script in a package (e.g. `pnpm web typecheck`).
-
 ## Code Style
 
 - Use ES6 arrow functions over `function` declarations. Always use curly braces for function bodies; avoid inline returns.
@@ -43,19 +39,3 @@ Before editing files for a substantial task:
 ## Commit Messages
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commits to the affected package: `feat(toolkit): ...`, `fix(web): ...`. Common scopes: `web`, `toolkit`, or both.
-
-## Adding a New Package
-
-1. Create the package directory under `packages/` (or `apps/` for applications)
-2. Add a `package.json` with `"name": "@9bar/<name>"` and `"type": "module"`
-3. Extend the shared TypeScript config: `"extends": "../../tsconfig.base.json"` (adjust path as needed)
-4. If the package has a Vite config, create a `tsconfig.node.json` extending the root one
-5. Run `pnpm install` from the root to link the new package
-
-## Skills
-
-Concern and package-specific guidance lives in `.agents/skills/`. Load the matching skill when the task is in scope:
-
-- `toolkit` — toolkit components, class-string formatting, form system, Storybook, shadcn workflow
-- `web` — web-app conventions not covered by TanStack skills
-- `a11y` — accessibility guidelines for UI work
