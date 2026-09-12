@@ -35,6 +35,7 @@ export const CompareActions = ({ a, b, groupId, search }: CompareActionsProps) =
 			<Link
 				to="/compare"
 				search={{ ...search, group: groupId, annotate: annotate ? undefined : true }}
+				resetScroll={false}
 			>
 				{annotate ? "Done annotating" : "Annotate all"}
 			</Link>

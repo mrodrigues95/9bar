@@ -13,6 +13,7 @@ export const PickerLink = ({ active, search, children }: PickerLinkProps) => {
 		<Link
 			to="/compare"
 			search={search}
+			resetScroll={false}
 			variant={active ? "outline" : "ghost"}
 			size="sm"
 			aria-current={active ? "true" : undefined}
