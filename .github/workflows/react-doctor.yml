@@ -1,0 +1,33 @@
+name: React Doctor
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  statuses: write
+
+concurrency:
+  group: react-doctor-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  react-doctor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: react-doctor-version
+        run: echo "spec=$(node -p "require('./package.json').devDependencies['react-doctor']")" >> "$GITHUB_OUTPUT"
+      - uses: millionco/react-doctor@v2
+        with:
+          blocking: error
+          version: ${{ steps.react-doctor-version.outputs.spec }}
+          # Empty on purpose: an explicit `project` overrides `projects` in
+          # doctor.config.json, and the default "*" would also scan design-lab.
+          project: ""

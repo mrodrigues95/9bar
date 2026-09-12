@@ -4,7 +4,7 @@ import { Link } from "../../../../../components";
 import { AdditionalDetailsFormSection } from "./additional-details";
 import { BasicInformationFormSection } from "./basic-information";
 import { BrewParametersFormSection } from "./brew-parameters";
-import { recipeFormOpts } from "./form-section";
+import { recipeFormOpts } from "./form-schema";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
 
 export const RecipeForm = withForm({

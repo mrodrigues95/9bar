@@ -21,16 +21,13 @@ import {
 import { List, ListItem, MenuItemLink } from "../../../components";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS, recipes, type TRecipeGraph } from "../../../utils/data";
 
+const TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
+const TIME_FORMATTER = new Intl.DateTimeFormat("en-US", { timeStyle: "short" });
+
 const formatShotAt = (shotAt: string) => {
-	const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	const date = parseAbsolute(shotAt, tz).toDate();
-	const datePart = new Intl.DateTimeFormat("en-US", {
-		dateStyle: "long",
-	}).format(date);
-	const timePart = new Intl.DateTimeFormat("en-US", {
-		timeStyle: "short",
-	}).format(date);
-	return `${datePart} @ ${timePart}`;
+	const date = parseAbsolute(shotAt, TIME_ZONE).toDate();
+	return `${DATE_FORMATTER.format(date)} @ ${TIME_FORMATTER.format(date)}`;
 };
 
 const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {

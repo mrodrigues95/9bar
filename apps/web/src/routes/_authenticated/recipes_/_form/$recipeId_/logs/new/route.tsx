@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, useNavigate, useRouteContext } from "@tanstack/react-router";
 import { useAppForm } from "@9bar/toolkit/components/composed";
-import { recipeFormOpts, recipeToFormValues } from "../../../-form-sections/form-section";
+import { recipeFormOpts, recipeToFormValues } from "../../../-form-sections/form-schema";
 import { RecipeForm } from "../../../-form-sections/recipe-form";
 
 const NewLog = () => {

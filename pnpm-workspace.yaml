@@ -7,3 +7,7 @@ allowBuilds:
   sharp: true
   "@parcel/watcher": true
   "@tailwindcss/oxide": true
+
+minimumReleaseAgeExclude:
+  - oxlint-plugin-react-doctor@0.9.14
+  - react-doctor@0.9.14

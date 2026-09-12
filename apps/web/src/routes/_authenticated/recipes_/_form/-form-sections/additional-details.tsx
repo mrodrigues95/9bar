@@ -1,5 +1,6 @@
 import { withForm } from "@9bar/toolkit/components/composed";
-import { FormSection, recipeFormOpts } from "./form-section";
+import { recipeFormOpts } from "./form-schema";
+import { FormSection } from "./form-section";
 import { useRecipeFormMode } from "./use-recipe-form-mode";
 
 export const AdditionalDetailsFormSection = withForm({

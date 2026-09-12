@@ -5,7 +5,7 @@ import {
 	composeRenderProps,
 } from "react-aria-components";
 import { cn } from "#lib/utils";
-import { buttonVariants } from "../button/button";
+import { buttonVariants } from "../button/styles";
 
 /** Props for the {@link Link} component. */
 export interface LinkProps extends AriaLinkProps, VariantProps<typeof buttonVariants> {
