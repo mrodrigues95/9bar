@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { z } from "zod";
 import {
 	Badge,
@@ -36,13 +36,14 @@ const WIDTHS = [
 const SLOTS = ["A", "B"] as const;
 
 const PickerGroup = ({ label, children }: { label: string; children: ReactNode }) => {
+	const labelId = useId();
 	return (
-		<fieldset className="space-y-1 border-0 p-0">
-			<Text as="legend" variant="body-sm" className="font-semibold">
+		<nav aria-labelledby={labelId} className="space-y-1">
+			<Text variant="body-sm" id={labelId} className="font-semibold">
 				{label}
 			</Text>
 			<div className="flex flex-wrap items-center gap-1">{children}</div>
-		</fieldset>
+		</nav>
 	);
 };
 
@@ -77,7 +78,9 @@ const CompareDesigns = () => {
 
 	const { variants } = activeGroup;
 	const activeA = variants.find((variant) => variant.id === search.a) ?? variants[0];
-	const activeB = variants.find((variant) => variant.id === search.b) ?? variants[1];
+	const activeB =
+		variants.find((variant) => variant.id === search.b && variant.id !== activeA?.id) ??
+		variants.find((variant) => variant.id !== activeA?.id);
 
 	const copyCombined = () => {
 		if (!activeA || !activeB) {
@@ -152,26 +155,29 @@ const CompareDesigns = () => {
 					<div className="grid items-start gap-4 xl:grid-cols-2">
 						{SLOTS.map((slot) => {
 							const active = slot === "A" ? activeA : activeB;
+							const other = slot === "A" ? activeB : activeA;
 							return (
-								<PickerGroup key={slot} label={slot}>
-									{variants.map((variant) => {
-										return (
-											<Link
-												{...pickerLinkProps(variant.id === active.id)}
-												key={variant.id}
-												to="/compare"
-												search={{
-													group: activeGroup.id,
-													a: slot === "A" ? variant.id : activeA.id,
-													b: slot === "B" ? variant.id : activeB.id,
-													w: widthParam,
-													annotate: search.annotate,
-												}}
-											>
-												{variant.title}
-											</Link>
-										);
-									})}
+								<PickerGroup key={slot} label={`Variant ${slot}`}>
+									{variants
+										.filter((variant) => variant.id !== other?.id)
+										.map((variant) => {
+											return (
+												<Link
+													{...pickerLinkProps(variant.id === active.id)}
+													key={variant.id}
+													to="/compare"
+													search={{
+														group: activeGroup.id,
+														a: slot === "A" ? variant.id : activeA.id,
+														b: slot === "B" ? variant.id : activeB.id,
+														w: widthParam,
+														annotate: search.annotate,
+													}}
+												>
+													{variant.title}
+												</Link>
+											);
+										})}
 								</PickerGroup>
 							);
 						})}
@@ -208,7 +214,9 @@ const CompareDesigns = () => {
 											<div className="flex items-center gap-2">
 												<Badge variant="secondary">{slot}</Badge>
 												<Badge variant="outline">{entry.kind}</Badge>
-												<CardTitle>{entry.title}</CardTitle>
+												<Heading as="h2" variant="subsection">
+													{entry.title}
+												</Heading>
 											</div>
 											<Link
 												to="/$variantId"
@@ -221,7 +229,7 @@ const CompareDesigns = () => {
 										<Text variant="body-sm">{entry.description}</Text>
 									</CardHeader>
 									<CardContent>
-										<AnnotateScope variantId={entry.id} enabled={annotateAll}>
+										<AnnotateScope key={entry.id} variantId={entry.id} enabled={annotateAll}>
 											<VariantCanvas entry={entry} />
 										</AnnotateScope>
 									</CardContent>
@@ -237,5 +245,8 @@ const CompareDesigns = () => {
 
 export const Route = createFileRoute("/compare")({
 	validateSearch: zodValidator(searchSchema),
+	head: () => ({
+		meta: [{ title: "Compare — 9bar Design Lab" }],
+	}),
 	component: CompareDesigns,
 });

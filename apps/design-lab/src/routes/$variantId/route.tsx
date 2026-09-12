@@ -11,12 +11,16 @@ const searchSchema = z.object({
 	annotate: z.boolean().optional(),
 });
 
+const findVariant = (variantId: string) => {
+	return designGroups
+		.flatMap((group) => group.variants)
+		.find((variant) => variant.id === variantId);
+};
+
 const VariantView = () => {
 	const { variantId } = Route.useParams();
 	const { annotate } = Route.useSearch();
-	const entry = designGroups
-		.flatMap((group) => group.variants)
-		.find((variant) => variant.id === variantId);
+	const entry = findVariant(variantId);
 	const annotateOn = !!annotate;
 
 	if (!entry) {
@@ -52,7 +56,7 @@ const VariantView = () => {
 					{annotateOn ? "Done annotating" : "Annotate this variant"}
 				</Link>
 			</div>
-			<AnnotateScope variantId={entry.id} enabled={annotateOn}>
+			<AnnotateScope key={entry.id} variantId={entry.id} enabled={annotateOn}>
 				<VariantCanvas entry={entry} />
 			</AnnotateScope>
 		</div>
@@ -61,5 +65,15 @@ const VariantView = () => {
 
 export const Route = createFileRoute("/$variantId")({
 	validateSearch: zodValidator(searchSchema),
+	head: ({ params }) => {
+		const entry = findVariant(params.variantId);
+		return {
+			meta: [
+				{
+					title: entry ? `${entry.title} — 9bar Design Lab` : "Unknown variant — 9bar Design Lab",
+				},
+			],
+		};
+	},
 	component: VariantView,
 });

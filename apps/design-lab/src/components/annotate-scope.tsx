@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
 	Badge,
 	Button,
 	Card,
 	CardContent,
 	CardHeader,
-	CardTitle,
+	Heading,
 	Text,
 } from "@9bar/toolkit/components";
 import {
@@ -75,6 +75,7 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 	const [target, setTarget] = useState<PinnedTarget | null>(null);
 	const [draft, setDraft] = useState("");
 	const [copied, setCopied] = useState(false);
+	const hintId = useId();
 	const rootRef = useRef<HTMLDivElement>(null);
 	const composerRef = useRef<HTMLTextAreaElement>(null);
 	const hoveredRef = useRef<Element | null>(null);
@@ -83,12 +84,6 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 	useEffect(() => {
 		writeStoredPins(variantId, pins);
 	}, [pins, variantId]);
-
-	useEffect(() => {
-		setPins(readStoredPins(variantId));
-		setTarget(null);
-		setDraft("");
-	}, [variantId]);
 
 	const paint = (el: Element, outline: string) => {
 		if (el instanceof HTMLElement || el instanceof SVGElement) {
@@ -126,7 +121,6 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 		return () => {
 			window.removeEventListener("keydown", onKeyDown);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [enabled, target]);
 
 	useEffect(() => {
@@ -141,9 +135,9 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 				unpaint(hoveredRef.current);
 				hoveredRef.current = null;
 			}
+			// oxlint-disable-next-line react/set-state-in-effect
 			clearSelection();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [enabled]);
 
 	if (!enabled) {
@@ -258,35 +252,42 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 
 	return (
 		<div>
-			<div
-				ref={rootRef}
-				onMouseOver={highlight}
-				onMouseOut={unhighlight}
-				onFocus={highlight}
-				onBlur={unhighlight}
-				onClickCapture={handleClick}
-				className="cursor-crosshair rounded-lg"
-			>
-				{children}
-			</div>
+			<section aria-label="Annotatable preview" aria-describedby={hintId}>
+				<div
+					ref={rootRef}
+					onMouseOver={highlight}
+					onMouseOut={unhighlight}
+					onFocus={highlight}
+					onBlur={unhighlight}
+					onClickCapture={handleClick}
+					className="cursor-crosshair rounded-lg"
+				>
+					{children}
+				</div>
+			</section>
 
 			<div data-annotate-ui className="mt-4 space-y-3">
-				<output
-					aria-live="polite"
-					className="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-border bg-muted/50 px-3 py-2"
-				>
+				<div className="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-border bg-muted/50 px-3 py-2">
 					<Badge variant="secondary">Annotate on</Badge>
-					<Text variant="body-sm">
-						{pins.length === 0
-							? "Click any element above to pin feedback. Links are paused while annotating."
-							: `${pins.length} pin${pins.length === 1 ? "" : "s"} on this variant.`}
+					<Text as="span" variant="body-sm" id={hintId}>
+						Click any element in the preview to pin feedback. Links are paused while annotating.
 					</Text>
+				</div>
+
+				<output className="block">
+					{pins.length > 0 && (
+						<Text as="span" variant="body-sm">
+							{pins.length} pin{pins.length === 1 ? "" : "s"} on this variant.
+						</Text>
+					)}
 				</output>
 
 				{target && (
 					<Card>
 						<CardHeader>
-							<CardTitle>New pin</CardTitle>
+							<Heading as="h2" variant="subsection">
+								New pin
+							</Heading>
 							<Text variant="body-sm">
 								{target.tag}
 								{target.dataSlot !== null && ` · data-slot=${target.dataSlot}`}
@@ -297,12 +298,9 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 								{target.selector}
 							</code>
 							{target.textSnippet && <Text variant="body-sm">“{target.textSnippet}”</Text>}
-							<div className="space-y-1">
-								<label htmlFor={`comment-${variantId}`} className="text-sm font-medium">
-									What should change here?
-								</label>
+							<label className="block space-y-1">
+								<span className="text-sm font-medium">What should change here?</span>
 								<textarea
-									id={`comment-${variantId}`}
 									ref={composerRef}
 									rows={3}
 									value={draft}
@@ -310,7 +308,7 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 									placeholder="e.g. Make this headline bigger and left-align it like variant B"
 									className="w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
 								/>
-							</div>
+							</label>
 							<div className="flex flex-wrap gap-2">
 								<Button size="sm" onPress={savePin} isDisabled={draft.trim().length === 0}>
 									Save pin
@@ -326,14 +324,16 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 				{pins.length > 0 && (
 					<Card>
 						<CardHeader>
-							<CardTitle>Pins ({pins.length})</CardTitle>
+							<Heading as="h2" variant="subsection">
+								Pins ({pins.length})
+							</Heading>
 							<Text variant="body-sm">
 								Stored in this browser per variant. Copy them back to the agent to iterate.
 							</Text>
 						</CardHeader>
 						<CardContent className="space-y-3">
 							<ol className="space-y-2">
-								{pins.map((pin, index) => {
+								{pins.map((pin) => {
 									return (
 										<li
 											key={pin.id}
@@ -341,7 +341,7 @@ export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopePro
 										>
 											<div className="min-w-0 flex-1">
 												<Text variant="body-sm" className="font-medium">
-													{index + 1}. {pin.comment}
+													{pin.comment}
 												</Text>
 												<code className="mt-1 block truncate font-mono text-xs text-muted-foreground">
 													{pin.selector}

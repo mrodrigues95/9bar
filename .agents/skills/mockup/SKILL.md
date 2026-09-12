@@ -39,7 +39,7 @@ If any of these is already clear from context, don't ask — assume and state th
 
 ## The loop
 
-Gallery (grouped sections: title + question + cards) → per-group "Compare these" → 2-up compare (`?group=&a=&b=&w=`, A/B pickers scoped to the group, global width Full/768/390) → Annotate (click element, write pin, per-variant storage) → "Copy A+B for agent" → paste back here → revise the variant, keeping old versions for diffing.
+Gallery (grouped sections: title + question + cards) → per-group "Compare these" → 2-up compare (`?group=&a=&b=&w=`, A/B pickers scoped to the group — each slot hides the variant the other slot is showing, so A and B always differ; global width Full/768/390) → Annotate (click element, write pin, per-variant storage) → "Copy A+B for agent" → paste back here → revise the variant, keeping old versions for diffing.
 
 ## Hard rules
 

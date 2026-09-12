@@ -72,15 +72,14 @@ const DesignGallery = () => {
 										<CardHeader>
 											<div className="flex items-center gap-2">
 												<Badge variant="outline">{entry.kind}</Badge>
-												<CardTitle>{entry.title}</CardTitle>
+												<Heading as="h3" variant="subsection">
+													{entry.title}
+												</Heading>
 											</div>
 											<Text variant="body-sm">{entry.description}</Text>
 										</CardHeader>
 										<CardContent className="space-y-3">
-											<div
-												aria-hidden="true"
-												className="pointer-events-none max-h-56 overflow-hidden"
-											>
+											<div inert className="max-h-56 overflow-hidden">
 												<VariantCanvas entry={entry} />
 											</div>
 											<div className="flex flex-wrap gap-2">

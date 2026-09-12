@@ -1,4 +1,5 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { Heading } from "@9bar/toolkit/components";
 import { routeTree } from "./routeTree.gen";
 
 export function createRouter() {
@@ -6,7 +7,11 @@ export function createRouter() {
 		routeTree,
 		defaultPreload: "intent",
 		defaultNotFoundComponent: () => {
-			return <div>404! Page not found!</div>;
+			return (
+				<Heading as="h1" variant="title">
+					404! Page not found!
+				</Heading>
+			);
 		},
 		scrollRestoration: true,
 	});
