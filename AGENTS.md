@@ -30,12 +30,6 @@ Before editing files for a substantial task:
 - **react-doctor** for React diagnostics (`pnpm react-doctor` for issues introduced vs `origin/main`, `pnpm react-doctor:full` for a full audit).
 - **Conventional Commits** enforced by commitlint in CI.
 
-## Code Style
-
-- Use ES6 arrow functions over `function` declarations. Always use curly braces for function bodies; avoid inline returns.
-- Rely on TypeScript's return-type inference; annotate return types only when needed to narrow a type or resolve a type error.
-- Prefer shorthand falsy checks (`!value.length`, `!items`) over explicit comparisons. Exception: in JSX, use `value.length > 0 &&` instead of `value.length &&` to avoid rendering `0`.
-
 ## Commit Messages
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commits to the affected package: `feat(toolkit): ...`, `fix(web): ...`. Common scopes: `web`, `toolkit`, or both.
