@@ -1,6 +1,21 @@
-import { EllipsisVertical, Eye, Pencil, Plus, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
 import {
+	ArrowRight,
+	ArrowRightLeft,
+	Bean,
+	Cog,
+	EllipsisVertical,
+	Gauge,
+	Link2,
+	ListFilter,
+	Pencil,
+	Plus,
+	Search,
+	Tags,
+	Trash2,
+} from "lucide-react";
+import { type ComponentType, useState } from "react";
+import {
+	Badge,
 	Button,
 	generatePagination,
 	Heading,
@@ -16,73 +31,88 @@ import {
 	PaginationButton,
 	PaginationContent,
 	PaginationEllipsis,
+	PaginationFirst,
 	PaginationItem,
+	PaginationLast,
 	PaginationNext,
 	PaginationPrevious,
 	Text,
 } from "@9bar/toolkit/components";
-import {
-	FilterBar,
-	FilterBarActions,
-	type FilterBarDefinition,
-} from "@9bar/toolkit/components/composed";
-
-const TYPE_FILTERS = [
-	{ id: "all", label: "All", count: 128 },
-	{ id: "recipes", label: "Recipes", count: 96 },
-	{ id: "logs", label: "Logs", count: 32 },
-];
+import { FilterBarActions, type FilterBarFilterState } from "@9bar/toolkit/components/composed";
+import { LocalFilterBar, type LocalFilterBarDefinition } from "./_local/recipes-filter-bar";
 
 const SAMPLE_RECIPES = [
 	{
 		name: "Ethiopia Guji",
 		beans: "Washed · light roast",
 		params: "18g → 36g · 28s",
-		setup: "Linea Mini · Niche Zero",
+		machine: "Linea Mini",
+		grinder: "Niche Zero",
 		type: "Recipe",
 	},
 	{
 		name: "Colombia Huila",
-		beans: "Honey · medium roast",
+		beans: "Honey processed · medium roast · Finca La Esperanza, Huila, Colombia",
 		params: "17g → 34g · 30s",
-		setup: "Linea Mini · Niche Zero",
+		machine: "Linea Mini with flow-control mod",
+		grinder: "Niche Zero · SSP high-uniformity burrs",
 		type: "Recipe",
 	},
 	{
 		name: "Morning quick shot",
 		beans: "House Espresso · medium-dark",
 		params: "18.5g → 37g · 27s",
-		setup: "Linea Mini · Niche Zero",
+		machine: "Linea Mini",
+		grinder: "Niche Zero",
 		type: "Log",
 	},
 	{
 		name: "Kenya AA",
 		beans: "Washed · light roast",
 		params: "18g → 40g · 32s",
-		setup: "Bambino · Encore ESP",
+		machine: "Bambino",
+		grinder: "Encore ESP",
 		type: "Recipe",
 	},
 	{
 		name: "Decaf evening",
 		beans: "Swiss Water · medium",
 		params: "17g → 34g · 29s",
-		setup: "Bambino · Encore ESP",
+		machine: "Bambino",
+		grinder: "Encore ESP",
 		type: "Log",
 	},
 	{
 		name: "House Espresso",
 		beans: "Natural blend · medium-dark",
 		params: "18g → 36g · 28s",
-		setup: "Linea Mini · Niche Zero",
+		machine: "Linea Mini",
+		grinder: "Niche Zero",
 		type: "Recipe",
 	},
 ];
 
 const FILTER_DEFINITIONS = [
 	{
+		id: "type",
+		label: "Type",
+		pluralLabel: "types",
+		icon: Tags,
+		operators: [
+			{ id: "is", label: "is" },
+			{ id: "is-not", label: "is not" },
+		],
+		defaultOperatorId: "is",
+		options: [
+			{ id: "recipes", label: "Recipes" },
+			{ id: "logs", label: "Logs" },
+		],
+	},
+	{
 		id: "machine",
 		label: "Machine",
 		pluralLabel: "machines",
+		icon: Gauge,
 		operators: [
 			{ id: "is", label: "is" },
 			{ id: "is-not", label: "is not" },
@@ -97,6 +127,7 @@ const FILTER_DEFINITIONS = [
 		id: "grinder",
 		label: "Grinder",
 		pluralLabel: "grinders",
+		icon: Cog,
 		operators: [
 			{ id: "is", label: "is" },
 			{ id: "is-not", label: "is not" },
@@ -107,14 +138,32 @@ const FILTER_DEFINITIONS = [
 			{ id: "encore-esp", label: "Encore ESP" },
 		],
 	},
-] as const satisfies ReadonlyArray<FilterBarDefinition>;
+] as const satisfies ReadonlyArray<LocalFilterBarDefinition>;
 
 const DEFAULT_FILTERS = [{ filterId: "machine", operatorId: "is", values: ["linea-mini"] }];
 
 const TOTAL_PAGES = 16;
 
+interface MetaItemProps {
+	/** Leading decorative icon for the field. */
+	icon: ComponentType<{ className?: string }>;
+	/** Field value shown after the icon. */
+	label: string;
+}
+
+/** One piece of row metadata (beans, machine, grinder) with its leading icon. */
+const MetaItem = ({ icon: Icon, label }: MetaItemProps) => {
+	return (
+		<Text variant="caption" className="flex max-w-full min-w-0 items-center gap-1">
+			<Icon className="size-3 shrink-0" aria-hidden="true" />
+			<span className="truncate">{label}</span>
+		</Text>
+	);
+};
+
 export const RecipesListA = () => {
-	const [activeFilter, setActiveFilter] = useState("all");
+	const [filters, setFilters] = useState<Array<FilterBarFilterState>>(DEFAULT_FILTERS);
+
 	const [page, setPage] = useState(1);
 	const pages = generatePagination({
 		currentPage: page,
@@ -125,12 +174,9 @@ export const RecipesListA = () => {
 
 	return (
 		<section aria-labelledby="recipes-a-title" className="mx-auto max-w-3xl">
-			<div className="flex flex-wrap items-end justify-between gap-3">
+			<div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
 				<div>
-					<Text variant="detail" className="tracking-widest uppercase">
-						Your library
-					</Text>
-					<Heading as="h1" variant="title" id="recipes-a-title" className="mt-1">
+					<Heading as="h1" variant="title" id="recipes-a-title">
 						Recipes
 					</Heading>
 				</div>
@@ -140,81 +186,105 @@ export const RecipesListA = () => {
 				</Button>
 			</div>
 
-			<div className="mt-5">
-				<InputGroup>
+			<div className="mt-5 flex flex-wrap items-center justify-end gap-2">
+				<InputGroup className="w-52 shrink-0">
 					<InputGroupAddon>
 						<Search className="size-4" />
 					</InputGroupAddon>
 					<InputGroupInput placeholder="Search recipes…" aria-label="Search recipes" />
 				</InputGroup>
-			</div>
-			<div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-				<fieldset className="flex gap-1 border-0 p-0">
-					<legend className="sr-only">Filter by type</legend>
-					{TYPE_FILTERS.map((filter) => {
-						return (
-							<Button
-								key={filter.id}
-								variant={activeFilter === filter.id ? "secondary" : "ghost"}
-								size="sm"
-								onPress={() => setActiveFilter(filter.id)}
-							>
-								{filter.label}
-								<Text variant="caption">{filter.count}</Text>
-							</Button>
-						);
-					})}
-				</fieldset>
-				<Text variant="caption">128 results</Text>
-			</div>
-			<div className="mt-2 rounded-md bg-muted/50 px-2.5 py-2">
-				<FilterBar
+				<LocalFilterBar
 					definitions={FILTER_DEFINITIONS}
-					defaultFilters={DEFAULT_FILTERS}
-					aria-label="Advanced recipe filters"
-				>
-					{(state) =>
-						!!state.filters.length && (
-							<FilterBarActions>
-								<Button variant="ghost" size="xs" onPress={state.clearAll}>
-									Clear
-								</Button>
-							</FilterBarActions>
-						)
-					}
-				</FilterBar>
+					filters={filters}
+					onFiltersChange={setFilters}
+					aria-label="Add recipe filter"
+					className="[&_[data-slot='filter-bar-filter']]:hidden"
+					addIcon={ListFilter}
+				/>
 			</div>
+			{filters.length > 0 && (
+				<div className="mt-2 rounded-md bg-muted/50 px-2.5 py-2">
+					<LocalFilterBar
+						definitions={FILTER_DEFINITIONS}
+						filters={filters}
+						onFiltersChange={setFilters}
+						aria-label="Active recipe filters"
+						className="w-full justify-end"
+					>
+						{(state) =>
+							!!state.filters.length && (
+								<FilterBarActions>
+									<Button variant="ghost" size="xs" onPress={state.clearAll}>
+										Clear
+									</Button>
+								</FilterBarActions>
+							)
+						}
+					</LocalFilterBar>
+				</div>
+			)}
 
-			<ul className="mt-2 divide-y divide-border border-y border-border">
+			<ul className="mt-2 border-b border-border">
 				{SAMPLE_RECIPES.map((recipe) => {
+					const isRecipe = recipe.type === "Recipe";
+
 					return (
-						<li key={recipe.name} className="flex items-start justify-between gap-4 py-4">
-							<div className="min-w-0">
+						<li key={recipe.name} className="flex items-center gap-3 py-2.5">
+							<div className="min-w-0 flex-1">
 								<Text variant="label" color="primary" className="truncate">
 									{recipe.name}
 								</Text>
-								<Text variant="caption" className="mt-0.5 truncate">
-									{recipe.beans} · {recipe.params}
+								<Text variant="caption" className="mt-0.5 truncate font-mono">
+									{recipe.params}
 								</Text>
-								<Text variant="caption" className="truncate">
-									{recipe.setup}
-								</Text>
+								<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
+									<MetaItem icon={Bean} label={recipe.beans} />
+									<MetaItem icon={Gauge} label={recipe.machine} />
+									<MetaItem icon={Cog} label={recipe.grinder} />
+								</div>
 							</div>
 							<div className="flex shrink-0 items-center gap-1">
-								<Text variant="caption">{recipe.type}</Text>
+								<Badge variant={isRecipe ? "secondary" : "outline"}>{recipe.type}</Badge>
 								<MenuTrigger>
 									<IconButton aria-label={`Actions for ${recipe.name}`} size="sm" variant="ghost">
 										<EllipsisVertical />
 									</IconButton>
-									<Menu aria-label={`Actions for ${recipe.name}`}>
-										<MenuItem textValue="View">
-											<Eye className="size-3" />
-											View
-										</MenuItem>
+									{/*
+										TODO: `w-max` is a workaround, not the intended API. The toolkit's Menu popover
+										defaults to `w-(--trigger-width) min-w-32`, which pins the popover to the trigger —
+										correct for a Select under a full-width button, but it clamps an icon-triggered
+										kebab menu to 128px and wraps labels like "Convert to Recipe". `w-auto` does NOT
+										fix this (`width: auto` still resolves to the trigger width on an absolutely
+										positioned popover); only `w-max` escapes it.
+
+										When porting this variant to a real implementation, replace this override with a
+										toolkit `Menu` width variant — e.g. `width?: "trigger" | "content"` defaulting to
+										"trigger", with icon-triggered menus opting into "content". That needs a Storybook
+										story and its own commit, so it is deliberately not done here.
+									*/}
+									<Menu aria-label={`Actions for ${recipe.name}`} className="w-max min-w-40">
+										{isRecipe ? (
+											<MenuItem textValue="View">
+												<ArrowRight className="size-3" />
+												View
+											</MenuItem>
+										) : null}
 										<MenuItem textValue="Edit">
 											<Pencil className="size-3" />
 											Edit
 										</MenuItem>
+										{isRecipe ? null : (
+											<MenuItem textValue="Convert to Recipe">
+												<ArrowRightLeft className="size-3" />
+												Convert to Recipe
+											</MenuItem>
+										)}
+										{isRecipe ? null : (
+											<MenuItem textValue="Link to Recipe">
+												<Link2 className="size-3" />
+												Link to Recipe
+											</MenuItem>
+										)}
 										<MenuSeparator />
 										<MenuItem textValue="Delete" variant="destructive">
 											<Trash2 className="size-3" />
@@ -232,8 +302,11 @@ export const RecipesListA = () => {
 				<Text variant="caption" className="shrink-0">
 					Page {page} of {TOTAL_PAGES}
 				</Text>
-				<Pagination aria-label="Recipes pages">
+				<Pagination aria-label="Recipes pages" className="m-0 w-auto justify-end">
 					<PaginationContent>
+						<PaginationItem>
+							<PaginationFirst onPress={() => setPage(1)} isDisabled={page === 1} />
+						</PaginationItem>
 						<PaginationItem>
 							<PaginationPrevious
 								onPress={() => setPage(Math.max(1, page - 1))}
@@ -263,6 +336,12 @@ export const RecipesListA = () => {
 						<PaginationItem>
 							<PaginationNext
 								onPress={() => setPage(Math.min(TOTAL_PAGES, page + 1))}
+								isDisabled={page === TOTAL_PAGES}
+							/>
+						</PaginationItem>
+						<PaginationItem>
+							<PaginationLast
+								onPress={() => setPage(TOTAL_PAGES)}
 								isDisabled={page === TOTAL_PAGES}
 							/>
 						</PaginationItem>

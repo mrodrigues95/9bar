@@ -4,7 +4,7 @@ import { HomeHeroB } from "./variants/home-hero-b";
 import { RecipeSectionA } from "./variants/recipe-section-a";
 import { RecipesListA } from "./variants/recipes-list-a";
 import { RecipesListB } from "./variants/recipes-list-b";
-import { RecipesListC } from "./variants/recipes-list-c";
+import { RecipesListD } from "./variants/recipes-list-d";
 
 export type DesignVariantEntry = {
 	id: string;
@@ -54,7 +54,7 @@ export const designGroups: Array<DesignGroup> = [
 				title: "Recipes list A — quiet rows",
 				kind: "page",
 				description:
-					"Borderless rows, quick type tabs plus FilterBar, numbered pagination. Calmest direction.",
+					"Borderless rows, compact search plus FilterBar with Type option, right-aligned pagination. Calmest direction.",
 				component: RecipesListA,
 			},
 			{
@@ -66,12 +66,12 @@ export const designGroups: Array<DesignGroup> = [
 				component: RecipesListB,
 			},
 			{
-				id: "recipes-list-c",
-				title: "Recipes list C — sidebar filters",
+				id: "recipes-list-d",
+				title: "Recipes list D — quiet rows, no filter bar",
 				kind: "page",
 				description:
-					"Slim filter rail with counts, compact rows, centered pages. Closest to today.",
-				component: RecipesListC,
+					"Quiet-rows copy without the advanced FilterBar — search plus type tabs only. Original kept as A for diffing.",
+				component: RecipesListD,
 			},
 		],
 	},
