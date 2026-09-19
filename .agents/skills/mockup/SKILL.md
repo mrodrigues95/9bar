@@ -42,6 +42,10 @@ If any of these is already clear from context, don't ask — assume and state th
 
 Gallery (grouped sections: title + question + cards) → per-group "Compare these" → 2-up compare (`?group=&a=&b=&w=`, A/B pickers scoped to the group — each slot hides the variant the other slot is showing, so A and B always differ; global width Full/768/390) → Annotate (click element, write pin, per-variant storage) → "Copy A+B for agent" → paste back here → revise the variant, keeping old versions for diffing.
 
+## Hand-off
+
+When a direction wins, invoke the `mockup-convert` skill. It reconciles the variant into `apps/web` and `packages/toolkit` changes and proposes the manifest with show-me before writing anything.
+
 ## Hard rules
 
 - **Toolkit-first**: compose from `@9bar/toolkit/components` (and `/composed`) wherever possible — check the toolkit skill and Storybook before hand-rolling.
