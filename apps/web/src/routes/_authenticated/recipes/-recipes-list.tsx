@@ -2,9 +2,14 @@ import { parseAbsolute } from "@internationalized/date";
 import {
 	ArrowRight,
 	ArrowRightLeft,
+	Bean,
+	Clock,
+	Cog,
 	EllipsisVertical,
 	FileText,
 	Fingerprint,
+	Gauge,
+	type LucideIcon,
 	Paperclip,
 	Pencil,
 	Trash2,
@@ -18,60 +23,73 @@ import {
 	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
-import { List, ListItem, MenuItemLink } from "../../../components";
-import { GRINDER_OPTIONS, MACHINE_OPTIONS, recipes, type TRecipeGraph } from "../../../utils/data";
+import { MenuItemLink } from "../../../components";
+import type { TRecipeGraph } from "../../../utils/data";
+import { grinderName, machineName } from "./-recipes-query";
 
 const TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
 const TIME_FORMATTER = new Intl.DateTimeFormat("en-US", { timeStyle: "short" });
 
+/** Formats a log's shot time as `June 1, 2024 @ 2:30 PM` in the browser's time zone. */
 const formatShotAt = (shotAt: string) => {
 	const date = parseAbsolute(shotAt, TIME_ZONE).toDate();
 	return `${DATE_FORMATTER.format(date)} @ ${TIME_FORMATTER.format(date)}`;
 };
 
+interface MetaItemProps {
+	/** Leading decorative icon for the field. */
+	icon: LucideIcon;
+	/** Field value shown after the icon. */
+	label: string;
+}
+
+/** One piece of row metadata (beans, machine, grinder, shot time) with its leading icon. */
+const MetaItem = ({ icon: Icon, label }: MetaItemProps) => {
+	return (
+		<Text variant="caption" className="flex max-w-full min-w-0 items-center gap-1">
+			<Icon className="size-3 shrink-0" aria-hidden="true" />
+			<span className="truncate">{label}</span>
+		</Text>
+	);
+};
+
 const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
-	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
-	const grinder = GRINDER_OPTIONS.find((g) => g.id === recipe.snapshot.grinder);
-	if (!machine || !grinder) {
-		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
-	}
+	const name = recipe.name ?? "(Untitled)";
 
 	return (
-		<ListItem className="justify-between">
-			<div className="flex flex-col">
-				<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
-					<Fingerprint className="size-4" />
-					{machine.name} · {grinder.name}
+		<li className="flex items-center gap-3 py-2.5">
+			<div className="min-w-0 flex-1">
+				<Text variant="label" color="primary" className="truncate">
+					{name}
 				</Text>
-				{!recipe.isQuickBrew && (
-					<Text variant="body-sm" className="font-medium" color="primary">
-						{recipe.name ?? "(Untitled)"}
-					</Text>
-				)}
-				<Text variant="body-sm" className="text-xs">
-					{recipe.snapshot.beans}
-				</Text>
-				<Text variant="body-sm" className="text-xs">
+				<Text variant="caption" className="mt-0.5 truncate font-mono">
 					{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
 					{recipe.snapshot.brewTimeUnit}
 				</Text>
-				{recipe.isQuickBrew && (
-					<Text variant="body-sm" className="text-xs">
-						{formatShotAt(recipe.log.shotAt)}
-					</Text>
-				)}
+				<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
+					<MetaItem icon={Bean} label={recipe.snapshot.beans} />
+					<MetaItem icon={Gauge} label={machineName(recipe.snapshot.machine)} />
+					<MetaItem icon={Cog} label={grinderName(recipe.snapshot.grinder)} />
+					{recipe.isQuickBrew ? (
+						<MetaItem icon={Clock} label={formatShotAt(recipe.log.shotAt)} />
+					) : null}
+				</div>
 			</div>
-			<div className="flex items-center gap-1">
-				<Badge variant="outline">
-					{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}
+			<div className="flex shrink-0 items-center gap-1">
+				<Badge variant={recipe.isQuickBrew ? "outline" : "secondary"}>
+					{recipe.isQuickBrew ? (
+						<FileText aria-hidden="true" />
+					) : (
+						<Fingerprint aria-hidden="true" />
+					)}
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
-					<IconButton aria-label="Actions" size="sm" variant="ghost">
+					<IconButton aria-label={`Actions for ${name}`} size="sm" variant="ghost">
 						<EllipsisVertical />
 					</IconButton>
-					<Menu>
+					<Menu aria-label={`Actions for ${name}`} width="content">
 						{!recipe.isQuickBrew && (
 							<MenuItemLink
 								to="/recipes/$recipeId"
@@ -125,16 +143,17 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 					</Menu>
 				</MenuTrigger>
 			</div>
-		</ListItem>
+		</li>
 	);
 };
 
-export const RecipesList = () => {
+/** The recipes index: quiet rows, one page of graphs at a time. */
+export const RecipesList = ({ recipes }: { recipes: Array<TRecipeGraph> }) => {
 	return (
-		<List>
+		<ul>
 			{recipes.map((recipe) => (
 				<RecipesListItem key={recipe.id} recipe={recipe} />
 			))}
-		</List>
+		</ul>
 	);
 };
