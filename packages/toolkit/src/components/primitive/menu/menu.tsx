@@ -34,6 +34,11 @@ export type MenuProps<T extends object> = Omit<
 	Pick<React.ComponentProps<typeof AriaPopover>, "placement" | "offset" | "crossOffset"> & {
 		"data-slot"?: string;
 		className?: string;
+		/**
+		 * Popover width: `"trigger"` matches the trigger width, `"content"` sizes to
+		 * the widest menu item. Defaults to `"trigger"`.
+		 */
+		width?: "trigger" | "content";
 	};
 
 /** A menu of actions displayed in a floating popover. Compose {@link MenuItem}, {@link MenuSub}, and {@link MenuSeparator}. */
@@ -42,6 +47,7 @@ export const Menu = <T extends object>({
 	placement = "bottom start",
 	offset = 4,
 	crossOffset = 0,
+	width = "trigger",
 	className,
 	children,
 	...props
@@ -55,7 +61,7 @@ export const Menu = <T extends object>({
 			className={cn(
 				popoverVariants(),
 				[
-					"w-(--trigger-width) min-w-32",
+					width === "content" ? "w-max min-w-32" : "w-(--trigger-width) min-w-32",
 					"overflow-x-hidden overflow-y-auto p-1",
 					"data-exiting:overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
