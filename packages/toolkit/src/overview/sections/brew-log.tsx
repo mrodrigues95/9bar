@@ -74,7 +74,7 @@ const logEntries = [
 const RESULT_DEFINITION: FilterBarDefinition = {
 	id: "result",
 	label: "Result",
-	icon: <Target className="size-3.5" aria-hidden="true" />,
+	icon: <Target />,
 	pluralLabel: "results",
 	operators: [
 		{ id: "is", label: "is" },

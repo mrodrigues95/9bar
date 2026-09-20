@@ -118,7 +118,7 @@ export const FilterBar = ({
 
 			<MenuTrigger>
 				<IconButton data-slot="filter-bar-add" aria-label="Add filter" variant="ghost" size="sm">
-					<Plus aria-hidden="true" />
+					<Plus />
 				</IconButton>
 				<Menu>
 					{definitions.map((def) => (

@@ -17,7 +17,7 @@ export interface FilterBarDefinition {
 	id: string;
 	/** Short label shown on the filter chip. */
 	label: string;
-	/** Leading icon for the chip label. Consumers own its size and classes. */
+	/** Leading icon for the chip label. */
 	icon?: ReactNode;
 	/** Plural noun used when several values are selected (e.g. `"3 origins"`). */
 	pluralLabel: string;

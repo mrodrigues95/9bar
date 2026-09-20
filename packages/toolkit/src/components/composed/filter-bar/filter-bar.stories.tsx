@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 const STATUS_DEFINITION = {
 	id: "status",
 	label: "Status",
-	icon: <CircleDot className="size-3.5" aria-hidden="true" />,
+	icon: <CircleDot />,
 	pluralLabel: "statuses",
 	operators: [
 		{ id: "is", label: "is" },
@@ -39,7 +39,7 @@ const STATUS_DEFINITION = {
 const PRIORITY_DEFINITION = {
 	id: "priority",
 	label: "Priority",
-	icon: <Flag className="size-3.5" aria-hidden="true" />,
+	icon: <Flag />,
 	pluralLabel: "priorities",
 	operators: [
 		{ id: "is", label: "is" },

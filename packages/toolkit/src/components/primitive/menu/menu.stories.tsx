@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ArrowRightLeft, EllipsisVertical, Pencil, Trash2 } from "lucide-react";
+import { ArrowRightLeft, EllipsisVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Key } from "react-aria-components";
 import { Button } from "../button/button";
@@ -70,6 +70,7 @@ export const ContentWidth: Story = {
 			</IconButton>
 			<Menu {...props} width="content" aria-label="Recipe actions">
 				<MenuItem onAction={() => {}} textValue="View">
+					<Eye />
 					View
 				</MenuItem>
 				<MenuItem onAction={() => {}} textValue="Edit">

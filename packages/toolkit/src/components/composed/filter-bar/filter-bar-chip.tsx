@@ -58,7 +58,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 		>
 			<span
 				data-slot="filter-bar-filter-label"
-				className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary"
+				className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg:not([class*='size-'])]:size-3.5"
 			>
 				{definition.icon}
 				{definition.label}
