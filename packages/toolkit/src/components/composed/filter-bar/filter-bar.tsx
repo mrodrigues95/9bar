@@ -17,7 +17,7 @@ import {
 import { cn } from "#lib/utils";
 import { FilterBarChip } from "./filter-bar-chip";
 import type { FilterBarDefinition, FilterBarFilterState, FilterBarState } from "./filter-bar-types";
-import { resolveOperator } from "./utils";
+import { applyFilterSelection } from "./utils";
 
 /** Props for the {@link FilterBar} component. */
 export interface FilterBarProps extends Omit<AriaToolbarProps, "orientation" | "children"> {
@@ -83,22 +83,14 @@ export const FilterBar = ({
 		if (keys === "all") {
 			return;
 		}
-		const values = [...keys].map((k) => k.toString());
 		const def = definitionById.get(defId);
 		if (!def) {
 			return;
 		}
 
-		const existing = filtersByFilterId.get(defId);
-		if (existing) {
-			const newOp = resolveOperator(existing.operatorId, values.length, def.operatorPairs);
-			update((current) =>
-				current.map((f) => (f.filterId === defId ? { ...f, operatorId: newOp, values } : f)),
-			);
-		} else {
-			const op = resolveOperator(def.defaultOperatorId, values.length, def.operatorPairs);
-			update((current) => [...current, { filterId: defId, operatorId: op, values }]);
-		}
+		update((current) =>
+			applyFilterSelection({ filters: current, definition: def, selectedIds: keys }),
+		);
 	};
 
 	return (

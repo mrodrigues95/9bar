@@ -60,6 +60,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 				data-slot="filter-bar-filter-label"
 				className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary"
 			>
+				{definition.icon}
 				{definition.label}
 			</span>
 

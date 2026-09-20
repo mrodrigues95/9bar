@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { CircleDot, Flag } from "lucide-react";
 import { useState } from "react";
 import { Button } from "#components/button";
 import { FilterBar } from "./filter-bar";
@@ -21,6 +22,7 @@ type Story = StoryObj<typeof meta>;
 const STATUS_DEFINITION = {
 	id: "status",
 	label: "Status",
+	icon: <CircleDot className="size-3.5" aria-hidden="true" />,
 	pluralLabel: "statuses",
 	operators: [
 		{ id: "is", label: "is" },
@@ -37,6 +39,7 @@ const STATUS_DEFINITION = {
 const PRIORITY_DEFINITION = {
 	id: "priority",
 	label: "Priority",
+	icon: <Flag className="size-3.5" aria-hidden="true" />,
 	pluralLabel: "priorities",
 	operators: [
 		{ id: "is", label: "is" },
