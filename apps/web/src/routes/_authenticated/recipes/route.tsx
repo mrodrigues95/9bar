@@ -77,14 +77,16 @@ const Recipes = () => {
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">
 						<Link variant="outline" size="sm" to="/recipes/new">
-							<Plus aria-hidden="true" />
+							<Plus />
 							New recipe
 						</Link>
 					</div>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-2">
 					<div className="flex flex-wrap items-center justify-end gap-2">
 						<InputGroup className="w-52 shrink-0">
 							<InputGroupAddon>
-								<Search className="size-4" aria-hidden="true" />
+								<Search className="size-4" />
 							</InputGroupAddon>
 							<InputGroupInput
 								value={search.q}
@@ -118,13 +120,11 @@ const Recipes = () => {
 							</FilterBar>
 						</div>
 					)}
-				</CardHeader>
-				<CardContent>
 					{total === 0 ? (
 						<Empty>
 							<EmptyHeader>
 								<EmptyMedia variant="icon">
-									<SearchX aria-hidden="true" />
+									<SearchX />
 								</EmptyMedia>
 								<EmptyTitle>{hasQuery ? "No recipes match" : "No recipes yet"}</EmptyTitle>
 								<EmptyDescription>
@@ -140,7 +140,7 @@ const Recipes = () => {
 									</Button>
 								) : (
 									<Link variant="default" size="sm" to="/recipes/new">
-										<Plus aria-hidden="true" />
+										<Plus />
 										New recipe
 									</Link>
 								)}

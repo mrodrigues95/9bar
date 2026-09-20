@@ -48,7 +48,7 @@ interface MetaItemProps {
 const MetaItem = ({ icon: Icon, label }: MetaItemProps) => {
 	return (
 		<Text variant="caption" className="flex max-w-full min-w-0 items-center gap-1">
-			<Icon className="size-3 shrink-0" aria-hidden="true" />
+			<Icon className="size-3 shrink-0" />
 			<span className="truncate">{label}</span>
 		</Text>
 	);
@@ -78,11 +78,7 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				<Badge variant={recipe.isQuickBrew ? "outline" : "secondary"}>
-					{recipe.isQuickBrew ? (
-						<FileText aria-hidden="true" />
-					) : (
-						<Fingerprint aria-hidden="true" />
-					)}
+					{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>

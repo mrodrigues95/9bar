@@ -41,7 +41,7 @@ export const FilterAddTrigger = ({
 	return (
 		<MenuTrigger>
 			<IconButton data-slot="filter-bar-add" aria-label={ariaLabel} variant="ghost" size="sm">
-				<ListFilter className="size-3.5" aria-hidden="true" />
+				<ListFilter className="size-3.5" />
 			</IconButton>
 			<Menu width="content">
 				{definitions.map((definition) => (

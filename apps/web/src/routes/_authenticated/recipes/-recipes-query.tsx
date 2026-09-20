@@ -42,7 +42,7 @@ export const FILTER_DEFINITIONS = [
 	{
 		id: "machine",
 		label: "Machine",
-		icon: <Gauge className="size-3.5" aria-hidden="true" />,
+		icon: <Gauge />,
 		pluralLabel: "machines",
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
@@ -52,7 +52,7 @@ export const FILTER_DEFINITIONS = [
 	{
 		id: "grinder",
 		label: "Grinder",
-		icon: <Cog className="size-3.5" aria-hidden="true" />,
+		icon: <Cog />,
 		pluralLabel: "grinders",
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
@@ -62,7 +62,7 @@ export const FILTER_DEFINITIONS = [
 	{
 		id: "recipe-type",
 		label: "Type",
-		icon: <Tags className="size-3.5" aria-hidden="true" />,
+		icon: <Tags />,
 		pluralLabel: "types",
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
