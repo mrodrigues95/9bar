@@ -13,17 +13,10 @@ import {
 	Pagination as ToolkitPagination,
 } from "@9bar/toolkit/components";
 
-/** Props for the {@link Pagination} component. */
-export interface PaginationProps {
-	/** The current page, 1-based. */
+interface PaginationProps {
 	page: number;
-	/** Rows requested per page. */
 	pageSize: number;
-	/** Total rows across every page. */
 	total: number;
-	/** Plural noun for the rows being paginated (e.g. `"recipes"`). */
-	itemLabel: string;
-	/** Called with the page the user picked. */
 	onPageChange: (page: number) => void;
 }
 
@@ -31,25 +24,19 @@ const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => {
 	return <span className="font-medium text-primary">{children}</span>;
 };
 
-const PaginationSummary = ({
-	page,
-	pageSize,
-	total,
-	itemLabel,
-}: Omit<PaginationProps, "onPageChange">) => {
-	const startItem = total === 0 ? 0 : (page - 1) * pageSize + 1;
+const PaginationSummary = ({ page, pageSize, total }: Omit<PaginationProps, "onPageChange">) => {
+	const startItem = total ? (page - 1) * pageSize + 1 : total;
 	const endItem = Math.min(page * pageSize, total);
 
 	return (
 		<Text variant="caption">
 			Showing <PaginationSummaryHighlight>{startItem}</PaginationSummaryHighlight> to{" "}
 			<PaginationSummaryHighlight>{endItem}</PaginationSummaryHighlight> of{" "}
-			<PaginationSummaryHighlight>{total}</PaginationSummaryHighlight> {itemLabel}
+			<PaginationSummaryHighlight>{total}</PaginationSummaryHighlight>
 		</Text>
 	);
 };
 
-/** Pairs generated pages with stable keys; an ellipsis is keyed by the page that follows it. */
 const resolvePageItems = (pages: Array<number | "ellipsis">) => {
 	return pages.map((item, index) => ({
 		key: item === "ellipsis" ? `ellipsis-${pages[index + 1] ?? "end"}` : `page-${item}`,
@@ -57,8 +44,7 @@ const resolvePageItems = (pages: Array<number | "ellipsis">) => {
 	}));
 };
 
-/** A "Showing X to Y of Z" summary beside the page controls, driven by the caller's state. */
-export const Pagination = ({ page, pageSize, total, itemLabel, onPageChange }: PaginationProps) => {
+export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationProps) => {
 	const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
 	const pages = generatePagination({
@@ -71,7 +57,7 @@ export const Pagination = ({ page, pageSize, total, itemLabel, onPageChange }: P
 
 	return (
 		<div className="flex w-full items-center justify-between gap-4">
-			<PaginationSummary page={page} pageSize={pageSize} total={total} itemLabel={itemLabel} />
+			<PaginationSummary page={page} pageSize={pageSize} total={total} />
 			<ToolkitPagination className="mx-0 w-auto">
 				<PaginationContent>
 					<PaginationItem>

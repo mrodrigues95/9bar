@@ -151,13 +151,7 @@ const Recipes = () => {
 					)}
 				</CardContent>
 				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination
-						page={page}
-						pageSize={pageSize}
-						total={total}
-						itemLabel="recipes"
-						onPageChange={onPageChange}
-					/>
+					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={onPageChange} />
 				</CardFooter>
 			</Card>
 		</div>

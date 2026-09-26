@@ -20,9 +20,7 @@ import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
 const LOGS_PAGE_SIZE = 10;
 
 const RecipeLogs = () => {
-	const { recipe } = useLoaderData({
-		from: "/_authenticated/recipes_/$recipeId",
-	});
+	const { recipe } = useLoaderData({ from: "/_authenticated/recipes_/$recipeId" });
 	const [page, setPage] = useState(1);
 
 	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
@@ -95,7 +93,6 @@ const RecipeLogs = () => {
 					page={page}
 					pageSize={LOGS_PAGE_SIZE}
 					total={recipe.logs.length}
-					itemLabel="logs"
 					onPageChange={setPage}
 				/>
 			</CardFooter>

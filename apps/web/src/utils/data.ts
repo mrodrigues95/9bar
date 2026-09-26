@@ -48,47 +48,26 @@ export type TRecipeGraph =
 	| (TRecipeGraphBase & { isQuickBrew: true; log: TLogEntry })
 	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLogEntry> });
 
-/** Hand-written fields for one dummy graph; ids and timestamps are derived from its list index. */
-interface TRecipeSeed {
-	/** Display name, or `null` for an unnamed quick brew. */
-	name: string | null;
-	/** Bean description shown as the first row meta item. */
-	beans: string;
-	/** Machine id from {@link MACHINE_OPTIONS}. */
-	machine: string;
-	/** Grinder id from {@link GRINDER_OPTIONS}. */
-	grinder: string;
-	grindSize: string;
-	dose: number;
-	yield: number;
-	brewTime: number;
-	brewTimeUnit: "s" | "m";
-	/** Brew temperature. Defaults to `93` °C. */
-	temperature?: number;
-	temperatureUnit?: "C" | "F";
-	notes?: string;
-}
-
-/** A quick-brew seed, which additionally carries the shot timestamp the row displays. */
-interface TLogSeed extends TRecipeSeed {
-	shotAt: string;
-}
+type TRecipeSeed = Pick<
+	TRecipeSnapshot,
+	"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
+> &
+	Partial<Pick<TRecipeSnapshot, "temperature" | "temperatureUnit" | "notes">> & {
+		name: TRecipe["name"];
+	};
 
 const BASE_TIMESTAMP = Date.UTC(2024, 0, 1, 8, 0, 0);
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** One day after the previous graph, so seeded rows sort newest-first in a stable order. */
 const timestampFor = (index: number) => {
 	return new Date(BASE_TIMESTAMP + index * DAY_MS).toISOString();
 };
 
-/** Builds one log entry; callers keep ids unique across the quick-brew and saved-recipe spaces. */
-const buildLog = (id: number, shotAt: string): TLogEntry => {
+const createLog = (id: number, shotAt: string): TLogEntry => {
 	return { id, uuid: `log-uuid-${id}`, shotAt, createdAt: shotAt, updatedAt: shotAt };
 };
 
-/** Snapshot fields shared by saved recipes and quick brews. */
-const buildSnapshot = (index: number, seed: TRecipeSeed, timestamp: string): TRecipeSnapshot => {
+const createSnapshot = (index: number, seed: TRecipeSeed, timestamp: string): TRecipeSnapshot => {
 	return {
 		id: index + 1,
 		uuid: `snapshot-uuid-${index + 1}`,
@@ -110,8 +89,7 @@ const buildSnapshot = (index: number, seed: TRecipeSeed, timestamp: string): TRe
 	};
 };
 
-/** Builds a saved recipe; `shotAtList` fills its log history, in order. */
-const savedRecipe = (
+const createRecipe = (
 	index: number,
 	seed: TRecipeSeed,
 	shotAtList: Array<string> = [],
@@ -124,13 +102,12 @@ const savedRecipe = (
 		isQuickBrew: false,
 		createdAt: timestamp,
 		updatedAt: timestamp,
-		snapshot: buildSnapshot(index, seed, timestamp),
-		logs: shotAtList.map((shotAt, position) => buildLog(1000 + index * 10 + position, shotAt)),
+		snapshot: createSnapshot(index, seed, timestamp),
+		logs: shotAtList.map((shotAt, position) => createLog(1000 + index * 10 + position, shotAt)),
 	};
 };
 
-/** Builds a quick brew whose recipe and log both carry the shot timestamp. */
-const quickBrew = (index: number, seed: TLogSeed): TRecipeGraph => {
+const createQuickBrew = (index: number, seed: TRecipeSeed & { shotAt: string }): TRecipeGraph => {
 	const { shotAt } = seed;
 	return {
 		id: index + 1,
@@ -139,14 +116,13 @@ const quickBrew = (index: number, seed: TLogSeed): TRecipeGraph => {
 		isQuickBrew: true,
 		createdAt: shotAt,
 		updatedAt: shotAt,
-		snapshot: buildSnapshot(index, seed, shotAt),
-		log: buildLog(index + 1, shotAt),
+		snapshot: createSnapshot(index, seed, shotAt),
+		log: createLog(index + 1, shotAt),
 	};
 };
 
-/** Dummy graph list standing in for the API; 17 recipes and 9 quick brews across 3 pages. */
 export const recipes: Array<TRecipeGraph> = [
-	savedRecipe(
+	createRecipe(
 		0,
 		{
 			name: "Morning Espresso",
@@ -162,7 +138,7 @@ export const recipes: Array<TRecipeGraph> = [
 		},
 		["2024-06-01T12:05:00Z", "2024-06-02T07:40:00Z", "2024-06-03T07:55:00Z"],
 	),
-	quickBrew(1, {
+	createQuickBrew(1, {
 		name: null,
 		beans: "Stumptown · Hair Bender",
 		machine: "gaggia-classic",
@@ -177,7 +153,7 @@ export const recipes: Array<TRecipeGraph> = [
 		notes: "Rich and chocolatey with a smooth finish.",
 		shotAt: "2024-06-01T14:30:00Z",
 	}),
-	savedRecipe(2, {
+	createRecipe(2, {
 		name: "Ethiopia Guji Natural",
 		beans: "Ethiopia Guji · washed · light roast · Finca La Esperanza lot 14",
 		machine: "lelit-bianca",
@@ -189,7 +165,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		notes: "Blueberry and jasmine, delicate body.",
 	}),
-	savedRecipe(3, {
+	createRecipe(3, {
 		name: "Sunset Roast Espresso",
 		beans: "Sunset Roast Espresso Blend",
 		machine: "rancilio-silvia",
@@ -200,7 +176,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 27,
 		brewTimeUnit: "s",
 	}),
-	quickBrew(4, {
+	createQuickBrew(4, {
 		name: null,
 		beans: "House Espresso · medium-dark",
 		machine: "breville-barista",
@@ -212,7 +188,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-02T06:50:00Z",
 	}),
-	savedRecipe(5, {
+	createRecipe(5, {
 		name: "Colombia Huila",
 		beans: "Finca La Esperanza · honey processed · medium roast · Huila, Colombia",
 		machine: "lelit-bianca",
@@ -224,7 +200,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		notes: "Red apple and panela sweetness.",
 	}),
-	savedRecipe(6, {
+	createRecipe(6, {
 		name: "Kenya AA Nyeri",
 		beans: "Kenya AA · washed · Gichathaini factory",
 		machine: "la-pavoni",
@@ -235,7 +211,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 26,
 		brewTimeUnit: "s",
 	}),
-	quickBrew(7, {
+	createQuickBrew(7, {
 		name: null,
 		beans: "Sunset Roast Espresso Blend",
 		machine: "gaggia-classic",
@@ -247,7 +223,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-03T09:15:00Z",
 	}),
-	savedRecipe(8, {
+	createRecipe(8, {
 		name: "House Espresso",
 		beans: "House Espresso · medium-dark",
 		machine: "breville-barista",
@@ -259,7 +235,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		notes: "Baseline recipe for the Breville basket.",
 	}),
-	quickBrew(9, {
+	createQuickBrew(9, {
 		name: null,
 		beans: "Swiss Water Decaf · medium",
 		machine: "lelit-bianca",
@@ -271,7 +247,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-04T20:10:00Z",
 	}),
-	savedRecipe(10, {
+	createRecipe(10, {
 		name: "Brazil Cerrado Yellow Bourbon",
 		beans: "Brazil Cerrado · natural · Yellow Bourbon",
 		machine: "rancilio-silvia",
@@ -282,7 +258,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 30,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(11, {
+	createRecipe(11, {
 		name: "Guatemala Antigua",
 		beans: "Guatemala Antigua · washed · Bourbon",
 		machine: "la-pavoni",
@@ -293,7 +269,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 24,
 		brewTimeUnit: "s",
 	}),
-	quickBrew(12, {
+	createQuickBrew(12, {
 		name: null,
 		beans: "House Espresso · medium-dark",
 		machine: "breville-barista",
@@ -305,7 +281,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-05T08:05:00Z",
 	}),
-	savedRecipe(13, {
+	createRecipe(13, {
 		name: "Ethiopia Yirgacheffe Konga",
 		beans: "Ethiopia Yirgacheffe · washed · Konga cooperative",
 		machine: "lelit-bianca",
@@ -316,7 +292,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 32,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(14, {
+	createRecipe(14, {
 		name: "Panama Geisha Esmeralda",
 		beans: "Panama Geisha · washed · Hacienda La Esmeralda",
 		machine: "other",
@@ -328,7 +304,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		notes: "Floral and tea-like; brewed on the club machine.",
 	}),
-	quickBrew(15, {
+	createQuickBrew(15, {
 		name: null,
 		beans: "Decaf Brazil · medium",
 		machine: "gaggia-classic",
@@ -340,7 +316,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-06T19:25:00Z",
 	}),
-	savedRecipe(16, {
+	createRecipe(16, {
 		name: "Rwanda Nyungwe",
 		beans: "Rwanda Nyungwe · washed · red Bourbon",
 		machine: "rancilio-silvia",
@@ -351,7 +327,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 29,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(17, {
+	createRecipe(17, {
 		name: "Costa Rica Tarrazú",
 		beans: "Costa Rica Tarrazú · honey processed",
 		machine: "breville-barista",
@@ -362,7 +338,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 26,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(18, {
+	createRecipe(18, {
 		name: "El Salvador Pacamara",
 		beans: "El Salvador · Pacamara · natural",
 		machine: "la-pavoni",
@@ -373,7 +349,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 27,
 		brewTimeUnit: "s",
 	}),
-	quickBrew(19, {
+	createQuickBrew(19, {
 		name: null,
 		beans: "Ethiopia Guji · washed · light roast",
 		machine: "lelit-bianca",
@@ -385,7 +361,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-07T07:35:00Z",
 	}),
-	savedRecipe(20, {
+	createRecipe(20, {
 		name: "Kenya Kirinyaga Karindundu",
 		beans: "Kenya Kirinyaga · washed · Karindundu AA",
 		machine: "rancilio-silvia",
@@ -396,7 +372,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 31,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(21, {
+	createRecipe(21, {
 		name: "Sumatra Mandheling",
 		beans: "Sumatra Mandheling · wet hulled",
 		machine: "gaggia-classic",
@@ -407,7 +383,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 29,
 		brewTimeUnit: "s",
 	}),
-	quickBrew(22, {
+	createQuickBrew(22, {
 		name: null,
 		beans: "Honduras Santa Barbara",
 		machine: "other",
@@ -419,7 +395,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		shotAt: "2024-06-08T10:45:00Z",
 	}),
-	savedRecipe(23, {
+	createRecipe(23, {
 		name: "Peru Cajamarca",
 		beans: "Peru Cajamarca · washed · organic",
 		machine: "breville-barista",
@@ -430,7 +406,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTime: 28,
 		brewTimeUnit: "s",
 	}),
-	savedRecipe(24, {
+	createRecipe(24, {
 		name: "Bolivia Illimani AAA",
 		beans: "Bolivia Illimani · washed · AAA",
 		machine: "lelit-bianca",
@@ -442,7 +418,7 @@ export const recipes: Array<TRecipeGraph> = [
 		brewTimeUnit: "s",
 		notes: "Long pre-infusion at 3 bar.",
 	}),
-	quickBrew(25, {
+	createQuickBrew(25, {
 		name: null,
 		beans: "Tanzania Peaberry · washed",
 		machine: "la-pavoni",
