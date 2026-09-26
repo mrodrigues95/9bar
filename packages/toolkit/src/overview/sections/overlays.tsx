@@ -1,4 +1,4 @@
-import { EllipsisVertical, Gauge, MoreHorizontal } from "lucide-react";
+import { Gauge, MoreHorizontal } from "lucide-react";
 import { DialogTrigger } from "react-aria-components";
 import {
 	Button,
@@ -25,58 +25,36 @@ import {
 	Text,
 } from "../../components";
 
-/**
- * Recipe row action triggers: a text trigger sized to its button, and an
- * icon-triggered kebab menu sized to its content.
- */
+/** A recipe row action trigger with its menu, opened and closed by interaction. */
 const MenuDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">
 			Menu
 		</Text>
-		<div className="flex items-center gap-2">
-			<MenuTrigger>
-				<Button variant="outline" size="sm">
-					<MoreHorizontal />
-					Actions
-				</Button>
-				<Menu>
-					<MenuLabel>Shot actions</MenuLabel>
-					<MenuGroup>
-						<MenuItem onAction={() => {}} textValue="Log shot">
-							Log shot
-							<MenuShortcut>⌘L</MenuShortcut>
-						</MenuItem>
-						<MenuItem onAction={() => {}} textValue="Edit recipe">
-							Edit recipe
-							<MenuShortcut>⌘E</MenuShortcut>
-						</MenuItem>
-					</MenuGroup>
-					<MenuSeparator />
-					<MenuItem variant="destructive" onAction={() => {}} textValue="Delete recipe">
-						Delete recipe
-						<MenuShortcut>⌫</MenuShortcut>
+		<MenuTrigger>
+			<Button variant="outline" size="sm">
+				<MoreHorizontal />
+				Actions
+			</Button>
+			<Menu>
+				<MenuLabel>Shot actions</MenuLabel>
+				<MenuGroup>
+					<MenuItem onAction={() => {}} textValue="Log shot">
+						Log shot
+						<MenuShortcut>⌘L</MenuShortcut>
 					</MenuItem>
-				</Menu>
-			</MenuTrigger>
-			<MenuTrigger>
-				<IconButton aria-label="Shot actions" variant="ghost" size="sm">
-					<EllipsisVertical />
-				</IconButton>
-				<Menu width="content" aria-label="Shot actions">
-					<MenuItem onAction={() => {}} textValue="View">
-						View
+					<MenuItem onAction={() => {}} textValue="Edit recipe">
+						Edit recipe
+						<MenuShortcut>⌘E</MenuShortcut>
 					</MenuItem>
-					<MenuItem onAction={() => {}} textValue="Convert to Recipe">
-						Convert to Recipe
-					</MenuItem>
-					<MenuSeparator />
-					<MenuItem variant="destructive" onAction={() => {}} textValue="Delete shot">
-						Delete shot
-					</MenuItem>
-				</Menu>
-			</MenuTrigger>
-		</div>
+				</MenuGroup>
+				<MenuSeparator />
+				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete recipe">
+					Delete recipe
+					<MenuShortcut>⌫</MenuShortcut>
+				</MenuItem>
+			</Menu>
+		</MenuTrigger>
 	</div>
 );
 
