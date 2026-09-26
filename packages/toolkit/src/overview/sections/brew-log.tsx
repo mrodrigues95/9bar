@@ -1,4 +1,4 @@
-import { Bean, PackageOpen } from "lucide-react";
+import { Bean, PackageOpen, Target } from "lucide-react";
 import { useState } from "react";
 import {
 	Avatar,
@@ -74,6 +74,7 @@ const logEntries = [
 const RESULT_DEFINITION: FilterBarDefinition = {
 	id: "result",
 	label: "Result",
+	icon: <Target />,
 	pluralLabel: "results",
 	operators: [
 		{ id: "is", label: "is" },
