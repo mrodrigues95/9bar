@@ -1,4 +1,4 @@
-import { parseAbsolute } from "@internationalized/date";
+import { DateFormatter, parseAbsolute } from "@internationalized/date";
 import {
 	ArrowRight,
 	ArrowRightLeft,
@@ -28,24 +28,15 @@ import type { TRecipeGraph } from "../../../utils/data";
 import { grinderName, machineName } from "./-recipes-query";
 
 const TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const DATE_FORMATTER = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
-const TIME_FORMATTER = new Intl.DateTimeFormat("en-US", { timeStyle: "short" });
+const DATE_FORMATTER = new DateFormatter("en-US", { dateStyle: "long", timeZone: TIME_ZONE });
+const TIME_FORMATTER = new DateFormatter("en-US", { timeStyle: "short", timeZone: TIME_ZONE });
 
-/** Formats a log's shot time as `June 1, 2024 @ 2:30 PM` in the browser's time zone. */
 const formatShotAt = (shotAt: string) => {
 	const date = parseAbsolute(shotAt, TIME_ZONE).toDate();
 	return `${DATE_FORMATTER.format(date)} @ ${TIME_FORMATTER.format(date)}`;
 };
 
-interface MetaItemProps {
-	/** Leading decorative icon for the field. */
-	icon: LucideIcon;
-	/** Field value shown after the icon. */
-	label: string;
-}
-
-/** One piece of row metadata (beans, machine, grinder, shot time) with its leading icon. */
-const MetaItem = ({ icon: Icon, label }: MetaItemProps) => {
+const MetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
 	return (
 		<Text variant="caption" className="flex max-w-full min-w-0 items-center gap-1">
 			<Icon className="size-3 shrink-0" />
@@ -143,7 +134,6 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 	);
 };
 
-/** The recipes index: quiet rows, one page of graphs at a time. */
 export const RecipesList = ({ recipes }: { recipes: Array<TRecipeGraph> }) => {
 	return (
 		<ul>

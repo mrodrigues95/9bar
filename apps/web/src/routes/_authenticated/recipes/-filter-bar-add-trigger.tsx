@@ -14,33 +14,22 @@ import {
 	type FilterBarFilterState,
 } from "@9bar/toolkit/components/composed";
 
-/** Props for the {@link FilterAddTrigger} component. */
-export interface FilterAddTriggerProps {
-	/** The filterable dimensions users can add filters from. */
+interface FilterBarAddTriggerProps {
 	definitions: ReadonlyArray<FilterBarDefinition>;
-	/** The currently active filters. */
 	filters: Array<FilterBarFilterState>;
-	/** Called with the next filter state when a selection changes. */
 	onFiltersChange: (filters: Array<FilterBarFilterState>) => void;
-	/** Accessible label for the trigger. Defaults to `"Add filter"`. */
 	"aria-label"?: string;
 }
 
-/**
- * A second add-filter trigger, placed beside the search field rather than in
- * the filter bar. Selection runs through the toolkit's
- * {@link applyFilterSelection}, so it lands in the same state the filter bar's
- * own trigger produces.
- */
-export const FilterAddTrigger = ({
+export const FilterBarAddTrigger = ({
 	definitions,
 	filters,
 	onFiltersChange,
 	"aria-label": ariaLabel = "Add filter",
-}: FilterAddTriggerProps) => {
+}: FilterBarAddTriggerProps) => {
 	return (
 		<MenuTrigger>
-			<IconButton data-slot="filter-bar-add" aria-label={ariaLabel} variant="ghost" size="sm">
+			<IconButton aria-label={ariaLabel} variant="ghost" size="sm">
 				<ListFilter className="size-3.5" />
 			</IconButton>
 			<Menu width="content">
