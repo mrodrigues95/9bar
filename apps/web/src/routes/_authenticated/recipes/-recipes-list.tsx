@@ -12,6 +12,7 @@ import {
 	type LucideIcon,
 	Paperclip,
 	Pencil,
+	Scale,
 	Trash2,
 } from "lucide-react";
 import {
@@ -54,22 +55,23 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 				<Text variant="label" color="primary" className="truncate">
 					{name}
 				</Text>
-				<Text variant="caption" className="mt-0.5 truncate font-mono">
-					{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
-					{recipe.snapshot.brewTimeUnit}
+				<Text variant="caption" className="mt-0.5 flex min-w-0 items-center gap-1 font-mono">
+					<Scale className="size-3 shrink-0" />
+					<span className="truncate">
+						{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
+						{recipe.snapshot.brewTimeUnit}
+					</span>
 				</Text>
 				<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
 					<MetaItem icon={Bean} label={recipe.snapshot.beans} />
 					<MetaItem icon={Gauge} label={machineName(recipe.snapshot.machine)} />
 					<MetaItem icon={Cog} label={grinderName(recipe.snapshot.grinder)} />
-					{recipe.isQuickBrew ? (
-						<MetaItem icon={Clock} label={formatShotAt(recipe.log.shotAt)} />
-					) : null}
+					{recipe.isQuickBrew && <MetaItem icon={Clock} label={formatShotAt(recipe.log.shotAt)} />}
 				</div>
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				<Badge variant={recipe.isQuickBrew ? "outline" : "secondary"}>
-					{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}
+					{/*{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}*/}
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
