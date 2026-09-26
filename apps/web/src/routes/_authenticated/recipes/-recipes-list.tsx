@@ -1,4 +1,5 @@
 import { DateFormatter, parseAbsolute } from "@internationalized/date";
+import { getRouteApi } from "@tanstack/react-router";
 import {
 	ArrowRight,
 	ArrowRightLeft,
@@ -6,8 +7,6 @@ import {
 	Clock,
 	Cog,
 	EllipsisVertical,
-	FileText,
-	Fingerprint,
 	Gauge,
 	type LucideIcon,
 	Paperclip,
@@ -71,7 +70,6 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				<Badge variant={recipe.isQuickBrew ? "outline" : "secondary"}>
-					{/*{recipe.isQuickBrew ? <FileText /> : <Fingerprint />}*/}
 					{recipe.isQuickBrew ? "Log" : "Recipe"}
 				</Badge>
 				<MenuTrigger>
@@ -136,10 +134,14 @@ const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
 	);
 };
 
-export const RecipesList = ({ recipes }: { recipes: Array<TRecipeGraph> }) => {
+const routeApi = getRouteApi("/_authenticated/recipes");
+
+export const RecipesList = () => {
+	const { items } = routeApi.useLoaderData();
+
 	return (
 		<ul>
-			{recipes.map((recipe) => (
+			{items.map((recipe) => (
 				<RecipesListItem key={recipe.id} recipe={recipe} />
 			))}
 		</ul>

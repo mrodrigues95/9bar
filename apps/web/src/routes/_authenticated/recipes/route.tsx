@@ -33,7 +33,7 @@ import {
 
 const Recipes = () => {
 	const search = Route.useSearch();
-	const { items, total, page, pageSize } = Route.useLoaderData();
+	const { total, page, pageSize } = Route.useLoaderData();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const filters = decodeFilters(search);
 	const hasQuery = !!search.q.trim() || !!filters.length;
@@ -105,7 +105,7 @@ const Recipes = () => {
 							onClearQuery={() => navigate({ search: { q: "", page: 1 } })}
 						/>
 					)}
-					{!!total && <RecipesList recipes={items} />}
+					{!!total && <RecipesList />}
 				</CardContent>
 				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
 					<Pagination
