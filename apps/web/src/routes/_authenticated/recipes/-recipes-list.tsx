@@ -14,6 +14,7 @@ import {
 	Scale,
 	Trash2,
 } from "lucide-react";
+import { useDeferredValue } from "react";
 import {
 	Badge,
 	IconButton,
@@ -36,7 +37,7 @@ const formatShotAt = (shotAt: string) => {
 	return `${DATE_FORMATTER.format(date)} @ ${TIME_FORMATTER.format(date)}`;
 };
 
-const recipeName = (recipe: TRecipeGraph) => {
+const getRecipeName = (recipe: TRecipeGraph) => {
 	return recipe.name ?? "(Untitled)";
 };
 
@@ -50,7 +51,7 @@ const RecipeMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string
 };
 
 const RecipeActions = ({ recipe }: { recipe: TRecipeGraph }) => {
-	const name = recipeName(recipe);
+	const name = getRecipeName(recipe);
 
 	return (
 		<MenuTrigger>
@@ -114,7 +115,7 @@ const RecipeActions = ({ recipe }: { recipe: TRecipeGraph }) => {
 };
 
 const RecipesListItem = ({ recipe }: { recipe: TRecipeGraph }) => {
-	const name = recipeName(recipe);
+	const name = getRecipeName(recipe);
 
 	return (
 		<li className="flex items-center gap-3 py-2.5">
@@ -152,10 +153,11 @@ const routeApi = getRouteApi("/_authenticated/recipes");
 
 export const RecipesList = () => {
 	const { items } = routeApi.useLoaderData();
+	const deferredItems = useDeferredValue(items);
 
 	return (
 		<ul>
-			{items.map((recipe) => (
+			{deferredItems.map((recipe) => (
 				<RecipesListItem key={recipe.id} recipe={recipe} />
 			))}
 		</ul>

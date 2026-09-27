@@ -66,7 +66,7 @@ export const FILTER_DEFINITIONS = [
 
 type TFilterId = (typeof FILTER_DEFINITIONS)[number]["id"];
 
-type TFilterSearchParams = Partial<Record<TFilterId, string | undefined>>;
+export type TFilterSearchParams = Partial<Record<TFilterId, string | undefined>>;
 
 const filterParamSchema = z.string().optional().catch(undefined);
 

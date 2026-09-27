@@ -46,9 +46,10 @@ const resolvePageItems = (pages: Array<number | "ellipsis">) => {
 
 export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationProps) => {
 	const totalPages = Math.max(1, Math.ceil(total / pageSize));
+	const currentPage = Math.min(page, totalPages);
 
 	const pages = generatePagination({
-		currentPage: page,
+		currentPage,
 		totalPages,
 		siblingCount: 1,
 		boundaryCount: 1,
@@ -57,16 +58,16 @@ export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationPr
 
 	return (
 		<div className="flex w-full items-center justify-between gap-4">
-			<PaginationSummary page={page} pageSize={pageSize} total={total} />
+			<PaginationSummary page={currentPage} pageSize={pageSize} total={total} />
 			<ToolkitPagination className="mx-0 w-auto">
 				<PaginationContent>
 					<PaginationItem>
-						<PaginationFirst onPress={() => onPageChange(1)} isDisabled={page === 1} />
+						<PaginationFirst onPress={() => onPageChange(1)} isDisabled={currentPage === 1} />
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationPrevious
-							onPress={() => onPageChange(Math.max(1, page - 1))}
-							isDisabled={page === 1}
+							onPress={() => onPageChange(Math.max(1, currentPage - 1))}
+							isDisabled={currentPage === 1}
 						/>
 					</PaginationItem>
 					{pageItems.map(({ key, item }) => {
@@ -81,7 +82,7 @@ export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationPr
 						return (
 							<PaginationItem key={key}>
 								<PaginationButton
-									isActive={page === item}
+									isActive={currentPage === item}
 									onPress={() => onPageChange(item)}
 									aria-label={`Go to page ${item}`}
 								>
@@ -92,14 +93,14 @@ export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationPr
 					})}
 					<PaginationItem>
 						<PaginationNext
-							onPress={() => onPageChange(Math.min(totalPages, page + 1))}
-							isDisabled={page === totalPages}
+							onPress={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+							isDisabled={currentPage === totalPages}
 						/>
 					</PaginationItem>
 					<PaginationItem>
 						<PaginationLast
 							onPress={() => onPageChange(totalPages)}
-							isDisabled={page === totalPages}
+							isDisabled={currentPage === totalPages}
 						/>
 					</PaginationItem>
 				</PaginationContent>
