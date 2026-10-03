@@ -1,9 +1,8 @@
 {
 	"mcpServers": {
 		"toolkit-sb-mcp": {
-			"type": "http",
 			"url": "http://localhost:6006/mcp",
-			"directTools": true
+			"exposure": "codemode"
 		}
 	}
 }

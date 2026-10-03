@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /** A single selectable value within a {@link FilterBarDefinition}. */
 export interface FilterBarOption {
 	/** Stable identifier stored in the filter state. */
@@ -15,6 +17,8 @@ export interface FilterBarDefinition {
 	id: string;
 	/** Short label shown on the filter chip. */
 	label: string;
+	/** Leading icon for the chip label. */
+	icon?: ReactNode;
 	/** Plural noun used when several values are selected (e.g. `"3 origins"`). */
 	pluralLabel: string;
 	/** Operators the user can pick from (e.g. is / is not). */

@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Pencil, Trash2 } from "lucide-react";
+import { ArrowRightLeft, EllipsisVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Key } from "react-aria-components";
 import { Button } from "../button/button";
+import { IconButton } from "../icon-button/icon-button";
 import {
 	Menu,
 	MenuGroup,
@@ -54,6 +55,36 @@ export const Basic: Story = {
 				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete recipe">
 					<Trash2 />
 					Delete recipe
+				</MenuItem>
+			</Menu>
+		</MenuTrigger>
+	),
+};
+
+/** A menu whose popover sizes to its content instead of the trigger width, for icon-triggered menus. */
+export const ContentWidth: Story = {
+	render: (props) => (
+		<MenuTrigger>
+			<IconButton aria-label="Recipe actions" variant="ghost" size="sm">
+				<EllipsisVertical />
+			</IconButton>
+			<Menu {...props} width="content" aria-label="Recipe actions">
+				<MenuItem onAction={() => {}} textValue="View">
+					<Eye />
+					View
+				</MenuItem>
+				<MenuItem onAction={() => {}} textValue="Edit">
+					<Pencil />
+					Edit
+				</MenuItem>
+				<MenuItem onAction={() => {}} textValue="Convert to Recipe">
+					<ArrowRightLeft />
+					Convert to Recipe
+				</MenuItem>
+				<MenuSeparator />
+				<MenuItem variant="destructive" onAction={() => {}} textValue="Delete">
+					<Trash2 />
+					Delete
 				</MenuItem>
 			</Menu>
 		</MenuTrigger>

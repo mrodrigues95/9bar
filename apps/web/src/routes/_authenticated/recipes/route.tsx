@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { createFileRoute, stripSearchParams, useRouterState } from "@tanstack/react-router";
+import { Plus, Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { z } from "zod";
 import {
 	Button,
 	Card,
@@ -7,83 +9,118 @@ import {
 	CardFooter,
 	CardHeader,
 	Heading,
-	Text,
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
 } from "@9bar/toolkit/components";
 import {
 	FilterBar,
 	FilterBarActions,
-	type FilterBarDefinition,
+	type FilterBarFilterState,
 } from "@9bar/toolkit/components/composed";
+import { cn } from "@9bar/toolkit/utils";
 import { Link } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
-import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../utils/data";
+import { useDebouncedValue } from "../../../utils/hooks";
+import { FilterBarAddTrigger } from "./-filter-bar-add-trigger";
+import { NoRecipesFound } from "./-no-recipes-found";
 import { RecipesList } from "./-recipes-list";
+import {
+	decodeFilters,
+	encodeFilters,
+	FILTER_DEFINITIONS,
+	FILTER_PARAM_SCHEMA,
+	listRecipes,
+	PAGE_SIZE,
+	type TFilterSearchParams,
+} from "./-recipes-query";
 
-const OPERATORS = {
-	/** Matches when the field value equals the selected option. */
-	is: { id: "is", label: "is" },
-	/** Matches when the field value does not equal the selected option. */
-	"is-not": { id: "is-not", label: "is not" },
-	/** Matches when the field value equals any one of multiple selected options (OR). */
-	"is-any-of": { id: "is-any-of", label: "is any of" },
-	/** Matches when the field value does not equal any of the selected options (NOR). */
-	"is-none-of": { id: "is-none-of", label: "is none of" },
-	/** Matches when the field contains ALL of the selected values (AND). */
-	"include-all-of": { id: "include-all-of", label: "include all of" },
-	/** Matches when the field contains at least one of the selected values (OR). */
-	"include-any-of": { id: "include-any-of", label: "include any of" },
-	/** Excludes the item if the field contains ANY of the selected values. */
-	"exclude-if-any-of": { id: "exclude-if-any-of", label: "exclude if any of" },
-	/** Excludes the item only if the field contains ALL of the selected values. */
-	"exclude-if-all": { id: "exclude-if-all", label: "exclude if all" },
-} as const;
+const resolveIntent = (search: { q: string; page: number } & TFilterSearchParams) => ({
+	version: 0,
+	q: search.q,
+	filters: decodeFilters(search),
+	page: search.page,
+	replace: true,
+});
 
-const ATTRIBUTE_OPERATOR_PAIRS = [
-	{ singular: "is", plural: "is-any-of" },
-	{ singular: "is-not", plural: "is-none-of" },
-] as const;
+type RecipeSearchIntent = ReturnType<typeof resolveIntent>;
 
-const ATTRIBUTE_OPERATORS = [
-	OPERATORS.is,
-	OPERATORS["is-not"],
-	OPERATORS["is-any-of"],
-	OPERATORS["is-none-of"],
-];
+const encodeIntent = (intent: RecipeSearchIntent) => {
+	return { q: intent.q, page: intent.page, ...encodeFilters(intent.filters) };
+};
 
-const FILTER_DEFINITIONS = [
-	{
-		id: "machine",
-		label: "Machine",
-		pluralLabel: "machines",
-		operators: ATTRIBUTE_OPERATORS,
-		defaultOperatorId: OPERATORS.is.id,
-		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: MACHINE_OPTIONS.map((o) => ({ id: o.id, label: o.name })),
-	},
-	{
-		id: "grinder",
-		label: "Grinder",
-		pluralLabel: "grinders",
-		operators: ATTRIBUTE_OPERATORS,
-		defaultOperatorId: OPERATORS.is.id,
-		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: GRINDER_OPTIONS.map((o) => ({ id: o.id, label: o.name })),
-	},
-	{
-		id: "recipe-type",
-		label: "Type",
-		pluralLabel: "types",
-		operators: ATTRIBUTE_OPERATORS,
-		defaultOperatorId: OPERATORS.is.id,
-		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: [
-			{ id: "quick-brew", label: "Quick Brew" },
-			{ id: "recipe", label: "Recipe" },
-		],
-	},
-] as const satisfies ReadonlyArray<FilterBarDefinition>;
+const intentKey = (intent: RecipeSearchIntent) => {
+	return JSON.stringify(encodeIntent(intent));
+};
 
-const Recipe = () => {
+const useRecipesSearch = () => {
+	const search = Route.useSearch();
+	const navigate = Route.useNavigate();
+	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
+	const [intent, setIntent] = useState(() => resolveIntent(search));
+	const debouncedIntent = useDebouncedValue(intent, 250);
+
+	const urlIntent = resolveIntent(search);
+	const urlKey = intentKey(urlIntent);
+
+	const lastWrittenKeyRef = useRef(urlKey);
+	const lastUrlKeyRef = useRef(urlKey);
+
+	useEffect(() => {
+		const isNewUrl = urlKey !== lastUrlKeyRef.current;
+		lastUrlKeyRef.current = urlKey;
+
+		// Back/forward, a link, or a hand-edited URL: adopt it and drop a pending intent instead of
+		// writing back over the user's navigation. The version bump makes the drop stick.
+		if (isNewUrl && urlKey !== lastWrittenKeyRef.current) {
+			lastWrittenKeyRef.current = urlKey;
+			setIntent((prev) =>
+				intentKey(prev) === urlKey ? prev : { ...urlIntent, version: prev.version + 1 },
+			);
+			return;
+		}
+
+		const debouncedKey = intentKey(debouncedIntent);
+		if (debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
+			return;
+		}
+
+		navigate({
+			search: (prev) => ({ ...prev, ...encodeIntent(debouncedIntent) }),
+			replace: debouncedIntent.replace,
+		});
+		lastWrittenKeyRef.current = debouncedKey;
+	}, [urlKey, urlIntent, debouncedIntent, intent.version, navigate]);
+
+	const updateIntent = (patch: Partial<Omit<RecipeSearchIntent, "version">>) => {
+		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
+	};
+
+	return {
+		q: intent.q,
+		filters: intent.filters,
+		page: intent.page,
+		isStale: isRouteLoading || intentKey(intent) !== urlKey,
+		setQuery: (q: string) => {
+			updateIntent({ q, page: 1, replace: true });
+		},
+		setFilters: (filters: Array<FilterBarFilterState>) => {
+			updateIntent({ filters, page: 1, replace: false });
+		},
+		setPage: (page: number) => {
+			updateIntent({ page, replace: false });
+		},
+		clear: () => {
+			updateIntent({ q: "", filters: [], page: 1, replace: false });
+		},
+	};
+};
+
+const Recipes = () => {
+	const { total, pageSize } = Route.useLoaderData();
+	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } = useRecipesSearch();
+	const hasQuery = !!q.trim() || !!filters.length;
+
 	return (
 		<div className="space-y-4">
 			<Heading as="h1" variant="title">
@@ -91,47 +128,90 @@ const Recipe = () => {
 			</Heading>
 			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
-					<div className="flex flex-row items-center justify-between">
-						<div className="flex flex-col gap-0.5">
-							<Heading as="h2" variant="section">
-								Your private recipes
-							</Heading>
-							<Text variant="body-sm">Create, edit, and track your favorite brewing methods.</Text>
-						</div>
-						<Link variant="default" to="/recipes/new">
+					<div className="flex flex-wrap items-center justify-end gap-2">
+						<Link variant="outline" size="sm" to="/recipes/new">
 							<Plus />
-							Create Recipe
+							New recipe
 						</Link>
 					</div>
-					<div className="rounded-md bg-slate-50 px-2.5 py-2">
-						<FilterBar definitions={FILTER_DEFINITIONS} aria-label="Recipe filters">
-							{(state) =>
-								!!state.filters.length && (
+				</CardHeader>
+				<CardContent className="flex flex-col gap-2">
+					<div className="flex flex-wrap items-center justify-end gap-2">
+						<InputGroup className="w-52 shrink-0">
+							<InputGroupAddon>
+								<Search className="size-4" />
+							</InputGroupAddon>
+							<InputGroupInput
+								value={q}
+								onChange={(event) => {
+									setQuery(event.target.value);
+								}}
+								placeholder="Search recipes…"
+								aria-label="Search recipes"
+							/>
+						</InputGroup>
+						<FilterBarAddTrigger
+							definitions={FILTER_DEFINITIONS}
+							filters={filters}
+							onFiltersChange={setFilters}
+							aria-label="Add recipe filter"
+						/>
+					</div>
+					{filters.length > 0 && (
+						<div className="rounded-md bg-muted/50 px-2.5 py-2">
+							<FilterBar
+								definitions={FILTER_DEFINITIONS}
+								filters={filters}
+								onFiltersChange={setFilters}
+								aria-label="Active recipe filters"
+							>
+								{({ clearAll }) => (
 									<FilterBarActions>
-										<Button variant="ghost" size="xs" onPress={state.clearAll}>
+										<Button variant="ghost" size="xs" onPress={clearAll}>
 											Clear
 										</Button>
-										<Button variant="outline" size="xs">
-											Save
-										</Button>
 									</FilterBarActions>
-								)
-							}
-						</FilterBar>
+								)}
+							</FilterBar>
+						</div>
+					)}
+					<div
+						aria-busy={isStale}
+						className={cn("transition-opacity duration-200", isStale && "opacity-60")}
+					>
+						{!total && <NoRecipesFound hasQuery={hasQuery} onClearQuery={clear} />}
+						{!!total && <RecipesList />}
 					</div>
-				</CardHeader>
-				<CardContent>
-					<RecipesList />
 				</CardContent>
 				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination />
+					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
 				</CardFooter>
 			</Card>
 		</div>
 	);
 };
 
+const SEARCH_DEFAULTS = { q: "", page: 1 };
+
+const searchSchema = z.object({
+	q: z.string().catch("").default(""),
+	page: z.coerce.number().int().min(1).catch(1).default(1),
+	...FILTER_PARAM_SCHEMA,
+});
+
 export const Route = createFileRoute("/_authenticated/recipes")({
 	staticData: { breadcrumb: { label: "Recipes" } },
-	component: Recipe,
+	validateSearch: searchSchema,
+	search: { middlewares: [stripSearchParams(SEARCH_DEFAULTS)] },
+	loaderDeps: ({ search }) => search,
+	loader: ({ deps }) =>
+		listRecipes({
+			data: {
+				search: deps.q,
+				filters: decodeFilters(deps),
+				page: deps.page,
+				pageSize: PAGE_SIZE,
+			},
+		}),
+	component: Recipes,
 });
