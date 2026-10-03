@@ -1,4 +1,4 @@
-import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams, useRouterState } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
@@ -56,7 +56,7 @@ const intentKey = (intent: RecipeSearchIntent) => {
 const useRecipesSearch = () => {
 	const search = Route.useSearch();
 	const navigate = Route.useNavigate();
-	const isFetching = Route.useMatch({ select: (match) => !!match.isFetching });
+	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
 	const [intent, setIntent] = useState(() => resolveIntent(search));
 	const debouncedIntent = useDebouncedValue(intent, 250);
 
@@ -81,7 +81,7 @@ const useRecipesSearch = () => {
 		}
 
 		const debouncedKey = intentKey(debouncedIntent);
-		if (isFetching || debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
+		if (debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
 			return;
 		}
 
@@ -90,7 +90,7 @@ const useRecipesSearch = () => {
 			replace: debouncedIntent.replace,
 		});
 		lastWrittenKeyRef.current = debouncedKey;
-	}, [urlKey, urlIntent, debouncedIntent, intent.version, isFetching, navigate]);
+	}, [urlKey, urlIntent, debouncedIntent, intent.version, navigate]);
 
 	const updateIntent = (patch: Partial<Omit<RecipeSearchIntent, "version">>) => {
 		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
@@ -100,7 +100,7 @@ const useRecipesSearch = () => {
 		q: intent.q,
 		filters: intent.filters,
 		page: intent.page,
-		isStale: isFetching || intentKey(intent) !== urlKey,
+		isStale: isRouteLoading || intentKey(intent) !== urlKey,
 		setQuery: (q: string) => {
 			updateIntent({ q, page: 1, replace: true });
 		},
@@ -206,10 +206,12 @@ export const Route = createFileRoute("/_authenticated/recipes")({
 	loaderDeps: ({ search }) => search,
 	loader: ({ deps }) =>
 		listRecipes({
-			search: deps.q,
-			filters: decodeFilters(deps),
-			page: deps.page,
-			pageSize: PAGE_SIZE,
+			data: {
+				search: deps.q,
+				filters: decodeFilters(deps),
+				page: deps.page,
+				pageSize: PAGE_SIZE,
+			},
 		}),
 	component: Recipes,
 });

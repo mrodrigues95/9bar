@@ -1,3 +1,4 @@
+import { createServerFn } from "@tanstack/react-start";
 import { Cog, Gauge, Tags } from "lucide-react";
 import { z } from "zod";
 import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/components/composed";
@@ -77,9 +78,9 @@ export const FILTER_PARAM_SCHEMA = {
 } satisfies Record<TFilterId, typeof filterParamSchema>;
 
 const FIELD_BY_FILTER_ID = new Map<string, (recipe: TRecipeGraph) => string>([
-	["machine", (recipe: TRecipeGraph) => recipe.snapshot.machine],
-	["grinder", (recipe: TRecipeGraph) => recipe.snapshot.grinder],
-	["recipe-type", (recipe: TRecipeGraph) => (recipe.isQuickBrew ? "quick-brew" : "recipe")],
+	["machine", (recipe) => recipe.snapshot.machine],
+	["grinder", (recipe) => recipe.snapshot.grinder],
+	["recipe-type", (recipe) => (recipe.isQuickBrew ? "quick-brew" : "recipe")],
 ]);
 
 export const machineName = (id: string): string => {
@@ -176,29 +177,39 @@ const matchesSearch = (recipe: TRecipeGraph, search: string): boolean => {
 	return haystack.some((value) => value.toLowerCase().includes(query));
 };
 
-/** The recipe list's data source. Swap this body for the real API or server-function call. */
-export const listRecipes = async ({
-	search,
-	filters,
-	page,
-	pageSize,
-}: {
+const LATENCY_MIN_MS = 100;
+const LATENCY_MAX_MS = 750;
+
+const simulateLatency = (): Promise<void> => {
+	const delay = LATENCY_MIN_MS + Math.random() * (LATENCY_MAX_MS - LATENCY_MIN_MS);
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	});
+};
+
+interface ListRecipesInput {
 	search: string;
-	filters: ReadonlyArray<FilterBarFilterState>;
+	filters: Array<FilterBarFilterState>;
 	page: number;
 	pageSize: number;
-}) => {
-	const matched = recipes.filter((recipe) => {
-		return matchesSearch(recipe, search) && matchesFilters(recipe, filters);
-	});
-	const totalPages = Math.max(1, Math.ceil(matched.length / pageSize));
-	const currentPage = Math.min(Math.max(1, page), totalPages);
-	const offset = (currentPage - 1) * pageSize;
+}
 
-	return {
-		items: matched.slice(offset, offset + pageSize),
-		total: matched.length,
-		page: currentPage,
-		pageSize,
-	};
-};
+export const listRecipes = createServerFn({ method: "GET" })
+	.validator((data: ListRecipesInput) => data)
+	.handler(async ({ data }) => {
+		await simulateLatency();
+
+		const matched = recipes.filter((recipe) => {
+			return matchesSearch(recipe, data.search) && matchesFilters(recipe, data.filters);
+		});
+		const totalPages = Math.max(1, Math.ceil(matched.length / data.pageSize));
+		const currentPage = Math.min(Math.max(1, data.page), totalPages);
+		const offset = (currentPage - 1) * data.pageSize;
+
+		return {
+			items: matched.slice(offset, offset + data.pageSize),
+			total: matched.length,
+			page: currentPage,
+			pageSize: data.pageSize,
+		};
+	});
