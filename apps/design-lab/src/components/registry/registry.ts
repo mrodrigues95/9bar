@@ -2,9 +2,6 @@ import type { ComponentType } from "react";
 import { HomeHeroA } from "./variants/home-hero-a";
 import { HomeHeroB } from "./variants/home-hero-b";
 import { RecipeSectionA } from "./variants/recipe-section-a";
-import { RecipesListA } from "./variants/recipes-list-a";
-import { RecipesListB } from "./variants/recipes-list-b";
-import { RecipesListD } from "./variants/recipes-list-d";
 
 export type DesignVariantEntry = {
 	id: string;
@@ -41,37 +38,6 @@ export const designGroups: Array<DesignGroup> = [
 				kind: "page",
 				description: "Split layout with a featured recipe card. Richer, more 9bar flavor.",
 				component: HomeHeroB,
-			},
-		],
-	},
-	{
-		id: "recipes-list",
-		title: "Recipes list",
-		question: "Which density direction: quiet rows vs ledger vs sidebar?",
-		variants: [
-			{
-				id: "recipes-list-a",
-				title: "Recipes list A — quiet rows",
-				kind: "page",
-				description:
-					"Borderless rows, compact search plus FilterBar with Type option, right-aligned pagination. Calmest direction.",
-				component: RecipesListA,
-			},
-			{
-				id: "recipes-list-b",
-				title: "Recipes list B — ledger",
-				kind: "page",
-				description:
-					"Dense aligned columns, mono parameters, numbered pagination. Most info per pixel.",
-				component: RecipesListB,
-			},
-			{
-				id: "recipes-list-d",
-				title: "Recipes list D — quiet rows, no filter bar",
-				kind: "page",
-				description:
-					"Quiet-rows copy without the advanced FilterBar — search plus type tabs only. Original kept as A for diffing.",
-				component: RecipesListD,
 			},
 		],
 	},
