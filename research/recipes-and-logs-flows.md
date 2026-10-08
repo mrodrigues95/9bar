@@ -6,20 +6,20 @@ Status: MVP confirmed. Items tagged [Assumed] are defaults not yet confirmed. Ev
 
 ## Concepts
 
-| Term | Meaning |
-| --- | --- |
-| Recipe | A named, committed set of settings, with its own logs. |
-| Log | A record of one brew. Every brew is a log. |
-| Quick log | A log with no recipe. It has no name. |
-| Attached log | A log that belongs to a recipe. |
-| Identity fields | Beans, grinder, and machine. Fixed on attached logs. |
-| Variable fields | Grind size, dose, yield, brew time, temperature, and pressure. Each log sets its own. |
-| Method | Espresso, Pour over, Immersion, or Other. |
-| Verdict | Optional taste result: Under-extracted (sour, thin), Balanced, or Over-extracted (bitter, harsh). |
-| Status | Dialing in, Dialed in, Needs retune, or Retired. |
-| Reference shot | The log that shows a recipe working. |
-| Grind scale | The unit a grinder's grind size is set in, such as dial numbers or clicks. |
-| Equipment | Machines and grinders the user owns. |
+| Term            | Meaning                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------- |
+| Recipe          | A named, committed set of settings, with its own logs.                                            |
+| Log             | A record of one brew. Every brew is a log.                                                        |
+| Quick log       | A log with no recipe. It has no name.                                                             |
+| Attached log    | A log that belongs to a recipe.                                                                   |
+| Identity fields | Beans, grinder, and machine. Fixed on attached logs.                                              |
+| Variable fields | Grind size, dose, yield, brew time, temperature, and pressure. Each log sets its own.             |
+| Method          | Espresso, Pour over, Immersion, or Other.                                                         |
+| Verdict         | Optional taste result: Under-extracted (sour, thin), Balanced, or Over-extracted (bitter, harsh). |
+| Status          | Dialing in, Dialed in, Needs retune, or Retired.                                                  |
+| Reference shot  | The log that shows a recipe working.                                                              |
+| Grind scale     | The unit a grinder's grind size is set in, such as dial numbers or clicks.                        |
+| Equipment       | Machines and grinders the user owns.                                                              |
 
 ## Principles
 
@@ -50,22 +50,22 @@ Where each action appears. Later sections define what each action does.
 
 ### Fields
 
-| Field | Required | Starts as | Notes |
-| --- | --- | --- | --- |
-| Recipe | No | Empty | Chooses identity and starting values. Locks identity fields. |
-| Method | Yes | Last used | Changes which fields show. On first use, Espresso [Assumed]. |
-| Beans | No | Last used | Identity field. |
-| Grinder | No | Default grinder | Identity field. |
-| Grind size | No | Recipe or last used | Number on the grinder's scale, such as 5.5. Free text for Other. |
-| Machine | No | Default machine | Identity field. |
-| Dose | Yes | Recipe or last used | Labelled Coffee for pour over and immersion. |
-| Yield | Yes | Recipe or last used | Labelled Water for pour over and immersion. |
-| Brew time | Yes | Recipe or last used | Seconds or m:ss, per Profile. |
-| Temperature | No | Recipe or last used | °C or °F, per Profile. |
-| Pressure | No | Recipe or last used | Espresso only. |
-| Time | Yes | Now | Editable, so a shot can be backdated. |
-| Verdict | No | Empty | One of the three values under Concepts. |
-| Notes | No | Empty | Free text. |
+| Field       | Required | Starts as           | Notes                                                            |
+| ----------- | -------- | ------------------- | ---------------------------------------------------------------- |
+| Recipe      | No       | Empty               | Chooses identity and starting values. Locks identity fields.     |
+| Method      | Yes      | Last used           | Changes which fields show. On first use, Espresso [Assumed].     |
+| Beans       | No       | Last used           | Identity field.                                                  |
+| Grinder     | No       | Default grinder     | Identity field.                                                  |
+| Grind size  | No       | Recipe or last used | Number on the grinder's scale, such as 5.5. Free text for Other. |
+| Machine     | No       | Default machine     | Identity field.                                                  |
+| Dose        | Yes      | Recipe or last used | Labelled Coffee for pour over and immersion.                     |
+| Yield       | Yes      | Recipe or last used | Labelled Water for pour over and immersion.                      |
+| Brew time   | Yes      | Recipe or last used | Seconds or m:ss, per Profile.                                    |
+| Temperature | No       | Recipe or last used | °C or °F, per Profile.                                           |
+| Pressure    | No       | Recipe or last used | Espresso only.                                                   |
+| Time        | Yes      | Now                 | Editable, so a shot can be backdated.                            |
+| Verdict     | No       | Empty               | One of the three values under Concepts.                          |
+| Notes       | No       | Empty               | Free text.                                                       |
 
 "Last used" means the value most recently entered in that field, on any log.
 
@@ -99,13 +99,13 @@ Done when the log is stored, as in Log a shot.
 
 ### Feedback
 
-| Situation | Result |
-| --- | --- |
-| Save | The sheet closes, and a short confirmation is announced. Focus returns to the control that opened the sheet. If that control no longer exists, focus moves to the affected row. |
-| Validation fails | Errors appear beside their fields. Focus moves to the first invalid field. |
-| Saving fails | An error banner appears above the form. Focus moves to it. Entered values are kept. |
-| Delete confirmed | The dialog closes, and a short confirmation is announced. Focus moves to the next row, or to the list heading if none remain. |
-| Confirmation text | Stays until the next save, or until the user dismisses it. |
+| Situation         | Result                                                                                                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Save              | The sheet closes, and a short confirmation is announced. Focus returns to the control that opened the sheet. If that control no longer exists, focus moves to the affected row. |
+| Validation fails  | Errors appear beside their fields. Focus moves to the first invalid field.                                                                                                      |
+| Saving fails      | An error banner appears above the form. Focus moves to it. Entered values are kept.                                                                                             |
+| Delete confirmed  | The dialog closes, and a short confirmation is announced. Focus moves to the next row, or to the list heading if none remain.                                                   |
+| Confirmation text | Stays until the next save, or until the user dismisses it.                                                                                                                      |
 
 ## Recipes
 
@@ -138,12 +138,12 @@ Done when creating: the recipe exists with status Dialing in. Done when editing:
 
 ### Status
 
-| Status | Meaning | Set by |
-| --- | --- | --- |
-| Dialing in | Still working out the settings. Default for new recipes. | Default |
-| Dialed in | Repeatable and good. | User, or accepting a suggestion |
-| Needs retune | Worked before, and results have drifted. | User, or accepting a suggestion |
-| Retired | No longer in use. | User only |
+| Status       | Meaning                                                  | Set by                          |
+| ------------ | -------------------------------------------------------- | ------------------------------- |
+| Dialing in   | Still working out the settings. Default for new recipes. | Default                         |
+| Dialed in    | Repeatable and good.                                     | User, or accepting a suggestion |
+| Needs retune | Worked before, and results have drifted.                 | User, or accepting a suggestion |
+| Retired      | No longer in use.                                        | User only                       |
 
 - Suggestions come from verdicts. Examples, to tune later: three Balanced logs in a row suggest Dialed in. A run of Under- or Over-extracted logs after Dialed in suggests Needs retune.
 - A suggestion appears on the overview as a question. The user accepts or dismisses it [Assumed placement].
