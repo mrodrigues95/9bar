@@ -1,25 +1,26 @@
-export interface TRecipe {
-	id: number;
-	uuid: string;
-	name: string | null;
-	isQuickBrew: boolean;
-	recipeSnapshotId: string;
-	createdAt: string;
-	updatedAt: string;
-}
+export type TMethod = "espresso" | "pour-over" | "immersion" | "other";
+export type TVerdict = "under-extracted" | "balanced" | "over-extracted";
+export type TRecipeStatus = "dialing-in" | "dialed-in" | "needs-retune" | "retired";
 
-export interface TRecipeSnapshot {
+/**
+ * One immutable row of brew values.
+ * A non-null `recipeId` makes it a version of that recipe; `null` makes it a log's own copy.
+ */
+export interface TBrewSnapshot {
 	id: number;
 	uuid: string;
-	recipeId: number;
+	recipeId: number | null;
+	method: TMethod;
+	// identity — fixed on attached logs
+	beans: string;
 	machine: string;
 	grinder: string;
+	// variable — each log sets its own
 	grindSize: string;
 	dose: number;
 	yield: number;
 	brewTime: number;
 	brewTimeUnit: "s" | "m";
-	beans: string;
 	temperature: number;
 	temperatureUnit: "C" | "F";
 	pressure: number;
@@ -28,118 +29,763 @@ export interface TRecipeSnapshot {
 	updatedAt: string;
 }
 
+/** Every brew value column, without the snapshot's own identity and timestamps. */
+export type TBrewValues = Omit<
+	TBrewSnapshot,
+	"id" | "uuid" | "recipeId" | "createdAt" | "updatedAt"
+>;
+
+/** A committed recipe. Its logs are the `TLog` rows whose `recipeId` points back here. */
+export interface TRecipe {
+	id: number;
+	uuid: string;
+	name: string;
+	brewSnapshotId: number;
+	status: TRecipeStatus;
+	pinnedLogId: number | null;
+	createdAt: string;
+	updatedAt: string;
+}
+
+/** One brew. `recipeId: null` marks a quick log with no recipe. */
 export interface TLog {
 	id: number;
 	uuid: string;
-	recipeId: number;
-	recipeSnapshotId: number;
+	recipeId: number | null;
+	brewSnapshotId: number;
+	verdict: TVerdict | null;
 	shotAt: string;
 	createdAt: string;
 	updatedAt: string;
 }
 
-export interface TLogEntry extends Omit<TLog, "recipeSnapshotId" | "recipeId"> {}
-
-export interface TRecipeGraphBase extends Omit<TRecipe, "recipeSnapshotId" | "isQuickBrew"> {
-	snapshot: TRecipeSnapshot;
+/**
+ * Legacy graph view of a recipe, or of a quick log, kept for the detail, logs, and form routes.
+ * New code reads the tables above instead.
+ */
+export interface TRecipeGraphBase {
+	id: number;
+	uuid: string;
+	name: string | null;
+	status: TRecipeStatus | null;
+	pinnedLogId: number | null;
+	createdAt: string;
+	updatedAt: string;
+	snapshot: TBrewSnapshot;
 }
 
 export type TRecipeGraph =
-	| (TRecipeGraphBase & { isQuickBrew: true; log: TLogEntry })
-	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLogEntry> });
+	| (TRecipeGraphBase & { isQuickBrew: true; log: TLog })
+	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLog> });
 
-type TRecipeSeed = Pick<
-	TRecipeSnapshot,
-	"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
-> &
-	Partial<Pick<TRecipeSnapshot, "temperature" | "temperatureUnit" | "notes">> & {
-		name: TRecipe["name"];
-	};
+// ---------------------------- tables ----------------------------
 
-const BASE_TIMESTAMP = Date.UTC(2024, 0, 1, 8, 0, 0);
-const DAY_MS = 24 * 60 * 60 * 1000;
+export const brewSnapshots: Array<TBrewSnapshot> = [];
+export const recipes: Array<TRecipe> = [];
+export const logs: Array<TLog> = [];
 
-const timestampFor = (index: number) => {
-	return new Date(BASE_TIMESTAMP + index * DAY_MS).toISOString();
+// ---------------------------- accessors ----------------------------
+
+export const getBrewSnapshot = (id: number): TBrewSnapshot | undefined => {
+	return brewSnapshots.find((snapshot) => snapshot.id === id);
 };
 
-const createLog = (id: number, shotAt: string): TLogEntry => {
-	return { id, uuid: `log-uuid-${id}`, shotAt, createdAt: shotAt, updatedAt: shotAt };
+/** A recipe's versions, newest first — change history reads consecutive pairs. */
+export const getRecipeSnapshots = (recipeId: number): Array<TBrewSnapshot> => {
+	return brewSnapshots
+		.filter((snapshot) => snapshot.recipeId === recipeId)
+		.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 };
 
-const createSnapshot = (index: number, seed: TRecipeSeed, timestamp: string): TRecipeSnapshot => {
+/** A recipe's attached logs, newest first. Quick logs (`recipeId: null`) never match. */
+export const getRecipeLogs = (recipeId: number): Array<TLog> => {
+	return logs
+		.filter((log) => log.recipeId === recipeId)
+		.sort((a, b) => b.shotAt.localeCompare(a.shotAt));
+};
+
+/** The legacy graph view the detail, logs, and form routes consume. */
+export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
+	const recipe = recipes.find((row) => row.id === id);
+	if (recipe) {
+		const snapshot = getBrewSnapshot(recipe.brewSnapshotId);
+		if (!snapshot) {
+			return undefined;
+		}
+		return {
+			id: recipe.id,
+			uuid: recipe.uuid,
+			name: recipe.name,
+			status: recipe.status,
+			pinnedLogId: recipe.pinnedLogId,
+			createdAt: recipe.createdAt,
+			updatedAt: recipe.updatedAt,
+			isQuickBrew: false,
+			snapshot,
+			logs: getRecipeLogs(recipe.id),
+		};
+	}
+
+	const quickLog = logs.find((log) => log.id === id && log.recipeId === null);
+	if (!quickLog) {
+		return undefined;
+	}
+	const snapshot = getBrewSnapshot(quickLog.brewSnapshotId);
+	if (!snapshot) {
+		return undefined;
+	}
 	return {
-		id: index + 1,
-		uuid: `snapshot-uuid-${index + 1}`,
-		recipeId: index + 1,
-		grindSize: seed.grindSize,
-		grinder: seed.grinder,
+		id: quickLog.id,
+		uuid: quickLog.uuid,
+		name: null,
+		status: null,
+		pinnedLogId: null,
+		createdAt: quickLog.createdAt,
+		updatedAt: quickLog.updatedAt,
+		isQuickBrew: true,
+		snapshot,
+		log: quickLog,
+	};
+};
+
+// ---------------------------- labels ----------------------------
+
+export const METHOD_LABELS: Record<TMethod, string> = {
+	espresso: "Espresso",
+	"pour-over": "Pour over",
+	immersion: "Immersion",
+	other: "Other",
+};
+
+export const VERDICT_LABELS: Record<TVerdict, string> = {
+	"under-extracted": "Under-extracted",
+	balanced: "Balanced",
+	"over-extracted": "Over-extracted",
+};
+
+export const RECIPE_STATUS_LABELS: Record<TRecipeStatus, string> = {
+	"dialing-in": "Dialing in",
+	"dialed-in": "Dialed in",
+	"needs-retune": "Needs retune",
+	retired: "Retired",
+};
+
+// ---------------------------- seeds ----------------------------
+
+type TBrewValuesInput = Partial<TBrewValues> &
+	Pick<
+		TBrewValues,
+		"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
+	>;
+
+/** Espresso defaults for the columns most recipes leave alone. */
+const brewValues = (seed: TBrewValuesInput): TBrewValues => {
+	return {
+		method: seed.method ?? "espresso",
+		beans: seed.beans,
 		machine: seed.machine,
+		grinder: seed.grinder,
+		grindSize: seed.grindSize,
 		dose: seed.dose,
 		yield: seed.yield,
 		brewTime: seed.brewTime,
 		brewTimeUnit: seed.brewTimeUnit,
-		beans: seed.beans,
 		temperature: seed.temperature ?? 93,
 		temperatureUnit: seed.temperatureUnit ?? "C",
-		pressure: 9,
+		pressure: seed.pressure ?? 9,
 		notes: seed.notes ?? null,
-		createdAt: timestamp,
-		updatedAt: timestamp,
 	};
 };
 
-const createRecipe = (
-	index: number,
-	seed: TRecipeSeed,
-	shotAtList: Array<string> = [],
-): TRecipeGraph => {
-	const timestamp = timestampFor(index);
+const applyOverrides = (values: TBrewValues, overrides: Partial<TBrewValues>): TBrewValues => {
 	return {
-		id: index + 1,
-		uuid: `uuid-${index + 1}`,
-		name: seed.name,
-		isQuickBrew: false,
-		createdAt: timestamp,
-		updatedAt: timestamp,
-		snapshot: createSnapshot(index, seed, timestamp),
-		logs: shotAtList.map((shotAt, position) => createLog(1000 + index * 10 + position, shotAt)),
+		method: overrides.method ?? values.method,
+		beans: overrides.beans ?? values.beans,
+		machine: overrides.machine ?? values.machine,
+		grinder: overrides.grinder ?? values.grinder,
+		grindSize: overrides.grindSize ?? values.grindSize,
+		dose: overrides.dose ?? values.dose,
+		yield: overrides.yield ?? values.yield,
+		brewTime: overrides.brewTime ?? values.brewTime,
+		brewTimeUnit: overrides.brewTimeUnit ?? values.brewTimeUnit,
+		temperature: overrides.temperature ?? values.temperature,
+		temperatureUnit: overrides.temperatureUnit ?? values.temperatureUnit,
+		pressure: overrides.pressure ?? values.pressure,
+		notes: overrides.notes ?? values.notes,
 	};
 };
 
-const createQuickBrew = (index: number, seed: TRecipeSeed & { shotAt: string }): TRecipeGraph => {
-	const { shotAt } = seed;
-	return {
-		id: index + 1,
-		uuid: `uuid-${index + 1}`,
-		name: seed.name,
-		isQuickBrew: true,
-		createdAt: shotAt,
-		updatedAt: shotAt,
-		snapshot: createSnapshot(index, seed, shotAt),
-		log: createLog(index + 1, shotAt),
+interface TLogSeed {
+	shotAt: string;
+	verdict?: TVerdict;
+	/** Overrides on the recipe's current values, so each log owns what it recorded. */
+	values?: Partial<TBrewValues>;
+}
+
+interface TRecipeSeed {
+	name: string;
+	status?: TRecipeStatus;
+	/** Oldest → newest. The first version sets every column; later ones state only what changed. */
+	snapshots: [
+		{ at: string; values: TBrewValues },
+		...Array<{ at: string; values: Partial<TBrewValues> }>,
+	];
+	logs?: Array<TLogSeed>;
+	/** Index into `logs` of the shot pinned as the reference shot. */
+	referenceLogIndex?: number;
+}
+
+interface TQuickLogSeed {
+	shotAt: string;
+	verdict?: TVerdict;
+	values: TBrewValues;
+}
+
+let nextSnapshotId = 0;
+let nextRecipeId = 0;
+// Log ids start above the recipe id range so a quick log's graph id never collides with a recipe's.
+let nextLogId = 1000;
+
+const createBrewSnapshot = (
+	ownerRecipeId: number | null,
+	values: TBrewValues,
+	at: string,
+): TBrewSnapshot => {
+	nextSnapshotId += 1;
+	const snapshot: TBrewSnapshot = {
+		id: nextSnapshotId,
+		uuid: `snapshot-uuid-${nextSnapshotId}`,
+		recipeId: ownerRecipeId,
+		...values,
+		createdAt: at,
+		updatedAt: at,
 	};
+	brewSnapshots.push(snapshot);
+	return snapshot;
 };
 
-export const recipes: Array<TRecipeGraph> = [
-	createRecipe(
-		0,
+const createRecipe = (seed: TRecipeSeed): TRecipe => {
+	nextRecipeId += 1;
+	const id = nextRecipeId;
+	const [firstVersion, ...laterVersions] = seed.snapshots;
+	let values = firstVersion.values;
+	let current = createBrewSnapshot(id, values, firstVersion.at);
+
+	for (const version of laterVersions) {
+		values = applyOverrides(values, version.values);
+		current = createBrewSnapshot(id, values, version.at);
+	}
+
+	const recipe: TRecipe = {
+		id,
+		uuid: `recipe-uuid-${id}`,
+		name: seed.name,
+		brewSnapshotId: current.id,
+		status: seed.status ?? "dialing-in",
+		pinnedLogId: null,
+		createdAt: firstVersion.at,
+		updatedAt: current.createdAt,
+	};
+	recipes.push(recipe);
+
+	const createdLogs = (seed.logs ?? []).map((logSeed) => {
+		nextLogId += 1;
+		const snapshot = createBrewSnapshot(
+			null,
+			applyOverrides(values, logSeed.values ?? {}),
+			logSeed.shotAt,
+		);
+		const log: TLog = {
+			id: nextLogId,
+			uuid: `log-uuid-${nextLogId}`,
+			recipeId: id,
+			brewSnapshotId: snapshot.id,
+			verdict: logSeed.verdict ?? null,
+			shotAt: logSeed.shotAt,
+			createdAt: logSeed.shotAt,
+			updatedAt: logSeed.shotAt,
+		};
+		logs.push(log);
+		return log;
+	});
+
+	if (seed.referenceLogIndex !== undefined) {
+		recipe.pinnedLogId = createdLogs[seed.referenceLogIndex]?.id ?? null;
+	}
+
+	return recipe;
+};
+
+const createQuickLog = (seed: TQuickLogSeed): TLog => {
+	nextLogId += 1;
+	const snapshot = createBrewSnapshot(null, seed.values, seed.shotAt);
+	const log: TLog = {
+		id: nextLogId,
+		uuid: `log-uuid-${nextLogId}`,
+		recipeId: null,
+		brewSnapshotId: snapshot.id,
+		verdict: seed.verdict ?? null,
+		shotAt: seed.shotAt,
+		createdAt: seed.shotAt,
+		updatedAt: seed.shotAt,
+	};
+	logs.push(log);
+	return log;
+};
+
+// ---------------------------- seed data ----------------------------
+
+createRecipe({
+	name: "Morning Espresso",
+	status: "dialed-in",
+	snapshots: [
 		{
-			name: "Morning Espresso",
-			beans: "Sunset Roast Espresso Blend",
-			machine: "rancilio-silvia",
-			grinder: "eureka-mignon",
-			grindSize: "6",
-			dose: 18,
-			yield: 36,
-			brewTime: 28,
-			brewTimeUnit: "s",
-			notes: "Sweet caramel aroma, balanced acidity.",
+			at: "2024-05-20T08:00:00Z",
+			values: brewValues({
+				beans: "Sunset Roast Espresso Blend",
+				machine: "rancilio-silvia",
+				grinder: "eureka-mignon",
+				grindSize: "6",
+				dose: 18,
+				yield: 36,
+				brewTime: 30,
+				brewTimeUnit: "s",
+				notes: "Sweet caramel aroma, balanced acidity.",
+			}),
 		},
-		["2024-06-01T12:05:00Z", "2024-06-02T07:40:00Z", "2024-06-03T07:55:00Z"],
-	),
-	createQuickBrew(1, {
-		name: null,
+		{ at: "2024-06-03T07:00:00Z", values: { grindSize: "5.5", brewTime: 28 } },
+	],
+	logs: [
+		{
+			shotAt: "2024-06-01T12:05:00Z",
+			verdict: "balanced",
+			values: { grindSize: "6", brewTime: 30 },
+		},
+		{ shotAt: "2024-06-02T07:40:00Z", verdict: "over-extracted" },
+		{ shotAt: "2024-06-03T07:55:00Z", verdict: "balanced" },
+	],
+	referenceLogIndex: 2,
+});
+
+createRecipe({
+	name: "Ethiopia Guji Natural",
+	status: "dialing-in",
+	snapshots: [
+		{
+			at: "2024-05-26T08:00:00Z",
+			values: brewValues({
+				beans: "Ethiopia Guji · washed · light roast · Finca La Esperanza lot 14",
+				machine: "lelit-bianca",
+				grinder: "niche-zero",
+				grindSize: "9",
+				dose: 17,
+				yield: 34,
+				brewTime: 30,
+				brewTimeUnit: "s",
+				notes: "Blueberry and jasmine, delicate body.",
+			}),
+		},
+	],
+	logs: [
+		{ shotAt: "2024-05-28T07:30:00Z", verdict: "balanced" },
+		{ shotAt: "2024-05-29T07:35:00Z", verdict: "balanced" },
+		{ shotAt: "2024-05-30T07:40:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Sunset Roast Espresso",
+	status: "dialing-in",
+	snapshots: [
+		{
+			at: "2024-05-25T08:00:00Z",
+			values: brewValues({
+				beans: "Sunset Roast Espresso Blend",
+				machine: "rancilio-silvia",
+				grinder: "eureka-mignon",
+				grindSize: "6",
+				dose: 18,
+				yield: 36,
+				brewTime: 27,
+				brewTimeUnit: "s",
+			}),
+		},
+		{ at: "2024-06-04T07:00:00Z", values: { temperature: 94 } },
+	],
+	logs: [{ shotAt: "2024-06-04T07:45:00Z", verdict: "under-extracted" }],
+});
+
+createRecipe({
+	name: "Colombia Huila",
+	status: "dialed-in",
+	snapshots: [
+		{
+			at: "2024-05-22T08:00:00Z",
+			values: brewValues({
+				method: "pour-over",
+				beans: "Finca La Esperanza · honey processed · medium roast · Huila, Colombia",
+				machine: "lelit-bianca",
+				grinder: "niche-zero",
+				grindSize: "10",
+				dose: 16,
+				yield: 250,
+				brewTime: 2.5,
+				brewTimeUnit: "m",
+				temperature: 94,
+				pressure: 0,
+				notes: "Red apple and panela sweetness.",
+			}),
+		},
+	],
+	logs: [
+		{ shotAt: "2024-05-27T09:10:00Z", verdict: "balanced" },
+		{ shotAt: "2024-05-31T09:15:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Kenya AA Nyeri",
+	snapshots: [
+		{
+			at: "2024-05-21T08:00:00Z",
+			values: brewValues({
+				beans: "Kenya AA · washed · Gichathaini factory",
+				machine: "la-pavoni",
+				grinder: "comandante",
+				grindSize: "12 clicks",
+				dose: 14,
+				yield: 28,
+				brewTime: 26,
+				brewTimeUnit: "s",
+			}),
+		},
+	],
+	logs: [{ shotAt: "2024-05-26T08:05:00Z", verdict: "over-extracted" }],
+});
+
+createRecipe({
+	name: "House Espresso",
+	status: "needs-retune",
+	snapshots: [
+		{
+			at: "2024-05-27T08:00:00Z",
+			values: brewValues({
+				beans: "House Espresso · medium-dark",
+				machine: "breville-barista",
+				grinder: "baratza-sette",
+				grindSize: "9",
+				dose: 18,
+				yield: 36,
+				brewTime: 25,
+				brewTimeUnit: "s",
+				notes: "Baseline recipe for the Breville basket.",
+			}),
+		},
+		{ at: "2024-06-06T07:00:00Z", values: { grindSize: "8", brewTime: 24 } },
+	],
+	logs: [
+		{ shotAt: "2024-06-05T08:05:00Z", verdict: "over-extracted" },
+		{ shotAt: "2024-06-06T08:10:00Z", verdict: "over-extracted" },
+		{ shotAt: "2024-06-07T08:15:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Brazil Cerrado Yellow Bourbon",
+	status: "retired",
+	snapshots: [
+		{
+			at: "2024-05-18T08:00:00Z",
+			values: brewValues({
+				beans: "Brazil Cerrado · natural · Yellow Bourbon",
+				machine: "rancilio-silvia",
+				grinder: "eureka-mignon",
+				grindSize: "5",
+				dose: 19,
+				yield: 38,
+				brewTime: 30,
+				brewTimeUnit: "s",
+			}),
+		},
+	],
+	logs: [
+		{ shotAt: "2024-05-25T07:20:00Z", verdict: "balanced" },
+		{ shotAt: "2024-05-26T07:25:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Guatemala Antigua",
+	status: "dialed-in",
+	snapshots: [
+		{
+			at: "2024-05-19T08:00:00Z",
+			values: brewValues({
+				method: "immersion",
+				beans: "Guatemala Antigua · washed · Bourbon",
+				machine: "la-pavoni",
+				grinder: "comandante",
+				grindSize: "13 clicks",
+				dose: 14,
+				yield: 220,
+				brewTime: 2,
+				brewTimeUnit: "m",
+				temperature: 85,
+				pressure: 0,
+			}),
+		},
+	],
+	logs: [{ shotAt: "2024-05-24T09:00:00Z", verdict: "balanced" }],
+});
+
+createRecipe({
+	name: "Ethiopia Yirgacheffe Konga",
+	snapshots: [
+		{
+			at: "2024-05-23T08:00:00Z",
+			values: brewValues({
+				method: "pour-over",
+				beans: "Ethiopia Yirgacheffe · washed · Konga cooperative",
+				machine: "lelit-bianca",
+				grinder: "niche-zero",
+				grindSize: "9",
+				dose: 17,
+				yield: 255,
+				brewTime: 2.75,
+				brewTimeUnit: "m",
+				temperature: 96,
+				pressure: 0,
+			}),
+		},
+	],
+	logs: [
+		{ shotAt: "2024-05-27T10:15:00Z", verdict: "under-extracted" },
+		{ shotAt: "2024-05-28T10:20:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Panama Geisha Esmeralda",
+	snapshots: [
+		{
+			at: "2024-05-24T08:00:00Z",
+			values: brewValues({
+				beans: "Panama Geisha · washed · Hacienda La Esmeralda",
+				machine: "other",
+				grinder: "other",
+				grindSize: "7",
+				dose: 15,
+				yield: 30,
+				brewTime: 35,
+				brewTimeUnit: "s",
+				notes: "Floral and tea-like; brewed on the club machine.",
+			}),
+		},
+	],
+	logs: [{ shotAt: "2024-05-29T11:30:00Z", verdict: "balanced" }],
+});
+
+createRecipe({
+	name: "Rwanda Nyungwe",
+	snapshots: [
+		{
+			at: "2024-05-28T08:00:00Z",
+			values: brewValues({
+				beans: "Rwanda Nyungwe · washed · red Bourbon",
+				machine: "rancilio-silvia",
+				grinder: "eureka-mignon",
+				grindSize: "6",
+				dose: 18,
+				yield: 36,
+				brewTime: 29,
+				brewTimeUnit: "s",
+			}),
+		},
+	],
+});
+
+createRecipe({
+	name: "Costa Rica Tarrazú",
+	snapshots: [
+		{
+			at: "2024-05-29T08:00:00Z",
+			values: brewValues({
+				beans: "Costa Rica Tarrazú · honey processed",
+				machine: "breville-barista",
+				grinder: "baratza-sette",
+				grindSize: "9",
+				dose: 18,
+				yield: 34,
+				brewTime: 26,
+				brewTimeUnit: "s",
+			}),
+		},
+		{ at: "2024-06-08T07:00:00Z", values: { notes: "Bright and juicy; drop the dose next time." } },
+	],
+});
+
+createRecipe({
+	name: "El Salvador Pacamara",
+	snapshots: [
+		{
+			at: "2024-05-30T08:00:00Z",
+			values: brewValues({
+				method: "immersion",
+				beans: "El Salvador · Pacamara · natural",
+				machine: "la-pavoni",
+				grinder: "comandante",
+				grindSize: "12 clicks",
+				dose: 15,
+				yield: 230,
+				brewTime: 2.25,
+				brewTimeUnit: "m",
+				temperature: 88,
+				pressure: 0,
+			}),
+		},
+	],
+	logs: [{ shotAt: "2024-06-02T09:45:00Z", verdict: "over-extracted" }],
+});
+
+createRecipe({
+	name: "Kenya Kirinyaga Karindundu",
+	snapshots: [
+		{
+			at: "2024-05-31T08:00:00Z",
+			values: brewValues({
+				beans: "Kenya Kirinyaga · washed · Karindundu AA",
+				machine: "rancilio-silvia",
+				grinder: "eureka-mignon",
+				grindSize: "5",
+				dose: 17,
+				yield: 38,
+				brewTime: 31,
+				brewTimeUnit: "s",
+			}),
+		},
+	],
+});
+
+createRecipe({
+	name: "Sumatra Mandheling",
+	snapshots: [
+		{
+			at: "2024-06-01T08:00:00Z",
+			values: brewValues({
+				method: "immersion",
+				beans: "Sumatra Mandheling · wet hulled",
+				machine: "gaggia-classic",
+				grinder: "other",
+				grindSize: "2",
+				dose: 19,
+				yield: 230,
+				brewTime: 2.5,
+				brewTimeUnit: "m",
+				temperature: 92,
+				pressure: 0,
+			}),
+		},
+	],
+	logs: [
+		{ shotAt: "2024-06-03T08:30:00Z", verdict: "balanced" },
+		{ shotAt: "2024-06-04T08:35:00Z", verdict: "balanced" },
+	],
+});
+
+createRecipe({
+	name: "Peru Cajamarca",
+	snapshots: [
+		{
+			at: "2024-06-02T08:00:00Z",
+			values: brewValues({
+				beans: "Peru Cajamarca · washed · organic",
+				machine: "breville-barista",
+				grinder: "baratza-sette",
+				grindSize: "10",
+				dose: 18,
+				yield: 36,
+				brewTime: 28,
+				brewTimeUnit: "s",
+			}),
+		},
+		{ at: "2024-06-07T07:00:00Z", values: { dose: 17 } },
+	],
+});
+
+createRecipe({
+	name: "Bolivia Illimani AAA",
+	status: "dialed-in",
+	snapshots: [
+		{
+			at: "2024-05-17T08:00:00Z",
+			values: brewValues({
+				beans: "Bolivia Illimani · washed · AAA",
+				machine: "lelit-bianca",
+				grinder: "niche-zero",
+				grindSize: "8",
+				dose: 18,
+				yield: 36,
+				brewTime: 30,
+				brewTimeUnit: "s",
+				notes: "Long pre-infusion at 3 bar.",
+			}),
+		},
+		{ at: "2024-06-05T07:00:00Z", values: { temperature: 92 } },
+	],
+	logs: [
+		{ shotAt: "2024-05-30T07:50:00Z", verdict: "balanced" },
+		{ shotAt: "2024-06-01T07:55:00Z", verdict: "balanced" },
+		{ shotAt: "2024-06-05T08:00:00Z", verdict: "balanced" },
+	],
+	referenceLogIndex: 2,
+});
+
+createRecipe({
+	name: "Honduras Santa Barbara",
+	snapshots: [
+		{
+			at: "2024-06-03T08:00:00Z",
+			values: brewValues({
+				method: "pour-over",
+				beans: "Honduras Santa Barbara",
+				machine: "other",
+				grinder: "comandante",
+				grindSize: "13 clicks",
+				dose: 14,
+				yield: 210,
+				brewTime: 2.5,
+				brewTimeUnit: "m",
+				temperature: 95,
+				pressure: 0,
+			}),
+		},
+	],
+});
+
+createRecipe({
+	name: "Tanzania Peaberry",
+	snapshots: [
+		{
+			at: "2024-06-04T08:00:00Z",
+			values: brewValues({
+				beans: "Tanzania Peaberry · washed",
+				machine: "la-pavoni",
+				grinder: "comandante",
+				grindSize: "12 clicks",
+				dose: 14,
+				yield: 30,
+				brewTime: 29,
+				brewTimeUnit: "s",
+			}),
+		},
+	],
+	logs: [{ shotAt: "2024-06-05T09:05:00Z", verdict: "balanced" }],
+});
+
+createQuickLog({
+	shotAt: "2024-06-01T14:30:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "Stumptown · Hair Bender",
 		machine: "gaggia-classic",
 		grinder: "eureka-mignon",
@@ -151,33 +797,13 @@ export const recipes: Array<TRecipeGraph> = [
 		temperature: 200,
 		temperatureUnit: "F",
 		notes: "Rich and chocolatey with a smooth finish.",
-		shotAt: "2024-06-01T14:30:00Z",
 	}),
-	createRecipe(2, {
-		name: "Ethiopia Guji Natural",
-		beans: "Ethiopia Guji · washed · light roast · Finca La Esperanza lot 14",
-		machine: "lelit-bianca",
-		grinder: "niche-zero",
-		grindSize: "9",
-		dose: 17,
-		yield: 34,
-		brewTime: 30,
-		brewTimeUnit: "s",
-		notes: "Blueberry and jasmine, delicate body.",
-	}),
-	createRecipe(3, {
-		name: "Sunset Roast Espresso",
-		beans: "Sunset Roast Espresso Blend",
-		machine: "rancilio-silvia",
-		grinder: "eureka-mignon",
-		grindSize: "6",
-		dose: 18,
-		yield: 36,
-		brewTime: 27,
-		brewTimeUnit: "s",
-	}),
-	createQuickBrew(4, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-02T06:50:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "House Espresso · medium-dark",
 		machine: "breville-barista",
 		grinder: "baratza-sette",
@@ -186,33 +812,13 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 37,
 		brewTime: 27,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-02T06:50:00Z",
 	}),
-	createRecipe(5, {
-		name: "Colombia Huila",
-		beans: "Finca La Esperanza · honey processed · medium roast · Huila, Colombia",
-		machine: "lelit-bianca",
-		grinder: "niche-zero",
-		grindSize: "10",
-		dose: 16,
-		yield: 32,
-		brewTime: 33,
-		brewTimeUnit: "s",
-		notes: "Red apple and panela sweetness.",
-	}),
-	createRecipe(6, {
-		name: "Kenya AA Nyeri",
-		beans: "Kenya AA · washed · Gichathaini factory",
-		machine: "la-pavoni",
-		grinder: "comandante",
-		grindSize: "12 clicks",
-		dose: 14,
-		yield: 28,
-		brewTime: 26,
-		brewTimeUnit: "s",
-	}),
-	createQuickBrew(7, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-03T09:15:00Z",
+	verdict: "over-extracted",
+	values: brewValues({
 		beans: "Sunset Roast Espresso Blend",
 		machine: "gaggia-classic",
 		grinder: "eureka-mignon",
@@ -221,22 +827,13 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 36,
 		brewTime: 29,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-03T09:15:00Z",
 	}),
-	createRecipe(8, {
-		name: "House Espresso",
-		beans: "House Espresso · medium-dark",
-		machine: "breville-barista",
-		grinder: "baratza-sette",
-		grindSize: "9",
-		dose: 18,
-		yield: 36,
-		brewTime: 25,
-		brewTimeUnit: "s",
-		notes: "Baseline recipe for the Breville basket.",
-	}),
-	createQuickBrew(9, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-04T20:10:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "Swiss Water Decaf · medium",
 		machine: "lelit-bianca",
 		grinder: "niche-zero",
@@ -245,32 +842,13 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 34,
 		brewTime: 31,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-04T20:10:00Z",
 	}),
-	createRecipe(10, {
-		name: "Brazil Cerrado Yellow Bourbon",
-		beans: "Brazil Cerrado · natural · Yellow Bourbon",
-		machine: "rancilio-silvia",
-		grinder: "eureka-mignon",
-		grindSize: "5",
-		dose: 19,
-		yield: 38,
-		brewTime: 30,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(11, {
-		name: "Guatemala Antigua",
-		beans: "Guatemala Antigua · washed · Bourbon",
-		machine: "la-pavoni",
-		grinder: "comandante",
-		grindSize: "13 clicks",
-		dose: 14,
-		yield: 26,
-		brewTime: 24,
-		brewTimeUnit: "s",
-	}),
-	createQuickBrew(12, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-05T08:05:00Z",
+	verdict: "under-extracted",
+	values: brewValues({
 		beans: "House Espresso · medium-dark",
 		machine: "breville-barista",
 		grinder: "baratza-sette",
@@ -279,33 +857,13 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 39,
 		brewTime: 28,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-05T08:05:00Z",
 	}),
-	createRecipe(13, {
-		name: "Ethiopia Yirgacheffe Konga",
-		beans: "Ethiopia Yirgacheffe · washed · Konga cooperative",
-		machine: "lelit-bianca",
-		grinder: "niche-zero",
-		grindSize: "9",
-		dose: 17,
-		yield: 35,
-		brewTime: 32,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(14, {
-		name: "Panama Geisha Esmeralda",
-		beans: "Panama Geisha · washed · Hacienda La Esmeralda",
-		machine: "other",
-		grinder: "other",
-		grindSize: "7",
-		dose: 15,
-		yield: 30,
-		brewTime: 35,
-		brewTimeUnit: "s",
-		notes: "Floral and tea-like; brewed on the club machine.",
-	}),
-	createQuickBrew(15, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-06T19:25:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "Decaf Brazil · medium",
 		machine: "gaggia-classic",
 		grinder: "eureka-mignon",
@@ -314,43 +872,13 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 36,
 		brewTime: 30,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-06T19:25:00Z",
 	}),
-	createRecipe(16, {
-		name: "Rwanda Nyungwe",
-		beans: "Rwanda Nyungwe · washed · red Bourbon",
-		machine: "rancilio-silvia",
-		grinder: "eureka-mignon",
-		grindSize: "6",
-		dose: 18,
-		yield: 36,
-		brewTime: 29,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(17, {
-		name: "Costa Rica Tarrazú",
-		beans: "Costa Rica Tarrazú · honey processed",
-		machine: "breville-barista",
-		grinder: "baratza-sette",
-		grindSize: "9",
-		dose: 18,
-		yield: 34,
-		brewTime: 26,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(18, {
-		name: "El Salvador Pacamara",
-		beans: "El Salvador · Pacamara · natural",
-		machine: "la-pavoni",
-		grinder: "comandante",
-		grindSize: "12 clicks",
-		dose: 15,
-		yield: 30,
-		brewTime: 27,
-		brewTimeUnit: "s",
-	}),
-	createQuickBrew(19, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-07T07:35:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "Ethiopia Guji · washed · light roast",
 		machine: "lelit-bianca",
 		grinder: "niche-zero",
@@ -359,67 +887,31 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 36,
 		brewTime: 33,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-07T07:35:00Z",
 	}),
-	createRecipe(20, {
-		name: "Kenya Kirinyaga Karindundu",
-		beans: "Kenya Kirinyaga · washed · Karindundu AA",
-		machine: "rancilio-silvia",
-		grinder: "eureka-mignon",
-		grindSize: "5",
-		dose: 17,
-		yield: 38,
-		brewTime: 31,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(21, {
-		name: "Sumatra Mandheling",
-		beans: "Sumatra Mandheling · wet hulled",
-		machine: "gaggia-classic",
-		grinder: "other",
-		grindSize: "2",
-		dose: 19,
-		yield: 36,
-		brewTime: 29,
-		brewTimeUnit: "s",
-	}),
-	createQuickBrew(22, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-08T10:45:00Z",
+	verdict: "balanced",
+	values: brewValues({
+		method: "pour-over",
 		beans: "Honduras Santa Barbara",
 		machine: "other",
 		grinder: "comandante",
 		grindSize: "13 clicks",
 		dose: 14,
-		yield: 28,
-		brewTime: 28,
-		brewTimeUnit: "s",
-		shotAt: "2024-06-08T10:45:00Z",
+		yield: 220,
+		brewTime: 2.5,
+		brewTimeUnit: "m",
+		temperature: 95,
+		pressure: 0,
 	}),
-	createRecipe(23, {
-		name: "Peru Cajamarca",
-		beans: "Peru Cajamarca · washed · organic",
-		machine: "breville-barista",
-		grinder: "baratza-sette",
-		grindSize: "10",
-		dose: 18,
-		yield: 36,
-		brewTime: 28,
-		brewTimeUnit: "s",
-	}),
-	createRecipe(24, {
-		name: "Bolivia Illimani AAA",
-		beans: "Bolivia Illimani · washed · AAA",
-		machine: "lelit-bianca",
-		grinder: "niche-zero",
-		grindSize: "8",
-		dose: 18,
-		yield: 36,
-		brewTime: 30,
-		brewTimeUnit: "s",
-		notes: "Long pre-infusion at 3 bar.",
-	}),
-	createQuickBrew(25, {
-		name: null,
+});
+
+createQuickLog({
+	shotAt: "2024-06-09T08:20:00Z",
+	verdict: "balanced",
+	values: brewValues({
 		beans: "Tanzania Peaberry · washed",
 		machine: "la-pavoni",
 		grinder: "comandante",
@@ -428,9 +920,23 @@ export const recipes: Array<TRecipeGraph> = [
 		yield: 30,
 		brewTime: 29,
 		brewTimeUnit: "s",
-		shotAt: "2024-06-09T08:20:00Z",
 	}),
-];
+});
+
+createQuickLog({
+	shotAt: "2024-06-10T07:10:00Z",
+	verdict: "over-extracted",
+	values: brewValues({
+		beans: "Kenya AA · washed",
+		machine: "rancilio-silvia",
+		grinder: "eureka-mignon",
+		grindSize: "6",
+		dose: 17,
+		yield: 34,
+		brewTime: 30,
+		brewTimeUnit: "s",
+	}),
+});
 
 export const MACHINE_OPTIONS = [
 	{ id: "la-pavoni", name: "La Pavoni" },
@@ -448,3 +954,11 @@ export const GRINDER_OPTIONS = [
 	{ id: "eureka-mignon", name: "Eureka Mignon" },
 	{ id: "other", name: "Other" },
 ] as const;
+
+export const machineName = (id: string): string => {
+	return MACHINE_OPTIONS.find((option) => option.id === id)?.name ?? id;
+};
+
+export const grinderName = (id: string): string => {
+	return GRINDER_OPTIONS.find((option) => option.id === id)?.name ?? id;
+};
