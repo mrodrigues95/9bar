@@ -1,4 +1,3 @@
-import { DateFormatter, parseAbsolute } from "@internationalized/date";
 import { getRouteApi } from "@tanstack/react-router";
 import {
 	Bean,
@@ -7,6 +6,7 @@ import {
 	Cog,
 	Copy,
 	EllipsisVertical,
+	Fingerprint,
 	Gauge,
 	type LucideIcon,
 	Paperclip,
@@ -21,7 +21,6 @@ import {
 import { useDeferredValue } from "react";
 import {
 	Badge,
-	type BadgeProps,
 	IconButton,
 	Menu,
 	MenuItem,
@@ -35,28 +34,12 @@ import {
 	VERDICT_LABELS,
 	grinderName,
 	machineName,
+	type TBrewSnapshot,
 	type TLog,
 	type TRecipe,
-	type TVerdict,
 } from "../../../utils/data";
+import { formatShotAt } from "../../../utils/format";
 import { type TRecipesListRow } from "./-recipes-query";
-
-const TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const SHOT_FORMATTER = new DateFormatter("en-GB", {
-	day: "numeric",
-	month: "short",
-	hour: "2-digit",
-	minute: "2-digit",
-	timeZone: TIME_ZONE,
-});
-
-const formatShotAt = (shotAt: string) => {
-	return SHOT_FORMATTER.format(parseAbsolute(shotAt, TIME_ZONE).toDate());
-};
-
-const verdictVariant = (verdict: TVerdict): BadgeProps["variant"] => {
-	return verdict === "balanced" ? "secondary" : "outline";
-};
 
 const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
 	return (
@@ -64,6 +47,17 @@ const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string })
 			<Icon className="size-3 shrink-0" />
 			<span className="truncate">{label}</span>
 		</Text>
+	);
+};
+
+const RowMeta = ({ snapshot, shotAt }: { snapshot: TBrewSnapshot; shotAt?: string }) => {
+	return (
+		<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
+			<RowMetaItem icon={Bean} label={snapshot.beans} />
+			<RowMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
+			<RowMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
+			{shotAt && <RowMetaItem icon={Clock} label={formatShotAt(shotAt)} />}
+		</div>
 	);
 };
 
@@ -103,7 +97,7 @@ const RecipeRowActions = ({ recipe }: { recipe: TRecipe }) => {
 					Log again
 				</MenuItem>
 				<MenuSeparator />
-				<MenuItem variant="destructive" textValue="Delete">
+				<MenuItem textValue="Delete">
 					<Trash2 className="size-3" />
 					Delete
 				</MenuItem>
@@ -132,7 +126,7 @@ const AttachedLogActions = ({ name }: { name: string }) => {
 					Detach from recipe
 				</MenuItem>
 				<MenuSeparator />
-				<MenuItem variant="destructive" textValue="Delete">
+				<MenuItem textValue="Delete">
 					<Trash2 className="size-3" />
 					Delete
 				</MenuItem>
@@ -169,7 +163,7 @@ const QuickLogActions = ({ log }: { log: TLog }) => {
 					Attach to recipe
 				</MenuItem>
 				<MenuSeparator />
-				<MenuItem variant="destructive" textValue="Delete">
+				<MenuItem textValue="Delete">
 					<Trash2 className="size-3" />
 					Delete
 				</MenuItem>
@@ -196,15 +190,14 @@ const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> 
 			<div className="min-w-0 flex-1">
 				<div className="flex min-w-0 items-center gap-2">
 					<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
-					<Badge variant="secondary">Recipe</Badge>
+					<Badge variant="secondary">
+						<Fingerprint />
+						Recipe
+					</Badge>
 					<Badge variant="outline">{RECIPE_STATUS_LABELS[row.recipe.status]}</Badge>
 				</div>
 				<DoseLine row={row} />
-				<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
-					<RowMetaItem icon={Bean} label={row.snapshot.beans} />
-					<RowMetaItem icon={Gauge} label={machineName(row.snapshot.machine)} />
-					<RowMetaItem icon={Cog} label={grinderName(row.snapshot.grinder)} />
-				</div>
+				<RowMeta snapshot={row.snapshot} />
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				<RecipeRowActions recipe={row.recipe} />
@@ -228,24 +221,10 @@ const LogRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "log" }> }) => 
 						</Text>
 					)}
 					<Badge variant="outline">{row.recipe ? "Attached log" : "Quick log"}</Badge>
-					{row.log.verdict && (
-						<Badge variant={verdictVariant(row.log.verdict)}>
-							{VERDICT_LABELS[row.log.verdict]}
-						</Badge>
-					)}
+					{row.log.verdict && <Badge variant="outline">{VERDICT_LABELS[row.log.verdict]}</Badge>}
 				</div>
 				<DoseLine row={row} />
-				<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
-					<RowMetaItem icon={Clock} label={formatShotAt(row.log.shotAt)} />
-					{row.recipe ? (
-						<RowMetaItem icon={Bean} label={row.snapshot.beans} />
-					) : (
-						<>
-							<RowMetaItem icon={Gauge} label={machineName(row.snapshot.machine)} />
-							<RowMetaItem icon={Cog} label={grinderName(row.snapshot.grinder)} />
-						</>
-					)}
-				</div>
+				<RowMeta snapshot={row.snapshot} shotAt={row.log.shotAt} />
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				{row.recipe ? <AttachedLogActions name={name} /> : <QuickLogActions log={row.log} />}

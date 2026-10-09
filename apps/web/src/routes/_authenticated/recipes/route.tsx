@@ -121,6 +121,7 @@ const Recipes = () => {
 	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } = useRecipesSearch();
 	const hasQuery = !!q.trim() || !!filters.length;
 
+	// TODO: Add bulk edit actions (Attach to recipe, Delete) once list rows support multi-selection.
 	return (
 		<div className="space-y-4">
 			<Heading as="h1" variant="title">
@@ -129,7 +130,9 @@ const Recipes = () => {
 			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">
-						<Button size="sm">Log a shot</Button>
+						<Button variant="ghost" size="sm">
+							Log a shot
+						</Button>
 						<Link variant="outline" size="sm" to="/recipes/new">
 							<Plus />
 							New recipe

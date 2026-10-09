@@ -17,20 +17,8 @@ const CHANGE_DATE_FORMATTER = new DateFormatter("en-GB", {
 	timeZone: TIME_ZONE,
 });
 
-const SHOT_DATE_FORMATTER = new DateFormatter("en-GB", {
-	day: "numeric",
-	month: "short",
-	hour: "2-digit",
-	minute: "2-digit",
-	timeZone: TIME_ZONE,
-});
-
 export const formatChangeDate = (changedAt: string): string => {
 	return CHANGE_DATE_FORMATTER.format(parseAbsolute(changedAt, TIME_ZONE).toDate());
-};
-
-export const formatShotDate = (shotAt: string): string => {
-	return SHOT_DATE_FORMATTER.format(parseAbsolute(shotAt, TIME_ZONE).toDate());
 };
 
 export const formatRatio = (snapshot: Pick<TBrewSnapshot, "dose" | "yield">): string => {

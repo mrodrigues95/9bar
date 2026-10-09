@@ -34,11 +34,11 @@ import {
 	type TRecipe,
 	type TRecipeStatus,
 } from "../../../../../utils/data";
+import { formatShotAt } from "../../../../../utils/format";
 import { objectKeys } from "../../../../../utils/utils";
 import {
 	formatChangeDate,
 	formatRatio,
-	formatShotDate,
 	getRecipeChangeLines,
 	resolveReferenceShot,
 	suggestRecipeStatus,
@@ -151,7 +151,7 @@ const ReferenceShotSection = ({
 			</div>
 			{shot ? (
 				<>
-					<Text variant="caption">{formatShotDate(shot.log.shotAt)}</Text>
+					<Text variant="caption">{formatShotAt(shot.log.shotAt)}</Text>
 					<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-4">
 						<Stat label="Dose" value={`${shot.snapshot.dose}g`} />
 						<Stat label="Yield" value={`${shot.snapshot.yield}g`} />

@@ -36,7 +36,9 @@ export const NoRecipesFound = ({ hasQuery, onClearQuery }: NoRecipesFoundProps) 
 					</Button>
 				) : (
 					<div className="flex flex-row gap-2">
-						<Button size="sm">Log a shot</Button>
+						<Button variant="ghost" size="sm">
+							Log a shot
+						</Button>
 						<Link variant="outline" size="sm" to="/recipes/new">
 							<Plus />
 							New recipe
