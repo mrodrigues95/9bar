@@ -3,7 +3,7 @@ import { FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
 import { Heading, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
 import { AppBreadcrumbs, TabLink, withBreadcrumb } from "../../../../components";
-import { recipes } from "../../../../utils/data";
+import { buildRecipeGraph } from "../../../../utils/data";
 import { objectKeys } from "../../../../utils/utils";
 
 const TABS = {
@@ -63,7 +63,7 @@ const Recipe = () => {
 
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 	loader: ({ params }) => {
-		const recipe = recipes.find((r) => r.id === Number(params.recipeId));
+		const recipe = buildRecipeGraph(Number(params.recipeId));
 		if (!recipe || recipe.isQuickBrew) {
 			throw redirect({ to: "/recipes" });
 		}

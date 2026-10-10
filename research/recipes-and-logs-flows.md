@@ -41,7 +41,7 @@ Where each action appears. Later sections define what each action does.
 - **Recipes list, quick log row:** Edit, Repeat, Save as recipe, Attach to recipe, Delete.
 - **Recipes list, attached log row:** Edit, Set as reference shot, Detach from recipe, Delete.
 - **Recipes list, multi-select:** Attach to recipe (quick logs), Delete (quick logs and recipes).
-- **Recipe overview:** Log again (button). Actions menu: Log again, Edit, Duplicate [Assumed], Delete.
+- **Recipe overview:** Actions menu: Log again, Edit, Duplicate [Assumed], Delete.
 - **Recipe Logs tab:** New log (header). Log row: Edit, Set as reference shot, Detach from recipe, Delete.
 - **Home:** Log a shot, Log again (most recent recipe), last five logs (tap to edit).
 - **Profile:** Equipment, defaults, grind scale, units.
@@ -148,7 +148,7 @@ Done when creating: the recipe exists with status Dialing in. Done when editing:
 - Suggestions come from verdicts. Examples, to tune later: three Balanced logs in a row suggest Dialed in. A run of Under- or Over-extracted logs after Dialed in suggests Needs retune.
 - A suggestion appears on the overview as a question. The user accepts or dismisses it [Assumed placement].
 - Status is changed from a control on the overview and in the edit form [Assumed].
-- Retired recipes are hidden from the Recipes list by default. A status filter and a Show retired toggle bring them back. Search still finds them.
+- Retired recipes and their attached logs are hidden from the Recipes list by default. Selecting Retired in the Status filter brings them back. Search still finds them.
 
 ### Delete
 
@@ -200,10 +200,10 @@ Done when the attached logs appear in the recipe's Logs tab. Skipped logs stay q
 - Tapping a recipe name opens its overview. Tapping a log row opens its edit sheet [Assumed].
 - Search matches recipe name and beans only.
 - Filters:
-  - Type (multi-select): Recipes, Attached logs, Quick logs. All are on by default.
+  - Type (multi-select): Recipes, Attached logs, Quick logs. Absent means all three.
   - Recipe: pick one or more to show those recipes and their logs.
   - Method, Verdict, Status, Machine, and Grinder.
-  - Method, verdict, and recipe filters show a recipe row only when that recipe is selected. A recipe row always has visible logs beneath it.
+  - Each filter matches a row on its own values: Type, Method, Machine, and Grinder match recipes and logs; Verdict matches logs; Status matches recipes; Recipe shows the chosen recipes and their attached logs.
 - Pagination: 10 per page.
 - Empty states: with no recipes or logs, show Log a shot and New recipe. With no matches, show a message and a Clear filters action.
 

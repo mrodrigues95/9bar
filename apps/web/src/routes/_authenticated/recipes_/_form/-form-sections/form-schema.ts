@@ -1,13 +1,13 @@
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
 import type { TInputGroupSelectFieldValue } from "@9bar/toolkit/components/composed";
-import type { TRecipeGraph, TRecipeSnapshot } from "../../../../../utils/data";
+import type { TBrewSnapshot, TRecipeGraph } from "../../../../../utils/data";
 
 export interface TRecipeFormValues
 	extends
 		Pick<TRecipeGraph, "isQuickBrew" | "name">,
 		Pick<
-			TRecipeSnapshot,
+			TBrewSnapshot,
 			"machine" | "grinder" | "grindSize" | "dose" | "yield" | "beans" | "pressure" | "notes"
 		> {
 	brewTime: TInputGroupSelectFieldValue<number, "s" | "m">;

@@ -26,7 +26,7 @@ export const NoRecipesFound = ({ hasQuery, onClearQuery }: NoRecipesFoundProps) 
 				<EmptyDescription>
 					{hasQuery
 						? "Try a different search, or clear the active filters."
-						: "Create your first recipe to start dialling in shots."}
+						: "Log a shot, or create your first recipe to start dialling in."}
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
@@ -35,10 +35,15 @@ export const NoRecipesFound = ({ hasQuery, onClearQuery }: NoRecipesFoundProps) 
 						Clear filters
 					</Button>
 				) : (
-					<Link variant="default" size="sm" to="/recipes/new">
-						<Plus />
-						New recipe
-					</Link>
+					<div className="flex flex-row gap-2">
+						<Button variant="ghost" size="sm">
+							Log a shot
+						</Button>
+						<Link variant="outline" size="sm" to="/recipes/new">
+							<Plus />
+							New recipe
+						</Link>
+					</div>
 				)}
 			</EmptyContent>
 		</Empty>

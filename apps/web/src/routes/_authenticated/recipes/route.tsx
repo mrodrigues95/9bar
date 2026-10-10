@@ -129,6 +129,9 @@ const Recipes = () => {
 			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">
+						<Button variant="ghost" size="sm">
+							Log a shot
+						</Button>
 						<Link variant="outline" size="sm" to="/recipes/new">
 							<Plus />
 							New recipe
@@ -146,8 +149,8 @@ const Recipes = () => {
 								onChange={(event) => {
 									setQuery(event.target.value);
 								}}
-								placeholder="Search recipes…"
-								aria-label="Search recipes"
+								placeholder="Search name or beans…"
+								aria-label="Search recipes by name or beans"
 							/>
 						</InputGroup>
 						<FilterBarAddTrigger
