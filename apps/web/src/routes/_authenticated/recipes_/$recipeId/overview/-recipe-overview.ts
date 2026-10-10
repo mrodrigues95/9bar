@@ -1,4 +1,3 @@
-import { DateFormatter, parseAbsolute } from "@internationalized/date";
 import {
 	METHOD_LABELS,
 	getBrewSnapshot,
@@ -8,38 +7,21 @@ import {
 	type TRecipe,
 	type TRecipeStatus,
 } from "../../../../../utils/data";
+import {
+	formatBrewTime,
+	formatGrams,
+	formatPressure,
+	formatTemperature,
+} from "../../../../../utils/format";
 
-const TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-const CHANGE_DATE_FORMATTER = new DateFormatter("en-GB", {
-	day: "numeric",
-	month: "short",
-	timeZone: TIME_ZONE,
-});
-
-export const formatChangeDate = (changedAt: string): string => {
-	return CHANGE_DATE_FORMATTER.format(parseAbsolute(changedAt, TIME_ZONE).toDate());
-};
-
-export const formatRatio = (snapshot: Pick<TBrewSnapshot, "dose" | "yield">): string => {
+export const formatRatio = (snapshot: Pick<TBrewSnapshot, "dose" | "yield">) => {
 	if (snapshot.dose <= 0) {
 		return "—";
 	}
 	return `1:${Math.round((snapshot.yield / snapshot.dose) * 10) / 10}`;
 };
 
-export interface TReferenceShot {
-	log: TLog;
-	snapshot: TBrewSnapshot;
-	/** True when the shot is the recipe's pinned log, false when it fell back to the latest balanced shot. */
-	pinned: boolean;
-}
-
-/** The pinned shot, or the newest balanced shot until one is pinned. */
-export const resolveReferenceShot = (
-	recipe: Pick<TRecipe, "pinnedLogId">,
-	logs: Array<TLog>,
-): TReferenceShot | null => {
+export const resolveReferenceShot = (recipe: Pick<TRecipe, "pinnedLogId">, logs: Array<TLog>) => {
 	const pinned =
 		recipe.pinnedLogId === null
 			? null
@@ -62,15 +44,10 @@ export const resolveReferenceShot = (
 	return { log: balanced, snapshot, pinned: false };
 };
 
-export interface TStatusSuggestion {
-	status: TRecipeStatus;
-	reason: string;
-}
-
 const BALANCED_RUN_LENGTH = 3;
 const OFF_RUN_LENGTH = 2;
 
-const leadingRun = (logs: Array<TLog>, matches: (log: TLog) => boolean): number => {
+const leadingRun = (logs: Array<TLog>, matches: (log: TLog) => boolean) => {
 	let count = 0;
 	for (const log of logs) {
 		if (!matches(log)) {
@@ -81,11 +58,10 @@ const leadingRun = (logs: Array<TLog>, matches: (log: TLog) => boolean): number 
 	return count;
 };
 
-/** Derives a status suggestion from recent log verdicts; never suggests anything for a retired recipe. */
 export const suggestRecipeStatus = (
 	recipe: { status: TRecipeStatus | null },
 	logs: Array<TLog>,
-): TStatusSuggestion | null => {
+): { status: TRecipeStatus; reason: string } | null => {
 	if (recipe.status === "retired") {
 		return null;
 	}
@@ -101,8 +77,7 @@ export const suggestRecipeStatus = (
 		return null;
 	}
 
-	const recent = logs.slice(0, BALANCED_RUN_LENGTH);
-	if (recent.length === BALANCED_RUN_LENGTH && recent.every((log) => log.verdict === "balanced")) {
+	if (leadingRun(logs, (log) => log.verdict === "balanced") >= BALANCED_RUN_LENGTH) {
 		return {
 			status: "dialed-in",
 			reason: "The last three shots were all balanced. Mark this recipe as dialed in?",
@@ -110,13 +85,6 @@ export const suggestRecipeStatus = (
 	}
 	return null;
 };
-
-export interface TRecipeChangeLine {
-	label: string;
-	previous: string;
-	next: string;
-	changedAt: string;
-}
 
 const CHANGE_FIELDS = [
 	"method",
@@ -148,7 +116,7 @@ const CHANGE_FIELD_LABELS: Record<TChangeField, string> = {
 	notes: "Notes",
 };
 
-const hasChanged = (previous: TBrewSnapshot, next: TBrewSnapshot, field: TChangeField): boolean => {
+const hasChanged = (previous: TBrewSnapshot, next: TBrewSnapshot, field: TChangeField) => {
 	if (field === "brewTime") {
 		return previous.brewTime !== next.brewTime || previous.brewTimeUnit !== next.brewTimeUnit;
 	}
@@ -160,20 +128,20 @@ const hasChanged = (previous: TBrewSnapshot, next: TBrewSnapshot, field: TChange
 	return previous[field] !== next[field];
 };
 
-const formatValue = (snapshot: TBrewSnapshot, field: TChangeField): string => {
+const formatValue = (snapshot: TBrewSnapshot, field: TChangeField) => {
 	switch (field) {
 		case "method":
-			return METHOD_LABELS[snapshot.method];
+			return METHOD_LABELS[snapshot.method] ?? snapshot.method;
 		case "brewTime":
-			return `${snapshot.brewTime}${snapshot.brewTimeUnit}`;
+			return formatBrewTime(snapshot);
 		case "temperature":
-			return `${snapshot.temperature}°${snapshot.temperatureUnit}`;
+			return formatTemperature(snapshot);
 		case "dose":
-			return `${snapshot.dose}g`;
+			return formatGrams(snapshot.dose);
 		case "yield":
-			return `${snapshot.yield}g`;
+			return formatGrams(snapshot.yield);
 		case "pressure":
-			return `${snapshot.pressure} bar`;
+			return formatPressure(snapshot.pressure);
 		case "notes":
 			return snapshot.notes ?? "—";
 		default:
@@ -181,10 +149,9 @@ const formatValue = (snapshot: TBrewSnapshot, field: TChangeField): string => {
 	}
 };
 
-/** Diffs consecutive recipe versions, newest first. */
-export const getRecipeChangeLines = (recipeId: number): Array<TRecipeChangeLine> => {
+export const getRecipeChangeLines = (recipeId: number) => {
 	const snapshots = getRecipeSnapshots(recipeId);
-	const lines: Array<TRecipeChangeLine> = [];
+	const lines: Array<{ label: string; previous: string; next: string; changedAt: string }> = [];
 
 	for (let index = 0; index < snapshots.length - 1; index += 1) {
 		const next = snapshots[index];

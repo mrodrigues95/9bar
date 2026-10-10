@@ -26,6 +26,7 @@ import { MenuItemLink } from "../../../../../components";
 import {
 	METHOD_LABELS,
 	RECIPE_STATUS_LABELS,
+	RECIPE_STATUS_OPTIONS,
 	VERDICT_LABELS,
 	grinderName,
 	machineName,
@@ -34,10 +35,15 @@ import {
 	type TRecipe,
 	type TRecipeStatus,
 } from "../../../../../utils/data";
-import { formatShotAt } from "../../../../../utils/format";
-import { objectKeys } from "../../../../../utils/utils";
 import {
+	formatBrewTime,
 	formatChangeDate,
+	formatGrams,
+	formatPressure,
+	formatShotAt,
+	formatTemperature,
+} from "../../../../../utils/format";
+import {
 	formatRatio,
 	getRecipeChangeLines,
 	resolveReferenceShot,
@@ -46,10 +52,7 @@ import {
 
 const routeApi = getRouteApi("/_authenticated/recipes_/$recipeId");
 
-const STATUS_OPTIONS = objectKeys(RECIPE_STATUS_LABELS).map((id) => ({
-	id,
-	label: RECIPE_STATUS_LABELS[id],
-}));
+const STATUS_OPTIONS = RECIPE_STATUS_OPTIONS.map(({ id, name }) => ({ id, label: name }));
 
 const noop = () => {};
 
@@ -69,11 +72,11 @@ const Stat = ({ label, value }: { label: string; value: string }) => {
 const StatsGrid = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
 	return (
 		<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-5">
-			<Stat label="Dose" value={`${snapshot.dose}g`} />
-			<Stat label="Yield" value={`${snapshot.yield}g`} />
-			<Stat label="Time" value={`${snapshot.brewTime}${snapshot.brewTimeUnit}`} />
-			<Stat label="Temp" value={`${snapshot.temperature}°${snapshot.temperatureUnit}`} />
-			<Stat label="Pressure" value={`${snapshot.pressure} bar`} />
+			<Stat label="Dose" value={formatGrams(snapshot.dose)} />
+			<Stat label="Yield" value={formatGrams(snapshot.yield)} />
+			<Stat label="Time" value={formatBrewTime(snapshot)} />
+			<Stat label="Temp" value={formatTemperature(snapshot)} />
+			<Stat label="Pressure" value={formatPressure(snapshot.pressure)} />
 		</dl>
 	);
 };
@@ -95,7 +98,7 @@ const DetailsList = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
 	return (
 		<dl className="flex flex-col gap-1">
 			<DetailRow label="Beans" value={snapshot.beans} />
-			<DetailRow label="Method" value={METHOD_LABELS[snapshot.method]} />
+			<DetailRow label="Method" value={METHOD_LABELS[snapshot.method] ?? snapshot.method} />
 			<DetailRow label="Machine" value={machineName(snapshot.machine)} />
 			<DetailRow label="Grinder" value={grinderName(snapshot.grinder)} />
 			<DetailRow label="Grind" value={snapshot.grindSize} />
@@ -153,13 +156,10 @@ const ReferenceShotSection = ({
 				<>
 					<Text variant="caption">{formatShotAt(shot.log.shotAt)}</Text>
 					<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-4">
-						<Stat label="Dose" value={`${shot.snapshot.dose}g`} />
-						<Stat label="Yield" value={`${shot.snapshot.yield}g`} />
-						<Stat label="Time" value={`${shot.snapshot.brewTime}${shot.snapshot.brewTimeUnit}`} />
-						<Stat
-							label="Temp"
-							value={`${shot.snapshot.temperature}°${shot.snapshot.temperatureUnit}`}
-						/>
+						<Stat label="Dose" value={formatGrams(shot.snapshot.dose)} />
+						<Stat label="Yield" value={formatGrams(shot.snapshot.yield)} />
+						<Stat label="Time" value={formatBrewTime(shot.snapshot)} />
+						<Stat label="Temp" value={formatTemperature(shot.snapshot)} />
 					</dl>
 				</>
 			) : (

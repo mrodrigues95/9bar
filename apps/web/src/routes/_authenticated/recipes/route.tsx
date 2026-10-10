@@ -121,7 +121,6 @@ const Recipes = () => {
 	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } = useRecipesSearch();
 	const hasQuery = !!q.trim() || !!filters.length;
 
-	// TODO: Add bulk edit actions (Attach to recipe, Delete) once list rows support multi-selection.
 	return (
 		<div className="space-y-4">
 			<Heading as="h1" variant="title">

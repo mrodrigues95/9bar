@@ -38,8 +38,12 @@ import {
 	type TLog,
 	type TRecipe,
 } from "../../../utils/data";
-import { formatShotAt } from "../../../utils/format";
-import { type TRecipesListRow } from "./-recipes-query";
+import { formatBrewTime, formatGrams, formatShotAt } from "../../../utils/format";
+import { ROW_KIND_NAMES, type TRecipesListRow } from "./-recipes-query";
+
+const UNTITLED_NAME = "(Untitled)";
+
+type TLogRow = Extract<TRecipesListRow, { kind: "attached-log" | "quick-log" }>;
 
 const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
 	return (
@@ -106,7 +110,7 @@ const RecipeRowActions = ({ recipe }: { recipe: TRecipe }) => {
 	);
 };
 
-const AttachedLogActions = ({ name }: { name: string }) => {
+const AttachedLogRowActions = ({ name }: { name: string }) => {
 	return (
 		<MenuTrigger>
 			<IconButton aria-label={`Actions for ${name}`} size="sm" variant="ghost">
@@ -135,13 +139,13 @@ const AttachedLogActions = ({ name }: { name: string }) => {
 	);
 };
 
-const QuickLogActions = ({ log }: { log: TLog }) => {
+const QuickLogRowActions = ({ log }: { log: TLog }) => {
 	return (
 		<MenuTrigger>
-			<IconButton aria-label="Actions for (Untitled)" size="sm" variant="ghost">
+			<IconButton aria-label={`Actions for ${UNTITLED_NAME}`} size="sm" variant="ghost">
 				<EllipsisVertical />
 			</IconButton>
-			<Menu aria-label="Actions for (Untitled)" width="content">
+			<Menu aria-label={`Actions for ${UNTITLED_NAME}`} width="content">
 				<MenuItemLink
 					to="/recipes/$recipeId/logs/$logId/edit"
 					params={{ recipeId: String(log.id), logId: String(log.id) }}
@@ -177,8 +181,8 @@ const DoseLine = ({ row }: { row: TRecipesListRow }) => {
 		<Text variant="caption" className="mt-0.5 flex min-w-0 items-center gap-1 font-mono">
 			<Scale className="size-3 shrink-0" />
 			<span className="truncate">
-				{row.snapshot.dose}g → {row.snapshot.yield}g · {row.snapshot.brewTime}
-				{row.snapshot.brewTimeUnit}
+				{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
+				{formatBrewTime(row.snapshot)}
 			</span>
 		</Text>
 	);
@@ -192,7 +196,7 @@ const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> 
 					<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
 					<Badge variant="secondary">
 						<Fingerprint />
-						Recipe
+						{ROW_KIND_NAMES.recipe}
 					</Badge>
 					<Badge variant="outline">{RECIPE_STATUS_LABELS[row.recipe.status]}</Badge>
 				</div>
@@ -206,28 +210,30 @@ const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> 
 	);
 };
 
-const LogRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "log" }> }) => {
-	const name = row.recipe?.name ?? "(Untitled)";
-
+const LogRow = ({ row }: { row: TLogRow }) => {
 	return (
 		<li className="flex items-center gap-3 py-2.5">
 			<div className="min-w-0 flex-1">
 				<div className="flex min-w-0 items-center gap-2">
-					{row.recipe ? (
+					{row.kind === "attached-log" ? (
 						<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
 					) : (
 						<Text variant="label" color="primary" className="truncate">
-							{name}
+							{UNTITLED_NAME}
 						</Text>
 					)}
-					<Badge variant="outline">{row.recipe ? "Attached log" : "Quick log"}</Badge>
+					<Badge variant="outline">{ROW_KIND_NAMES[row.kind]}</Badge>
 					{row.log.verdict && <Badge variant="outline">{VERDICT_LABELS[row.log.verdict]}</Badge>}
 				</div>
 				<DoseLine row={row} />
 				<RowMeta snapshot={row.snapshot} shotAt={row.log.shotAt} />
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
-				{row.recipe ? <AttachedLogActions name={name} /> : <QuickLogActions log={row.log} />}
+				{row.kind === "attached-log" ? (
+					<AttachedLogRowActions name={row.recipe.name} />
+				) : (
+					<QuickLogRowActions log={row.log} />
+				)}
 			</div>
 		</li>
 	);

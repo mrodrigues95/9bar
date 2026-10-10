@@ -1,68 +1,14 @@
-export type TMethod = "espresso" | "pour-over" | "immersion" | "other";
-export type TVerdict = "under-extracted" | "balanced" | "over-extracted";
-export type TRecipeStatus = "dialing-in" | "dialed-in" | "needs-retune" | "retired";
+import { toLabels } from "../utils";
+import {
+	type TBrewSnapshot,
+	type TBrewValues,
+	type TLog,
+	type TMethod,
+	type TRecipe,
+	type TRecipeStatus,
+	type TVerdict,
+} from "./tables";
 
-/**
- * One immutable row of brew values.
- * A non-null `recipeId` makes it a version of that recipe; `null` makes it a log's own copy.
- */
-export interface TBrewSnapshot {
-	id: number;
-	uuid: string;
-	recipeId: number | null;
-	method: TMethod;
-	// identity — fixed on attached logs
-	beans: string;
-	machine: string;
-	grinder: string;
-	// variable — each log sets its own
-	grindSize: string;
-	dose: number;
-	yield: number;
-	brewTime: number;
-	brewTimeUnit: "s" | "m";
-	temperature: number;
-	temperatureUnit: "C" | "F";
-	pressure: number;
-	notes: string | null;
-	createdAt: string;
-	updatedAt: string;
-}
-
-/** Every brew value column, without the snapshot's own identity and timestamps. */
-export type TBrewValues = Omit<
-	TBrewSnapshot,
-	"id" | "uuid" | "recipeId" | "createdAt" | "updatedAt"
->;
-
-/** A committed recipe. Its logs are the `TLog` rows whose `recipeId` points back here. */
-export interface TRecipe {
-	id: number;
-	uuid: string;
-	name: string;
-	brewSnapshotId: number;
-	status: TRecipeStatus;
-	pinnedLogId: number | null;
-	createdAt: string;
-	updatedAt: string;
-}
-
-/** One brew. `recipeId: null` marks a quick log with no recipe. */
-export interface TLog {
-	id: number;
-	uuid: string;
-	recipeId: number | null;
-	brewSnapshotId: number;
-	verdict: TVerdict | null;
-	shotAt: string;
-	createdAt: string;
-	updatedAt: string;
-}
-
-/**
- * Legacy graph view of a recipe, or of a quick log, kept for the detail, logs, and form routes.
- * New code reads the tables above instead.
- */
 export interface TRecipeGraphBase {
 	id: number;
 	uuid: string;
@@ -78,33 +24,26 @@ export type TRecipeGraph =
 	| (TRecipeGraphBase & { isQuickBrew: true; log: TLog })
 	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLog> });
 
-// ---------------------------- tables ----------------------------
-
-export const brewSnapshots: Array<TBrewSnapshot> = [];
+const brewSnapshots: Array<TBrewSnapshot> = [];
 export const recipes: Array<TRecipe> = [];
 export const logs: Array<TLog> = [];
 
-// ---------------------------- accessors ----------------------------
-
-export const getBrewSnapshot = (id: number): TBrewSnapshot | undefined => {
+export const getBrewSnapshot = (id: number) => {
 	return brewSnapshots.find((snapshot) => snapshot.id === id);
 };
 
-/** A recipe's versions, newest first — change history reads consecutive pairs. */
-export const getRecipeSnapshots = (recipeId: number): Array<TBrewSnapshot> => {
+export const getRecipeSnapshots = (recipeId: number) => {
 	return brewSnapshots
 		.filter((snapshot) => snapshot.recipeId === recipeId)
 		.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 };
 
-/** A recipe's attached logs, newest first. Quick logs (`recipeId: null`) never match. */
-export const getRecipeLogs = (recipeId: number): Array<TLog> => {
+export const getRecipeLogs = (recipeId: number) => {
 	return logs
 		.filter((log) => log.recipeId === recipeId)
 		.sort((a, b) => b.shotAt.localeCompare(a.shotAt));
 };
 
-/** The legacy graph view the detail, logs, and form routes consume. */
 export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
 	const recipe = recipes.find((row) => row.id === id);
 	if (recipe) {
@@ -148,29 +87,29 @@ export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
 	};
 };
 
-// ---------------------------- labels ----------------------------
+export const METHOD_OPTIONS = [
+	{ id: "espresso", name: "Espresso" },
+	{ id: "pour-over", name: "Pour over" },
+	{ id: "immersion", name: "Immersion" },
+	{ id: "other", name: "Other" },
+] as const satisfies ReadonlyArray<{ id: TMethod; name: string }>;
 
-export const METHOD_LABELS: Record<TMethod, string> = {
-	espresso: "Espresso",
-	"pour-over": "Pour over",
-	immersion: "Immersion",
-	other: "Other",
-};
+export const VERDICT_OPTIONS = [
+	{ id: "under-extracted", name: "Under-extracted" },
+	{ id: "balanced", name: "Balanced" },
+	{ id: "over-extracted", name: "Over-extracted" },
+] as const satisfies ReadonlyArray<{ id: TVerdict; name: string }>;
 
-export const VERDICT_LABELS: Record<TVerdict, string> = {
-	"under-extracted": "Under-extracted",
-	balanced: "Balanced",
-	"over-extracted": "Over-extracted",
-};
+export const RECIPE_STATUS_OPTIONS = [
+	{ id: "dialing-in", name: "Dialing in" },
+	{ id: "dialed-in", name: "Dialed in" },
+	{ id: "needs-retune", name: "Needs retune" },
+	{ id: "retired", name: "Retired" },
+] as const satisfies ReadonlyArray<{ id: TRecipeStatus; name: string }>;
 
-export const RECIPE_STATUS_LABELS: Record<TRecipeStatus, string> = {
-	"dialing-in": "Dialing in",
-	"dialed-in": "Dialed in",
-	"needs-retune": "Needs retune",
-	retired: "Retired",
-};
-
-// ---------------------------- seeds ----------------------------
+export const METHOD_LABELS = toLabels(METHOD_OPTIONS);
+export const VERDICT_LABELS = toLabels(VERDICT_OPTIONS);
+export const RECIPE_STATUS_LABELS = toLabels(RECIPE_STATUS_OPTIONS);
 
 type TBrewValuesInput = Partial<TBrewValues> &
 	Pick<
@@ -178,84 +117,46 @@ type TBrewValuesInput = Partial<TBrewValues> &
 		"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
 	>;
 
-/** Espresso defaults for the columns most recipes leave alone. */
 const brewValues = (seed: TBrewValuesInput): TBrewValues => {
 	return {
-		method: seed.method ?? "espresso",
-		beans: seed.beans,
-		machine: seed.machine,
-		grinder: seed.grinder,
-		grindSize: seed.grindSize,
-		dose: seed.dose,
-		yield: seed.yield,
-		brewTime: seed.brewTime,
-		brewTimeUnit: seed.brewTimeUnit,
-		temperature: seed.temperature ?? 93,
-		temperatureUnit: seed.temperatureUnit ?? "C",
-		pressure: seed.pressure ?? 9,
-		notes: seed.notes ?? null,
+		method: "espresso",
+		temperature: 93,
+		temperatureUnit: "C",
+		pressure: 9,
+		notes: null,
+		...seed,
 	};
 };
 
-const applyOverrides = (values: TBrewValues, overrides: Partial<TBrewValues>): TBrewValues => {
-	return {
-		method: overrides.method ?? values.method,
-		beans: overrides.beans ?? values.beans,
-		machine: overrides.machine ?? values.machine,
-		grinder: overrides.grinder ?? values.grinder,
-		grindSize: overrides.grindSize ?? values.grindSize,
-		dose: overrides.dose ?? values.dose,
-		yield: overrides.yield ?? values.yield,
-		brewTime: overrides.brewTime ?? values.brewTime,
-		brewTimeUnit: overrides.brewTimeUnit ?? values.brewTimeUnit,
-		temperature: overrides.temperature ?? values.temperature,
-		temperatureUnit: overrides.temperatureUnit ?? values.temperatureUnit,
-		pressure: overrides.pressure ?? values.pressure,
-		notes: overrides.notes ?? values.notes,
-	};
+const applyOverrides = (values: TBrewValues, overrides: Partial<TBrewValues>) => {
+	return { ...values, ...overrides };
 };
-
-interface TLogSeed {
-	shotAt: string;
-	verdict?: TVerdict;
-	/** Overrides on the recipe's current values, so each log owns what it recorded. */
-	values?: Partial<TBrewValues>;
-}
 
 interface TRecipeSeed {
 	name: string;
 	status?: TRecipeStatus;
-	/** Oldest → newest. The first version sets every column; later ones state only what changed. */
 	snapshots: [
 		{ at: string; values: TBrewValues },
 		...Array<{ at: string; values: Partial<TBrewValues> }>,
 	];
-	logs?: Array<TLogSeed>;
-	/** Index into `logs` of the shot pinned as the reference shot. */
+	logs?: Array<{
+		shotAt: string;
+		verdict?: TVerdict;
+		values?: Partial<TBrewValues>;
+	}>;
 	referenceLogIndex?: number;
-}
-
-interface TQuickLogSeed {
-	shotAt: string;
-	verdict?: TVerdict;
-	values: TBrewValues;
 }
 
 let nextSnapshotId = 0;
 let nextRecipeId = 0;
-// Log ids start above the recipe id range so a quick log's graph id never collides with a recipe's.
 let nextLogId = 1000;
 
-const createBrewSnapshot = (
-	ownerRecipeId: number | null,
-	values: TBrewValues,
-	at: string,
-): TBrewSnapshot => {
+const createBrewSnapshot = (recipeId: number | null, values: TBrewValues, at: string) => {
 	nextSnapshotId += 1;
 	const snapshot: TBrewSnapshot = {
 		id: nextSnapshotId,
 		uuid: `snapshot-uuid-${nextSnapshotId}`,
-		recipeId: ownerRecipeId,
+		recipeId,
 		...values,
 		createdAt: at,
 		updatedAt: at,
@@ -264,7 +165,7 @@ const createBrewSnapshot = (
 	return snapshot;
 };
 
-const createRecipe = (seed: TRecipeSeed): TRecipe => {
+const createRecipe = (seed: TRecipeSeed) => {
 	nextRecipeId += 1;
 	const id = nextRecipeId;
 	const [firstVersion, ...laterVersions] = seed.snapshots;
@@ -316,7 +217,7 @@ const createRecipe = (seed: TRecipeSeed): TRecipe => {
 	return recipe;
 };
 
-const createQuickLog = (seed: TQuickLogSeed): TLog => {
+const createQuickLog = (seed: { shotAt: string; verdict?: TVerdict; values: TBrewValues }) => {
 	nextLogId += 1;
 	const snapshot = createBrewSnapshot(null, seed.values, seed.shotAt);
 	const log: TLog = {
@@ -332,8 +233,6 @@ const createQuickLog = (seed: TQuickLogSeed): TLog => {
 	logs.push(log);
 	return log;
 };
-
-// ---------------------------- seed data ----------------------------
 
 createRecipe({
 	name: "Morning Espresso",
@@ -955,10 +854,10 @@ export const GRINDER_OPTIONS = [
 	{ id: "other", name: "Other" },
 ] as const;
 
-export const machineName = (id: string): string => {
+export const machineName = (id: string) => {
 	return MACHINE_OPTIONS.find((option) => option.id === id)?.name ?? id;
 };
 
-export const grinderName = (id: string): string => {
+export const grinderName = (id: string) => {
 	return GRINDER_OPTIONS.find((option) => option.id === id)?.name ?? id;
 };

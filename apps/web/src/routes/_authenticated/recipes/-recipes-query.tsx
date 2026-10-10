@@ -5,9 +5,9 @@ import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/co
 import {
 	GRINDER_OPTIONS,
 	MACHINE_OPTIONS,
-	METHOD_LABELS,
-	RECIPE_STATUS_LABELS,
-	VERDICT_LABELS,
+	METHOD_OPTIONS,
+	RECIPE_STATUS_OPTIONS,
+	VERDICT_OPTIONS,
 	getBrewSnapshot,
 	getRecipeLogs,
 	logs,
@@ -16,7 +16,7 @@ import {
 	type TLog,
 	type TRecipe,
 } from "../../../utils/data";
-import { objectKeys } from "../../../utils/utils";
+import { toLabels } from "../../../utils/utils";
 
 export const PAGE_SIZE = 10;
 
@@ -25,6 +25,10 @@ const OPERATORS = {
 	"is-not": { id: "is-not", label: "is not" },
 	"is-any-of": { id: "is-any-of", label: "is any of" },
 	"is-none-of": { id: "is-none-of", label: "is none of" },
+	"include-all-of": { id: "include-all-of", label: "include all of" },
+	"include-any-of": { id: "include-any-of", label: "include any of" },
+	"exclude-if-any-of": { id: "exclude-if-any-of", label: "exclude if any of" },
+	"exclude-if-all": { id: "exclude-if-all", label: "exclude if all" },
 } as const;
 
 const ATTRIBUTE_OPERATOR_PAIRS = [
@@ -39,15 +43,17 @@ const ATTRIBUTE_OPERATORS = [
 	OPERATORS["is-none-of"],
 ];
 
-const toOptions = <T extends string>(labels: Record<T, string>) => {
-	return objectKeys(labels).map((id) => ({ id, label: labels[id] }));
+const toFilterOptions = (options: ReadonlyArray<{ id: string; name: string }>) => {
+	return options.map((option) => ({ id: option.id, label: option.name }));
 };
 
-export const ROW_KIND_LABELS = {
-	recipe: "Recipes",
-	"attached-log": "Attached logs",
-	"quick-log": "Quick logs",
-} as const;
+const ROW_KIND_OPTIONS = [
+	{ id: "recipe", name: "Recipe", pluralName: "Recipes" },
+	{ id: "attached-log", name: "Attached log", pluralName: "Attached logs" },
+	{ id: "quick-log", name: "Quick log", pluralName: "Quick logs" },
+] as const;
+
+export const ROW_KIND_NAMES = toLabels(ROW_KIND_OPTIONS);
 
 export const FILTER_DEFINITIONS = [
 	{
@@ -58,7 +64,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: toOptions(ROW_KIND_LABELS),
+		options: ROW_KIND_OPTIONS.map(({ id, pluralName }) => ({ id, label: pluralName })),
 	},
 	{
 		id: "recipe",
@@ -78,7 +84,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: toOptions(METHOD_LABELS),
+		options: toFilterOptions(METHOD_OPTIONS),
 	},
 	{
 		id: "verdict",
@@ -88,7 +94,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: toOptions(VERDICT_LABELS),
+		options: toFilterOptions(VERDICT_OPTIONS),
 	},
 	{
 		id: "status",
@@ -98,7 +104,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: toOptions(RECIPE_STATUS_LABELS),
+		options: toFilterOptions(RECIPE_STATUS_OPTIONS),
 	},
 	{
 		id: "machine",
@@ -108,7 +114,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: MACHINE_OPTIONS.map((option) => ({ id: option.id, label: option.name })),
+		options: toFilterOptions(MACHINE_OPTIONS),
 	},
 	{
 		id: "grinder",
@@ -118,7 +124,7 @@ export const FILTER_DEFINITIONS = [
 		operators: ATTRIBUTE_OPERATORS,
 		defaultOperatorId: OPERATORS.is.id,
 		operatorPairs: ATTRIBUTE_OPERATOR_PAIRS,
-		options: GRINDER_OPTIONS.map((option) => ({ id: option.id, label: option.name })),
+		options: toFilterOptions(GRINDER_OPTIONS),
 	},
 ] as const satisfies ReadonlyArray<FilterBarDefinition>;
 
@@ -138,9 +144,6 @@ export const FILTER_PARAM_SCHEMA = {
 	grinder: filterParamSchema,
 } satisfies Record<TFilterId, typeof filterParamSchema>;
 
-export type TRecipesRowKind = keyof typeof ROW_KIND_LABELS;
-
-/** One row of the Recipes list: a recipe, an attached log, or a quick log. */
 export type TRecipesListRow =
 	| {
 			kind: "recipe";
@@ -150,23 +153,22 @@ export type TRecipesListRow =
 			snapshot: TBrewSnapshot;
 	  }
 	| {
-			kind: "log";
+			kind: "attached-log";
 			key: string;
 			lastActivityAt: string;
 			log: TLog;
 			snapshot: TBrewSnapshot;
-			recipe: TRecipe | null;
+			recipe: TRecipe;
+	  }
+	| {
+			kind: "quick-log";
+			key: string;
+			lastActivityAt: string;
+			log: TLog;
+			snapshot: TBrewSnapshot;
 	  };
 
-export const getRowKind = (row: TRecipesListRow): TRecipesRowKind => {
-	if (row.kind === "recipe") {
-		return "recipe";
-	}
-	return row.recipe ? "attached-log" : "quick-log";
-};
-
-/** A recipe's last activity: its newest log, or its last edit. */
-const getRecipeLastActivity = (recipe: TRecipe): string => {
+const getRecipeLastActivity = (recipe: TRecipe) => {
 	const [latestLog] = getRecipeLogs(recipe.id);
 	if (latestLog && latestLog.shotAt > recipe.updatedAt) {
 		return latestLog.shotAt;
@@ -174,7 +176,7 @@ const getRecipeLastActivity = (recipe: TRecipe): string => {
 	return recipe.updatedAt;
 };
 
-const buildRows = (): Array<TRecipesListRow> => {
+const buildRows = () => {
 	const rows: Array<TRecipesListRow> = [];
 
 	for (const recipe of recipes) {
@@ -196,16 +198,16 @@ const buildRows = (): Array<TRecipesListRow> => {
 		if (!snapshot) {
 			continue;
 		}
-		const recipe =
-			log.recipeId === null ? null : (recipes.find((row) => row.id === log.recipeId) ?? null);
-		rows.push({
-			kind: "log",
-			key: `log-${log.id}`,
-			lastActivityAt: log.shotAt,
-			log,
-			snapshot,
-			recipe,
-		});
+		const key = `log-${log.id}`;
+		if (log.recipeId === null) {
+			rows.push({ kind: "quick-log", key, lastActivityAt: log.shotAt, log, snapshot });
+			continue;
+		}
+		const recipe = recipes.find((row) => row.id === log.recipeId);
+		if (!recipe) {
+			continue;
+		}
+		rows.push({ kind: "attached-log", key, lastActivityAt: log.shotAt, log, snapshot, recipe });
 	}
 
 	return rows;
@@ -216,7 +218,7 @@ const buildRows = (): Array<TRecipesListRow> => {
  * dropping unknown definitions, operators, and values so a hand-edited URL
  * degrades instead of throwing.
  */
-export const decodeFilters = (params: TFilterSearchParams): Array<FilterBarFilterState> => {
+export const decodeFilters = (params: TFilterSearchParams) => {
 	const filters: Array<FilterBarFilterState> = [];
 	for (const definition of FILTER_DEFINITIONS) {
 		const param = params[definition.id];
@@ -235,7 +237,7 @@ export const decodeFilters = (params: TFilterSearchParams): Array<FilterBarFilte
 			.slice(operatorSeparator + 1)
 			.split("|")
 			.filter((value) => definition.options.some((option) => option.id === value));
-		if (values.length === 0) {
+		if (!values.length) {
 			continue;
 		}
 		filters.push({ filterId: definition.id, operatorId, values });
@@ -244,7 +246,7 @@ export const decodeFilters = (params: TFilterSearchParams): Array<FilterBarFilte
 };
 
 /** Writes active filters into URL params; empty filters become `undefined` so a removed chip leaves the URL. */
-export const encodeFilters = (filters: Array<FilterBarFilterState>): TFilterSearchParams => {
+export const encodeFilters = (filters: Array<FilterBarFilterState>) => {
 	const params: TFilterSearchParams = {};
 	const filterByFilterId = new Map<string, FilterBarFilterState>(
 		filters.map((filter) => [filter.filterId, filter]),
@@ -259,7 +261,7 @@ export const encodeFilters = (filters: Array<FilterBarFilterState>): TFilterSear
 };
 
 /** Applies one filter's operator to a field value; unsupported operators keep the row. */
-const matchesOperator = (operatorId: string, selected: Array<string>, value: string): boolean => {
+const matchesOperator = (operatorId: string, selected: Array<string>, value: string) => {
 	const isSelected = selected.includes(value);
 	if (operatorId === "is" || operatorId === "is-any-of") {
 		return isSelected;
@@ -270,33 +272,27 @@ const matchesOperator = (operatorId: string, selected: Array<string>, value: str
 	return true;
 };
 
-/**
- * Row-scoped filter fields. `null` means the row has no value for that filter, and never matches —
- * so a Verdict filter hides recipe rows and a Status filter hides log rows.
- */
 const FIELD_BY_FILTER_ID = new Map<string, (row: TRecipesListRow) => string | null>([
-	["type", (row) => getRowKind(row)],
-	["recipe", (row) => (row.recipe ? String(row.recipe.id) : null)],
+	["type", (row) => row.kind],
+	["recipe", (row) => (row.kind === "quick-log" ? null : String(row.recipe.id))],
 	["method", (row) => row.snapshot.method],
-	["verdict", (row) => (row.kind === "log" ? row.log.verdict : null)],
+	["verdict", (row) => (row.kind === "recipe" ? null : row.log.verdict)],
 	[
 		"status",
 		(row) => {
 			if (row.kind === "recipe") {
 				return row.recipe.status;
 			}
-			// Selecting Retired also brings back a retired recipe's attached logs.
-			return row.recipe?.status === "retired" ? row.recipe.status : null;
+			return row.kind === "attached-log" && row.recipe.status === "retired"
+				? row.recipe.status
+				: null;
 		},
 	],
 	["machine", (row) => row.snapshot.machine],
 	["grinder", (row) => row.snapshot.grinder],
 ]);
 
-const matchesFilters = (
-	row: TRecipesListRow,
-	filters: ReadonlyArray<FilterBarFilterState>,
-): boolean => {
+const matchesFilters = (row: TRecipesListRow, filters: ReadonlyArray<FilterBarFilterState>) => {
 	return filters.every((filter) => {
 		const readField = FIELD_BY_FILTER_ID.get(filter.filterId);
 		if (!readField) {
@@ -310,28 +306,23 @@ const matchesFilters = (
 	});
 };
 
-const matchesQuery = (values: Array<string>, query: string): boolean => {
+const matchesQuery = (values: Array<string>, query: string) => {
 	return values.some((value) => value.toLowerCase().includes(query));
 };
 
-/** Search matches recipe names and beans only. */
-const matchesSearch = (row: TRecipesListRow, query: string): boolean => {
+const matchesSearch = (row: TRecipesListRow, query: string) => {
 	if (!query) {
 		return true;
 	}
-	if (row.kind === "recipe") {
-		return matchesQuery([row.recipe.name, row.snapshot.beans], query);
-	}
-	return matchesQuery([row.snapshot.beans, row.recipe?.name ?? ""], query);
+	return matchesQuery([row.snapshot.beans, row.kind === "quick-log" ? "" : row.recipe.name], query);
 };
 
-/** Retired recipes and their attached logs are hidden unless Status = Retired or a search matches them. */
 const isRetiredHidden = (
 	row: TRecipesListRow,
 	filters: ReadonlyArray<FilterBarFilterState>,
 	query: string,
-): boolean => {
-	if (row.recipe?.status !== "retired") {
+) => {
+	if (row.kind === "quick-log" || row.recipe.status !== "retired") {
 		return false;
 	}
 	const statusFilter = filters.find((filter) => filter.filterId === "status");
