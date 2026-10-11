@@ -5,24 +5,10 @@ import {
 	type TLog,
 	type TMethod,
 	type TRecipe,
+	type TRecipeGraph,
 	type TRecipeStatus,
 	type TVerdict,
 } from "./tables";
-
-export interface TRecipeGraphBase {
-	id: number;
-	uuid: string;
-	name: string | null;
-	status: TRecipeStatus | null;
-	pinnedLogId: number | null;
-	createdAt: string;
-	updatedAt: string;
-	snapshot: TBrewSnapshot;
-}
-
-export type TRecipeGraph =
-	| (TRecipeGraphBase & { isQuickBrew: true; log: TLog })
-	| (TRecipeGraphBase & { isQuickBrew: false; logs: Array<TLog> });
 
 const brewSnapshots: Array<TBrewSnapshot> = [];
 export const recipes: Array<TRecipe> = [];
@@ -44,47 +30,36 @@ export const getRecipeLogs = (recipeId: number) => {
 		.sort((a, b) => b.shotAt.localeCompare(a.shotAt));
 };
 
-export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
-	const recipe = recipes.find((row) => row.id === id);
-	if (recipe) {
-		const snapshot = getBrewSnapshot(recipe.brewSnapshotId);
-		if (!snapshot) {
-			return undefined;
-		}
-		return {
-			id: recipe.id,
-			uuid: recipe.uuid,
-			name: recipe.name,
-			status: recipe.status,
-			pinnedLogId: recipe.pinnedLogId,
-			createdAt: recipe.createdAt,
-			updatedAt: recipe.updatedAt,
-			isQuickBrew: false,
-			snapshot,
-			logs: getRecipeLogs(recipe.id),
-		};
-	}
+export const getRecipe = (id: number) => {
+	return recipes.find((row) => row.id === id);
+};
 
-	const quickLog = logs.find((log) => log.id === id && log.recipeId === null);
-	if (!quickLog) {
+export const getLog = (id: number) => {
+	return logs.find((row) => row.id === id);
+};
+
+export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
+	const recipe = getRecipe(id);
+	if (!recipe) {
 		return undefined;
 	}
-	const snapshot = getBrewSnapshot(quickLog.brewSnapshotId);
+	const snapshot = getBrewSnapshot(recipe.brewSnapshotId);
 	if (!snapshot) {
 		return undefined;
 	}
-	return {
-		id: quickLog.id,
-		uuid: quickLog.uuid,
-		name: null,
-		status: null,
-		pinnedLogId: null,
-		createdAt: quickLog.createdAt,
-		updatedAt: quickLog.updatedAt,
-		isQuickBrew: true,
-		snapshot,
-		log: quickLog,
-	};
+	return { ...recipe, snapshot, logs: getRecipeLogs(recipe.id) };
+};
+
+export const buildLogGraph = (id: number): (TLog & { snapshot: TBrewSnapshot }) | undefined => {
+	const log = getLog(id);
+	if (!log) {
+		return undefined;
+	}
+	const snapshot = getBrewSnapshot(log.brewSnapshotId);
+	if (!snapshot) {
+		return undefined;
+	}
+	return { ...log, snapshot };
 };
 
 export const METHOD_OPTIONS = [

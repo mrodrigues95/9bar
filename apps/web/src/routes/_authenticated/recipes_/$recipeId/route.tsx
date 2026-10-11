@@ -29,10 +29,10 @@ const Recipe = () => {
 			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<div className="flex flex-col gap-2">
 				<Heading as="h1" variant="title">
-					{recipe.name ?? "(Untitled)"}
+					{recipe.name}
 				</Heading>
 				<Tabs selectedKey={tab}>
-					<TabsList aria-label={`Manage ${recipe.name ?? "recipe"}`}>
+					<TabsList aria-label={`Manage ${recipe.name}`}>
 						<TabLink
 							id={TABS.overview}
 							to="/recipes/$recipeId/overview"
@@ -64,11 +64,11 @@ const Recipe = () => {
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 	loader: ({ params }) => {
 		const recipe = buildRecipeGraph(Number(params.recipeId));
-		if (!recipe || recipe.isQuickBrew) {
+		if (!recipe) {
 			throw redirect({ to: "/recipes" });
 		}
 
-		return withBreadcrumb({ recipe }, { label: recipe.name ?? "(Untitled)" });
+		return withBreadcrumb({ recipe }, { label: recipe.name });
 	},
 	component: Recipe,
 });

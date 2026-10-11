@@ -11,12 +11,6 @@ export const Route = createFileRoute("/_authenticated/recipes_/_form/$recipeId_"
 		return { recipe };
 	},
 	loader: ({ context }) => {
-		return withBreadcrumb(
-			{},
-			{
-				label: context.recipe.name || "Untitled",
-				disabled: context.recipe.isQuickBrew,
-			},
-		);
+		return withBreadcrumb({}, { label: context.recipe.name });
 	},
 });

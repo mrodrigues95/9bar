@@ -1,28 +1,16 @@
 import { createFileRoute, useNavigate, useRouteContext } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
 import { useAppForm } from "@9bar/toolkit/components/composed";
-import { recipeFormOpts, recipeToFormValues } from "../../-form-sections/form-schema";
-import { RecipeForm } from "../../-form-sections/recipe-form";
+import { RecipeForm } from "../../../-form/recipe-form";
+import { recipeFormOpts, recipeToFormValues } from "../../../-form/schemas/recipe-schema";
 
 const EditRecipe = () => {
 	const { recipe } = useRouteContext({
 		from: "/_authenticated/recipes_/_form/$recipeId_",
 	});
-	const { convert } = Route.useSearch();
 	const navigate = useNavigate();
-	const isConverting = convert === "log";
-
-	const defaultValues = {
-		...recipeToFormValues(recipe),
-	};
-	if (isConverting) {
-		defaultValues.isQuickBrew = false;
-	}
-
 	const form = useAppForm({
 		...recipeFormOpts,
-		defaultValues,
+		defaultValues: recipeToFormValues(recipe),
 		onSubmit: async ({ value }) => {
 			console.log("Recipe updated:", value);
 			navigate({
@@ -32,15 +20,10 @@ const EditRecipe = () => {
 		},
 	});
 
-	return <RecipeForm form={form} />;
+	return <RecipeForm form={form} mode="edit" recipeId={String(recipe.id)} />;
 };
-
-const searchSchema = z.object({
-	convert: z.enum(["log"]).optional(),
-});
 
 export const Route = createFileRoute("/_authenticated/recipes_/_form/$recipeId_/edit")({
 	staticData: { breadcrumb: { label: "Edit" } },
-	validateSearch: zodValidator(searchSchema),
 	component: EditRecipe,
 });

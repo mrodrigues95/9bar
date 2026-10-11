@@ -110,17 +110,22 @@ const RecipeRowActions = ({ recipe }: { recipe: TRecipe }) => {
 	);
 };
 
-const AttachedLogRowActions = ({ name }: { name: string }) => {
+const AttachedLogRowActions = ({ log, name }: { log: TLog; name: string }) => {
 	return (
 		<MenuTrigger>
 			<IconButton aria-label={`Actions for ${name}`} size="sm" variant="ghost">
 				<EllipsisVertical />
 			</IconButton>
 			<Menu aria-label={`Actions for ${name}`} width="content">
-				<MenuItem textValue="Edit">
+				<MenuItemLink
+					to="/recipes/logs/$logId/edit"
+					params={{ logId: String(log.id) }}
+					search
+					textValue="Edit"
+				>
 					<Pencil className="size-3" />
 					Edit
-				</MenuItem>
+				</MenuItemLink>
 				<MenuItem textValue="Set as reference shot">
 					<Pin className="size-3" />
 					Set as reference shot
@@ -147,17 +152,23 @@ const QuickLogRowActions = ({ log }: { log: TLog }) => {
 			</IconButton>
 			<Menu aria-label={`Actions for ${UNTITLED_NAME}`} width="content">
 				<MenuItemLink
-					to="/recipes/$recipeId/logs/$logId/edit"
-					params={{ recipeId: String(log.id), logId: String(log.id) }}
+					to="/recipes/logs/$logId/edit"
+					params={{ logId: String(log.id) }}
+					search
 					textValue="Edit"
 				>
 					<Pencil className="size-3" />
 					Edit
 				</MenuItemLink>
-				<MenuItem textValue="Repeat">
+				<MenuItemLink
+					to="/recipes/logs/$logId/repeat"
+					params={{ logId: String(log.id) }}
+					search
+					textValue="Repeat"
+				>
 					<Repeat className="size-3" />
 					Repeat
-				</MenuItem>
+				</MenuItemLink>
 				<MenuItem textValue="Save as recipe">
 					<BookmarkPlus className="size-3" />
 					Save as recipe
@@ -230,7 +241,7 @@ const LogRow = ({ row }: { row: TLogRow }) => {
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				{row.kind === "attached-log" ? (
-					<AttachedLogRowActions name={row.recipe.name} />
+					<AttachedLogRowActions log={row.log} name={row.recipe.name} />
 				) : (
 					<QuickLogRowActions log={row.log} />
 				)}

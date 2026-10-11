@@ -1,30 +1,21 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useMatch } from "@tanstack/react-router";
 import { Heading, Text } from "@9bar/toolkit/components";
 import { AppBreadcrumbs } from "../../../../components";
-import { useRecipeFormMode } from "./-form-sections/use-recipe-form-mode";
 
 const RecipeFormLayout = () => {
-	const { isEditingRecipe, isEditingLog, isCreatingLog } = useRecipeFormMode();
-
-	let title = "New Recipe";
-	if (isEditingRecipe) {
-		title = "Edit Recipe";
-	} else if (isEditingLog) {
-		title = "Edit Log";
-	} else if (isCreatingLog) {
-		title = "New Log";
-	}
+	const isCreatingRecipe = !!useMatch({
+		from: "/_authenticated/recipes_/_form/new",
+		shouldThrow: false,
+	});
 
 	return (
 		<section>
 			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
 			<Heading as="h1" variant="heading">
-				{title}
+				{isCreatingRecipe ? "New Recipe" : "Edit Recipe"}
 			</Heading>
 			<Text variant="body-sm" className="mb-6">
-				{isEditingLog || isCreatingLog
-					? "Log your espresso brew with detailed parameters and notes."
-					: "Track your espresso recipe with detailed parameters and notes."}
+				Track your espresso recipe with detailed parameters and notes.
 			</Text>
 			<Outlet />
 		</section>

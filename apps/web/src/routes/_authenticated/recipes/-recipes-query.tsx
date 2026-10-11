@@ -193,6 +193,8 @@ const buildRows = () => {
 		});
 	}
 
+	const recipesById = new Map<number, TRecipe>(recipes.map((recipe) => [recipe.id, recipe]));
+
 	for (const log of logs) {
 		const snapshot = getBrewSnapshot(log.brewSnapshotId);
 		if (!snapshot) {
@@ -203,7 +205,7 @@ const buildRows = () => {
 			rows.push({ kind: "quick-log", key, lastActivityAt: log.shotAt, log, snapshot });
 			continue;
 		}
-		const recipe = recipes.find((row) => row.id === log.recipeId);
+		const recipe = recipesById.get(log.recipeId);
 		if (!recipe) {
 			continue;
 		}

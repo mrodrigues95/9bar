@@ -1,4 +1,4 @@
-import { createFileRoute, stripSearchParams, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, stripSearchParams, useRouterState } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
@@ -129,9 +129,9 @@ const Recipes = () => {
 			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">
-						<Button variant="ghost" size="sm">
+						<Link variant="ghost" size="sm" to="/recipes/logs/new" search>
 							Log a shot
-						</Button>
+						</Link>
 						<Link variant="outline" size="sm" to="/recipes/new">
 							<Plus />
 							New recipe
@@ -190,6 +190,7 @@ const Recipes = () => {
 					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
 				</CardFooter>
 			</Card>
+			<Outlet />
 		</div>
 	);
 };

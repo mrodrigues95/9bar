@@ -1,4 +1,4 @@
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
 import { EllipsisVertical, Fingerprint, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -30,73 +30,76 @@ const RecipeLogs = () => {
 	}
 
 	return (
-		<Card>
-			<CardHeader className="flex flex-row items-center justify-between gap-4">
-				<Heading variant="section" as="p">
-					Logs
-				</Heading>
-				<Link
-					to="/recipes/$recipeId/logs/new"
-					params={{ recipeId: String(recipe.id) }}
-					variant="default"
-				>
-					<Plus />
-					New Log
-				</Link>
-			</CardHeader>
-			<CardContent className="gap-4">
-				<List>
-					<ListItem className="justify-between">
-						<div className="flex flex-col">
-							<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
-								<Fingerprint className="size-4" />
-								{machine.name} · {grinder.name}
-							</Text>
-							<Text variant="body-sm" className="font-medium" color="primary">
-								{recipe.name ?? "(Untitled)"}
-							</Text>
-							<Text variant="body-sm" className="text-xs">
-								{recipe.snapshot.beans}
-							</Text>
-							<Text variant="body-sm" className="text-xs">
-								{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
-								{recipe.snapshot.brewTimeUnit}
-							</Text>
-						</div>
-						<div className="flex items-center gap-0.5">
-							<MenuTrigger>
-								<IconButton aria-label="Actions" size="sm" variant="ghost">
-									<EllipsisVertical />
-								</IconButton>
-								<Menu>
-									<MenuItem onAction={() => alert("rename")} textValue="Edit">
-										<Pencil className="size-3" />
-										Edit
-									</MenuItem>
-									<MenuSeparator />
-									<MenuItem
-										onAction={() => alert("delete")}
-										variant="destructive"
-										textValue="Delete"
-									>
-										<Trash2 className="size-3" />
-										Delete
-									</MenuItem>
-								</Menu>
-							</MenuTrigger>
-						</div>
-					</ListItem>
-				</List>
-			</CardContent>
-			<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-				<Pagination
-					page={page}
-					pageSize={LOGS_PAGE_SIZE}
-					total={recipe.logs.length}
-					onPageChange={setPage}
-				/>
-			</CardFooter>
-		</Card>
+		<>
+			<Card>
+				<CardHeader className="flex flex-row items-center justify-between gap-4">
+					<Heading variant="section" as="p">
+						Logs
+					</Heading>
+					<Link
+						to="/recipes/$recipeId/logs/new"
+						params={{ recipeId: String(recipe.id) }}
+						variant="default"
+					>
+						<Plus />
+						New Log
+					</Link>
+				</CardHeader>
+				<CardContent className="gap-4">
+					<List>
+						<ListItem className="justify-between">
+							<div className="flex flex-col">
+								<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
+									<Fingerprint className="size-4" />
+									{machine.name} · {grinder.name}
+								</Text>
+								<Text variant="body-sm" className="font-medium" color="primary">
+									{recipe.name}
+								</Text>
+								<Text variant="body-sm" className="text-xs">
+									{recipe.snapshot.beans}
+								</Text>
+								<Text variant="body-sm" className="text-xs">
+									{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
+									{recipe.snapshot.brewTimeUnit}
+								</Text>
+							</div>
+							<div className="flex items-center gap-0.5">
+								<MenuTrigger>
+									<IconButton aria-label="Actions" size="sm" variant="ghost">
+										<EllipsisVertical />
+									</IconButton>
+									<Menu>
+										<MenuItem onAction={() => alert("rename")} textValue="Edit">
+											<Pencil className="size-3" />
+											Edit
+										</MenuItem>
+										<MenuSeparator />
+										<MenuItem
+											onAction={() => alert("delete")}
+											variant="destructive"
+											textValue="Delete"
+										>
+											<Trash2 className="size-3" />
+											Delete
+										</MenuItem>
+									</Menu>
+								</MenuTrigger>
+							</div>
+						</ListItem>
+					</List>
+				</CardContent>
+				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
+					<Pagination
+						page={page}
+						pageSize={LOGS_PAGE_SIZE}
+						total={recipe.logs.length}
+						onPageChange={setPage}
+					/>
+				</CardFooter>
+			</Card>
+			<Outlet />
+		</>
 	);
 };
 

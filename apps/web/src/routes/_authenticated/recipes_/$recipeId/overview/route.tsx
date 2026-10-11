@@ -181,8 +181,8 @@ const ChangeHistorySection = ({ recipeId }: { recipeId: number }) => {
 			</Heading>
 			{lines.length > 0 ? (
 				<ul className="flex flex-col gap-1">
-					{lines.map((line, index) => (
-						<li key={`${line.changedAt}-${line.label}-${index}`}>
+					{lines.map((line) => (
+						<li key={`${line.changedAt}-${line.label}`}>
 							<Text variant="body-sm" color="secondary">
 								{line.label} {line.previous} → {line.next} · {formatChangeDate(line.changedAt)}
 							</Text>
@@ -200,18 +200,15 @@ const ChangeHistorySection = ({ recipeId }: { recipeId: number }) => {
 
 const RecipeOverview = () => {
 	const { recipe } = routeApi.useLoaderData();
-	if (recipe.isQuickBrew) {
-		return null;
-	}
 
 	return (
 		<Card>
 			<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
 				<div className="flex min-w-0 items-center gap-2">
 					<Heading variant="section" as="p" className="truncate">
-						{recipe.name ?? "(Untitled)"}
+						{recipe.name}
 					</Heading>
-					{recipe.status && <Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>}
+					<Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>
 					<Select
 						aria-label="Recipe status"
 						selectedKey={recipe.status}

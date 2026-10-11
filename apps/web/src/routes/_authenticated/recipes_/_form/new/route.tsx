@@ -1,11 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAppForm } from "@9bar/toolkit/components/composed";
-import { recipeFormOpts } from "../-form-sections/form-schema";
-import { RecipeForm } from "../-form-sections/recipe-form";
+import { RecipeForm } from "../../-form/recipe-form";
+import { recipeFormOpts } from "../../-form/schemas/recipe-schema";
 
 const NewRecipe = () => {
 	const navigate = useNavigate();
-
 	const form = useAppForm({
 		...recipeFormOpts,
 		onSubmit: async ({ value }) => {
@@ -14,7 +13,7 @@ const NewRecipe = () => {
 		},
 	});
 
-	return <RecipeForm form={form} />;
+	return <RecipeForm form={form} mode="create" />;
 };
 
 export const Route = createFileRoute("/_authenticated/recipes_/_form/new")({

@@ -49,3 +49,5 @@ export interface TLog {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export type TRecipeGraph = TRecipe & { snapshot: TBrewSnapshot; logs: Array<TLog> };
