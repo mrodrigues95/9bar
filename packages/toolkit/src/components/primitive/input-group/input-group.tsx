@@ -7,7 +7,7 @@ import { Button } from "#components/button";
 import { Input } from "#components/input";
 import { SelectTrigger } from "#components/select";
 import { Textarea } from "#components/textarea";
-import { cn } from "#lib/utils";
+import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { inputGroupAddonVariants, inputGroupButtonVariants } from "./styles";
 
 /** Props for the {@link InputGroup} component. */
@@ -18,7 +18,7 @@ export const InputGroup = ({ className, ...props }: GroupProps) => {
 	return (
 		<Group
 			data-slot="input-group"
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				[
 					"group/input-group relative flex h-7 w-full min-w-0 items-center rounded-md",
 					"border border-input bg-input/20 transition-colors outline-none",
@@ -41,8 +41,7 @@ export const InputGroup = ({ className, ...props }: GroupProps) => {
 					"has-[>[data-align=block-start]]:[&>input]:pb-3",
 					"has-[>[data-align=inline-start]]:[&>input]:pl-1.5",
 				],
-				className,
-			)}
+			])}
 			{...props}
 		/>
 	);
@@ -87,7 +86,7 @@ export const InputGroupButton = ({
 			type={type}
 			data-size={size}
 			variant={variant}
-			className={cn(inputGroupButtonVariants({ size }), className)}
+			className={composeTailwindRenderProps(className, inputGroupButtonVariants({ size }))}
 			{...props}
 		/>
 	);
@@ -111,11 +110,11 @@ export const InputGroupSelectTrigger = ({
 		<SelectTrigger
 			variant={variant}
 			data-size={size}
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				inputGroupButtonVariants({ size }),
-				["bg-transparent", "dark:bg-transparent"],
-				className,
-			)}
+				"bg-transparent",
+				"dark:bg-transparent",
+			])}
 			{...props}
 		/>
 	);

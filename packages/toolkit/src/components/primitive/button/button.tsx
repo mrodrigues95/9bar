@@ -1,14 +1,14 @@
 import { type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { Button as AriaButton, type ButtonProps as AriaButtonProps } from "react-aria-components";
-import { cn } from "#lib/utils";
+import { composeTailwindRenderProps } from "#lib/utils";
 import { buttonVariants } from "./styles";
 
 /** Props for the {@link Button} component. */
 export type ButtonProps = Omit<AriaButtonProps, "className"> &
 	React.RefAttributes<HTMLButtonElement> &
 	VariantProps<typeof buttonVariants> & {
-		className?: string;
+		className?: AriaButtonProps["className"];
 	};
 
 /**
@@ -27,7 +27,7 @@ export const Button = ({
 			data-slot="button"
 			data-variant={variant}
 			data-size={size}
-			className={cn(buttonVariants({ variant, size, className }))}
+			className={composeTailwindRenderProps(className, buttonVariants({ variant, size }))}
 			{...props}
 		/>
 	);

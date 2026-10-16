@@ -14,7 +14,7 @@ import {
 	MenuSubTrigger,
 	MenuTrigger,
 } from "#components/menu";
-import { cn } from "#lib/utils";
+import { composeTailwindRenderProps } from "#lib/utils";
 import { FilterBarChip } from "./filter-bar-chip";
 import type { FilterBarDefinition, FilterBarFilterState, FilterBarState } from "./filter-bar-types";
 import { applyFilterSelection } from "./utils";
@@ -98,7 +98,10 @@ export const FilterBar = ({
 			orientation="horizontal"
 			data-slot="filter-bar"
 			{...toolbarProps}
-			className={cn("flex flex-wrap items-center gap-1.5", toolbarProps.className)}
+			className={composeTailwindRenderProps(
+				toolbarProps.className,
+				"flex flex-wrap items-center gap-1.5",
+			)}
 		>
 			{filters.map((filter) => (
 				<FilterBarChip

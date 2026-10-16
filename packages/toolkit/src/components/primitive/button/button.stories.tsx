@@ -78,3 +78,24 @@ export const WithIcon: Story = {
 		</Button>
 	),
 };
+
+/**
+ * `className` accepts React Aria's render-prop form: a function of the button's
+ * render props. The returned classes merge after the variant classes, so consumer
+ * classes win over the base.
+ */
+export const RenderPropClassName: Story = {
+	args: {
+		size: "sm",
+	},
+	render: (props) => (
+		<Button
+			{...props}
+			className={(renderProps) => {
+				return renderProps.isPressed ? "bg-fuchsia-600" : "bg-teal-600";
+			}}
+		>
+			Press to restyle
+		</Button>
+	),
+};
