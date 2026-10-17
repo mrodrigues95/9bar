@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>9bar · recipe-overview-d vs spec — gap board</title>
+<style>
+	:root {
+		--background: oklch(1 0 0);
+		--page: oklch(0.985 0 0);
+		--foreground: oklch(0.141 0.005 285.823);
+		--muted: oklch(0.967 0.001 286.375);
+		--muted-foreground: oklch(0.552 0.016 285.938);
+		--border: oklch(0.92 0.004 286.32);
+		--primary: oklch(0.21 0.006 285.885);
+		--primary-foreground: oklch(0.985 0 0);
+		--ring: oklch(0.705 0.015 286.067);
+		--destructive: oklch(0.52 0.245 27.325);
+		--ok: oklch(0.52 0.13 155);
+		--ok-bg: oklch(0.96 0.03 155);
+		--miss: oklch(0.52 0.245 27.325);
+		--miss-bg: oklch(0.97 0.025 27);
+		--partial: oklch(0.55 0.13 70);
+		--partial-bg: oklch(0.97 0.04 80);
+		--radius: 0.625rem;
+	}
+	* { box-sizing: border-box; }
+	body {
+		margin: 0;
+		font-family: "Geist Variable", Geist, ui-sans-serif, system-ui, sans-serif;
+		color: var(--foreground);
+		background: var(--page);
+		line-height: 1.5;
+		-webkit-font-smoothing: antialiased;
+	}
+	main { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+	header { max-width: 1120px; margin: 0 auto; padding: 40px 20px 0; }
+	h1 { font-size: 1.9rem; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.015em; }
+	h2 { font-size: 1.05rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+	p { margin: 0; }
+	code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--muted); padding: 1px 5px; border-radius: 4px; }
+	.eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted-foreground); font-weight: 600; }
+	.lede { color: var(--muted-foreground); margin-top: 8px; max-width: 78ch; }
+
+	.summary { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin: 24px 0 28px; }
+	.tile { background: var(--background); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+	.tile .n { font-size: 1.7rem; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1; }
+	.tile .k { font-size: 0.78rem; color: var(--muted-foreground); margin-top: 2px; }
+	.tile.miss .n { color: var(--miss); }
+	.tile.part .n { color: var(--partial); }
+	.tile.ok .n { color: var(--ok); }
+
+	.layout { display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: 22px; align-items: start; }
+	@media (max-width: 940px) { .layout { grid-template-columns: 1fr; } .summary { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+
+	.panel { background: var(--background); border: 1px solid var(--border); border-radius: var(--radius); }
+	.panel > .panel-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+	.panel > .panel-head .hint { font-size: 0.78rem; color: var(--muted-foreground); }
+	.panel-body { padding: 16px; }
+
+	/* ---------- wireframe ---------- */
+	.mock { background: var(--page); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+	.mock .crumb { font-size: 0.72rem; color: var(--muted-foreground); margin-bottom: 12px; }
+	.mock .crumb b { color: var(--foreground); font-weight: 550; }
+	.mock .titlebar { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+	.mock .name { font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
+	.mock .sub { font-size: 0.82rem; color: var(--muted-foreground); margin-top: 2px; }
+	.mock .iconbtn { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--border); background: var(--background); display: grid; place-items: center; font-size: 0.9rem; color: var(--muted-foreground); }
+	.mock .tabs { display: flex; gap: 18px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+	.mock .tab { font-size: 0.84rem; font-weight: 500; color: var(--muted-foreground); padding: 8px 0 10px; }
+	.mock .tab.on { color: var(--foreground); font-weight: 600; border-bottom: 2px solid var(--foreground); margin-bottom: -1px; }
+	.card { background: var(--background); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+	.statgrid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; text-align: center; }
+	.stat .l { font-size: 0.68rem; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; }
+	.stat .v { font-family: ui-monospace, Menlo, monospace; font-size: 0.9rem; font-weight: 600; }
+	.divider { border-top: 1px solid var(--border); margin: 16px 0 12px; }
+	.micro { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-foreground); font-weight: 600; margin-bottom: 8px; }
+	.dl { display: grid; gap: 8px; }
+	.dl.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+	.dl .k { font-size: 0.68rem; color: var(--muted-foreground); }
+	.dl .v { font-size: 0.84rem; }
+
+	.slot { border: 1.5px dashed var(--miss); background: var(--miss-bg); border-radius: 8px; padding: 10px 12px; margin-top: 12px; }
+	.slot .slot-h { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; font-weight: 600; color: var(--miss); }
+	.slot .slot-h .pin { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 999px; background: var(--miss); color: #fff; font-size: 0.66rem; font-weight: 700; }
+	.slot .slot-b { font-size: 0.76rem; color: oklch(0.4 0.1 27); margin-top: 3px; }
+	.chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; border: 1px solid var(--border); border-radius: 999px; padding: 2px 9px; color: var(--muted-foreground); background: var(--background); }
+	.chip.missing { border-color: var(--miss); color: var(--miss); background: var(--miss-bg); border-style: dashed; }
+	.chip.added { border-color: var(--ok); color: var(--ok); background: var(--ok-bg); }
+
+	.rowmenu { display: flex; flex-wrap: wrap; gap: 6px; }
+	.mi { font-size: 0.78rem; padding: 5px 9px; border: 1px solid var(--border); border-radius: 6px; background: var(--background); }
+	.mi.gone { border-style: dashed; border-color: var(--miss); color: var(--miss); background: var(--miss-bg); }
+	.mi.extra { border-style: dashed; border-color: var(--partial); color: var(--partial); background: var(--partial-bg); }
+
+	.logrow { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border); }
+	.logrow:first-of-type { border-top: 0; }
+	.logrow .meta { flex: 1; min-width: 0; }
+	.logrow .date { font-size: 0.82rem; font-weight: 550; }
+	.logrow .nums { font-size: 0.74rem; color: var(--muted-foreground); font-family: ui-monospace, Menlo, monospace; margin-top: 1px; }
+	.logrow .ids { font-size: 0.72rem; color: var(--muted-foreground); margin-top: 3px; }
+	.ghostbtn { border: 1px dashed var(--miss); color: var(--miss); background: var(--miss-bg); border-radius: 6px; font-size: 0.74rem; padding: 4px 8px; }
+
+	/* ---------- checklist ---------- */
+	.spec { display: flex; flex-direction: column; gap: 10px; }
+	.item { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: 9px; padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--background); }
+	.item.miss { border-color: color-mix(in oklab, var(--miss) 40%, var(--border)); background: var(--miss-bg); }
+	.item.part { border-color: color-mix(in oklab, var(--partial) 45%, var(--border)); background: var(--partial-bg); }
+	.item.ok { background: var(--ok-bg); border-color: color-mix(in oklab, var(--ok) 35%, var(--border)); }
+	.item .mark { font-size: 0.8rem; font-weight: 700; line-height: 1.4; text-align: center; }
+	.item.miss .mark { color: var(--miss); }
+	.item.part .mark { color: var(--partial); }
+	.item.ok .mark { color: var(--ok); }
+	.item .t { font-size: 0.82rem; font-weight: 600; }
+	.item .s { font-size: 0.76rem; color: var(--muted-foreground); margin-top: 2px; }
+	.item .s em { color: var(--foreground); font-style: normal; font-weight: 550; }
+	.group-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); font-weight: 650; margin: 12px 0 2px; }
+	.group-label:first-child { margin-top: 0; }
+	.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.76rem; color: var(--muted-foreground); margin-top: 22px; }
+	.foot { margin-top: 26px; font-size: 0.8rem; color: var(--muted-foreground); }
+	.foot code { font-size: 0.78em; }
+</style>
+</head>
+<body>
+<header>
+	<p class="eyebrow">show-me · gap analysis</p>
+	<h1>Recipe overview — spec vs <code>recipe-overview-d</code></h1>
+	<p class="lede">
+		Source of truth: <code>research/recipes-and-logs-flows.md</code>. Scope: the <em>Overview</em> surface only
+		(Overview tab + Logs tab of one recipe). Variant D is structurally right — header band, breadcrumbs, line tabs,
+		brewed-parameter grid — but the spec puts <em>recipe state</em> and <em>log-derived sections</em> on this page,
+		and those are absent. No code changed yet.
+	</p>
+</header>
+
+<main>
+	<div class="summary">
+		<div class="tile"><div class="n">13</div><div class="k">spec requirements for this surface</div></div>
+		<div class="tile ok"><div class="n">7</div><div class="k">present in variant D</div></div>
+		<div class="tile part"><div class="n">2</div><div class="k">partial / wrong content</div></div>
+		<div class="tile miss"><div class="n">4</div><div class="k">entirely missing</div></div>
+	</div>
+
+	<div class="layout">
+
+		<!-- ============ WIREFRAME ============ -->
+		<div style="display:flex;flex-direction:column;gap:22px">
+			<section class="panel">
+				<div class="panel-head">
+					<div><h2>Variant D — Over­view tab, annotated</h2></div>
+					<span class="hint">dashed red = missing slot</span>
+				</div>
+				<div class="panel-body">
+					<div class="mock">
+						<div class="crumb">Recipes / <b>Morning Espresso</b></div>
+
+						<div class="titlebar">
+							<div>
+								<div class="name">Morning Espresso</div>
+								<div class="sub">Sunset Roast Espresso Blend · Medium-Dark</div>
+								<div style="margin-top:7px;display:flex;gap:6px">
+									<span class="chip missing">① Status (Dialing in)</span>
+								</div>
+							</div>
+							<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+								<div class="iconbtn">⋯</div>
+								<div style="font-size:0.68rem;color:var(--muted-foreground);text-align:right">menu: Edit recipe · Delete recipe<br /><span style="color:var(--miss)">missing: Log again · Duplicate</span></div>
+							</div>
+						</div>
+
+						<div class="tabs">
+							<div class="tab on">Overview</div>
+							<div class="tab">Logs · 3</div>
+						</div>
+
+						<div class="card">
+							<div class="statgrid">
+								<div class="stat"><div class="l">Dose</div><div class="v">18g</div></div>
+								<div class="stat"><div class="l">Yield</div><div class="v">36g</div></div>
+								<div class="stat"><div class="l">Ratio</div><div class="v">1:2</div></div>
+								<div class="stat"><div class="l">Time</div><div class="v">28s</div></div>
+								<div class="stat"><div class="l">Temp</div><div class="v">93°C</div></div>
+								<div class="stat"><div class="l">Pressure</div><div class="v">9 bar</div></div>
+							</div>
+
+							<div class="slot">
+								<div class="slot-h"><span class="pin">②</span> Status suggestion — “Three balanced shots in a row. Mark as Dialed in?”</div>
+								<div class="slot-b">Spec: “Any pending status suggestion… A suggestion appears on the overview as a question. The user accepts or dismisses it.” Variant D has no status anywhere, so no suggestion surface either.</div>
+							</div>
+
+							<div class="divider"></div>
+							<div class="micro">Details</div>
+							<div class="dl three">
+								<div><div class="k">Coffee</div><div class="v">Sunset Roast Espresso Blend · Medium-Dark</div></div>
+								<div><div class="k">Machine</div><div class="v">Rancilio Silvia</div></div>
+								<div><div class="k">Grinder</div><div class="v">Eureka Mignon · 6</div></div>
+							</div>
+							<div class="slot" style="margin-top:10px">
+								<div class="slot-h"><span class="pin">③</span> Grind size is the recipe’s committed target</div>
+								<div class="slot-b">Required in create/edit, and the change-history example is “Grind 6 → 5.5 · 3 Jun”. Here it is only implied by the Mignon suffix, with no field of its own.</div>
+							</div>
+
+							<div class="divider"></div>
+							<div class="micro">Notes</div>
+							<p style="font-size:0.82rem">Sweet caramel aroma, balanced acidity. Grind 6 on the Mignon, 3s pre-infusion.</p>
+							<div style="margin-top:6px"><span class="chip added">✓ present</span></div>
+
+							<div class="slot">
+								<div class="slot-h"><span class="pin">④</span> Reference shot — pinned log’s values (else latest Balanced)</div>
+								<div class="slot-b">Spec: “the pinned log’s values. Until a log is pinned, it is the latest Balanced log.” No such section exists in D; today it lives in the real <code>apps/web</code> overview route.</div>
+							</div>
+
+							<div class="slot">
+								<div class="slot-h"><span class="pin">⑤</span> Change history — newest first, “Grind 6 → 5.5 · 3 Jun”</div>
+								<div class="slot-b">Spec: “Each changed value is added to the change history… the change history lists each changed value.” Absent from D.</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="panel">
+				<div class="panel-head">
+					<div><h2>Variant D — Logs tab, annotated</h2></div>
+					<span class="hint">filters and row actions come from the list page, not the spec</span>
+				</div>
+				<div class="panel-body">
+					<div class="mock">
+						<div style="display:flex;justify-content:flex-end;margin-bottom:10px"><span class="mi">＋ New Log</span></div>
+						<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px">
+							<span class="mi extra">Machine ▾</span>
+							<span class="mi extra">Grinder ▾</span>
+							<span style="font-size:0.72rem;color:var(--miss);align-self:center">⑥ spec filters: <b>Method</b> and <b>Verdict</b></span>
+						</div>
+
+						<div class="card">
+							<div class="logrow">
+								<div class="meta">
+									<div class="date">Jun 3, 2024 @ 7:55 AM</div>
+									<div class="nums">18g → 36g · 28s</div>
+									<div class="ids">Rancilio Silvia · Eureka Mignon</div>
+									<div style="margin-top:5px"><span class="chip missing">⑦ verdict + reference-shot state</span></div>
+								</div>
+								<span class="mi">⋯</span>
+							</div>
+							<div class="logrow">
+								<div class="meta">
+									<div class="date">Jun 2, 2024 @ 7:40 AM</div>
+									<div class="nums">18g → 38g · 27s</div>
+									<div class="ids">Rancilio Silvia · Eureka Mignon</div>
+								</div>
+								<span class="mi">⋯</span>
+							</div>
+							<div class="logrow">
+								<div class="meta">
+									<div class="date">Jun 1, 2024 @ 12:05 PM</div>
+									<div class="nums">17.5g → 35g · 30s</div>
+									<div class="ids">Gaggia Classic · Eureka Mignon</div>
+								</div>
+								<span class="mi">⋯</span>
+							</div>
+						</div>
+
+						<div class="rowmenu" style="margin-top:14px">
+							<span class="mi">Edit log</span>
+							<span class="mi gone">Set as reference shot</span>
+							<span class="mi gone">Detach from recipe</span>
+							<span class="mi">Delete log</span>
+						</div>
+						<div style="font-size:0.72rem;color:var(--muted-foreground);margin-top:6px">⑧ current row menu has only Edit + Delete</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!-- ============ CHECKLIST ============ -->
+		<section class="panel">
+			<div class="panel-head"><div><h2>Spec checklist</h2></div></div>
+			<div class="panel-body">
+				<div class="spec">
+					<div class="group-label">Overview content</div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">Dose · Yield · Time · Temp · Pressure</div><div class="s">Brew grid covers all five variable fields.</div></div></div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">Beans · Grinder · Machine</div><div class="s">All three identity fields present under Details.</div></div></div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">Notes</div><div class="s">Present.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Status</div><div class="s">“Shows name … notes, <em>and status</em>”, plus “Status is changed from a control on the overview [Assumed]”. Nothing shows Dialing in.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Status suggestion</div><div class="s">Question with Ac­cept / Dis­miss on the overview.</div></div></div>
+					<div class="item part"><span class="mark">◐</span><div><div class="t">Grind size</div><div class="s">Required recipe field + the change-history example; only implied by “Eureka Mignon · 6”.</div></div></div>
+					<div class="item part"><span class="mark">◐</span><div><div class="t">Ratio</div><div class="s">Not in the spec’s overview field list — derived value. Extra, decide to keep or drop.</div></div></div>
+
+					<div class="group-label">Overview actions menu</div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">Edit · Delete</div><div class="s">Both reachable from the overflow menu.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Log again</div><div class="s">“Nothing opens… A log is created now.” Also drives “Last logged at 14:32” [Assumed], which D has nowhere.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Duplicate</div><div class="s">“Copy of [name], status Dialing in, no logs.”</div></div></div>
+					<div class="item part"><span class="mark">◐</span><div><div class="t">Delete flow</div><div class="s">Menu item exists, but no dialog naming the recipe, log count, or keep-as-quick-logs vs delete choice.</div></div></div>
+
+					<div class="group-label">Reference shot · history</div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Reference shot</div><div class="s">Pinned log’s values, else latest Balanced. Links to “Set as reference shot” in the Logs tab.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Change history</div><div class="s">Newest first, one line per changed value.</div></div></div>
+
+					<div class="group-label">Logs tab</div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">New log in header</div><div class="s">Present.</div></div></div>
+					<div class="item ok"><span class="mark">✓</span><div><div class="t">Newest first · all attached logs</div><div class="s">Order matches the spec’s assumption.</div></div></div>
+					<div class="item part"><span class="mark">◐</span><div><div class="t">Filters</div><div class="s">D has Machine + Grinder (list-page filters). Spec asks for <em>Method</em> and <em>Verdict</em>.</div></div></div>
+					<div class="item part"><span class="mark">◐</span><div><div class="t">Row actions</div><div class="s">Has Edit + Delete; missing <em>Set as reference shot</em> and <em>Detach from recipe</em>.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Verdict per row</div><div class="s">Needed by both the Verdict filter and reference-shot resolution; not rendered.</div></div></div>
+					<div class="item miss"><span class="mark">✗</span><div><div class="t">Pinned indication</div><div class="s">No marker showing which log is the reference shot.</div></div></div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="legend">
+		<span><b style="color:var(--ok)">✓</b> present</span>
+		<span><b style="color:var(--partial)">◐</b> partial / wrong content</span>
+		<span><b style="color:var(--miss)">✗</b> missing</span>
+	</div>
+
+	<p class="foot">
+		Bearing in mind: variant D is a <em>page structure</em> variant. The gaps split into two kinds — structural (Status, Reference shot, Change history, Status suggestion are whole sections that need a home), and detail (menu items, filters, row actions, verdict). The four structural sections are the ones that decide whether D still balances as a layout.
+	</p>
+</main>
+</body>
+</html>

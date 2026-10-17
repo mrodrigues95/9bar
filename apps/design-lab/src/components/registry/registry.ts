@@ -6,7 +6,6 @@ import { RecipeModalB } from "./variants/recipe-modal-b";
 import { RecipeOverviewA } from "./variants/recipe-overview-a";
 import { RecipeOverviewB } from "./variants/recipe-overview-b";
 import { RecipeOverviewC } from "./variants/recipe-overview-c";
-import { RecipeOverviewD } from "./variants/recipe-overview-d";
 import { RecipeSectionA } from "./variants/recipe-section-a";
 
 export type DesignVariantEntry = {
@@ -68,35 +67,27 @@ export const designGroups: Array<DesignGroup> = [
 		variants: [
 			{
 				id: "recipe-overview-a",
-				title: "Overview A — stacked single column",
+				title: "Overview A — settled baseline (was B)",
 				kind: "page",
 				description:
-					"Header actions, stat strip, details card, then logs card with New Log, row actions, and pagination.",
+					"Settled structure with status control, suggestion alert, and spec-covered Logs tab. Baseline for the History-tab explorations.",
 				component: RecipeOverviewA,
 			},
 			{
 				id: "recipe-overview-b",
-				title: "Overview B — sidebar summary",
+				title: "Overview B — history tab list",
 				kind: "page",
 				description:
-					"Sticky summary card with stacked Edit/Delete beside tabbed Overview/Logs content.",
+					"No reference-shot section; pinned logs sort first with pin-icon badge; History tab groups each save's field changes as diff-style struck-through old to highlighted new rows.",
 				component: RecipeOverviewB,
 			},
 			{
 				id: "recipe-overview-c",
-				title: "Overview C — header band with tabs",
+				title: "Overview C — history tab flat list",
 				kind: "page",
 				description:
-					"Header band with Edit, New Log, and overflow Delete above line-style Overview/Logs tabs.",
+					"Same as B, but each history entry is a single flat line (Grind 6 → 5.5 · 3 Jun) for maximum density.",
 				component: RecipeOverviewC,
-			},
-			{
-				id: "recipe-overview-d",
-				title: "Overview D — revised band (feedback)",
-				kind: "page",
-				description:
-					"Revision of C: web breadcrumbs, vertical line tabs, menu-only Edit, ghost overflow, checkmark badge, grey page background.",
-				component: RecipeOverviewD,
 			},
 		],
 	},
