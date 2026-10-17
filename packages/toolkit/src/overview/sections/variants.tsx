@@ -2,6 +2,18 @@ import { Plus, Search, Settings2 } from "lucide-react";
 import {
 	Badge,
 	Button,
+	Calendar,
+	CalendarCell,
+	CalendarGrid,
+	CalendarGridBody,
+	CalendarGridHeader,
+	CalendarHeader,
+	CalendarHeaderCell,
+	CalendarHeading,
+	CalendarMonthPicker,
+	CalendarNextButton,
+	CalendarPreviousButton,
+	CalendarYearPicker,
 	Checkbox,
 	IconButton,
 	InputGroup,
@@ -29,6 +41,30 @@ const Strip = ({ label, children }: StripProps) => (
 		</Text>
 		<div className="flex flex-wrap items-center gap-3">{children}</div>
 	</div>
+);
+
+/** A calendar demo showing either the heading or the month/year dropdown caption. */
+const CalendarDemo = ({ captionLayout = "label" }: { captionLayout?: "label" | "dropdown" }) => (
+	<Calendar aria-label="Shot date">
+		<CalendarHeader>
+			<CalendarPreviousButton />
+			{captionLayout === "dropdown" ? (
+				<>
+					<CalendarMonthPicker />
+					<CalendarYearPicker />
+				</>
+			) : (
+				<CalendarHeading />
+			)}
+			<CalendarNextButton />
+		</CalendarHeader>
+		<CalendarGrid>
+			<CalendarGridHeader>
+				{(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+			</CalendarGridHeader>
+			<CalendarGridBody>{(date) => <CalendarCell date={date} />}</CalendarGridBody>
+		</CalendarGrid>
+	</Calendar>
 );
 
 /** Grids of every component variant that the composed app sections don't naturally exercise. */
@@ -102,6 +138,10 @@ export const VariantsSection = () => (
 					errorMessage="Recipe names must be unique"
 					inputProps={{ defaultValue: "Honey Blend" }}
 				/>
+			</Strip>
+			<Strip label="Calendar">
+				<CalendarDemo />
+				<CalendarDemo captionLayout="dropdown" />
 			</Strip>
 			<Strip label="Input group">
 				<InputGroup aria-label="Dose">

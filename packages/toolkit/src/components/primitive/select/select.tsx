@@ -21,7 +21,12 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "#components/input-
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import { cn, resolveItemTextValue, type ItemLabelProps } from "#lib/utils";
+import {
+	cn,
+	composeTailwindRenderProps,
+	resolveItemTextValue,
+	type ItemLabelProps,
+} from "#lib/utils";
 
 /** Props for the {@link Select} component. */
 export type { SelectProps };
@@ -31,7 +36,13 @@ export const Select = <T extends object, M extends "single" | "multiple" = "sing
 	className,
 	...props
 }: SelectProps<T, M>) => {
-	return <AriaSelect data-slot="select" className={cn("w-fit", className)} {...props} />;
+	return (
+		<AriaSelect
+			data-slot="select"
+			className={composeTailwindRenderProps(className, "w-fit")}
+			{...props}
+		/>
+	);
 };
 
 /** Props for the {@link SelectGroup} component. */
@@ -60,7 +71,10 @@ export const SelectValue = <T extends object>({
 	return (
 		<AriaSelectValue
 			data-slot="select-value"
-			className={cn("flex flex-1 text-left data-placeholder:text-muted-foreground", className)}
+			className={composeTailwindRenderProps(
+				className,
+				"flex flex-1 text-left data-placeholder:text-muted-foreground",
+			)}
 			{...props}
 		>
 			{children instanceof Function
@@ -91,7 +105,7 @@ export const SelectTrigger = ({
 			data-size={size}
 			variant={variant}
 			size={size}
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				[
 					"w-full justify-between gap-1.5 bg-input/20",
 					"data-placeholder:text-muted-foreground",
@@ -100,8 +114,7 @@ export const SelectTrigger = ({
 					"dark:bg-input/30",
 					"[&_svg:not([class*='size-'])]:size-3.5",
 				],
-				className,
-			)}
+			])}
 			{...props}
 		>
 			{children}
@@ -111,11 +124,7 @@ export const SelectTrigger = ({
 };
 
 /** Props for the {@link SelectContent} component. */
-export type SelectContentProps = Omit<
-	React.ComponentProps<typeof AriaPopover>,
-	"className" | "children"
-> & {
-	className?: string;
+export type SelectContentProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
 	children?: React.ReactNode;
 };
 
@@ -142,11 +151,7 @@ export const SelectContent = ({
 };
 
 /** Props for the {@link SelectPopover} component. */
-export type SelectPopoverProps = Omit<
-	React.ComponentProps<typeof AriaPopover>,
-	"className" | "children"
-> & {
-	className?: string;
+export type SelectPopoverProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
 	children?: React.ReactNode;
 };
 
@@ -165,15 +170,14 @@ export const SelectPopover = ({
 			placement={placement}
 			offset={offset}
 			crossOffset={crossOffset}
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				popoverVariants(),
 				[
 					"relative isolate w-(--trigger-width) min-w-32",
 					"overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
 				],
-				className,
-			)}
+			])}
 			{...props}
 		>
 			{children}
@@ -189,10 +193,9 @@ export const SelectList = <T extends object>({ className, ...props }: ListBoxPro
 	return (
 		<AriaListBox
 			data-slot="select-list"
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				"group/select-list max-h-[inherit] overflow-x-hidden overflow-y-auto p-1 outline-hidden",
-				className,
-			)}
+			])}
 			{...props}
 		/>
 	);
@@ -209,7 +212,7 @@ export const SelectInput = ({ className, ...props }: SearchFieldProps) => {
 			// eslint-disable-next-line jsx-a11y/no-autofocus -- Search input in an open select menu must take focus for keyboard filtering
 			autoFocus
 			data-slot="select-input-wrapper"
-			className={cn("p-1 pb-0", className)}
+			className={composeTailwindRenderProps(className, "p-1 pb-0")}
 		>
 			<InputGroup>
 				<InputGroupInput
@@ -251,7 +254,7 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 	return (
 		<AriaListBoxItem
 			data-slot="select-item"
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				[
 					"relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
 					"rounded-md px-2 py-1 text-xs/relaxed outline-hidden",
@@ -262,8 +265,7 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 					"*:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
 				],
-				className,
-			)}
+			])}
 			{...props}
 			textValue={textValue}
 		>

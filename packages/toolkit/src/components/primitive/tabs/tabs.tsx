@@ -6,7 +6,7 @@ import {
 	TabPanel as AriaTabPanel,
 	Tabs as AriaTabs,
 } from "react-aria-components";
-import { cn } from "#lib/utils";
+import { composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Tabs} component. */
 export type TabsProps = React.ComponentProps<typeof AriaTabs>;
@@ -16,7 +16,9 @@ export const Tabs = ({ className, ...props }: TabsProps) => {
 	return (
 		<AriaTabs
 			data-slot="tabs"
-			className={cn("group/tabs flex gap-2 data-horizontal:flex-col", className)}
+			className={composeTailwindRenderProps(className, [
+				"group/tabs flex gap-2 data-horizontal:flex-col",
+			])}
 			{...props}
 		/>
 	);
@@ -53,7 +55,7 @@ export const TabsList = ({ className, variant = "default", ...props }: TabsListP
 		<AriaTabList
 			data-slot="tabs-list"
 			data-variant={variant}
-			className={cn(tabsListVariants({ variant }), className)}
+			className={composeTailwindRenderProps(className, tabsListVariants({ variant }))}
 			{...props}
 		/>
 	);
@@ -67,7 +69,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 	return (
 		<AriaTab
 			data-slot="tabs-trigger"
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				[
 					"relative inline-flex h-[calc(100%-1px)] flex-1 cursor-default items-center justify-center",
 					"gap-1.5 rounded-md border border-transparent px-1.5 py-0.5 whitespace-nowrap",
@@ -102,8 +104,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => {
 					"group-data-horizontal/tabs:after:h-0.5 group-data-vertical/tabs:after:w-0.5",
 					"group-data-[variant=line]/tabs-list:data-selected:after:opacity-100",
 				],
-				className,
-			)}
+			])}
 			{...props}
 		/>
 	);
@@ -117,7 +118,7 @@ export const TabsContent = ({ className, ...props }: TabsContentProps) => {
 	return (
 		<AriaTabPanel
 			data-slot="tabs-content"
-			className={cn("flex-1 text-xs/relaxed outline-none", className)}
+			className={composeTailwindRenderProps(className, "flex-1 text-xs/relaxed outline-none")}
 			{...props}
 		/>
 	);

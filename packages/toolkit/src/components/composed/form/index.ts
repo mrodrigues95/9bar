@@ -1,5 +1,6 @@
 export * from "./fields/checkbox-field";
 export * from "./fields/checkbox-group-field";
+export * from "./fields/date-picker-field";
 export * from "./fields/input-group-select-field";
 export * from "./fields/select-field";
 export * from "./fields/text-field";

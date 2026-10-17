@@ -16,7 +16,12 @@ import {
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import { cn, resolveItemTextValue, type ItemLabelProps } from "#lib/utils";
+import {
+	cn,
+	composeTailwindRenderProps,
+	resolveItemTextValue,
+	type ItemLabelProps,
+} from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
 export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;
@@ -31,9 +36,11 @@ export type MenuProps<T extends object> = Omit<
 	React.ComponentProps<typeof AriaMenu<T>>,
 	"className"
 > &
-	Pick<React.ComponentProps<typeof AriaPopover>, "placement" | "offset" | "crossOffset"> & {
+	Pick<
+		React.ComponentProps<typeof AriaPopover>,
+		"placement" | "offset" | "crossOffset" | "className"
+	> & {
 		"data-slot"?: string;
-		className?: string;
 		/**
 		 * Popover width: `"trigger"` matches the trigger width, `"content"` sizes to
 		 * the widest menu item. Defaults to `"trigger"`.
@@ -58,7 +65,7 @@ export const Menu = <T extends object>({
 			placement={placement}
 			offset={offset}
 			crossOffset={crossOffset}
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				popoverVariants(),
 				[
 					width === "content" ? "w-max min-w-32" : "w-(--trigger-width) min-w-32",
@@ -66,8 +73,7 @@ export const Menu = <T extends object>({
 					"data-exiting:overflow-hidden",
 					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
 				],
-				className,
-			)}
+			])}
 		>
 			<AriaMenu<T>
 				className="max-h-[inherit] overflow-x-hidden overflow-y-auto outline-hidden"
@@ -221,17 +227,14 @@ export const MenuSubTrigger = <T extends object>({
 		<AriaMenuItem
 			data-slot="menu-sub-trigger"
 			data-inset={inset}
-			className={cn(
-				[
-					"flex min-h-7 cursor-default items-center gap-2 rounded-md select-none",
-					"px-2 py-1 text-xs outline-hidden",
-					"focus:bg-accent focus:text-accent-foreground",
-					"not-data-[variant=destructive]:focus:**:text-accent-foreground",
-					"data-inset:pl-7.5 data-open:bg-accent data-open:text-accent-foreground",
-					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
-				],
-				className,
-			)}
+			className={composeTailwindRenderProps(className, [
+				"flex min-h-7 cursor-default items-center gap-2 rounded-md select-none",
+				"px-2 py-1 text-xs outline-hidden",
+				"focus:bg-accent focus:text-accent-foreground",
+				"not-data-[variant=destructive]:focus:**:text-accent-foreground",
+				"data-inset:pl-7.5 data-open:bg-accent data-open:text-accent-foreground",
+				"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+			])}
 			{...props}
 			textValue={textValue}
 		>
@@ -259,7 +262,7 @@ export const MenuSubContent = <T extends object>({
 	return (
 		<Menu<T>
 			data-slot="menu-sub-content"
-			className={cn("w-auto min-w-32", className)}
+			className={composeTailwindRenderProps(className, "w-auto min-w-32")}
 			placement={placement}
 			crossOffset={crossOffset}
 			offset={offset}

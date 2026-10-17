@@ -6,7 +6,7 @@ import {
 	type DialogTriggerProps,
 	Heading,
 } from "react-aria-components";
-import { cn } from "#lib/utils";
+import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { popoverVariants } from "./styles";
 
 /**
@@ -26,9 +26,7 @@ export const PopoverTrigger = ({ children, ...props }: PopoverTriggerProps) => {
 };
 
 /** Props for the {@link Popover} component. */
-export type PopoverProps = Omit<AriaPopoverProps, "className"> & {
-	className?: string;
-};
+export type PopoverProps = AriaPopoverProps;
 
 /** A floating overlay anchored to a {@link PopoverTrigger}, containing {@link PopoverHeader} and arbitrary content. */
 export const Popover = ({
@@ -44,7 +42,10 @@ export const Popover = ({
 			placement={placement}
 			offset={offset}
 			crossOffset={crossOffset}
-			className={cn(popoverVariants(), "flex w-72 flex-col gap-4 p-2.5 text-xs", className)}
+			className={composeTailwindRenderProps(className, [
+				popoverVariants(),
+				"flex w-72 flex-col gap-4 p-2.5 text-xs",
+			])}
 			{...props}
 		/>
 	);

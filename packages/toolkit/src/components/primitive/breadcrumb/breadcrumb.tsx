@@ -11,7 +11,7 @@ import {
 	composeRenderProps,
 	type LinkProps,
 } from "react-aria-components";
-import { cn } from "#lib/utils";
+import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Breadcrumb} component. */
 export type BreadcrumbRootProps = React.ComponentProps<"nav">;
@@ -56,7 +56,7 @@ export const BreadcrumbItem = ({
 	return (
 		<AriaBreadcrumb
 			data-slot="breadcrumb-item"
-			className={cn("inline-flex items-center gap-1", className)}
+			className={composeTailwindRenderProps(className, "inline-flex items-center gap-1")}
 			{...props}
 		>
 			{composeRenderProps(children, (children, { isCurrent }) => (
@@ -79,18 +79,20 @@ export const BreadcrumbItem = ({
 };
 
 /** Props for the {@link BreadcrumbLink} component. */
-export type BreadcrumbLinkProps = LinkProps;
+export type BreadcrumbLinkProps = LinkProps & {
+	/** A ref to the underlying anchor element. */
+	ref?: React.Ref<HTMLAnchorElement>;
+};
 
 /** A navigable crumb rendered as a link, styled as the current page when active. */
 export const BreadcrumbLink = ({ className, render, ...props }: BreadcrumbLinkProps) => {
 	return (
 		<AriaLink
 			data-slot="breadcrumb-link"
-			className={cn(
+			className={composeTailwindRenderProps(className, [
 				"inline-flex items-center gap-1.5 transition-colors hover:text-foreground",
 				"[&>svg:not([class*='size-'])]:size-3.5",
-				className,
-			)}
+			])}
 			render={render}
 			{...props}
 		/>

@@ -10,12 +10,13 @@ export const cn = (...inputs: Array<ClassValue>) => {
 
 /**
  * Composes a React Aria `className` render prop with a base set of Tailwind
- * classes, merging the two with `cn`.
+ * classes, merging the two with `cn`. Always returns a function, so only pass
+ * the result to a component that accepts a render-prop `className`.
  */
 export const composeTailwindRenderProps = <T>(
 	className: string | ((v: T) => string) | undefined,
-	tw: string,
-): string | ((v: T) => string) => {
+	tw: ClassValue,
+): ((renderProps: T) => string) => {
 	return composeRenderProps(className, (className) => cn(tw, className));
 };
 

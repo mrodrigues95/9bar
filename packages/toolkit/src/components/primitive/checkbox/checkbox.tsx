@@ -1,21 +1,21 @@
 "use client";
 
 import { CheckIcon, MinusIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ComponentProps, type ReactNode } from "react";
 import {
 	CheckboxButton as AriaCheckboxButton,
 	CheckboxField as AriaCheckboxField,
 	type CheckboxFieldProps as AriaCheckboxFieldProps,
 	type CheckboxButtonRenderProps,
 } from "react-aria-components";
-import { cn } from "#lib/utils";
+import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link CheckboxControl} component. */
 export type CheckboxControlProps = {
 	/** The content of the control. Pass a render prop to access the checkbox state. */
 	children?: ReactNode | ((values: CheckboxButtonRenderProps) => ReactNode);
 	/** Additional classes applied to the control. */
-	className?: string;
+	className?: ComponentProps<typeof AriaCheckboxButton>["className"];
 };
 
 /**
@@ -26,10 +26,9 @@ export const CheckboxControl = ({ children, className }: CheckboxControlProps) =
 	return (
 		<AriaCheckboxButton
 			data-slot="checkbox-control"
-			className={cn(
-				["group/checkbox flex shrink-0 items-center gap-2 text-sm outline-none select-none"],
-				className,
-			)}
+			className={composeTailwindRenderProps(className, [
+				"group/checkbox flex shrink-0 items-center gap-2 text-sm outline-none select-none",
+			])}
 		>
 			{children}
 		</AriaCheckboxButton>
@@ -90,14 +89,11 @@ export const Checkbox = ({ className, children, ...props }: CheckboxProps) => {
 	return (
 		<AriaCheckboxField
 			data-slot="checkbox"
-			className={cn(
-				[
-					"flex flex-col gap-1",
-					"data-disabled:cursor-not-allowed data-disabled:opacity-50",
-					"group-has-disabled/field:opacity-50",
-				],
-				className,
-			)}
+			className={composeTailwindRenderProps(className, [
+				"flex flex-col gap-1",
+				"data-disabled:cursor-not-allowed data-disabled:opacity-50",
+				"group-has-disabled/field:opacity-50",
+			])}
 			{...props}
 		>
 			<CheckboxControl>

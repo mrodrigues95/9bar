@@ -1,9 +1,11 @@
+import { CalendarDateTime } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import z from "zod";
 import { Button } from "#components/button";
 import { Checkbox } from "#components/checkbox";
 import { SelectItem } from "#components/select";
 import { CheckboxGroupField } from "./fields/checkbox-group-field";
+import { DatePickerField } from "./fields/date-picker-field";
 import { SelectField } from "./fields/select-field";
 import { TextField } from "./fields/text-field";
 import { TextareaField } from "./fields/textarea-field";
@@ -93,6 +95,13 @@ export const HTMLValidation: Story = {
 			>
 				{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 			</SelectField>
+			<DatePickerField
+				isRequired
+				label="Preferred Date"
+				description="When should we reach out to you?"
+				name="preferredDate"
+				granularity="minute"
+			/>
 			<CheckboxGroupField
 				label="Communication Preferences"
 				description="Select how you'd like to receive updates"
@@ -122,6 +131,7 @@ interface ComposedFormValues {
 	age: string;
 	bio: string;
 	country: string;
+	preferredDate: CalendarDateTime | null;
 	newsletter: Array<string>;
 	acceptTerms: boolean;
 }
@@ -136,6 +146,7 @@ export const ComposedForm: Story = {
 			age: "",
 			bio: "",
 			country: "",
+			preferredDate: null,
 			newsletter: [],
 			acceptTerms: false,
 		};
@@ -177,6 +188,10 @@ export const ComposedForm: Story = {
 
 					if (!value.country) {
 						errors.fields.country = "Country is required";
+					}
+
+					if (!value.preferredDate) {
+						errors.fields.preferredDate = "Preferred date is required";
 					}
 
 					if (!value.newsletter?.length) {
@@ -250,6 +265,16 @@ export const ComposedForm: Story = {
 							</field.Select>
 						)}
 					</form.AppField>
+					<form.AppField name="preferredDate">
+						{(field) => (
+							<field.DatePicker
+								label="Preferred Date"
+								description="Pick a date and time for a callback"
+								granularity="minute"
+								isRequired
+							/>
+						)}
+					</form.AppField>
 					<form.AppField name="email">
 						{(field) => (
 							<field.Input
@@ -293,6 +318,10 @@ const schema = z.object({
 		.refine(({ inputValue }) => !!inputValue && Number(inputValue) > 0, {
 			message: "[Zod] Brew time must be greater than 0",
 		}),
+	preferredDate: z.custom<CalendarDateTime | null>(
+		(value) => value instanceof CalendarDateTime,
+		"[Zod] Preferred date is required",
+	),
 	bio: z
 		.string()
 		.min(20, "[Zod] Bio must be at least 20 characters")
@@ -312,6 +341,7 @@ export const WithZodValidation: Story = {
 			email: "",
 			password: "",
 			notificationFrequency: { inputValue: "", selectValue: "day" },
+			preferredDate: null,
 			bio: "",
 			role: "",
 			preferences: [],
@@ -385,6 +415,16 @@ export const WithZodValidation: Story = {
 						/>
 					)}
 				</form.AppField>
+				<form.AppField name="preferredDate">
+					{(field) => (
+						<field.DatePicker
+							label="Preferred Date"
+							description="Pick a date and time for a callback"
+							granularity="minute"
+							isRequired
+						/>
+					)}
+				</form.AppField>
 				<form.AppField name="bio">
 					{(field) => (
 						<field.Textarea
@@ -440,6 +480,7 @@ interface ContactFormValues {
 	subject: string;
 	topic: string;
 	message: string;
+	preferredDate: CalendarDateTime | null;
 	notifications: Array<string>;
 }
 
@@ -449,6 +490,7 @@ const contactFormDefaultValues: ContactFormValues = {
 	subject: "",
 	topic: "",
 	message: "",
+	preferredDate: null,
 	notifications: [],
 };
 
@@ -516,6 +558,21 @@ const ContactFormComponent = withForm({
 						>
 							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
 						</field.Select>
+					)}
+				</form.AppField>
+				<form.AppField
+					name="preferredDate"
+					validators={{
+						onChange: ({ value }) => (!value ? "Preferred date is required" : undefined),
+					}}
+				>
+					{(field) => (
+						<field.DatePicker
+							label="Preferred Date"
+							description="When should we follow up with you?"
+							granularity="minute"
+							isRequired
+						/>
 					)}
 				</form.AppField>
 				<form.AppField
