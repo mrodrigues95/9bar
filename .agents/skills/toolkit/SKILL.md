@@ -95,7 +95,7 @@ First decide the tier with the "Primitive vs Composed" decision test (`<tier>` b
 2. Create `src/components/<tier>/<name>/index.ts` with `export * from "./<name>";`
 3. **JSDoc pass** -- shadcn files ship with no JSDoc, which feeds `react-docgen-typescript` → Storybook autodocs prop tables. Add:
    - A descriptive JSDoc on every exported component (use `{@link}` for subcomponent relationships)
-   - `/** Props for the {@link X} component. */` on every exported props type
+   - `/** Props for the {@link X} component. */` on every exported props type, named `<X>Props` (no `T` prefix)
    - Convert `function` declarations to arrow functions (repo convention)
 4. Add an export line to `src/components/<tier>/index.ts`
 5. Create/migrate `<name>.stories.tsx` with JSDoc on each story, titled `Primitives/<Name>` for primitives or `Composed/<Name>` for composed (form fields nest as `Composed/Form/<Name>`)

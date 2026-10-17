@@ -30,6 +30,10 @@ Before editing files for a substantial task:
 - **react-doctor** for React diagnostics (`pnpm react-doctor` for issues introduced vs `origin/main`, `pnpm react-doctor:full` for a full audit).
 - **Conventional Commits** enforced by commitlint in CI.
 
+## Verification
+
+Verification stops at lint, format, and typecheck. Add react-doctor when React code changed. Browser, dev-server, and end-to-end runs are user-initiated.
+
 ## Commit Messages
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/). Scope commits to the affected package: `feat(toolkit): ...`, `fix(web): ...`. Common scopes: `web`, `toolkit`, or both.

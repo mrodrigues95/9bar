@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: Coding standards for 9bar TypeScript and TSX. Use when writing, editing, or reviewing TS/TSX; placing shared vs colocated components, hooks, utils, or types; shaping boolean or type expressions; or structuring JSX.
+description: Coding standards for 9bar TypeScript and TSX. Use when writing, editing, or reviewing TS/TSX; placing shared vs colocated components, hooks, utils, or types; naming types or component props; deciding whether code needs a comment; shaping boolean or type expressions; or structuring JSX.
 ---
 
 # Coding Standards
@@ -15,6 +15,8 @@ Flat reference. Every rule applies to every change; the completion bar is every 
 ## Types
 
 - Inline simple unions at the usage site; name an interface only for a complex or large nested object.
+- Reserve the `T` prefix for generic type parameters (`T`, `TValue`, `TRouter`); every concrete type is unprefixed (`Recipe`, `ButtonProps`).
+- Name component props `<Component>Props`, never `T<Component>Props`.
 
 ## Booleans
 
@@ -88,6 +90,12 @@ Every component's JSX reads top-down as structure — infer what renders without
 ## Hooks
 
 Hooks follow placement: inline until bloated, then a colocated `use-*.ts` (e.g. `use-feature-form-mode.ts` in `-form-sections/`). No top-level `src/hooks/` until a hook serves ≥2 routes.
+
+## Comments
+
+- Code carries its own meaning; add a comment only for a non-obvious trade-off or complicated business logic the code cannot express.
+- Suppression directives (`// SAFETY:`, `// @ts-expect-error`, `// oxlint-disable`, `// eslint-disable`) always qualify.
+- `packages/toolkit` is the exception: its JSDoc is load-bearing — see the `toolkit` skill.
 
 ## Lint
 
