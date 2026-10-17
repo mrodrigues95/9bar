@@ -124,11 +124,7 @@ export const SelectTrigger = ({
 };
 
 /** Props for the {@link SelectContent} component. */
-export type SelectContentProps = Omit<
-	React.ComponentProps<typeof AriaPopover>,
-	"className" | "children"
-> & {
-	className?: React.ComponentProps<typeof AriaPopover>["className"];
+export type SelectContentProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
 	children?: React.ReactNode;
 };
 
@@ -155,11 +151,7 @@ export const SelectContent = ({
 };
 
 /** Props for the {@link SelectPopover} component. */
-export type SelectPopoverProps = Omit<
-	React.ComponentProps<typeof AriaPopover>,
-	"className" | "children"
-> & {
-	className?: React.ComponentProps<typeof AriaPopover>["className"];
+export type SelectPopoverProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
 	children?: React.ReactNode;
 };
 

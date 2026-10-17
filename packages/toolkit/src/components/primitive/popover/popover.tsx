@@ -26,9 +26,7 @@ export const PopoverTrigger = ({ children, ...props }: PopoverTriggerProps) => {
 };
 
 /** Props for the {@link Popover} component. */
-export type PopoverProps = Omit<AriaPopoverProps, "className"> & {
-	className?: AriaPopoverProps["className"];
-};
+export type PopoverProps = AriaPopoverProps;
 
 /** A floating overlay anchored to a {@link PopoverTrigger}, containing {@link PopoverHeader} and arbitrary content. */
 export const Popover = ({
