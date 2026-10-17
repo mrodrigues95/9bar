@@ -113,19 +113,13 @@ export const InputGroupSelectField = ({
 	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field data-slot="input-group-select-field" data-invalid={isInvalid || undefined}>
+		<Field data-invalid={isInvalid || undefined}>
 			{label && (
-				<FieldLabel
-					id={labelId}
-					htmlFor={inputId}
-					data-slot="input-group-select-field-label"
-					{...labelProps}
-				>
+				<FieldLabel id={labelId} htmlFor={inputId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
 			<InputGroup
-				data-slot="input-group-select-field-input-group"
 				{...props}
 				{...(label ? { "aria-labelledby": labelId } : {})}
 				{...(describedBy ? { "aria-describedby": describedBy } : {})}
@@ -133,7 +127,6 @@ export const InputGroupSelectField = ({
 			>
 				<InputGroupInput
 					id={inputId}
-					data-slot="input-group-select-field-input"
 					{...inputProps}
 					name={name}
 					value={value.inputValue}
@@ -142,9 +135,8 @@ export const InputGroupSelectField = ({
 					aria-invalid={isInvalid || undefined}
 					aria-describedby={describedBy}
 				/>
-				<InputGroupAddon data-slot="input-group-select-field-addon" align="inline-end">
+				<InputGroupAddon align="inline-end">
 					<Select
-						data-slot="input-group-select-field-select"
 						{...selectProps}
 						isInvalid={isInvalid || undefined}
 						selectedKey={value.selectValue}
@@ -155,43 +147,27 @@ export const InputGroupSelectField = ({
 						}}
 					>
 						<InputGroupSelectTrigger
-							data-slot="input-group-select-field-select-trigger"
 							className="min-w-auto"
 							{...selectTriggerProps}
 							aria-invalid={isInvalid || undefined}
 							aria-describedby={describedBy}
 						>
-							<SelectValue data-slot="input-group-select-field-select-value" />
+							<SelectValue />
 						</InputGroupSelectTrigger>
-						<SelectContent data-slot="input-group-select-field-select-content">
-							<SelectList data-slot="input-group-select-field-select-list" items={items}>
-								{(item) => (
-									<SelectItem data-slot="input-group-select-field-select-item" id={item.id}>
-										{item.label}
-									</SelectItem>
-								)}
+						<SelectContent>
+							<SelectList items={items}>
+								{(item) => <SelectItem id={item.id}>{item.label}</SelectItem>}
 							</SelectList>
 						</SelectContent>
 					</Select>
 				</InputGroupAddon>
 			</InputGroup>
 			{description && (
-				<FieldDescription
-					data-slot="input-group-select-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
+				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>
 			)}
-			{showError && (
-				<FieldError
-					data-slot="input-group-select-field-error"
-					id={errorId}
-					{...fieldErrorProps}
-					errors={resolvedErrors}
-				/>
-			)}
+			{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
 		</Field>
 	);
 };

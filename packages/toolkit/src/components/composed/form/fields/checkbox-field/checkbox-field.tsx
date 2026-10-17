@@ -39,32 +39,16 @@ export const CheckboxField = ({
 	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field data-slot="checkbox-field" data-invalid={isInvalid || undefined}>
-			<Checkbox
-				{...props}
-				data-slot="checkbox-field-checkbox"
-				aria-invalid={isInvalid || undefined}
-				aria-describedby={describedBy}
-			>
+		<Field data-invalid={isInvalid || undefined}>
+			<Checkbox {...props} aria-invalid={isInvalid || undefined} aria-describedby={describedBy}>
 				{label}
 			</Checkbox>
 			{description && (
-				<FieldDescription
-					data-slot="checkbox-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
+				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>
 			)}
-			{showError && (
-				<FieldError
-					data-slot="checkbox-field-error"
-					id={errorId}
-					{...fieldErrorProps}
-					errors={resolvedErrors}
-				/>
-			)}
+			{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
 		</Field>
 	);
 };

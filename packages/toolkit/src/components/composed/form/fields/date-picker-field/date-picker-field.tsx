@@ -131,11 +131,7 @@ export const DatePickerField = <
 	const pickerValue = value == null ? null : codec ? codec.parse(value) : value;
 
 	return (
-		<Field
-			data-slot="date-picker-field"
-			data-invalid={isInvalid || undefined}
-			className={className}
-		>
+		<Field data-invalid={isInvalid || undefined} className={className}>
 			<DatePicker
 				{...props}
 				value={pickerValue}
@@ -155,40 +151,19 @@ export const DatePickerField = <
 				isReadOnly={isReadOnly}
 				aria-describedby={describedBy}
 			>
-				{label && (
-					<FieldLabel data-slot="date-picker-field-label" {...labelProps}>
-						{label}
-					</FieldLabel>
-				)}
-				<DatePickerGroup data-slot="date-picker-field-group">
-					<DatePickerInput data-slot="date-picker-field-input">
-						{(segment) => <DatePickerSegment segment={segment} />}
-					</DatePickerInput>
-					<DatePickerTrigger data-slot="date-picker-field-trigger" />
+				{label && <FieldLabel {...labelProps}>{label}</FieldLabel>}
+				<DatePickerGroup>
+					<DatePickerInput>{(segment) => <DatePickerSegment segment={segment} />}</DatePickerInput>
+					<DatePickerTrigger />
 				</DatePickerGroup>
 				{description && (
-					<FieldDescription
-						data-slot="date-picker-field-description"
-						id={descriptionId}
-						{...descriptionProps}
-					>
+					<FieldDescription id={descriptionId} {...descriptionProps}>
 						{description}
 					</FieldDescription>
 				)}
-				{showError && (
-					<FieldError
-						data-slot="date-picker-field-error"
-						id={errorId}
-						{...fieldErrorProps}
-						errors={resolvedErrors}
-					/>
-				)}
-				<DatePickerPopover
-					data-slot="date-picker-field-popover"
-					aria-label={label}
-					{...popoverProps}
-				>
-					<Calendar data-slot="date-picker-field-calendar" aria-label={label}>
+				{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
+				<DatePickerPopover aria-label={label} {...popoverProps}>
+					<Calendar aria-label={label}>
 						<CalendarHeader>
 							<CalendarPreviousButton />
 							{captionLayout === "dropdown" ? (

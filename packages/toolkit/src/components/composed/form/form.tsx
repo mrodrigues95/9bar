@@ -12,7 +12,6 @@ export interface FormProps extends AriaFormProps {
 export const Form = (props: FormProps) => {
 	return (
 		<AriaForm
-			data-slot="form"
 			{...props}
 			className={cn("space-y-4", props.className)}
 			{...(!props.action && {

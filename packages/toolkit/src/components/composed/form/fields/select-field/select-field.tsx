@@ -77,48 +77,34 @@ export const SelectField = <T extends object>({
 	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field data-slot="select-field" data-invalid={isInvalid || undefined} className={className}>
+		<Field data-invalid={isInvalid || undefined} className={className}>
 			{label && (
-				<FieldLabel data-slot="select-field-label" id={labelId} htmlFor={triggerId} {...labelProps}>
+				<FieldLabel id={labelId} htmlFor={triggerId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
 			<Select {...props} isInvalid={isInvalid} aria-labelledby={label ? labelId : undefined}>
 				<SelectTrigger
 					id={triggerId}
-					data-slot="select-field-trigger"
 					aria-invalid={isInvalid || undefined}
 					aria-describedby={describedBy}
 					{...selectTriggerProps}
 				>
-					<SelectValue<T> data-slot="select-field-value" {...selectValueProps}>
+					<SelectValue<T> {...selectValueProps}>
 						{renderValue ??
 							(({ selectedText, defaultChildren }) => selectedText || defaultChildren)}
 					</SelectValue>
 				</SelectTrigger>
-				<SelectContent data-slot="select-field-content">
-					<SelectList data-slot="select-field-list" items={items}>
-						{children}
-					</SelectList>
+				<SelectContent>
+					<SelectList items={items}>{children}</SelectList>
 				</SelectContent>
 			</Select>
 			{description && (
-				<FieldDescription
-					data-slot="select-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
+				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>
 			)}
-			{showError && (
-				<FieldError
-					data-slot="select-field-error"
-					id={errorId}
-					{...fieldErrorProps}
-					errors={resolvedErrors}
-				/>
-			)}
+			{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
 		</Field>
 	);
 };

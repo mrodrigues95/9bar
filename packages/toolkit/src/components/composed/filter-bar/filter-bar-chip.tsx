@@ -52,25 +52,16 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 
 	return (
 		<AriaGroup
-			data-slot="filter-bar-filter"
 			aria-label={`${definition.label} ${currentOp?.label} ${valueLabel}`}
 			className="flex shrink-0 items-center rounded-md bg-white text-xs shadow-sm ring-1 ring-border"
 		>
-			<span
-				data-slot="filter-bar-filter-label"
-				className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg:not([class*='size-'])]:size-3.5"
-			>
+			<span className="flex items-center gap-1 px-1.5 py-1 font-medium text-primary [&_svg:not([class*='size-'])]:size-3.5">
 				{definition.icon}
 				{definition.label}
 			</span>
 
 			<MenuTrigger>
-				<Button
-					data-slot="filter-bar-filter-operator"
-					variant="ghost"
-					size="xs"
-					className="font-normal"
-				>
+				<Button variant="ghost" size="xs" className="font-normal">
 					{currentOp?.label}
 				</Button>
 				<Menu
@@ -93,7 +84,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 					}
 				}}
 			>
-				<Button data-slot="filter-bar-filter-value" variant="ghost" size="xs">
+				<Button variant="ghost" size="xs">
 					{filter.values.length > 0 ? valueLabel : "\u2026"}
 				</Button>
 				<Menu
@@ -110,7 +101,6 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 			</MenuTrigger>
 
 			<IconButton
-				data-slot="filter-bar-filter-remove"
 				aria-label={`Remove ${definition.label} filter`}
 				variant="ghost"
 				size="xs"

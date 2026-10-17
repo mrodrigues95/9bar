@@ -9,11 +9,5 @@ export interface FilterBarActionsProps extends ComponentProps<"div"> {}
  * button), rendered inside the toolbar via the children render prop.
  */
 export const FilterBarActions = ({ className, ...props }: FilterBarActionsProps) => {
-	return (
-		<div
-			data-slot="filter-bar-actions"
-			className={cn("ml-auto flex items-center gap-1", className)}
-			{...props}
-		/>
-	);
+	return <div className={cn("ml-auto flex items-center gap-1", className)} {...props} />;
 };

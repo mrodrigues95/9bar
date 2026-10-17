@@ -59,36 +59,20 @@ export const CheckboxGroupField = ({
 
 	return (
 		<CheckboxGroup
-			data-slot="checkbox-group-field"
 			data-invalid={isInvalid || undefined}
 			className={cn("flex flex-col gap-2", "data-[invalid=true]:text-destructive", className)}
 			{...props}
 			isInvalid={isInvalid}
 			aria-describedby={describedBy}
 		>
-			{label && (
-				<FieldLabel data-slot="checkbox-group-field-label" {...labelProps}>
-					{label}
-				</FieldLabel>
-			)}
+			{label && <FieldLabel {...labelProps}>{label}</FieldLabel>}
 			{description && (
-				<FieldDescription
-					data-slot="checkbox-group-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
+				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>
 			)}
-			<FieldGroup data-slot="checkbox-group">{children}</FieldGroup>
-			{showError && (
-				<FieldError
-					data-slot="checkbox-group-field-error"
-					id={errorId}
-					{...fieldErrorProps}
-					errors={resolvedErrors}
-				/>
-			)}
+			<FieldGroup>{children}</FieldGroup>
+			{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
 		</CheckboxGroup>
 	);
 };

@@ -57,14 +57,13 @@ export const TextField = ({
 	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
 
 	return (
-		<Field data-slot="text-field" data-invalid={isInvalid || undefined} className={className}>
+		<Field data-invalid={isInvalid || undefined} className={className}>
 			{label && (
-				<FieldLabel data-slot="text-field-label" htmlFor={id ?? controlId} {...labelProps}>
+				<FieldLabel htmlFor={id ?? controlId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
 			<Input
-				data-slot="text-field-input"
 				id={id ?? controlId}
 				name={name}
 				{...rest}
@@ -76,22 +75,11 @@ export const TextField = ({
 				aria-describedby={describedBy}
 			/>
 			{description && (
-				<FieldDescription
-					data-slot="text-field-description"
-					id={descriptionId}
-					{...descriptionProps}
-				>
+				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>
 			)}
-			{showError && (
-				<FieldError
-					data-slot="text-field-error"
-					id={errorId}
-					{...fieldErrorProps}
-					errors={resolvedErrors}
-				/>
-			)}
+			{showError && <FieldError id={errorId} {...fieldErrorProps} errors={resolvedErrors} />}
 		</Field>
 	);
 };

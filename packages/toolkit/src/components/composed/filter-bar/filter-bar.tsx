@@ -96,7 +96,6 @@ export const FilterBar = ({
 	return (
 		<AriaToolbar
 			orientation="horizontal"
-			data-slot="filter-bar"
 			{...toolbarProps}
 			className={composeTailwindRenderProps(
 				toolbarProps.className,
@@ -120,7 +119,7 @@ export const FilterBar = ({
 			))}
 
 			<MenuTrigger>
-				<IconButton data-slot="filter-bar-add" aria-label="Add filter" variant="ghost" size="sm">
+				<IconButton aria-label="Add filter" variant="ghost" size="sm">
 					<Plus />
 				</IconButton>
 				<Menu>
