@@ -3,8 +3,8 @@ import z from "zod";
 import {
 	METHOD_OPTIONS,
 	RECIPE_STATUS_OPTIONS,
-	type TRecipeGraph,
-	type TRecipeStatus,
+	type RecipeGraph,
+	type RecipeStatus,
 } from "../../../../../utils/data";
 import { additionalDetailsDefaults } from "../sections/additional-details-fields";
 import { basicInformationDefaults } from "../sections/basic-information-fields";
@@ -13,15 +13,15 @@ import {
 	coercedNumber,
 	inputGroupSelectValue,
 	snapshotToFormFields,
-	type TAdditionalDetailsFields,
-	type TBasicInformationFields,
-	type TBrewParametersFields,
+	type AdditionalDetailsValues,
+	type BasicInformationValues,
+	type BrewParametersValues,
 } from "./field-schema";
 
-export interface TRecipeFormValues
-	extends TBasicInformationFields, TBrewParametersFields, TAdditionalDetailsFields {
+export interface RecipeFormValues
+	extends BasicInformationValues, BrewParametersValues, AdditionalDetailsValues {
 	name: string;
-	status: TRecipeStatus;
+	status: RecipeStatus;
 }
 
 export const recipeFormSchema = z.object({
@@ -43,7 +43,7 @@ export const recipeFormSchema = z.object({
 	notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 });
 
-export const recipeToFormValues = (recipe: TRecipeGraph): TRecipeFormValues => {
+export const recipeToFormValues = (recipe: RecipeGraph): RecipeFormValues => {
 	return {
 		...snapshotToFormFields(recipe.snapshot),
 		name: recipe.name,
@@ -51,7 +51,7 @@ export const recipeToFormValues = (recipe: TRecipeGraph): TRecipeFormValues => {
 	};
 };
 
-export const defaultRecipeFormValues: TRecipeFormValues = {
+export const defaultRecipeFormValues: RecipeFormValues = {
 	...basicInformationDefaults,
 	...brewParametersDefaults,
 	...additionalDetailsDefaults,

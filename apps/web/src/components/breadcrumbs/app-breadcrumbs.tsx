@@ -20,17 +20,17 @@ declare module "@tanstack/react-router" {
 	}
 }
 
-interface TAppBreadcrumb {
+interface AppBreadcrumb {
 	id: string;
 	pathname: string;
 	label: string;
 	disabled?: boolean;
 }
 
-type TRoutesById = RegisteredRouter["routesById"];
+type RoutesById = RegisteredRouter["routesById"];
 
 const getRouteStaticData = (
-	route: TRoutesById[keyof TRoutesById],
+	route: RoutesById[keyof RoutesById],
 ): StaticDataRouteOption | undefined => {
 	return route.options?.staticData;
 };
@@ -64,10 +64,10 @@ const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => 
 const resolveSuffixParentBreadcrumbs = (
 	match: AnyRouteMatch,
 	matchesById: Map<string, AnyRouteMatch>,
-	routesById: TRoutesById,
+	routesById: RoutesById,
 	seen: Set<string>,
 ) => {
-	const breadcrumbs: Array<TAppBreadcrumb> = [];
+	const breadcrumbs: Array<AppBreadcrumb> = [];
 	const segments = match.id.split("/");
 
 	for (let i = 0; i < segments.length; i++) {
@@ -83,7 +83,7 @@ const resolveSuffixParentBreadcrumbs = (
 
 		// SAFETY: the joined segments are only a candidate route ID; the routesById
 		// lookup below validates it and skips unknown IDs.
-		const parentId = parentSegments.join("/") as keyof TRoutesById;
+		const parentId = parentSegments.join("/") as keyof RoutesById;
 		if (seen.has(parentId)) {
 			continue;
 		}
@@ -117,7 +117,7 @@ const useAppBreadcrumbs = () => {
 		select: (matches) => {
 			const seen = new Set<string>();
 			const matchesById = new Map(matches.map((match) => [match.id, match]));
-			const breadcrumbs: Array<TAppBreadcrumb> = [];
+			const breadcrumbs: Array<AppBreadcrumb> = [];
 
 			for (const match of matches) {
 				if (seen.has(match.id)) {

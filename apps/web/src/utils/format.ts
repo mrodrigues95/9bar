@@ -1,5 +1,5 @@
 import { DateFormatter, getLocalTimeZone, type CalendarDateTime } from "@internationalized/date";
-import type { TBrewSnapshot } from "./data";
+import type { BrewSnapshot } from "./data";
 
 const SHOT_AT_FORMATTER = new DateFormatter("en-US", {
 	day: "numeric",
@@ -38,12 +38,12 @@ export const formatChangeDate = (changedAt: string) => {
 	return CHANGE_DATE_FORMATTER.format(new Date(changedAt));
 };
 
-export const formatBrewTime = (snapshot: Pick<TBrewSnapshot, "brewTime" | "brewTimeUnit">) => {
+export const formatBrewTime = (snapshot: Pick<BrewSnapshot, "brewTime" | "brewTimeUnit">) => {
 	return `${snapshot.brewTime}${snapshot.brewTimeUnit}`;
 };
 
 export const formatTemperature = (
-	snapshot: Pick<TBrewSnapshot, "temperature" | "temperatureUnit">,
+	snapshot: Pick<BrewSnapshot, "temperature" | "temperatureUnit">,
 ) => {
 	return `${snapshot.temperature}°${snapshot.temperatureUnit}`;
 };

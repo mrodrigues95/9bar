@@ -2,10 +2,10 @@ import { createFieldMap } from "@tanstack/react-form";
 import { SelectItem } from "@9bar/toolkit/components";
 import { withFieldGroup } from "@9bar/toolkit/components/composed";
 import { GRINDER_OPTIONS, MACHINE_OPTIONS, METHOD_OPTIONS } from "../../../../../utils/data";
-import type { TBasicInformationFields } from "../schemas/field-schema";
+import type { BasicInformationValues } from "../schemas/field-schema";
 import { FormSection } from "./form-section";
 
-export const basicInformationDefaults: TBasicInformationFields = {
+export const basicInformationDefaults: BasicInformationValues = {
 	method: "espresso",
 	beans: "",
 	grinder: "",

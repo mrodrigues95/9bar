@@ -15,7 +15,7 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
@@ -80,7 +80,7 @@ export const CheckboxGroupField = ({
 /** Props for the {@link FormCheckboxGroupField} component. */
 export interface FormCheckboxGroupFieldProps extends CheckboxGroupFieldProps {
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 }
 
 /** A form-connected checkbox group field that reads its value, change handlers, and validation errors from the nearest field context. */

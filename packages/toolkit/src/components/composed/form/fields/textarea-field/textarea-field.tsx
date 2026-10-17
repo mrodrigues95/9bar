@@ -13,7 +13,7 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
@@ -89,7 +89,7 @@ export interface FormTextareaFieldProps extends Omit<TextareaFieldProps, "label"
 	/** The label text displayed above the textarea. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 }
 
 /** A form-connected textarea field that reads its value, change handlers, and validation errors from the nearest field context. */

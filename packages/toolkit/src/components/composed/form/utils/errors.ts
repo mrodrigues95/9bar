@@ -1,10 +1,10 @@
 import { type FieldErrorItem, toErrorMessage } from "#components/field";
 
-export type TErrorFormatter<TError = unknown> = (
+export type ErrorFormatter<TError = unknown> = (
 	errors: Array<TError>,
 ) => Array<FieldErrorItem> | string | undefined;
 
-export const defaultErrorFormatter: TErrorFormatter = (errors) => {
+export const defaultErrorFormatter: ErrorFormatter = (errors) => {
 	// SAFETY: this is the documented generic-fallback boundary: raw form-library errors
 	// arrive as unknown and are normalized into messages here. Values outside the
 	// FieldErrorItem contract yield no message instead of crashing.
@@ -36,7 +36,7 @@ export const resolveFormFieldErrors = <TError = unknown>(
 		formatErrors,
 	}: {
 		errorMessage?: string;
-		formatErrors?: TErrorFormatter<TError>;
+		formatErrors?: ErrorFormatter<TError>;
 	},
 ): Array<FieldErrorItem> | undefined =>
 	errorMessage !== undefined
@@ -46,7 +46,7 @@ export const resolveFormFieldErrors = <TError = unknown>(
 /** Applies a custom formatter to raw form errors, falling back to the raw errors when no formatter is given. */
 export const normalizeFormErrors = <TError = unknown>(
 	errors: Array<TError>,
-	formatErrors?: TErrorFormatter<TError>,
+	formatErrors?: ErrorFormatter<TError>,
 ): Array<FieldErrorItem> | undefined => {
 	if (!formatErrors) {
 		// SAFETY: without a formatter the caller passes already-displayable errors (strings or

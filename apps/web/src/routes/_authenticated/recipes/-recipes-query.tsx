@@ -12,9 +12,9 @@ import {
 	getRecipeLogs,
 	logs,
 	recipes,
-	type TBrewSnapshot,
-	type TLog,
-	type TRecipe,
+	type BrewSnapshot,
+	type Log,
+	type Recipe,
 } from "../../../utils/data";
 import { toLabels } from "../../../utils/utils";
 
@@ -128,9 +128,9 @@ export const FILTER_DEFINITIONS = [
 	},
 ] as const satisfies ReadonlyArray<FilterBarDefinition>;
 
-type TFilterId = (typeof FILTER_DEFINITIONS)[number]["id"];
+type FilterId = (typeof FILTER_DEFINITIONS)[number]["id"];
 
-export type TFilterSearchParams = Partial<Record<TFilterId, string | undefined>>;
+export type FilterSearchParams = Partial<Record<FilterId, string | undefined>>;
 
 const filterParamSchema = z.string().optional().catch(undefined);
 
@@ -142,33 +142,33 @@ export const FILTER_PARAM_SCHEMA = {
 	status: filterParamSchema,
 	machine: filterParamSchema,
 	grinder: filterParamSchema,
-} satisfies Record<TFilterId, typeof filterParamSchema>;
+} satisfies Record<FilterId, typeof filterParamSchema>;
 
-export type TRecipesListRow =
+export type RecipesListRow =
 	| {
 			kind: "recipe";
 			key: string;
 			lastActivityAt: string;
-			recipe: TRecipe;
-			snapshot: TBrewSnapshot;
+			recipe: Recipe;
+			snapshot: BrewSnapshot;
 	  }
 	| {
 			kind: "attached-log";
 			key: string;
 			lastActivityAt: string;
-			log: TLog;
-			snapshot: TBrewSnapshot;
-			recipe: TRecipe;
+			log: Log;
+			snapshot: BrewSnapshot;
+			recipe: Recipe;
 	  }
 	| {
 			kind: "quick-log";
 			key: string;
 			lastActivityAt: string;
-			log: TLog;
-			snapshot: TBrewSnapshot;
+			log: Log;
+			snapshot: BrewSnapshot;
 	  };
 
-const getRecipeLastActivity = (recipe: TRecipe) => {
+const getRecipeLastActivity = (recipe: Recipe) => {
 	const [latestLog] = getRecipeLogs(recipe.id);
 	if (latestLog && latestLog.shotAt > recipe.updatedAt) {
 		return latestLog.shotAt;
@@ -177,7 +177,7 @@ const getRecipeLastActivity = (recipe: TRecipe) => {
 };
 
 const buildRows = () => {
-	const rows: Array<TRecipesListRow> = [];
+	const rows: Array<RecipesListRow> = [];
 
 	for (const recipe of recipes) {
 		const snapshot = getBrewSnapshot(recipe.brewSnapshotId);
@@ -193,7 +193,7 @@ const buildRows = () => {
 		});
 	}
 
-	const recipesById = new Map<number, TRecipe>(recipes.map((recipe) => [recipe.id, recipe]));
+	const recipesById = new Map<number, Recipe>(recipes.map((recipe) => [recipe.id, recipe]));
 
 	for (const log of logs) {
 		const snapshot = getBrewSnapshot(log.brewSnapshotId);
@@ -220,7 +220,7 @@ const buildRows = () => {
  * dropping unknown definitions, operators, and values so a hand-edited URL
  * degrades instead of throwing.
  */
-export const decodeFilters = (params: TFilterSearchParams) => {
+export const decodeFilters = (params: FilterSearchParams) => {
 	const filters: Array<FilterBarFilterState> = [];
 	for (const definition of FILTER_DEFINITIONS) {
 		const param = params[definition.id];
@@ -249,7 +249,7 @@ export const decodeFilters = (params: TFilterSearchParams) => {
 
 /** Writes active filters into URL params; empty filters become `undefined` so a removed chip leaves the URL. */
 export const encodeFilters = (filters: Array<FilterBarFilterState>) => {
-	const params: TFilterSearchParams = {};
+	const params: FilterSearchParams = {};
 	const filterByFilterId = new Map<string, FilterBarFilterState>(
 		filters.map((filter) => [filter.filterId, filter]),
 	);
@@ -274,7 +274,7 @@ const matchesOperator = (operatorId: string, selected: Array<string>, value: str
 	return true;
 };
 
-const FIELD_BY_FILTER_ID = new Map<string, (row: TRecipesListRow) => string | null>([
+const FIELD_BY_FILTER_ID = new Map<string, (row: RecipesListRow) => string | null>([
 	["type", (row) => row.kind],
 	["recipe", (row) => (row.kind === "quick-log" ? null : String(row.recipe.id))],
 	["method", (row) => row.snapshot.method],
@@ -294,7 +294,7 @@ const FIELD_BY_FILTER_ID = new Map<string, (row: TRecipesListRow) => string | nu
 	["grinder", (row) => row.snapshot.grinder],
 ]);
 
-const matchesFilters = (row: TRecipesListRow, filters: ReadonlyArray<FilterBarFilterState>) => {
+const matchesFilters = (row: RecipesListRow, filters: ReadonlyArray<FilterBarFilterState>) => {
 	return filters.every((filter) => {
 		const readField = FIELD_BY_FILTER_ID.get(filter.filterId);
 		if (!readField) {
@@ -312,7 +312,7 @@ const matchesQuery = (values: Array<string>, query: string) => {
 	return values.some((value) => value.toLowerCase().includes(query));
 };
 
-const matchesSearch = (row: TRecipesListRow, query: string) => {
+const matchesSearch = (row: RecipesListRow, query: string) => {
 	if (!query) {
 		return true;
 	}
@@ -320,7 +320,7 @@ const matchesSearch = (row: TRecipesListRow, query: string) => {
 };
 
 const isRetiredHidden = (
-	row: TRecipesListRow,
+	row: RecipesListRow,
 	filters: ReadonlyArray<FilterBarFilterState>,
 	query: string,
 ) => {

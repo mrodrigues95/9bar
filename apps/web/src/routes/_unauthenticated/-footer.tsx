@@ -4,13 +4,13 @@ import { Text } from "@9bar/toolkit/components";
 import { Link } from "../../components";
 import type { FileRouteTypes } from "../../routeTree.gen";
 
-interface TSegmentMap {
+interface SegmentMap {
 	text: string;
 	linkText: string;
 	linkTo: FileRouteTypes["to"];
 }
 
-const segmentMap: Partial<Record<FileRouteTypes["to"], TSegmentMap>> = {
+const segmentMap: Partial<Record<FileRouteTypes["to"], SegmentMap>> = {
 	"/sign-in": {
 		text: "New to 9bar?",
 		linkText: "Create an account",

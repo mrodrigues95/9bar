@@ -10,11 +10,11 @@ import { useAppForm } from "@9bar/toolkit/components/composed";
 import { formatTimeOfDay } from "../../../../utils/format";
 import { LogForm } from "./log-form";
 import { nowAsCalendarDateTime } from "./schemas/field-schema";
-import { logFormOpts, type TLogFormValues } from "./schemas/log-schema";
+import { logFormOpts, type LogFormValues } from "./schemas/log-schema";
 import { grindSizeFieldName } from "./sections/brew-parameters-fields";
 
 interface LogFormDialogProps {
-	defaultValues: TLogFormValues;
+	defaultValues: LogFormValues;
 	mode: "create" | "edit";
 	onDone: () => void;
 }

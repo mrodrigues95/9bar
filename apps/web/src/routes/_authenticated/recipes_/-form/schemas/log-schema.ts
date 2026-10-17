@@ -4,10 +4,10 @@ import z from "zod";
 import {
 	METHOD_OPTIONS,
 	VERDICT_OPTIONS,
-	type TBrewSnapshot,
-	type TLog,
-	type TRecipeGraph,
-	type TVerdict,
+	type BrewSnapshot,
+	type Log,
+	type RecipeGraph,
+	type Verdict,
 } from "../../../../../utils/data";
 import { additionalDetailsDefaults } from "../sections/additional-details-fields";
 import { basicInformationDefaults } from "../sections/basic-information-fields";
@@ -18,25 +18,25 @@ import {
 	nowAsCalendarDateTime,
 	snapshotToFormFields,
 	toFormDateTime,
-	type TAdditionalDetailsFields,
-	type TBasicInformationFields,
-	type TBrewParametersFields,
+	type AdditionalDetailsValues,
+	type BasicInformationValues,
+	type BrewParametersValues,
 } from "./field-schema";
 
-export interface TLogFormValues
-	extends TBasicInformationFields, TBrewParametersFields, TAdditionalDetailsFields {
+export interface LogFormValues
+	extends BasicInformationValues, BrewParametersValues, AdditionalDetailsValues {
 	recipeId: string | null;
 	shotAt: CalendarDateTime;
-	verdict: TVerdict | null;
+	verdict: Verdict | null;
 }
 
-export type TLogSubmitIntent = "save" | "log-another";
+export type LogSubmitIntent = "save" | "log-another";
 
-export interface TLogSubmitMeta {
-	intent: TLogSubmitIntent;
+export interface LogSubmitMeta {
+	intent: LogSubmitIntent;
 }
 
-const logSubmitMeta: TLogSubmitMeta = { intent: "save" };
+const logSubmitMeta: LogSubmitMeta = { intent: "save" };
 
 export const logFormSchema = z.object({
 	recipeId: z.string().nullable(),
@@ -55,7 +55,7 @@ export const logFormSchema = z.object({
 	notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 });
 
-export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): TLogFormValues => {
+export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): LogFormValues => {
 	return {
 		...basicInformationDefaults,
 		...brewParametersDefaults,
@@ -67,9 +67,9 @@ export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): TLogFormVa
 };
 
 export const logToFormValues = (
-	log: TLog & { snapshot: TBrewSnapshot },
+	log: Log & { snapshot: BrewSnapshot },
 	shotAt = toFormDateTime(new Date(log.shotAt)),
-): TLogFormValues => {
+): LogFormValues => {
 	return {
 		...emptyLogFormValues(shotAt),
 		...snapshotToFormFields(log.snapshot),
@@ -79,9 +79,9 @@ export const logToFormValues = (
 };
 
 export const recipeToLogFormValues = (
-	recipe: TRecipeGraph,
+	recipe: RecipeGraph,
 	shotAt = nowAsCalendarDateTime(),
-): TLogFormValues => {
+): LogFormValues => {
 	return {
 		...emptyLogFormValues(shotAt),
 		...snapshotToFormFields(recipe.snapshot),

@@ -1,7 +1,7 @@
 import { createFieldMap } from "@tanstack/react-form";
 import { withFieldGroup } from "@9bar/toolkit/components/composed";
-import type { TMethod } from "../../../../../utils/data";
-import type { TBrewParametersFields } from "../schemas/field-schema";
+import type { Method } from "../../../../../utils/data";
+import type { BrewParametersValues } from "../schemas/field-schema";
 import { FormSection } from "./form-section";
 
 const BREW_TIME_UNIT_OPTIONS = [
@@ -14,7 +14,7 @@ const TEMPERATURE_UNIT_OPTIONS = [
 	{ id: "F", label: "Fahrenheit (°F)" },
 ];
 
-export const brewParametersDefaults: TBrewParametersFields = {
+export const brewParametersDefaults: BrewParametersValues = {
 	grindSize: "",
 	dose: 0,
 	yield: 0,
@@ -26,27 +26,27 @@ export const brewParametersDefaults: TBrewParametersFields = {
 export const brewParametersFields = createFieldMap(brewParametersDefaults);
 
 interface BrewParametersFieldsProps {
-	method: TMethod;
+	method: Method;
 	isGrindSizeRequired?: boolean;
 }
 
 // Exported so the quick-log dialog can focus this input after "Save and log another".
-export const grindSizeFieldName = "grindSize" satisfies keyof TBrewParametersFields;
+export const grindSizeFieldName = "grindSize" satisfies keyof BrewParametersValues;
 
 const brewParametersProps: BrewParametersFieldsProps = {
 	method: "espresso",
 	isGrindSizeRequired: false,
 };
 
-const isImmersionOrPourOver = (method: TMethod) => {
+const isImmersionOrPourOver = (method: Method) => {
 	return method === "pour-over" || method === "immersion";
 };
 
-const doseLabel = (method: TMethod) => {
+const doseLabel = (method: Method) => {
 	return isImmersionOrPourOver(method) ? "Coffee (g)" : "Dose (g)";
 };
 
-const yieldLabel = (method: TMethod) => {
+const yieldLabel = (method: Method) => {
 	return isImmersionOrPourOver(method) ? "Water (g)" : "Yield (g)";
 };
 

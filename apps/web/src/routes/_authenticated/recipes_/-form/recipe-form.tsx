@@ -14,12 +14,12 @@ import {
 } from "./sections/basic-information-fields";
 import { brewParametersFields, BrewParametersFields } from "./sections/brew-parameters-fields";
 
-interface TRecipeFormProps {
+interface RecipeFormProps {
 	mode: "create" | "edit";
 	recipeId?: string;
 }
 
-const recipeFormProps: TRecipeFormProps = {
+const recipeFormProps: RecipeFormProps = {
 	mode: "create",
 };
 

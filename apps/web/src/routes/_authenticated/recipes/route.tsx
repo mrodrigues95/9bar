@@ -32,10 +32,10 @@ import {
 	FILTER_PARAM_SCHEMA,
 	listRecipes,
 	PAGE_SIZE,
-	type TFilterSearchParams,
+	type FilterSearchParams,
 } from "./-recipes-query";
 
-const resolveIntent = (search: { q: string; page: number } & TFilterSearchParams) => ({
+const resolveIntent = (search: { q: string; page: number } & FilterSearchParams) => ({
 	version: 0,
 	q: search.q,
 	filters: decodeFilters(search),

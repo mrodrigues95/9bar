@@ -33,16 +33,16 @@ import {
 	VERDICT_LABELS,
 	grinderName,
 	machineName,
-	type TBrewSnapshot,
-	type TLog,
-	type TRecipe,
+	type BrewSnapshot,
+	type Log,
+	type Recipe,
 } from "../../../utils/data";
 import { formatBrewTime, formatGrams, formatShotAt } from "../../../utils/format";
-import { ROW_KIND_NAMES, type TRecipesListRow } from "./-recipes-query";
+import { ROW_KIND_NAMES, type RecipesListRow } from "./-recipes-query";
 
 const UNTITLED_NAME = "(Untitled)";
 
-type TLogRow = Extract<TRecipesListRow, { kind: "attached-log" | "quick-log" }>;
+type LogListRow = Extract<RecipesListRow, { kind: "attached-log" | "quick-log" }>;
 
 const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
 	return (
@@ -53,7 +53,7 @@ const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string })
 	);
 };
 
-const RowMeta = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
+const RowMeta = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	return (
 		<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
 			<RowMetaItem icon={Bean} label={snapshot.beans} />
@@ -75,7 +75,7 @@ const RowTitleLink = ({ recipeId, name }: { recipeId: number; name: string }) =>
 	);
 };
 
-const RecipeRowActions = ({ recipe }: { recipe: TRecipe }) => {
+const RecipeRowActions = ({ recipe }: { recipe: Recipe }) => {
 	return (
 		<MenuTrigger>
 			<IconButton aria-label={`Actions for ${recipe.name}`} size="sm" variant="ghost">
@@ -108,7 +108,7 @@ const RecipeRowActions = ({ recipe }: { recipe: TRecipe }) => {
 	);
 };
 
-const AttachedLogRowActions = ({ log, name }: { log: TLog; name: string }) => {
+const AttachedLogRowActions = ({ log, name }: { log: Log; name: string }) => {
 	return (
 		<MenuTrigger>
 			<IconButton aria-label={`Actions for ${name}`} size="sm" variant="ghost">
@@ -142,7 +142,7 @@ const AttachedLogRowActions = ({ log, name }: { log: TLog; name: string }) => {
 	);
 };
 
-const QuickLogRowActions = ({ log }: { log: TLog }) => {
+const QuickLogRowActions = ({ log }: { log: Log }) => {
 	return (
 		<MenuTrigger>
 			<IconButton aria-label={`Actions for ${UNTITLED_NAME}`} size="sm" variant="ghost">
@@ -185,7 +185,7 @@ const QuickLogRowActions = ({ log }: { log: TLog }) => {
 	);
 };
 
-const DoseLine = ({ row, shotAt }: { row: TRecipesListRow; shotAt?: string }) => {
+const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => {
 	return (
 		<Text variant="caption" className="mt-0.5 flex min-w-0 items-center gap-1 font-mono">
 			<Scale className="size-3 shrink-0" />
@@ -198,7 +198,7 @@ const DoseLine = ({ row, shotAt }: { row: TRecipesListRow; shotAt?: string }) =>
 	);
 };
 
-const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> }) => {
+const RecipeRow = ({ row }: { row: Extract<RecipesListRow, { kind: "recipe" }> }) => {
 	return (
 		<li className="flex items-center gap-3 py-2.5">
 			<div className="min-w-0 flex-1">
@@ -220,7 +220,7 @@ const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> 
 	);
 };
 
-const LogRow = ({ row }: { row: TLogRow }) => {
+const LogRow = ({ row }: { row: LogListRow }) => {
 	return (
 		<li className="flex items-center gap-3 py-2.5">
 			<div className="min-w-0 flex-1">

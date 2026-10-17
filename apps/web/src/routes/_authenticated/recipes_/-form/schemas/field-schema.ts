@@ -1,31 +1,31 @@
 import { fromDateToLocal, toCalendarDateTime } from "@internationalized/date";
 import z from "zod";
-import type { TInputGroupSelectFieldValue } from "@9bar/toolkit/components/composed";
-import type { TBrewSnapshot, TMethod } from "../../../../../utils/data";
+import type { InputGroupSelectFieldValue } from "@9bar/toolkit/components/composed";
+import type { BrewSnapshot, Method } from "../../../../../utils/data";
 
-export interface TBasicInformationFields {
-	method: TMethod;
+export interface BasicInformationValues {
+	method: Method;
 	beans: string;
 	grinder: string;
 	machine: string;
 }
 
-export interface TBrewParametersFields {
+export interface BrewParametersValues {
 	grindSize: string;
 	dose: number;
 	yield: number;
-	brewTime: TInputGroupSelectFieldValue<number, "s" | "m">;
-	temperature: TInputGroupSelectFieldValue<number, "C" | "F">;
+	brewTime: InputGroupSelectFieldValue<number, "s" | "m">;
+	temperature: InputGroupSelectFieldValue<number, "C" | "F">;
 	pressure: number;
 }
 
-export interface TAdditionalDetailsFields {
+export interface AdditionalDetailsValues {
 	notes: string;
 }
 
-export type TBrewFormFields = TBasicInformationFields &
-	TBrewParametersFields &
-	TAdditionalDetailsFields;
+export type BrewFormFields = BasicInformationValues &
+	BrewParametersValues &
+	AdditionalDetailsValues;
 
 /**
  * Coerces a string (from an HTML input) to a number while preserving the `number`
@@ -56,7 +56,7 @@ export const nowAsCalendarDateTime = () => {
 	return toFormDateTime(new Date());
 };
 
-export const snapshotToFormFields = (snapshot: TBrewSnapshot): TBrewFormFields => {
+export const snapshotToFormFields = (snapshot: BrewSnapshot): BrewFormFields => {
 	return {
 		method: snapshot.method,
 		beans: snapshot.beans,

@@ -2,10 +2,10 @@ import {
 	METHOD_LABELS,
 	getBrewSnapshot,
 	getRecipeSnapshots,
-	type TBrewSnapshot,
-	type TLog,
-	type TRecipe,
-	type TRecipeStatus,
+	type BrewSnapshot,
+	type Log,
+	type Recipe,
+	type RecipeStatus,
 } from "../../../../../utils/data";
 import {
 	formatBrewTime,
@@ -14,14 +14,14 @@ import {
 	formatTemperature,
 } from "../../../../../utils/format";
 
-export const formatRatio = (snapshot: Pick<TBrewSnapshot, "dose" | "yield">) => {
+export const formatRatio = (snapshot: Pick<BrewSnapshot, "dose" | "yield">) => {
 	if (snapshot.dose <= 0) {
 		return "—";
 	}
 	return `1:${Math.round((snapshot.yield / snapshot.dose) * 10) / 10}`;
 };
 
-export const resolveReferenceShot = (recipe: Pick<TRecipe, "pinnedLogId">, logs: Array<TLog>) => {
+export const resolveReferenceShot = (recipe: Pick<Recipe, "pinnedLogId">, logs: Array<Log>) => {
 	const pinned =
 		recipe.pinnedLogId === null
 			? null
@@ -47,7 +47,7 @@ export const resolveReferenceShot = (recipe: Pick<TRecipe, "pinnedLogId">, logs:
 const BALANCED_RUN_LENGTH = 3;
 const OFF_RUN_LENGTH = 2;
 
-const leadingRun = (logs: Array<TLog>, matches: (log: TLog) => boolean) => {
+const leadingRun = (logs: Array<Log>, matches: (log: Log) => boolean) => {
 	let count = 0;
 	for (const log of logs) {
 		if (!matches(log)) {
@@ -59,9 +59,9 @@ const leadingRun = (logs: Array<TLog>, matches: (log: TLog) => boolean) => {
 };
 
 export const suggestRecipeStatus = (
-	recipe: { status: TRecipeStatus | null },
-	logs: Array<TLog>,
-): { status: TRecipeStatus; reason: string } | null => {
+	recipe: { status: RecipeStatus | null },
+	logs: Array<Log>,
+): { status: RecipeStatus; reason: string } | null => {
 	if (recipe.status === "retired") {
 		return null;
 	}
@@ -100,9 +100,9 @@ const CHANGE_FIELDS = [
 	"notes",
 ] as const;
 
-type TChangeField = (typeof CHANGE_FIELDS)[number];
+type ChangeField = (typeof CHANGE_FIELDS)[number];
 
-const CHANGE_FIELD_LABELS: Record<TChangeField, string> = {
+const CHANGE_FIELD_LABELS: Record<ChangeField, string> = {
 	method: "Method",
 	beans: "Beans",
 	machine: "Machine",
@@ -116,7 +116,7 @@ const CHANGE_FIELD_LABELS: Record<TChangeField, string> = {
 	notes: "Notes",
 };
 
-const hasChanged = (previous: TBrewSnapshot, next: TBrewSnapshot, field: TChangeField) => {
+const hasChanged = (previous: BrewSnapshot, next: BrewSnapshot, field: ChangeField) => {
 	if (field === "brewTime") {
 		return previous.brewTime !== next.brewTime || previous.brewTimeUnit !== next.brewTimeUnit;
 	}
@@ -128,7 +128,7 @@ const hasChanged = (previous: TBrewSnapshot, next: TBrewSnapshot, field: TChange
 	return previous[field] !== next[field];
 };
 
-const formatValue = (snapshot: TBrewSnapshot, field: TChangeField) => {
+const formatValue = (snapshot: BrewSnapshot, field: ChangeField) => {
 	switch (field) {
 		case "method":
 			return METHOD_LABELS[snapshot.method] ?? snapshot.method;

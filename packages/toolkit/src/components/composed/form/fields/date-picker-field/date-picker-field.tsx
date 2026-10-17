@@ -40,7 +40,7 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
@@ -196,7 +196,7 @@ type FormDatePickerFieldBaseProps<TValue extends DateValue> = Omit<
 	/** The label text displayed above the picker. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 };
 
 /** Props for the {@link FormDatePickerField} component. */
@@ -207,7 +207,7 @@ export type FormDatePickerFieldProps<
 	({ codec?: undefined } | { codec: DatePickerValueCodec<TValue, TFieldValue> });
 
 const useFormDatePickerState = <TFieldValue,>(
-	formatErrors: TErrorFormatter | undefined,
+	formatErrors: ErrorFormatter | undefined,
 	errorMessage: string | undefined,
 ) => {
 	const field = useFieldContext<TFieldValue>();

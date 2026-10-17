@@ -1,9 +1,9 @@
 import { createFieldMap } from "@tanstack/react-form";
 import { withFieldGroup } from "@9bar/toolkit/components/composed";
-import type { TAdditionalDetailsFields } from "../schemas/field-schema";
+import type { AdditionalDetailsValues } from "../schemas/field-schema";
 import { FormSection } from "./form-section";
 
-export const additionalDetailsDefaults: TAdditionalDetailsFields = {
+export const additionalDetailsDefaults: AdditionalDetailsValues = {
 	notes: "",
 };
 

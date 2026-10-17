@@ -1,12 +1,12 @@
-export type TMethod = "espresso" | "pour-over" | "immersion" | "other";
-export type TVerdict = "under-extracted" | "balanced" | "over-extracted";
-export type TRecipeStatus = "dialing-in" | "dialed-in" | "needs-retune" | "retired";
+export type Method = "espresso" | "pour-over" | "immersion" | "other";
+export type Verdict = "under-extracted" | "balanced" | "over-extracted";
+export type RecipeStatus = "dialing-in" | "dialed-in" | "needs-retune" | "retired";
 
-export interface TBrewSnapshot {
+export interface BrewSnapshot {
 	id: number;
 	uuid: string;
 	recipeId: number | null;
-	method: TMethod;
+	method: Method;
 	beans: string;
 	machine: string;
 	grinder: string;
@@ -23,31 +23,28 @@ export interface TBrewSnapshot {
 	updatedAt: string;
 }
 
-export type TBrewValues = Omit<
-	TBrewSnapshot,
-	"id" | "uuid" | "recipeId" | "createdAt" | "updatedAt"
->;
+export type BrewValues = Omit<BrewSnapshot, "id" | "uuid" | "recipeId" | "createdAt" | "updatedAt">;
 
-export interface TRecipe {
+export interface Recipe {
 	id: number;
 	uuid: string;
 	name: string;
 	brewSnapshotId: number;
-	status: TRecipeStatus;
+	status: RecipeStatus;
 	pinnedLogId: number | null;
 	createdAt: string;
 	updatedAt: string;
 }
 
-export interface TLog {
+export interface Log {
 	id: number;
 	uuid: string;
 	recipeId: number | null;
 	brewSnapshotId: number;
-	verdict: TVerdict | null;
+	verdict: Verdict | null;
 	shotAt: string;
 	createdAt: string;
 	updatedAt: string;
 }
 
-export type TRecipeGraph = TRecipe & { snapshot: TBrewSnapshot; logs: Array<TLog> };
+export type RecipeGraph = Recipe & { snapshot: BrewSnapshot; logs: Array<Log> };

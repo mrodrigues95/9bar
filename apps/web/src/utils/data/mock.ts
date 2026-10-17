@@ -1,18 +1,18 @@
 import { toLabels } from "../utils";
 import {
-	type TBrewSnapshot,
-	type TBrewValues,
-	type TLog,
-	type TMethod,
-	type TRecipe,
-	type TRecipeGraph,
-	type TRecipeStatus,
-	type TVerdict,
+	type BrewSnapshot,
+	type BrewValues,
+	type Log,
+	type Method,
+	type Recipe,
+	type RecipeGraph,
+	type RecipeStatus,
+	type Verdict,
 } from "./tables";
 
-const brewSnapshots: Array<TBrewSnapshot> = [];
-export const recipes: Array<TRecipe> = [];
-export const logs: Array<TLog> = [];
+const brewSnapshots: Array<BrewSnapshot> = [];
+export const recipes: Array<Recipe> = [];
+export const logs: Array<Log> = [];
 
 export const getBrewSnapshot = (id: number) => {
 	return brewSnapshots.find((snapshot) => snapshot.id === id);
@@ -38,7 +38,7 @@ export const getLog = (id: number) => {
 	return logs.find((row) => row.id === id);
 };
 
-export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
+export const buildRecipeGraph = (id: number): RecipeGraph | undefined => {
 	const recipe = getRecipe(id);
 	if (!recipe) {
 		return undefined;
@@ -50,7 +50,7 @@ export const buildRecipeGraph = (id: number): TRecipeGraph | undefined => {
 	return { ...recipe, snapshot, logs: getRecipeLogs(recipe.id) };
 };
 
-export const buildLogGraph = (id: number): (TLog & { snapshot: TBrewSnapshot }) | undefined => {
+export const buildLogGraph = (id: number): (Log & { snapshot: BrewSnapshot }) | undefined => {
 	const log = getLog(id);
 	if (!log) {
 		return undefined;
@@ -67,32 +67,32 @@ export const METHOD_OPTIONS = [
 	{ id: "pour-over", name: "Pour over" },
 	{ id: "immersion", name: "Immersion" },
 	{ id: "other", name: "Other" },
-] as const satisfies ReadonlyArray<{ id: TMethod; name: string }>;
+] as const satisfies ReadonlyArray<{ id: Method; name: string }>;
 
 export const VERDICT_OPTIONS = [
 	{ id: "under-extracted", name: "Under-extracted" },
 	{ id: "balanced", name: "Balanced" },
 	{ id: "over-extracted", name: "Over-extracted" },
-] as const satisfies ReadonlyArray<{ id: TVerdict; name: string }>;
+] as const satisfies ReadonlyArray<{ id: Verdict; name: string }>;
 
 export const RECIPE_STATUS_OPTIONS = [
 	{ id: "dialing-in", name: "Dialing in" },
 	{ id: "dialed-in", name: "Dialed in" },
 	{ id: "needs-retune", name: "Needs retune" },
 	{ id: "retired", name: "Retired" },
-] as const satisfies ReadonlyArray<{ id: TRecipeStatus; name: string }>;
+] as const satisfies ReadonlyArray<{ id: RecipeStatus; name: string }>;
 
 export const METHOD_LABELS = toLabels(METHOD_OPTIONS);
 export const VERDICT_LABELS = toLabels(VERDICT_OPTIONS);
 export const RECIPE_STATUS_LABELS = toLabels(RECIPE_STATUS_OPTIONS);
 
-type TBrewValuesInput = Partial<TBrewValues> &
+type BrewValuesInput = Partial<BrewValues> &
 	Pick<
-		TBrewValues,
+		BrewValues,
 		"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
 	>;
 
-const brewValues = (seed: TBrewValuesInput): TBrewValues => {
+const brewValues = (seed: BrewValuesInput): BrewValues => {
 	return {
 		method: "espresso",
 		temperature: 93,
@@ -103,21 +103,21 @@ const brewValues = (seed: TBrewValuesInput): TBrewValues => {
 	};
 };
 
-const applyOverrides = (values: TBrewValues, overrides: Partial<TBrewValues>) => {
+const applyOverrides = (values: BrewValues, overrides: Partial<BrewValues>) => {
 	return { ...values, ...overrides };
 };
 
-interface TRecipeSeed {
+interface RecipeSeed {
 	name: string;
-	status?: TRecipeStatus;
+	status?: RecipeStatus;
 	snapshots: [
-		{ at: string; values: TBrewValues },
-		...Array<{ at: string; values: Partial<TBrewValues> }>,
+		{ at: string; values: BrewValues },
+		...Array<{ at: string; values: Partial<BrewValues> }>,
 	];
 	logs?: Array<{
 		shotAt: string;
-		verdict?: TVerdict;
-		values?: Partial<TBrewValues>;
+		verdict?: Verdict;
+		values?: Partial<BrewValues>;
 	}>;
 	referenceLogIndex?: number;
 }
@@ -126,9 +126,9 @@ let nextSnapshotId = 0;
 let nextRecipeId = 0;
 let nextLogId = 1000;
 
-const createBrewSnapshot = (recipeId: number | null, values: TBrewValues, at: string) => {
+const createBrewSnapshot = (recipeId: number | null, values: BrewValues, at: string) => {
 	nextSnapshotId += 1;
-	const snapshot: TBrewSnapshot = {
+	const snapshot: BrewSnapshot = {
 		id: nextSnapshotId,
 		uuid: `snapshot-uuid-${nextSnapshotId}`,
 		recipeId,
@@ -140,7 +140,7 @@ const createBrewSnapshot = (recipeId: number | null, values: TBrewValues, at: st
 	return snapshot;
 };
 
-const createRecipe = (seed: TRecipeSeed) => {
+const createRecipe = (seed: RecipeSeed) => {
 	nextRecipeId += 1;
 	const id = nextRecipeId;
 	const [firstVersion, ...laterVersions] = seed.snapshots;
@@ -152,7 +152,7 @@ const createRecipe = (seed: TRecipeSeed) => {
 		current = createBrewSnapshot(id, values, version.at);
 	}
 
-	const recipe: TRecipe = {
+	const recipe: Recipe = {
 		id,
 		uuid: `recipe-uuid-${id}`,
 		name: seed.name,
@@ -171,7 +171,7 @@ const createRecipe = (seed: TRecipeSeed) => {
 			applyOverrides(values, logSeed.values ?? {}),
 			logSeed.shotAt,
 		);
-		const log: TLog = {
+		const log: Log = {
 			id: nextLogId,
 			uuid: `log-uuid-${nextLogId}`,
 			recipeId: id,
@@ -192,10 +192,10 @@ const createRecipe = (seed: TRecipeSeed) => {
 	return recipe;
 };
 
-const createQuickLog = (seed: { shotAt: string; verdict?: TVerdict; values: TBrewValues }) => {
+const createQuickLog = (seed: { shotAt: string; verdict?: Verdict; values: BrewValues }) => {
 	nextLogId += 1;
 	const snapshot = createBrewSnapshot(null, seed.values, seed.shotAt);
-	const log: TLog = {
+	const log: Log = {
 		id: nextLogId,
 		uuid: `log-uuid-${nextLogId}`,
 		recipeId: null,

@@ -29,12 +29,12 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
 /** An item in the select dropdown of an InputGroupSelectField. */
-export interface TInputGroupSelectFieldItem {
+export interface InputGroupSelectFieldItem {
 	/** A unique identifier for the item. */
 	id: string;
 	/** The display text for the item. */
@@ -42,7 +42,7 @@ export interface TInputGroupSelectFieldItem {
 }
 
 /** The combined value of the input and select in an InputGroupSelectField. */
-export interface TInputGroupSelectFieldValue<
+export interface InputGroupSelectFieldValue<
 	TInputValue extends string | number = string | number,
 	TSelectValue extends string = string,
 > {
@@ -58,14 +58,14 @@ export interface InputGroupSelectFieldProps
 		Omit<InputGroupProps, "children" | "aria-label" | "aria-labelledby">,
 		FieldComponentProps {
 	/** The collection of items to display in the select dropdown. */
-	items: Array<TInputGroupSelectFieldItem>;
+	items: Array<InputGroupSelectFieldItem>;
 	/** Additional props forwarded to the `FieldLabel` component. */
 	labelProps?: FieldLabelProps;
 	/** Additional props forwarded to the text input. */
 	inputProps?: Omit<InputGroupInputProps, "value" | "onChange" | "onBlur" | "name">;
 	/** Additional props forwarded to the `Select` component. */
 	selectProps?: Omit<
-		SelectProps<TInputGroupSelectFieldItem>,
+		SelectProps<InputGroupSelectFieldItem>,
 		"children" | "selectedKey" | "onSelectionChange" | "items"
 	>;
 	/** Additional props forwarded to the `SelectTrigger` component. */
@@ -73,7 +73,7 @@ export interface InputGroupSelectFieldProps
 }
 
 interface InputGroupSelectFieldInternalProps {
-	value: TInputGroupSelectFieldValue;
+	value: InputGroupSelectFieldValue;
 	onInputChange: (value: string | number) => void;
 	onSelectChange: (value: string) => void;
 	onBlur: () => void;
@@ -178,7 +178,7 @@ export interface FormInputGroupSelectFieldProps extends Omit<
 	"value" | "onInputChange" | "onSelectChange" | "onBlur" | "name"
 > {
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 }
 
 /** A form-connected input group select field that reads its value, change handlers, and validation errors from the nearest field context. */
@@ -186,7 +186,7 @@ export const FormInputGroupSelectField = ({
 	formatErrors,
 	...props
 }: FormInputGroupSelectFieldProps) => {
-	const field = useFieldContext<TInputGroupSelectFieldValue>();
+	const field = useFieldContext<InputGroupSelectFieldValue>();
 	const { isInvalid, errors } = getFieldErrorState(field.state.meta);
 	const resolvedErrors = resolveFormFieldErrors(errors, {
 		errorMessage: props.errorMessage,

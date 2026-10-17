@@ -24,7 +24,7 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
@@ -114,7 +114,7 @@ export interface FormSelectFieldProps<T extends object> extends Omit<SelectField
 	/** The label text displayed above the select trigger. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 }
 
 /** A form-connected select field that reads its value, change handlers, and validation errors from the nearest field context. */

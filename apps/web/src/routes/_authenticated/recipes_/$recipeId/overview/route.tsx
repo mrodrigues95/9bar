@@ -30,10 +30,10 @@ import {
 	VERDICT_LABELS,
 	grinderName,
 	machineName,
-	type TBrewSnapshot,
-	type TLog,
-	type TRecipe,
-	type TRecipeStatus,
+	type BrewSnapshot,
+	type Log,
+	type Recipe,
+	type RecipeStatus,
 } from "../../../../../utils/data";
 import {
 	formatBrewTime,
@@ -69,7 +69,7 @@ const Stat = ({ label, value }: { label: string; value: string }) => {
 	);
 };
 
-const StatsGrid = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
+const StatsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	return (
 		<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-5">
 			<Stat label="Dose" value={formatGrams(snapshot.dose)} />
@@ -94,7 +94,7 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => {
 	);
 };
 
-const DetailsList = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
+const DetailsList = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	return (
 		<dl className="flex flex-col gap-1">
 			<DetailRow label="Beans" value={snapshot.beans} />
@@ -111,8 +111,8 @@ const StatusSuggestion = ({
 	recipe,
 	logs,
 }: {
-	recipe: { status: TRecipeStatus | null };
-	logs: Array<TLog>;
+	recipe: { status: RecipeStatus | null };
+	logs: Array<Log>;
 }) => {
 	const suggestion = suggestRecipeStatus(recipe, logs);
 	if (!suggestion) {
@@ -138,8 +138,8 @@ const ReferenceShotSection = ({
 	recipe,
 	logs,
 }: {
-	recipe: Pick<TRecipe, "pinnedLogId">;
-	logs: Array<TLog>;
+	recipe: Pick<Recipe, "pinnedLogId">;
+	logs: Array<Log>;
 }) => {
 	const shot = resolveReferenceShot(recipe, logs);
 

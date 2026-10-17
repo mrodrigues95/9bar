@@ -11,7 +11,7 @@ import {
 	getFieldErrorState,
 	resolveFieldErrors,
 	resolveFormFieldErrors,
-	type TErrorFormatter,
+	type ErrorFormatter,
 } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
@@ -58,7 +58,7 @@ export interface FormCheckboxFieldProps extends Omit<CheckboxFieldProps, "label"
 	/** The label text displayed beside the checkbox. Required for form-connected fields. */
 	label: string;
 	/** A custom error formatter for converting form validation errors to displayable error items. */
-	formatErrors?: TErrorFormatter;
+	formatErrors?: ErrorFormatter;
 }
 
 /** A form-connected checkbox field that reads its value, change handlers, and validation errors from the nearest field context. */
