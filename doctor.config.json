@@ -1,5 +1,16 @@
 {
 	"$schema": "https://react.doctor/schema/config.json",
 	"projects": ["@9bar/web", "@9bar/toolkit"],
-	"scope": "changed"
+	"scope": "changed",
+	"ignore": {
+		"overrides": [
+			{
+				"files": [
+					"**/components/composed/form/fields/date-picker-field/date-picker-field.tsx",
+					"**/overview/sections/variants.tsx"
+				],
+				"rules": ["react-doctor/duplicate-jsx-subtree"]
+			}
+		]
+	}
 }

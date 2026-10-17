@@ -1,5 +1,5 @@
 import { createFileRoute, useLoaderData, useNavigate } from "@tanstack/react-router";
-import { LogSheet } from "../../../-form/log-sheet";
+import { LogFormDialog } from "../../../-form/log-form-dialog";
 import { recipeToLogFormValues } from "../../../-form/schemas/log-schema";
 
 const NewRecipeLog = () => {
@@ -7,7 +7,7 @@ const NewRecipeLog = () => {
 	const navigate = useNavigate();
 
 	return (
-		<LogSheet
+		<LogFormDialog
 			defaultValues={recipeToLogFormValues(recipe)}
 			mode="create"
 			onDone={() => {

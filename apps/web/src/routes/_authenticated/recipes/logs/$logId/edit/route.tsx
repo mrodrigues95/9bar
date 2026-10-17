@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { buildLogGraph } from "../../../../../../utils/data";
-import { LogSheet } from "../../../../recipes_/-form/log-sheet";
+import { LogFormDialog } from "../../../../recipes_/-form/log-form-dialog";
 import { logToFormValues } from "../../../../recipes_/-form/schemas/log-schema";
 
 const EditLog = () => {
@@ -8,7 +8,7 @@ const EditLog = () => {
 	const navigate = useNavigate();
 
 	return (
-		<LogSheet
+		<LogFormDialog
 			defaultValues={logToFormValues(log)}
 			mode="edit"
 			onDone={() => {

@@ -1,7 +1,14 @@
-import { Gauge, MoreHorizontal } from "lucide-react";
-import { DialogTrigger } from "react-aria-components";
+import { Gauge, MoreHorizontal, NotebookPen } from "lucide-react";
 import {
 	Button,
+	Dialog,
+	DialogCloseButton,
+	DialogCloseIconButton,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 	IconButton,
 	Listbox,
 	ListboxItem,
@@ -128,14 +135,43 @@ const ListboxDemo = () => (
 	</div>
 );
 
+/** A log-shot dialog opened from a button trigger. */
+const DialogDemo = () => (
+	<div className="flex flex-col items-start gap-3">
+		<Text variant="label" color="secondary">
+			Dialog
+		</Text>
+		<DialogTrigger>
+			<Button variant="outline" size="sm">
+				<NotebookPen />
+				Log a shot
+			</Button>
+			<Dialog>
+				<DialogHeader>
+					<DialogTitle>Log a shot</DialogTitle>
+					<DialogDescription>
+						Record the details of this shot. A recipe is optional.
+					</DialogDescription>
+					<DialogCloseIconButton />
+				</DialogHeader>
+				<DialogFooter>
+					<DialogCloseButton>Cancel</DialogCloseButton>
+					<Button>Save shot</Button>
+				</DialogFooter>
+			</Dialog>
+		</DialogTrigger>
+	</div>
+);
+
 /**
- * Overlay components rendered as their triggers — menus, popovers, and selects
- * open and close through normal interaction, the way consumers use them.
+ * Overlay components rendered as their triggers — menus, popovers, selects, and
+ * dialogs open and close through normal interaction, the way consumers use
+ * them.
  *
  * Overlays are intentionally not forced open here: pre-opened React Aria
  * overlays render a modal underlay that blocks interaction with the whole
- * canvas. Review open-state surfaces (popover chrome, menu highlights, etc.)
- * by opening them, or in each component's own stories.
+ * canvas. Review open-state surfaces (popover chrome, menu highlights, dialog
+ * content, etc.) by opening them, or in each component's own stories.
  */
 export const OverlaySection = () => (
 	<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -143,5 +179,6 @@ export const OverlaySection = () => (
 		<PopoverDemo />
 		<SelectDemo />
 		<ListboxDemo />
+		<DialogDemo />
 	</div>
 );

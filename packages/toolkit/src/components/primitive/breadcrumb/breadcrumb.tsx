@@ -79,7 +79,10 @@ export const BreadcrumbItem = ({
 };
 
 /** Props for the {@link BreadcrumbLink} component. */
-export type BreadcrumbLinkProps = LinkProps;
+export type BreadcrumbLinkProps = LinkProps & {
+	/** A ref to the underlying anchor element. */
+	ref?: React.Ref<HTMLAnchorElement>;
+};
 
 /** A navigable crumb rendered as a link, styled as the current page when active. */
 export const BreadcrumbLink = ({ className, render, ...props }: BreadcrumbLinkProps) => {

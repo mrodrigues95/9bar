@@ -1,4 +1,4 @@
-import { DateFormatter } from "@internationalized/date";
+import { DateFormatter, getLocalTimeZone, type CalendarDateTime } from "@internationalized/date";
 import type { TBrewSnapshot } from "./data";
 
 const SHOT_AT_FORMATTER = new DateFormatter("en-US", {
@@ -9,15 +9,29 @@ const SHOT_AT_FORMATTER = new DateFormatter("en-US", {
 	hour12: true,
 });
 
+const TIME_OF_DAY_FORMATTER = new DateFormatter("en-US", {
+	hour: "numeric",
+	minute: "2-digit",
+	hour12: true,
+});
+
 const CHANGE_DATE_FORMATTER = new DateFormatter("en-US", {
 	day: "numeric",
 	month: "short",
 });
 
-export const formatShotAt = (shotAt: string) => {
-	return SHOT_AT_FORMATTER.formatToParts(new Date(shotAt))
+const formatParts = (parts: Array<Intl.DateTimeFormatPart>) => {
+	return parts
 		.map((part) => (part.type === "dayPeriod" ? part.value.toUpperCase() : part.value))
 		.join("");
+};
+
+export const formatShotAt = (shotAt: string) => {
+	return formatParts(SHOT_AT_FORMATTER.formatToParts(new Date(shotAt)));
+};
+
+export const formatTimeOfDay = (dateTime: CalendarDateTime) => {
+	return formatParts(TIME_OF_DAY_FORMATTER.formatToParts(dateTime.toDate(getLocalTimeZone())));
 };
 
 export const formatChangeDate = (changedAt: string) => {

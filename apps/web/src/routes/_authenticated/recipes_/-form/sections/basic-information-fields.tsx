@@ -14,12 +14,12 @@ export const basicInformationDefaults: TBasicInformationFields = {
 
 export const basicInformationFields = createFieldMap(basicInformationDefaults);
 
-interface TBasicInformationFieldsProps {
+interface BasicInformationFieldsProps {
 	isIdentityLocked?: boolean;
 	isIdentityRequired?: boolean;
 }
 
-const basicInformationProps: TBasicInformationFieldsProps = {
+const basicInformationProps: BasicInformationFieldsProps = {
 	isIdentityLocked: false,
 	isIdentityRequired: false,
 };

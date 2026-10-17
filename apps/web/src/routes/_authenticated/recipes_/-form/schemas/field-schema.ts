@@ -48,12 +48,12 @@ export const inputGroupSelectValue = <const T extends readonly [string, ...Array
 		})
 		.refine(({ inputValue }) => inputValue >= 0, { message });
 
-export const toDateTimeLocal = (date: Date) => {
-	return toCalendarDateTime(fromDateToLocal(date)).set({ millisecond: 0 }).toString();
+export const toFormDateTime = (date: Date) => {
+	return toCalendarDateTime(fromDateToLocal(date)).set({ millisecond: 0 });
 };
 
-export const nowForDateTimeLocal = () => {
-	return toDateTimeLocal(new Date());
+export const nowAsCalendarDateTime = () => {
+	return toFormDateTime(new Date());
 };
 
 export const snapshotToFormFields = (snapshot: TBrewSnapshot): TBrewFormFields => {

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { buildLogGraph } from "../../../../../../utils/data";
-import { LogSheet } from "../../../../recipes_/-form/log-sheet";
-import { nowForDateTimeLocal } from "../../../../recipes_/-form/schemas/field-schema";
+import { LogFormDialog } from "../../../../recipes_/-form/log-form-dialog";
+import { nowAsCalendarDateTime } from "../../../../recipes_/-form/schemas/field-schema";
 import { logToFormValues } from "../../../../recipes_/-form/schemas/log-schema";
 
 const RepeatLog = () => {
@@ -9,8 +9,8 @@ const RepeatLog = () => {
 	const navigate = useNavigate();
 
 	return (
-		<LogSheet
-			defaultValues={logToFormValues(log, nowForDateTimeLocal())}
+		<LogFormDialog
+			defaultValues={logToFormValues(log, nowAsCalendarDateTime())}
 			mode="create"
 			onDone={() => {
 				navigate({ to: "/recipes", search: true });

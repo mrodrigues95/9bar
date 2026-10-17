@@ -1,3 +1,4 @@
+import { CalendarDateTime } from "@internationalized/date";
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
 import {
@@ -14,9 +15,9 @@ import { brewParametersDefaults } from "../sections/brew-parameters-fields";
 import {
 	coercedNumber,
 	inputGroupSelectValue,
-	nowForDateTimeLocal,
+	nowAsCalendarDateTime,
 	snapshotToFormFields,
-	toDateTimeLocal,
+	toFormDateTime,
 	type TAdditionalDetailsFields,
 	type TBasicInformationFields,
 	type TBrewParametersFields,
@@ -25,9 +26,17 @@ import {
 export interface TLogFormValues
 	extends TBasicInformationFields, TBrewParametersFields, TAdditionalDetailsFields {
 	recipeId: string | null;
-	shotAt: string;
+	shotAt: CalendarDateTime;
 	verdict: TVerdict | null;
 }
+
+export type TLogSubmitIntent = "save" | "log-another";
+
+export interface TLogSubmitMeta {
+	intent: TLogSubmitIntent;
+}
+
+const logSubmitMeta: TLogSubmitMeta = { intent: "save" };
 
 export const logFormSchema = z.object({
 	recipeId: z.string().nullable(),
@@ -41,12 +50,12 @@ export const logFormSchema = z.object({
 	brewTime: inputGroupSelectValue(["s", "m"], "Brew time cannot be negative"),
 	temperature: inputGroupSelectValue(["C", "F"], "Temperature cannot be negative"),
 	pressure: coercedNumber((n) => n.min(0, "Pressure cannot be negative")),
-	shotAt: z.string().min(1, "Time is required"),
+	shotAt: z.instanceof(CalendarDateTime, { error: "Time is required" }),
 	verdict: z.enum(VERDICT_OPTIONS.map(({ id }) => id)).nullable(),
 	notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 });
 
-export const emptyLogFormValues = (shotAt = nowForDateTimeLocal()): TLogFormValues => {
+export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): TLogFormValues => {
 	return {
 		...basicInformationDefaults,
 		...brewParametersDefaults,
@@ -59,7 +68,7 @@ export const emptyLogFormValues = (shotAt = nowForDateTimeLocal()): TLogFormValu
 
 export const logToFormValues = (
 	log: TLog & { snapshot: TBrewSnapshot },
-	shotAt = toDateTimeLocal(new Date(log.shotAt)),
+	shotAt = toFormDateTime(new Date(log.shotAt)),
 ): TLogFormValues => {
 	return {
 		...emptyLogFormValues(shotAt),
@@ -71,7 +80,7 @@ export const logToFormValues = (
 
 export const recipeToLogFormValues = (
 	recipe: TRecipeGraph,
-	shotAt = nowForDateTimeLocal(),
+	shotAt = nowAsCalendarDateTime(),
 ): TLogFormValues => {
 	return {
 		...emptyLogFormValues(shotAt),
@@ -82,6 +91,7 @@ export const recipeToLogFormValues = (
 
 export const logFormOpts = formOptions({
 	defaultValues: emptyLogFormValues(),
+	onSubmitMeta: logSubmitMeta,
 	validators: {
 		onChange: logFormSchema,
 	},

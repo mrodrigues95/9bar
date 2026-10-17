@@ -1,12 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { LogSheet } from "../../../recipes_/-form/log-sheet";
+import { LogFormDialog } from "../../../recipes_/-form/log-form-dialog";
 import { emptyLogFormValues } from "../../../recipes_/-form/schemas/log-schema";
 
 const NewQuickLog = () => {
 	const navigate = useNavigate();
 
 	return (
-		<LogSheet
+		<LogFormDialog
 			defaultValues={emptyLogFormValues()}
 			mode="create"
 			onDone={() => {

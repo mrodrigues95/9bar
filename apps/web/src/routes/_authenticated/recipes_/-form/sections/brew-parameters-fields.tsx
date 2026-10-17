@@ -25,12 +25,15 @@ export const brewParametersDefaults: TBrewParametersFields = {
 
 export const brewParametersFields = createFieldMap(brewParametersDefaults);
 
-interface TBrewParametersFieldsProps {
+interface BrewParametersFieldsProps {
 	method: TMethod;
 	isGrindSizeRequired?: boolean;
 }
 
-const brewParametersProps: TBrewParametersFieldsProps = {
+// Exported so the quick-log dialog can focus this input after "Save and log another".
+export const grindSizeFieldName = "grindSize" satisfies keyof TBrewParametersFields;
+
+const brewParametersProps: BrewParametersFieldsProps = {
 	method: "espresso",
 	isGrindSizeRequired: false,
 };
@@ -53,7 +56,7 @@ export const BrewParametersFields = withFieldGroup({
 	render: function Render({ group, method, isGrindSizeRequired }) {
 		return (
 			<FormSection title="Brew Parameters">
-				<group.AppField name="grindSize">
+				<group.AppField name={grindSizeFieldName}>
 					{(field) => (
 						<field.Input
 							label="Grind Size"

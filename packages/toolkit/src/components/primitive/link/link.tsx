@@ -1,4 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
+import type { Ref } from "react";
 import {
 	Link as AriaLink,
 	type LinkProps as AriaLinkProps,
@@ -10,6 +11,8 @@ import { buttonVariants } from "../button/styles";
 /** Props for the {@link Link} component. */
 export interface LinkProps extends AriaLinkProps, VariantProps<typeof buttonVariants> {
 	"aria-current"?: "page" | "step" | "location" | "date" | "time" | "true";
+	/** A ref to the underlying anchor element. */
+	ref?: Ref<HTMLAnchorElement>;
 }
 
 /** A navigation element that allows a user to navigate to another page or resource. */

@@ -31,7 +31,7 @@ The form system has three layers:
 			<td>**Field components**</td>
 			<td>
 				`TextField`, `TextareaField`, `SelectField`, `CheckboxField`, `CheckboxGroupField`,
-				`InputGroupSelectField`
+				`InputGroupSelectField`, `DatePickerField`
 			</td>
 			<td>
 				Opinionated compositions that wire up a label, input, description, and error message into a
@@ -42,7 +42,7 @@ The form system has three layers:
 			<td>**Form-connected fields**</td>
 			<td>
 				`FormTextField`, `FormTextareaField`, `FormSelectField`, `FormCheckboxField`,
-				`FormCheckboxGroupField`, `FormInputGroupSelectField`
+				`FormCheckboxGroupField`, `FormInputGroupSelectField`, `FormDatePickerField`
 			</td>
 			<td>
 				Wrappers around the field components above that automatically bind to a TanStack Form field
@@ -113,6 +113,10 @@ Use `form.AppField` to render a form-connected field. The `name` prop must match
 		<tr>
 			<td>`field.InputGroupSelect`</td>
 			<td>`FormInputGroupSelectField`</td>
+		</tr>
+		<tr>
+			<td>`field.DatePicker`</td>
+			<td>`FormDatePickerField`</td>
 		</tr>
 	</tbody>
 </table>

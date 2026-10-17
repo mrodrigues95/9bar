@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-form";
-import { Button, Separator, SelectItem } from "@9bar/toolkit/components";
+import type { RefObject } from "react";
+import { Button, DialogFooter, SelectItem } from "@9bar/toolkit/components";
 import { Form, withForm } from "@9bar/toolkit/components/composed";
 import { VERDICT_OPTIONS, buildRecipeGraph, recipes } from "../../../../utils/data";
 import { snapshotToFormFields } from "./schemas/field-schema";
@@ -14,11 +15,14 @@ import {
 } from "./sections/basic-information-fields";
 import { brewParametersFields, BrewParametersFields } from "./sections/brew-parameters-fields";
 
-interface TLogFormProps {
+interface LogFormProps {
+	formRef: RefObject<HTMLFormElement | null>;
 	onCancel: () => void;
+	onLogAnother?: () => void;
 }
 
-const logFormProps: TLogFormProps = {
+const logFormProps: LogFormProps = {
+	formRef: { current: null },
 	onCancel: () => {},
 };
 
@@ -28,7 +32,7 @@ const noRecipeOptionLabel = "No recipe (quick log)";
 export const LogForm = withForm({
 	...logFormOpts,
 	props: logFormProps,
-	render: function Render({ form, onCancel }) {
+	render: function Render({ form, formRef, onCancel, onLogAnother }) {
 		const method = useStore(form.store, (state) => state.values.method);
 		const recipeId = useStore(form.store, (state) => state.values.recipeId);
 
@@ -59,74 +63,79 @@ export const LogForm = withForm({
 		];
 
 		return (
-			<Form className="space-y-6" validationBehavior="aria" onSubmit={() => form.handleSubmit()}>
-				<BasicInformationFields
-					form={form}
-					fields={basicInformationFields}
-					isIdentityLocked={recipeId !== null}
-				>
-					<form.AppField
-						name="recipeId"
-						listeners={{
-							onChange: ({ value, fieldApi }) => {
-								if (value === noRecipeOptionId) {
-									fieldApi.setValue(null);
-									return;
-								}
-								applyRecipe(value);
-							},
-						}}
+			<Form ref={formRef} validationBehavior="aria" onSubmit={() => form.handleSubmit()}>
+				<div className="-mx-4 no-scrollbar flex max-h-[50vh] flex-col gap-6 overflow-y-auto px-4">
+					<BasicInformationFields
+						form={form}
+						fields={basicInformationFields}
+						isIdentityLocked={recipeId !== null}
 					>
-						{(field) => (
-							<field.Select
-								label="Recipe"
-								description="Choosing a recipe fills its current values and locks beans, grinder, and machine."
-								className="sm:col-span-2"
-								placeholder={noRecipeOptionLabel}
-								items={recipeItems}
-							>
-								{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
-							</field.Select>
-						)}
-					</form.AppField>
-				</BasicInformationFields>
-				<BrewParametersFields form={form} fields={brewParametersFields} method={method} />
-				<AdditionalDetailsFields form={form} fields={additionalDetailsFields}>
-					<form.AppField name="shotAt">
-						{(field) => (
-							<field.Input
-								label="Time"
-								description="When this shot was pulled."
-								isRequired
-								// TODO(time-field): replace with a toolkit date/time field when one lands.
-								inputProps={{ type: "datetime-local" }}
-							/>
-						)}
-					</form.AppField>
-					<form.AppField name="verdict">
-						{(field) => (
-							<field.Select
-								label="Verdict"
-								description="Optional taste result for this shot."
-								placeholder="No verdict"
-								items={VERDICT_OPTIONS}
-							>
-								{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
-							</field.Select>
-						)}
-					</form.AppField>
-				</AdditionalDetailsFields>
-				<Separator />
-				<div className="flex items-center justify-end gap-2">
-					<Button type="button" variant="outline" onPress={onCancel}>
+						<form.AppField
+							name="recipeId"
+							listeners={{
+								onChange: ({ value, fieldApi }) => {
+									if (value === noRecipeOptionId) {
+										fieldApi.setValue(null);
+										return;
+									}
+									applyRecipe(value);
+								},
+							}}
+						>
+							{(field) => (
+								<field.Select
+									label="Recipe"
+									description="Choosing a recipe fills its current values and locks beans, grinder, and machine."
+									className="sm:col-span-2"
+									placeholder={noRecipeOptionLabel}
+									items={recipeItems}
+								>
+									{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+								</field.Select>
+							)}
+						</form.AppField>
+					</BasicInformationFields>
+					<BrewParametersFields form={form} fields={brewParametersFields} method={method} />
+					<AdditionalDetailsFields form={form} fields={additionalDetailsFields}>
+						<form.AppField name="shotAt">
+							{(field) => (
+								<field.DatePicker
+									label="Time"
+									description="When this shot was pulled."
+									granularity="minute"
+									isRequired
+								/>
+							)}
+						</form.AppField>
+						<form.AppField name="verdict">
+							{(field) => (
+								<field.Select
+									label="Verdict"
+									description="Optional taste result for this shot."
+									placeholder="No verdict"
+									items={VERDICT_OPTIONS}
+								>
+									{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+								</field.Select>
+							)}
+						</form.AppField>
+					</AdditionalDetailsFields>
+				</div>
+				<DialogFooter>
+					<Button type="button" variant="ghost" onPress={onCancel}>
 						Cancel
 					</Button>
+					{onLogAnother && (
+						<Button type="button" variant="ghost" onPress={onLogAnother}>
+							Save and log another
+						</Button>
+					)}
 					<form.AppForm>
 						<form.SubmitButton variant="default" loadingText="Saving...">
 							Save Log
 						</form.SubmitButton>
 					</form.AppForm>
-				</div>
+				</DialogFooter>
 			</Form>
 		);
 	},

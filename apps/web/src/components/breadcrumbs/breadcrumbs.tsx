@@ -1,5 +1,5 @@
 import { createLink, type RegisteredRouter } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithRef, ReactNode } from "react";
 import {
 	BreadcrumbItem as ToolkitBreadcrumbItem,
 	BreadcrumbLink as ToolkitBreadcrumbLink,
@@ -7,10 +7,25 @@ import {
 	BreadcrumbPage as ToolkitBreadcrumbPage,
 	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
 } from "@9bar/toolkit/components";
-import type { LinkProps } from "../link/link";
+import { captureRouterClick, type LinkProps } from "../link/link";
 
 /** A routing-aware crumb link that keeps the toolkit's default breadcrumb styling. */
-const BreadcrumbLink = createLink(ToolkitBreadcrumbLink);
+const BreadcrumbLink = createLink(
+	({
+		ref,
+		onClick,
+		onClickCapture,
+		...props
+	}: ComponentPropsWithRef<typeof ToolkitBreadcrumbLink>) => {
+		return (
+			<ToolkitBreadcrumbLink
+				{...props}
+				ref={ref}
+				onClickCapture={captureRouterClick(onClick, onClickCapture)}
+			/>
+		);
+	},
+);
 
 export type BreadcrumbProps<
 	TRouter extends RegisteredRouter = RegisteredRouter,

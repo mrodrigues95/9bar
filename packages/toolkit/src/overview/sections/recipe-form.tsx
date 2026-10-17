@@ -1,3 +1,4 @@
+import { CalendarDateTime } from "@internationalized/date";
 import {
 	Button,
 	Card,
@@ -23,6 +24,7 @@ export const FormSection = () => {
 			recipeName: "Honey Blend",
 			notes: "Chocolate, caramel, and a bright citrus finish.",
 			method: "espresso",
+			shotAt: new CalendarDateTime(2026, 10, 12, 9, 30),
 			dose: { inputValue: "18", selectValue: "g" },
 			reminders: ["low-stock"],
 			shared: true,
@@ -93,6 +95,15 @@ export const FormSection = () => {
 											{ id: "oz", label: "ounces" },
 										]}
 										inputProps={{ type: "number", min: "0", step: "0.1" }}
+									/>
+								)}
+							</form.AppField>
+							<form.AppField name="shotAt">
+								{(field) => (
+									<field.DatePicker
+										label="Last shot"
+										description="When this recipe was last pulled"
+										granularity="minute"
 									/>
 								)}
 							</form.AppField>
