@@ -2,7 +2,6 @@ import { getRouteApi } from "@tanstack/react-router";
 import {
 	Bean,
 	BookmarkPlus,
-	Clock,
 	Cog,
 	Copy,
 	EllipsisVertical,
@@ -54,13 +53,12 @@ const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string })
 	);
 };
 
-const RowMeta = ({ snapshot, shotAt }: { snapshot: TBrewSnapshot; shotAt?: string }) => {
+const RowMeta = ({ snapshot }: { snapshot: TBrewSnapshot }) => {
 	return (
 		<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
 			<RowMetaItem icon={Bean} label={snapshot.beans} />
 			<RowMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
 			<RowMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
-			{shotAt && <RowMetaItem icon={Clock} label={formatShotAt(shotAt)} />}
 		</div>
 	);
 };
@@ -187,13 +185,14 @@ const QuickLogRowActions = ({ log }: { log: TLog }) => {
 	);
 };
 
-const DoseLine = ({ row }: { row: TRecipesListRow }) => {
+const DoseLine = ({ row, shotAt }: { row: TRecipesListRow; shotAt?: string }) => {
 	return (
 		<Text variant="caption" className="mt-0.5 flex min-w-0 items-center gap-1 font-mono">
 			<Scale className="size-3 shrink-0" />
 			<span className="truncate">
 				{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
 				{formatBrewTime(row.snapshot)}
+				{shotAt && ` · Logged ${formatShotAt(shotAt)}`}
 			</span>
 		</Text>
 	);
@@ -205,7 +204,7 @@ const RecipeRow = ({ row }: { row: Extract<TRecipesListRow, { kind: "recipe" }> 
 			<div className="min-w-0 flex-1">
 				<div className="flex min-w-0 items-center gap-2">
 					<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
-					<Badge variant="secondary">
+					<Badge variant="default">
 						<Fingerprint />
 						{ROW_KIND_NAMES.recipe}
 					</Badge>
@@ -234,10 +233,10 @@ const LogRow = ({ row }: { row: TLogRow }) => {
 						</Text>
 					)}
 					<Badge variant="outline">{ROW_KIND_NAMES[row.kind]}</Badge>
-					{row.log.verdict && <Badge variant="outline">{VERDICT_LABELS[row.log.verdict]}</Badge>}
+					{row.log.verdict && <Badge variant="secondary">{VERDICT_LABELS[row.log.verdict]}</Badge>}
 				</div>
-				<DoseLine row={row} />
-				<RowMeta snapshot={row.snapshot} shotAt={row.log.shotAt} />
+				<DoseLine row={row} shotAt={row.log.shotAt} />
+				<RowMeta snapshot={row.snapshot} />
 			</div>
 			<div className="flex shrink-0 items-center gap-1">
 				{row.kind === "attached-log" ? (
