@@ -41,7 +41,7 @@ Where each action appears. Later sections define what each action does.
 - **Recipes list, quick log row:** Edit, Repeat, Save as recipe, Attach to recipe, Delete.
 - **Recipes list, attached log row:** Edit, Set as reference shot, Detach from recipe, Delete.
 - **Recipes list, multi-select:** Attach to recipe (quick logs), Delete (quick logs and recipes).
-- **Recipe overview:** Actions menu: Log again, Edit, Duplicate [Assumed], Delete.
+- **Recipe overview:** Actions menu: Edit, Duplicate [Assumed], Delete.
 - **Recipe Logs tab:** New log (header). Log row: Edit, Set as reference shot, Detach from recipe, Delete.
 - **Home:** Log a shot, Log again (most recent recipe), last five logs (tap to edit).
 - **Profile:** Equipment, defaults, grind scale, units.
@@ -84,7 +84,7 @@ Edit changes any field of a quick log. On an attached log, identity fields stay 
 
 ### Log again
 
-1. Choose Log again on a recipe row or on the overview. Nothing opens.
+1. Choose Log again on a recipe row. Nothing opens.
 2. A log is created now, using the recipe's current values.
 
 Done when the log is stored, focus has not moved, and the row reads "Logged at 14:32". The overview reads "Last logged at 14:32" [Assumed]. Verdict and notes are added through Edit.
@@ -122,14 +122,19 @@ Done when creating: the recipe exists with status Dialing in. Done when editing:
 ### Overview
 
 - Shows name, beans, grinder, machine, dose, yield, brew time, temperature, pressure, notes, and status.
-- **Reference shot:** the pinned log's values. Until a log is pinned, it is the latest Balanced log.
-- **Change history:** newest first, such as "Grind 6 → 5.5 · 3 Jun".
 - Any pending status suggestion (see Status).
 
 ### Logs tab
 
-- Lists every log attached to the recipe, newest first [Assumed]. Filters: Method and Verdict [Assumed].
-- Set as reference shot pins that log to the overview.
+- Lists every log attached to the recipe, pinned first, then newest first [Assumed]. Filters: Method and Verdict [Assumed].
+- Pinned logs carry a pinned badge.
+- Set as reference shot pins that log; pinned logs sort first in this list.
+
+### History tab
+
+- Lists every change to the recipe's settings, newest first. Each entry names the field with its previous and new values and the date, such as "Grind 6 → 5.5 · 3 Jun".
+- Treated as its own data source: paginated, with filters. Filters: Field [Assumed].
+- History can grow to hundreds of entries over a recipe's lifetime.
 
 ### Duplicate
 
