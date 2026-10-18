@@ -1,6 +1,5 @@
-import { createFileRoute, Outlet, stripSearchParams, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import {
 	Button,
@@ -13,16 +12,12 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@9bar/toolkit/components";
-import {
-	FilterBar,
-	FilterBarActions,
-	type FilterBarFilterState,
-} from "@9bar/toolkit/components/composed";
+import { FilterBar, FilterBarActions } from "@9bar/toolkit/components/composed";
 import { cn } from "@9bar/toolkit/utils";
 import { Link } from "../../../components";
+import { FilterBarAddTrigger } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
-import { useDebouncedValue } from "../../../utils/hooks";
-import { FilterBarAddTrigger } from "./-filter-bar-add-trigger";
+import { useUrlFilterState } from "../../../utils/hooks";
 import { NoRecipesFound } from "./-no-recipes-found";
 import { RecipesList } from "./-recipes-list";
 import {
@@ -35,90 +30,23 @@ import {
 	type FilterSearchParams,
 } from "./-recipes-query";
 
-const resolveIntent = (search: { q: string; page: number } & FilterSearchParams) => ({
-	version: 0,
-	q: search.q,
-	filters: decodeFilters(search),
-	page: search.page,
-	replace: true,
-});
-
-type RecipeSearchIntent = ReturnType<typeof resolveIntent>;
-
-const encodeIntent = (intent: RecipeSearchIntent) => {
-	return { q: intent.q, page: intent.page, ...encodeFilters(intent.filters) };
-};
-
-const intentKey = (intent: RecipeSearchIntent) => {
-	return JSON.stringify(encodeIntent(intent));
-};
-
-const useRecipesSearch = () => {
-	const search = Route.useSearch();
-	const navigate = Route.useNavigate();
-	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
-	const [intent, setIntent] = useState(() => resolveIntent(search));
-	const debouncedIntent = useDebouncedValue(intent, 250);
-
-	const urlIntent = resolveIntent(search);
-	const urlKey = intentKey(urlIntent);
-
-	const lastWrittenKeyRef = useRef(urlKey);
-	const lastUrlKeyRef = useRef(urlKey);
-
-	useEffect(() => {
-		const isNewUrl = urlKey !== lastUrlKeyRef.current;
-		lastUrlKeyRef.current = urlKey;
-
-		// Back/forward, a link, or a hand-edited URL: adopt it and drop a pending intent instead of
-		// writing back over the user's navigation. The version bump makes the drop stick.
-		if (isNewUrl && urlKey !== lastWrittenKeyRef.current) {
-			lastWrittenKeyRef.current = urlKey;
-			setIntent((prev) =>
-				intentKey(prev) === urlKey ? prev : { ...urlIntent, version: prev.version + 1 },
-			);
-			return;
-		}
-
-		const debouncedKey = intentKey(debouncedIntent);
-		if (debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
-			return;
-		}
-
-		navigate({
-			search: (prev) => ({ ...prev, ...encodeIntent(debouncedIntent) }),
-			replace: debouncedIntent.replace,
-		});
-		lastWrittenKeyRef.current = debouncedKey;
-	}, [urlKey, urlIntent, debouncedIntent, intent.version, navigate]);
-
-	const updateIntent = (patch: Partial<Omit<RecipeSearchIntent, "version">>) => {
-		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
-	};
-
-	return {
-		q: intent.q,
-		filters: intent.filters,
-		page: intent.page,
-		isStale: isRouteLoading || intentKey(intent) !== urlKey,
-		setQuery: (q: string) => {
-			updateIntent({ q, page: 1, replace: true });
-		},
-		setFilters: (filters: Array<FilterBarFilterState>) => {
-			updateIntent({ filters, page: 1, replace: false });
-		},
-		setPage: (page: number) => {
-			updateIntent({ page, replace: false });
-		},
-		clear: () => {
-			updateIntent({ q: "", filters: [], page: 1, replace: false });
-		},
-	};
-};
+type RecipesSearch = { q: string; page: number } & FilterSearchParams;
 
 const Recipes = () => {
 	const { total, pageSize } = Route.useLoaderData();
-	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } = useRecipesSearch();
+	const search = Route.useSearch();
+	const navigate = Route.useNavigate();
+	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } =
+		useUrlFilterState<RecipesSearch>({
+			search,
+			navigate,
+			decode: (current) => ({
+				q: current.q,
+				filters: decodeFilters(current),
+				page: current.page,
+			}),
+			encode: (intent) => ({ q: intent.q, page: intent.page, ...encodeFilters(intent.filters) }),
+		});
 	const hasQuery = !!q.trim() || !!filters.length;
 
 	return (

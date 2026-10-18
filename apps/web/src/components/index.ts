@@ -1,6 +1,7 @@
 export * from "./breadcrumbs/app-breadcrumbs";
 export * from "./breadcrumbs/breadcrumbs";
 export * from "./breadcrumbs/with-breadcrumb";
+export * from "./filter-bar-add-trigger/filter-bar-add-trigger";
 export * from "./link/link";
 export * from "./list/list";
 export * from "./logo/logo";
