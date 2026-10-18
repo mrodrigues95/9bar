@@ -14,10 +14,6 @@ type TabLinkProps<
 > = UseLinkPropsOptions<TRouter, TFrom, TTo, TMaskFrom, TMaskTo> &
 	Pick<TabsTriggerProps, "id" | "className" | "isDisabled" | "children">;
 
-// NOTE: React Aria documents a `render`-prop pattern for router links
-// (https://react-aria.adobe.com/Tabs#links), but `Tab` ignores `render` at
-// runtime in the installed RAC version, so TabLink forwards the useLinkProps
-// handlers to TabsTrigger instead. Revisit if upstream honors `render` on Tab.
 export const TabLink = <
 	TRouter extends RegisteredRouter = RegisteredRouter,
 	TFrom extends string = string,
@@ -30,9 +26,10 @@ export const TabLink = <
 	const { children, id, className, isDisabled } = props;
 	const resolvedLinkProps = useLinkProps(props);
 
-	// SAFETY: TabsTrigger forwards these props to the underlying DOM element, so the
-	// router's anchor-typed preload handlers receive a genuine DOM event at runtime.
-	// The assertions only reconcile the element variance that useLinkProps erases.
+	// SAFETY: React Aria documents a `render`-prop pattern for router links
+	// (https://react-aria.adobe.com/Tabs#links), but `Tab` ignores `render` at
+	// runtime in the installed RAC version (and upstream), so TabLink forwards the useLinkProps
+	// handlers to TabsTrigger instead. Revisit if upstream honors `render` on Tab.
 	const preloadProps = {
 		onClick: resolvedLinkProps.onClick as React.MouseEventHandler | undefined,
 		onBlur: resolvedLinkProps.onBlur as React.FocusEventHandler | undefined,

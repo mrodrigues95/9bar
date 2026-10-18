@@ -146,7 +146,7 @@ const RecipeOverview = () => {
 	const { recipe } = routeApi.useLoaderData();
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-2">
 			<StatusSuggestionBanner recipeId={recipe.id} />
 			<Card>
 				<CardContent className="flex flex-col gap-5">
