@@ -1,32 +1,13 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import {
-	Copy,
-	Droplets,
-	Ellipsis,
-	Fingerprint,
-	Gauge,
-	Info,
-	Pencil,
-	Scale,
-	Thermometer,
-	Timer,
-	Trash2,
-	type LucideIcon,
-} from "lucide-react";
+import { Droplets, Gauge, Info, Scale, Thermometer, Timer, type LucideIcon } from "lucide-react";
 import {
 	Alert,
 	AlertAction,
 	AlertTitle,
-	Badge,
 	Button,
 	Card,
 	CardContent,
 	CardTitle,
-	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
 	Select,
 	SelectContent,
 	SelectItem,
@@ -35,9 +16,7 @@ import {
 	SelectValue,
 	Text,
 } from "@9bar/toolkit/components";
-import { MenuItemLink } from "../../../../../components";
 import {
-	RECIPE_STATUS_LABELS,
 	RECIPE_STATUS_OPTIONS,
 	grinderName,
 	machineName,
@@ -168,44 +147,6 @@ const RecipeOverview = () => {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="flex flex-wrap items-start justify-between gap-3">
-				<div>
-					<Text variant="body-sm" color="secondary" className="mt-0.5">
-						{recipe.snapshot.beans}
-					</Text>
-					<div className="mt-2 flex flex-wrap items-center gap-2">
-						<Badge variant="secondary">
-							<Fingerprint className="size-3" />
-							Recipe
-						</Badge>
-						<Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>
-					</div>
-				</div>
-				<MenuTrigger>
-					<IconButton aria-label={`Actions for ${recipe.name}`} size="sm" variant="ghost">
-						<Ellipsis />
-					</IconButton>
-					<Menu aria-label={`Actions for ${recipe.name}`} placement="bottom end" width="content">
-						<MenuItemLink
-							to="/recipes/$recipeId/edit"
-							params={{ recipeId: String(recipe.id) }}
-							textValue="Edit"
-						>
-							<Pencil className="size-3" />
-							Edit
-						</MenuItemLink>
-						<MenuItem onAction={noop} textValue="Duplicate">
-							<Copy className="size-3" />
-							Duplicate
-						</MenuItem>
-						<MenuSeparator />
-						<MenuItem onAction={noop} variant="destructive" textValue="Delete">
-							<Trash2 className="size-3" />
-							Delete
-						</MenuItem>
-					</Menu>
-				</MenuTrigger>
-			</div>
 			<StatusSuggestionBanner recipeId={recipe.id} />
 			<Card>
 				<CardContent className="flex flex-col gap-5">
