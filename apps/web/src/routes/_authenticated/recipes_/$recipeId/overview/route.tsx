@@ -1,15 +1,28 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import { ChevronDown, Copy, Pencil, RotateCcw, Trash2 } from "lucide-react";
+import {
+	Copy,
+	Droplets,
+	Ellipsis,
+	Fingerprint,
+	Gauge,
+	Info,
+	Pencil,
+	Scale,
+	Thermometer,
+	Timer,
+	Trash2,
+	type LucideIcon,
+} from "lucide-react";
 import {
 	Alert,
-	AlertDescription,
+	AlertAction,
 	AlertTitle,
 	Badge,
 	Button,
 	Card,
 	CardContent,
-	CardHeader,
-	Heading,
+	CardTitle,
+	IconButton,
 	Menu,
 	MenuItem,
 	MenuSeparator,
@@ -24,31 +37,19 @@ import {
 } from "@9bar/toolkit/components";
 import { MenuItemLink } from "../../../../../components";
 import {
-	METHOD_LABELS,
 	RECIPE_STATUS_LABELS,
 	RECIPE_STATUS_OPTIONS,
-	VERDICT_LABELS,
 	grinderName,
 	machineName,
 	type BrewSnapshot,
-	type Log,
-	type Recipe,
-	type RecipeStatus,
 } from "../../../../../utils/data";
 import {
 	formatBrewTime,
-	formatChangeDate,
 	formatGrams,
 	formatPressure,
-	formatShotAt,
 	formatTemperature,
 } from "../../../../../utils/format";
-import {
-	formatRatio,
-	getRecipeChangeLines,
-	resolveReferenceShot,
-	suggestRecipeStatus,
-} from "./-recipe-overview";
+import { resolveStatusSuggestion } from "./-recipe-overview";
 
 const routeApi = getRouteApi("/_authenticated/recipes_/$recipeId");
 
@@ -56,142 +57,106 @@ const STATUS_OPTIONS = RECIPE_STATUS_OPTIONS.map(({ id, name }) => ({ id, label:
 
 const noop = () => {};
 
-const Stat = ({ label, value }: { label: string; value: string }) => {
-	return (
-		<div className="flex flex-col-reverse">
-			<Text as="dt" variant="body-sm" color="muted">
-				{label}
-			</Text>
-			<Text as="dd" variant="body-sm" color="secondary" className="font-semibold">
-				{value}
-			</Text>
-		</div>
-	);
-};
-
-const StatsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
-	return (
-		<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-5">
-			<Stat label="Dose" value={formatGrams(snapshot.dose)} />
-			<Stat label="Yield" value={formatGrams(snapshot.yield)} />
-			<Stat label="Time" value={formatBrewTime(snapshot)} />
-			<Stat label="Temp" value={formatTemperature(snapshot)} />
-			<Stat label="Pressure" value={formatPressure(snapshot.pressure)} />
-		</dl>
-	);
-};
-
-const DetailRow = ({ label, value }: { label: string; value: string }) => {
-	return (
-		<div className="flex w-full gap-0.5">
-			<Text as="dt" variant="body-sm" className="font-medium" color="primary">
-				{label}:
-			</Text>
-			<Text as="dd" variant="body-sm" color="secondary">
-				{value}
-			</Text>
-		</div>
-	);
-};
-
-const DetailsList = ({ snapshot }: { snapshot: BrewSnapshot }) => {
-	return (
-		<dl className="flex flex-col gap-1">
-			<DetailRow label="Beans" value={snapshot.beans} />
-			<DetailRow label="Method" value={METHOD_LABELS[snapshot.method] ?? snapshot.method} />
-			<DetailRow label="Machine" value={machineName(snapshot.machine)} />
-			<DetailRow label="Grinder" value={grinderName(snapshot.grinder)} />
-			<DetailRow label="Grind" value={snapshot.grindSize} />
-			<DetailRow label="Ratio" value={formatRatio(snapshot)} />
-		</dl>
-	);
-};
-
-const StatusSuggestion = ({
-	recipe,
-	logs,
-}: {
-	recipe: { status: RecipeStatus | null };
-	logs: Array<Log>;
-}) => {
-	const suggestion = suggestRecipeStatus(recipe, logs);
+const StatusSuggestionBanner = ({ recipeId }: { recipeId: number }) => {
+	const suggestion = resolveStatusSuggestion(recipeId);
 	if (!suggestion) {
 		return null;
 	}
 
 	return (
-		<Alert variant="info">
+		<Alert variant="default">
+			<Info />
 			<AlertTitle>{suggestion.reason}</AlertTitle>
-			<AlertDescription className="flex items-center gap-1.5 pt-1.5">
-				<Button size="xs" onPress={noop}>
-					Accept
-				</Button>
+			<AlertAction>
 				<Button size="xs" variant="ghost" onPress={noop}>
 					Dismiss
 				</Button>
-			</AlertDescription>
+				<Button size="xs" variant="ghost" onPress={noop}>
+					Accept
+				</Button>
+			</AlertAction>
 		</Alert>
 	);
 };
 
-const ReferenceShotSection = ({
-	recipe,
-	logs,
-}: {
-	recipe: Pick<Recipe, "pinnedLogId">;
-	logs: Array<Log>;
-}) => {
-	const shot = resolveReferenceShot(recipe, logs);
+const BrewParamsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
+	const params: Array<{ id: string; label: string; icon: LucideIcon; value: string }> = [
+		{ id: "dose", label: "Dose", icon: Scale, value: formatGrams(snapshot.dose) },
+		{ id: "yield", label: "Yield", icon: Droplets, value: formatGrams(snapshot.yield) },
+		{ id: "time", label: "Time", icon: Timer, value: formatBrewTime(snapshot) },
+		{ id: "temp", label: "Temp", icon: Thermometer, value: formatTemperature(snapshot) },
+		{ id: "pressure", label: "Pressure", icon: Gauge, value: formatPressure(snapshot.pressure) },
+	];
 
 	return (
-		<section className="flex flex-col gap-2">
-			<div className="flex flex-wrap items-center gap-2">
-				<Heading variant="subsection" as="h2">
-					Reference shot
-				</Heading>
-				{shot && <Badge variant="outline">{shot.pinned ? "Pinned" : "Latest balanced"}</Badge>}
-				{shot?.log.verdict && <Badge variant="secondary">{VERDICT_LABELS[shot.log.verdict]}</Badge>}
-			</div>
-			{shot ? (
-				<>
-					<Text variant="caption">{formatShotAt(shot.log.shotAt)}</Text>
-					<dl className="grid grid-cols-2 place-items-center gap-3 text-center font-mono text-sm sm:grid-cols-4">
-						<Stat label="Dose" value={formatGrams(shot.snapshot.dose)} />
-						<Stat label="Yield" value={formatGrams(shot.snapshot.yield)} />
-						<Stat label="Time" value={formatBrewTime(shot.snapshot)} />
-						<Stat label="Temp" value={formatTemperature(shot.snapshot)} />
-					</dl>
-				</>
-			) : (
-				<Text variant="body-sm" color="muted">
-					No reference shot yet. Log a balanced shot to set one.
-				</Text>
-			)}
+		<section aria-labelledby="recipe-brew-params">
+			<CardTitle id="recipe-brew-params" className="sr-only">
+				Brew parameters
+			</CardTitle>
+			<dl className="mt-3 grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
+				{params.map((param) => (
+					<div key={param.id}>
+						<Text
+							as="dt"
+							variant="caption"
+							color="muted"
+							className="flex items-center justify-center gap-1"
+						>
+							<param.icon className="size-3" />
+							{param.label}
+						</Text>
+						<Text as="dd" variant="body-sm" color="primary" className="font-mono font-semibold">
+							{param.value}
+						</Text>
+					</div>
+				))}
+			</dl>
 		</section>
 	);
 };
 
-const ChangeHistorySection = ({ recipeId }: { recipeId: number }) => {
-	const lines = getRecipeChangeLines(recipeId);
+const DetailsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
+	const details = [
+		{ id: "coffee", label: "Coffee", value: snapshot.beans },
+		{ id: "grind", label: "Grind", value: snapshot.grindSize },
+		{ id: "machine", label: "Machine", value: machineName(snapshot.machine) },
+		{ id: "grinder", label: "Grinder", value: grinderName(snapshot.grinder) },
+	];
 
 	return (
-		<section className="flex flex-col gap-2">
-			<Heading variant="subsection" as="h2">
-				Change history
-			</Heading>
-			{lines.length > 0 ? (
-				<ul className="flex flex-col gap-1">
-					{lines.map((line) => (
-						<li key={`${line.changedAt}-${line.label}`}>
-							<Text variant="body-sm" color="secondary">
-								{line.label} {line.previous} → {line.next} · {formatChangeDate(line.changedAt)}
-							</Text>
-						</li>
-					))}
-				</ul>
+		<section aria-labelledby="recipe-details">
+			<CardTitle id="recipe-details" className="border-b border-border pb-2">
+				Details
+			</CardTitle>
+			<dl className="mt-3 grid gap-3 sm:grid-cols-2">
+				{details.map((detail) => (
+					<div key={detail.id}>
+						<Text as="dt" variant="caption" color="muted">
+							{detail.label}
+						</Text>
+						<Text as="dd" variant="body-sm" color="primary">
+							{detail.value}
+						</Text>
+					</div>
+				))}
+			</dl>
+		</section>
+	);
+};
+
+const NotesSection = ({ snapshot }: { snapshot: BrewSnapshot }) => {
+	return (
+		<section aria-labelledby="recipe-notes">
+			<CardTitle id="recipe-notes" className="border-b border-border pb-2">
+				Notes
+			</CardTitle>
+			{snapshot.notes ? (
+				<Text as="p" variant="body-sm" color="primary" className="mt-1.5">
+					{snapshot.notes}
+				</Text>
 			) : (
-				<Text variant="body-sm" color="muted">
-					No changes recorded yet.
+				<Text as="p" variant="body-sm" color="muted" className="mt-1.5">
+					No notes yet.
 				</Text>
 			)}
 		</section>
@@ -202,43 +167,25 @@ const RecipeOverview = () => {
 	const { recipe } = routeApi.useLoaderData();
 
 	return (
-		<Card>
-			<CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
-				<div className="flex min-w-0 items-center gap-2">
-					<Heading variant="section" as="p" className="truncate">
-						{recipe.name}
-					</Heading>
-					<Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>
-					<Select
-						aria-label="Recipe status"
-						selectedKey={recipe.status}
-						onSelectionChange={noop}
-						className="w-36"
-					>
-						<SelectTrigger size="sm">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectList>
-								{STATUS_OPTIONS.map((option) => (
-									<SelectItem key={option.id} id={option.id} textValue={option.label}>
-										{option.label}
-									</SelectItem>
-								))}
-							</SelectList>
-						</SelectContent>
-					</Select>
+		<div className="flex flex-col gap-4">
+			<div className="flex flex-wrap items-start justify-between gap-3">
+				<div>
+					<Text variant="body-sm" color="secondary" className="mt-0.5">
+						{recipe.snapshot.beans}
+					</Text>
+					<div className="mt-2 flex flex-wrap items-center gap-2">
+						<Badge variant="secondary">
+							<Fingerprint className="size-3" />
+							Recipe
+						</Badge>
+						<Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>
+					</div>
 				</div>
 				<MenuTrigger>
-					<Button variant="outline">
-						Actions
-						<ChevronDown />
-					</Button>
-					<Menu>
-						<MenuItem textValue="Log again">
-							<RotateCcw className="size-3" />
-							Log again
-						</MenuItem>
+					<IconButton aria-label={`Actions for ${recipe.name}`} size="sm" variant="ghost">
+						<Ellipsis />
+					</IconButton>
+					<Menu aria-label={`Actions for ${recipe.name}`} placement="bottom end" width="content">
 						<MenuItemLink
 							to="/recipes/$recipeId/edit"
 							params={{ recipeId: String(recipe.id) }}
@@ -247,35 +194,48 @@ const RecipeOverview = () => {
 							<Pencil className="size-3" />
 							Edit
 						</MenuItemLink>
-						<MenuItem textValue="Duplicate">
+						<MenuItem onAction={noop} textValue="Duplicate">
 							<Copy className="size-3" />
 							Duplicate
 						</MenuItem>
 						<MenuSeparator />
-						<MenuItem variant="destructive" textValue="Delete">
+						<MenuItem onAction={noop} variant="destructive" textValue="Delete">
 							<Trash2 className="size-3" />
 							Delete
 						</MenuItem>
 					</Menu>
 				</MenuTrigger>
-			</CardHeader>
-			<CardContent className="flex flex-col gap-4">
-				<StatusSuggestion recipe={recipe} logs={recipe.logs} />
-				<StatsGrid snapshot={recipe.snapshot} />
-				<DetailsList snapshot={recipe.snapshot} />
-				{recipe.snapshot.notes ? (
-					<Text as="p" variant="body" color="secondary">
-						{recipe.snapshot.notes}
-					</Text>
-				) : (
-					<Text as="p" variant="body-sm" color="muted">
-						No notes yet.
-					</Text>
-				)}
-				<ReferenceShotSection recipe={recipe} logs={recipe.logs} />
-				<ChangeHistorySection recipeId={recipe.id} />
-			</CardContent>
-		</Card>
+			</div>
+			<StatusSuggestionBanner recipeId={recipe.id} />
+			<Card>
+				<CardContent className="flex flex-col gap-5">
+					<div className="flex justify-end">
+						<Select
+							aria-label="Recipe status"
+							selectedKey={recipe.status}
+							onSelectionChange={noop}
+							className="w-36"
+						>
+							<SelectTrigger size="sm">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectList>
+									{STATUS_OPTIONS.map((option) => (
+										<SelectItem key={option.id} id={option.id} textValue={option.label}>
+											{option.label}
+										</SelectItem>
+									))}
+								</SelectList>
+							</SelectContent>
+						</Select>
+					</div>
+					<BrewParamsGrid snapshot={recipe.snapshot} />
+					<DetailsGrid snapshot={recipe.snapshot} />
+					<NotesSection snapshot={recipe.snapshot} />
+				</CardContent>
+			</Card>
+		</div>
 	);
 };
 
