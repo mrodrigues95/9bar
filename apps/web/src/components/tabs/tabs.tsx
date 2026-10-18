@@ -26,12 +26,24 @@ export const TabLink = <
 	const { children, id, className, isDisabled } = props;
 	const resolvedLinkProps = useLinkProps(props);
 
+	// SAFETY: TabsTrigger forwards these props to the underlying DOM element, so the
+	// router's anchor-typed preload handlers receive a genuine DOM event at runtime.
+	// The assertions only reconcile the element variance that useLinkProps erases.
+	const preloadProps = {
+		onBlur: resolvedLinkProps.onBlur as React.FocusEventHandler | undefined,
+		onFocus: resolvedLinkProps.onFocus as React.FocusEventHandler | undefined,
+		onMouseEnter: resolvedLinkProps.onMouseEnter as React.MouseEventHandler | undefined,
+		onMouseLeave: resolvedLinkProps.onMouseLeave as React.MouseEventHandler | undefined,
+		onTouchStart: resolvedLinkProps.onTouchStart as React.TouchEventHandler | undefined,
+	};
+
 	return (
 		<TabsTrigger
 			{...(id ? { id } : {})}
 			{...(className ? { className } : {})}
 			{...(isDisabled ? { isDisabled } : {})}
 			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
+			{...preloadProps}
 			onClick={(e) => {
 				// SAFETY: TabsTrigger forwards the native click event, so the router's composed
 				// click handler receives a real React.MouseEvent at runtime. The single assertion
