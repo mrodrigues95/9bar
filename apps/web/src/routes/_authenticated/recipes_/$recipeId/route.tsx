@@ -1,7 +1,8 @@
 import { createFileRoute, Outlet, redirect, useMatchRoute } from "@tanstack/react-router";
-import { FileText, Fingerprint } from "lucide-react";
+import { FileClock, FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
 import { Heading, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
+import { getRecipeHistoryEvents } from "../-recipe-history/history-events";
 import { AppBreadcrumbs, TabLink, withBreadcrumb } from "../../../../components";
 import { buildRecipeGraph } from "../../../../utils/data";
 import { objectKeys } from "../../../../utils/utils";
@@ -9,19 +10,26 @@ import { objectKeys } from "../../../../utils/utils";
 const TABS = {
 	overview: "overview",
 	logs: "logs",
+	history: "history",
 } as const;
 
 const Recipe = () => {
-	const { recipe } = Route.useLoaderData();
+	const { recipe, historyTotal } = Route.useLoaderData();
 	const matchRoute = useMatchRoute();
 	const overviewMatch = matchRoute({
 		to: "/recipes/$recipeId/overview",
+		params: { recipeId: String(recipe.id) },
+	});
+	const historyMatch = matchRoute({
+		to: "/recipes/$recipeId/history",
 		params: { recipeId: String(recipe.id) },
 	});
 
 	let tab: Key = TABS.logs;
 	if (overviewMatch) {
 		tab = TABS.overview;
+	} else if (historyMatch) {
+		tab = TABS.history;
 	}
 
 	return (
@@ -47,7 +55,15 @@ const Recipe = () => {
 							params={{ recipeId: String(recipe.id) }}
 						>
 							<FileText />
-							Logs
+							Logs · {recipe.logs.length}
+						</TabLink>
+						<TabLink
+							id={TABS.history}
+							to="/recipes/$recipeId/history"
+							params={{ recipeId: String(recipe.id) }}
+						>
+							<FileClock />
+							History · {historyTotal}
 						</TabLink>
 					</TabsList>
 					{objectKeys(TABS).map((key) => (
@@ -68,7 +84,10 @@ export const Route = createFileRoute("/_authenticated/recipes_/$recipeId")({
 			throw redirect({ to: "/recipes" });
 		}
 
-		return withBreadcrumb({ recipe }, { label: recipe.name });
+		return withBreadcrumb(
+			{ recipe, historyTotal: getRecipeHistoryEvents(recipe.id).length },
+			{ label: recipe.name },
+		);
 	},
 	component: Recipe,
 });
