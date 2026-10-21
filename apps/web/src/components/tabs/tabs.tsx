@@ -2,6 +2,7 @@ import {
 	type RegisteredRouter,
 	type UseLinkPropsOptions,
 	useLinkProps,
+	useRouter,
 } from "@tanstack/react-router";
 import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
 
@@ -24,19 +25,15 @@ export const TabLink = <
 	props: TabLinkProps<TRouter, TFrom, TTo, TMaskFrom, TMaskTo>,
 ) => {
 	const { children, id, className, isDisabled } = props;
-	const resolvedLinkProps = useLinkProps(props);
+	const { href } = useLinkProps(props);
+	const router = useRouter();
 
-	// SAFETY: React Aria documents a `render`-prop pattern for router links
-	// (https://react-aria.adobe.com/Tabs#links), but `Tab` ignores `render` at
-	// runtime in the installed RAC version (and upstream), so TabLink forwards the useLinkProps
-	// handlers to TabsTrigger instead. Revisit if upstream honors `render` on Tab.
-	const preloadProps = {
-		onClick: resolvedLinkProps.onClick as React.MouseEventHandler | undefined,
-		onBlur: resolvedLinkProps.onBlur as React.FocusEventHandler | undefined,
-		onFocus: resolvedLinkProps.onFocus as React.FocusEventHandler | undefined,
-		onMouseEnter: resolvedLinkProps.onMouseEnter as React.MouseEventHandler | undefined,
-		onMouseLeave: resolvedLinkProps.onMouseLeave as React.MouseEventHandler | undefined,
-		onTouchStart: resolvedLinkProps.onTouchStart as React.TouchEventHandler | undefined,
+	const preload = () => {
+		if (href) {
+			// SAFETY: `preloadRoute` builds its location with `buildLocation`, which ignores `href`,
+			// so preload by the tab's path. A generic `string` path cannot satisfy its literal `to`.
+			void router.preloadRoute({ to: href } as Parameters<typeof router.preloadRoute>[0]);
+		}
 	};
 
 	return (
@@ -44,8 +41,10 @@ export const TabLink = <
 			{...(id ? { id } : {})}
 			{...(className ? { className } : {})}
 			{...(isDisabled ? { isDisabled } : {})}
-			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
-			{...preloadProps}
+			{...(href ? { href } : {})}
+			onMouseEnter={preload}
+			onFocus={preload}
+			onTouchStart={preload}
 		>
 			{children}
 		</TabsTrigger>
