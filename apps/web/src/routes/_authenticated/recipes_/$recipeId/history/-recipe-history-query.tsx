@@ -15,6 +15,7 @@ import {
 	encodeFilters,
 	filterParamSchema,
 } from "../../../../../utils/filter-codec";
+import { paginate } from "../../../../../utils/paginate";
 import { simulateLatency } from "../../../../../utils/simulate-latency";
 
 export const HISTORY_PAGE_SIZE = 4;
@@ -83,14 +84,5 @@ export const listRecipeHistory = createServerFn({ method: "GET" })
 			matchesHistoryFilters(event, data.filters),
 		);
 
-		const totalPages = Math.max(1, Math.ceil(filtered.length / data.pageSize));
-		const currentPage = Math.min(Math.max(1, data.page), totalPages);
-		const offset = (currentPage - 1) * data.pageSize;
-
-		return {
-			items: filtered.slice(offset, offset + data.pageSize),
-			total: filtered.length,
-			page: currentPage,
-			pageSize: data.pageSize,
-		};
+		return paginate(filtered, data.page, data.pageSize);
 	});

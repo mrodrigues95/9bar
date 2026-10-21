@@ -28,7 +28,23 @@ import {
 	formatPressure,
 	formatTemperature,
 } from "../../../../../utils/format";
-import { resolveStatusSuggestion } from "./-recipe-overview";
+
+const DIALED_IN_REASON = "Three balanced logs in a row suggest Dialed in.";
+const NEEDS_RETUNE_REASON = "The last 2 shots pulled under or over. Retune this recipe?";
+
+/**
+ * Deterministic mock suggestion variety: only some recipes surface a banner, split
+ * between dialed-in and needs-retune. Stable per recipe so the banner never flickers.
+ */
+const resolveStatusSuggestion = (recipeId: number) => {
+	if (recipeId % 3 === 1) {
+		return DIALED_IN_REASON;
+	}
+	if (recipeId % 3 === 2) {
+		return NEEDS_RETUNE_REASON;
+	}
+	return null;
+};
 
 const routeApi = getRouteApi("/_authenticated/recipes_/$recipeId");
 
@@ -37,15 +53,15 @@ const STATUS_OPTIONS = RECIPE_STATUS_OPTIONS.map(({ id, name }) => ({ id, label:
 const noop = () => {};
 
 const StatusSuggestionBanner = ({ recipeId }: { recipeId: number }) => {
-	const suggestion = resolveStatusSuggestion(recipeId);
-	if (!suggestion) {
+	const reason = resolveStatusSuggestion(recipeId);
+	if (!reason) {
 		return null;
 	}
 
 	return (
 		<Alert variant="default">
 			<Info />
-			<AlertTitle>{suggestion.reason}</AlertTitle>
+			<AlertTitle>{reason}</AlertTitle>
 			<AlertAction>
 				<Button size="xs" variant="ghost" onPress={noop}>
 					Dismiss

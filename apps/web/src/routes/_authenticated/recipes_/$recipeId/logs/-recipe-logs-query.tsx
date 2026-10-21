@@ -19,6 +19,7 @@ import {
 	filterParamSchema,
 	matchesOperator,
 } from "../../../../../utils/filter-codec";
+import { paginate } from "../../../../../utils/paginate";
 import { simulateLatency } from "../../../../../utils/simulate-latency";
 
 export const LOGS_PAGE_SIZE = 10;
@@ -113,14 +114,5 @@ export const listRecipeLogs = createServerFn({ method: "GET" })
 				(a, b) => Number(b.pinned) - Number(a.pinned) || b.log.shotAt.localeCompare(a.log.shotAt),
 			);
 
-		const totalPages = Math.max(1, Math.ceil(filtered.length / data.pageSize));
-		const currentPage = Math.min(Math.max(1, data.page), totalPages);
-		const offset = (currentPage - 1) * data.pageSize;
-
-		return {
-			items: filtered.slice(offset, offset + data.pageSize),
-			total: filtered.length,
-			page: currentPage,
-			pageSize: data.pageSize,
-		};
+		return paginate(filtered, data.page, data.pageSize);
 	});

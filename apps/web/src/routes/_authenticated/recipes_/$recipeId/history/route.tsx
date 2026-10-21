@@ -1,9 +1,8 @@
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { z } from "zod";
-import { Button, Card, CardContent, CardFooter } from "@9bar/toolkit/components";
-import { FilterBar, FilterBarActions } from "@9bar/toolkit/components/composed";
+import { Card, CardContent, CardFooter } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { FilterBarAddTrigger, Pagination } from "../../../../../components";
+import { FilterBarPanel, Pagination } from "../../../../../components";
 import { useUrlFilterState } from "../../../../../utils/hooks";
 import { RecipeHistoryList } from "./-history-list";
 import { NoHistoryFound } from "./-no-history-found";
@@ -26,7 +25,7 @@ const RecipeHistory = () => {
 	const { filters, page, isStale, setFilters, setPage } = useUrlFilterState<HistorySearch>({
 		search,
 		navigate,
-		decode: (current) => ({ q: "", filters: decodeHistoryFilters(current), page: current.page }),
+		decode: (current) => ({ filters: decodeHistoryFilters(current), page: current.page }),
 		encode: (intent) => ({ page: intent.page, ...encodeHistoryFilters(intent.filters) }),
 	});
 	const hasFilters = filters.length > 0;
@@ -34,39 +33,12 @@ const RecipeHistory = () => {
 	return (
 		<Card>
 			<CardContent className="flex flex-col gap-2">
-				<div className="flex flex-wrap items-center justify-end gap-2">
-					<FilterBarAddTrigger
-						definitions={HISTORY_FILTER_DEFINITIONS}
-						filters={filters}
-						onFiltersChange={setFilters}
-						aria-label="Add history filter"
-					/>
-				</div>
-				{filters.length > 0 && (
-					<div className="rounded-md bg-muted/50 px-2.5 py-2">
-						<FilterBar
-							definitions={HISTORY_FILTER_DEFINITIONS}
-							filters={filters}
-							onFiltersChange={setFilters}
-							aria-label="Active history filters"
-						>
-							{({ clearAll }) => (
-								<FilterBarActions>
-									<Button
-										variant="ghost"
-										size="xs"
-										onPress={() => {
-											clearAll();
-											setPage(1);
-										}}
-									>
-										Clear
-									</Button>
-								</FilterBarActions>
-							)}
-						</FilterBar>
-					</div>
-				)}
+				<FilterBarPanel
+					definitions={HISTORY_FILTER_DEFINITIONS}
+					filters={filters}
+					onFiltersChange={setFilters}
+					label="history"
+				/>
 				<div
 					aria-busy={isStale}
 					className={cn("transition-opacity duration-200", isStale && "opacity-60")}

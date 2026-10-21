@@ -1,10 +1,9 @@
 import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { z } from "zod";
-import { Button, Card, CardContent, CardFooter, CardHeader } from "@9bar/toolkit/components";
-import { FilterBar, FilterBarActions } from "@9bar/toolkit/components/composed";
+import { Card, CardContent, CardFooter, CardHeader } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { FilterBarAddTrigger, Link, Pagination } from "../../../../../components";
+import { FilterBarPanel, Link, Pagination } from "../../../../../components";
 import { useUrlFilterState } from "../../../../../utils/hooks";
 import { RecipeLogsList } from "./-logs-list";
 import { NoLogsFound } from "./-no-logs-found";
@@ -28,7 +27,7 @@ const RecipeLogs = () => {
 	const { filters, page, isStale, setFilters, setPage } = useUrlFilterState<LogsSearch>({
 		search,
 		navigate,
-		decode: (current) => ({ q: "", filters: decodeLogFilters(current), page: current.page }),
+		decode: (current) => ({ filters: decodeLogFilters(current), page: current.page }),
 		encode: (intent) => ({ page: intent.page, ...encodeLogFilters(intent.filters) }),
 	});
 	const hasFilters = filters.length > 0;
@@ -50,39 +49,12 @@ const RecipeLogs = () => {
 					</div>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
-					<div className="flex flex-wrap items-center justify-end gap-2">
-						<FilterBarAddTrigger
-							definitions={LOG_FILTER_DEFINITIONS}
-							filters={filters}
-							onFiltersChange={setFilters}
-							aria-label="Add log filter"
-						/>
-					</div>
-					{filters.length > 0 && (
-						<div className="rounded-md bg-muted/50 px-2.5 py-2">
-							<FilterBar
-								definitions={LOG_FILTER_DEFINITIONS}
-								filters={filters}
-								onFiltersChange={setFilters}
-								aria-label="Active log filters"
-							>
-								{({ clearAll }) => (
-									<FilterBarActions>
-										<Button
-											variant="ghost"
-											size="xs"
-											onPress={() => {
-												clearAll();
-												setPage(1);
-											}}
-										>
-											Clear
-										</Button>
-									</FilterBarActions>
-								)}
-							</FilterBar>
-						</div>
-					)}
+					<FilterBarPanel
+						definitions={LOG_FILTER_DEFINITIONS}
+						filters={filters}
+						onFiltersChange={setFilters}
+						label="log"
+					/>
 					<div
 						aria-busy={isStale}
 						className={cn("transition-opacity duration-200", isStale && "opacity-60")}

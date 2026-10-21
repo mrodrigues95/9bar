@@ -14,7 +14,7 @@ import {
 	type FilterBarFilterState,
 } from "@9bar/toolkit/components/composed";
 
-export interface FilterBarAddTriggerProps {
+interface FilterBarAddTriggerProps {
 	definitions: ReadonlyArray<FilterBarDefinition>;
 	filters: Array<FilterBarFilterState>;
 	onFiltersChange: (filters: Array<FilterBarFilterState>) => void;

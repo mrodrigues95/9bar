@@ -2,7 +2,6 @@ import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-rout
 import { Plus, Search } from "lucide-react";
 import { z } from "zod";
 import {
-	Button,
 	Card,
 	CardContent,
 	CardFooter,
@@ -12,10 +11,8 @@ import {
 	InputGroupAddon,
 	InputGroupInput,
 } from "@9bar/toolkit/components";
-import { FilterBar, FilterBarActions } from "@9bar/toolkit/components/composed";
 import { cn } from "@9bar/toolkit/utils";
-import { Link } from "../../../components";
-import { FilterBarAddTrigger } from "../../../components";
+import { FilterBarPanel, Link } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
 import { useUrlFilterState } from "../../../utils/hooks";
 import { NoRecipesFound } from "./-no-recipes-found";
@@ -67,45 +64,27 @@ const Recipes = () => {
 					</div>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
-					<div className="flex flex-wrap items-center justify-end gap-2">
-						<InputGroup className="w-52 shrink-0">
-							<InputGroupAddon>
-								<Search className="size-4" />
-							</InputGroupAddon>
-							<InputGroupInput
-								value={q}
-								onChange={(event) => {
-									setQuery(event.target.value);
-								}}
-								placeholder="Search name or beans…"
-								aria-label="Search recipes by name or beans"
-							/>
-						</InputGroup>
-						<FilterBarAddTrigger
-							definitions={FILTER_DEFINITIONS}
-							filters={filters}
-							onFiltersChange={setFilters}
-							aria-label="Add recipe filter"
-						/>
-					</div>
-					{filters.length > 0 && (
-						<div className="rounded-md bg-muted/50 px-2.5 py-2">
-							<FilterBar
-								definitions={FILTER_DEFINITIONS}
-								filters={filters}
-								onFiltersChange={setFilters}
-								aria-label="Active recipe filters"
-							>
-								{({ clearAll }) => (
-									<FilterBarActions>
-										<Button variant="ghost" size="xs" onPress={clearAll}>
-											Clear
-										</Button>
-									</FilterBarActions>
-								)}
-							</FilterBar>
-						</div>
-					)}
+					<FilterBarPanel
+						definitions={FILTER_DEFINITIONS}
+						filters={filters}
+						onFiltersChange={setFilters}
+						label="recipe"
+						leading={
+							<InputGroup className="w-52 shrink-0">
+								<InputGroupAddon>
+									<Search className="size-4" />
+								</InputGroupAddon>
+								<InputGroupInput
+									value={q}
+									onChange={(event) => {
+										setQuery(event.target.value);
+									}}
+									placeholder="Search name or beans…"
+									aria-label="Search recipes by name or beans"
+								/>
+							</InputGroup>
+						}
+					/>
 					<div
 						aria-busy={isStale}
 						className={cn("transition-opacity duration-200", isStale && "opacity-60")}

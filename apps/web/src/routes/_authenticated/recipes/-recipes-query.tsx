@@ -24,6 +24,7 @@ import {
 	filterParamSchema,
 	matchesOperator,
 } from "../../../utils/filter-codec";
+import { paginate } from "../../../utils/paginate";
 import { simulateLatency } from "../../../utils/simulate-latency";
 import { toLabels } from "../../../utils/utils";
 
@@ -286,14 +287,5 @@ export const listRecipes = createServerFn({ method: "GET" })
 			.filter((row) => !isRetiredHidden(row, data.filters, query))
 			.sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt));
 
-		const totalPages = Math.max(1, Math.ceil(matched.length / data.pageSize));
-		const currentPage = Math.min(Math.max(1, data.page), totalPages);
-		const offset = (currentPage - 1) * data.pageSize;
-
-		return {
-			items: matched.slice(offset, offset + data.pageSize),
-			total: matched.length,
-			page: currentPage,
-			pageSize: data.pageSize,
-		};
+		return paginate(matched, data.page, data.pageSize);
 	});

@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import type { FilterBarFilterState } from "@9bar/toolkit/components/composed";
 import { useDebouncedValue } from "./use-debounced-value";
 
-export interface UrlFilterIntent {
-	q: string;
+interface UrlFilterIntent {
+	q?: string;
 	filters: Array<FilterBarFilterState>;
 	page: number;
 }
@@ -22,10 +22,6 @@ interface UseUrlFilterStateOptions<TSearch> {
 	debounceMs?: number;
 }
 
-const withVersion = (intent: UrlFilterIntent, version: number, replace: boolean) => {
-	return { ...intent, version, replace };
-};
-
 const intentKey = <TSearch>(
 	encode: (intent: UrlFilterIntent) => Partial<TSearch>,
 	value: UrlFilterIntent,
@@ -41,7 +37,11 @@ const intentKey = <TSearch>(
 export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSearch>) => {
 	const { search, navigate, decode, encode, debounceMs = 250 } = options;
 	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
-	const [intent, setIntent] = useState(() => withVersion(decode(search), 0, true));
+	const [intent, setIntent] = useState<VersionedIntent>(() => ({
+		...decode(search),
+		version: 0,
+		replace: true,
+	}));
 	const debouncedIntent = useDebouncedValue(intent, debounceMs);
 
 	const urlIntent = decode(search);
@@ -83,7 +83,7 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 	};
 
 	return {
-		q: intent.q,
+		q: intent.q ?? "",
 		filters: intent.filters,
 		page: intent.page,
 		isStale: isRouteLoading || intentKey(encode, intent) !== urlKey,

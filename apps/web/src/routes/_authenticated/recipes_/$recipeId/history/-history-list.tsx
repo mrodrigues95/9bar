@@ -8,7 +8,6 @@ import {
 	Factory,
 	Gauge,
 	Scale,
-	Tag,
 	Thermometer,
 	Timer,
 	Wrench,
@@ -41,7 +40,7 @@ const HistoryRow = ({ event }: { event: HistoryEvent }) => {
 		<li className="py-3">
 			<dl className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3">
 				{event.changes.map((change) => {
-					const FieldIcon = HISTORY_FIELD_ICONS[change.field] ?? Tag;
+					const FieldIcon = HISTORY_FIELD_ICONS[change.field];
 					return (
 						<Fragment key={change.field}>
 							<dt className="flex min-w-0 items-center gap-1.5">
