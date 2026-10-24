@@ -1,5 +1,5 @@
 import { useRouterState } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import type { FilterBarFilterState } from "@9bar/toolkit/components/composed";
 import { useDebouncedValue } from "./use-debounced-value";
 
@@ -50,6 +50,13 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 	const lastWrittenKeyRef = useRef(urlKey);
 	const lastUrlKeyRef = useRef(urlKey);
 
+	const writeToUrl = useEffectEvent((next: VersionedIntent) => {
+		navigate({
+			search: (prev) => ({ ...prev, ...encode(next) }),
+			replace: next.replace,
+		});
+	});
+
 	useEffect(() => {
 		const isNewUrl = urlKey !== lastUrlKeyRef.current;
 		lastUrlKeyRef.current = urlKey;
@@ -71,12 +78,9 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 			return;
 		}
 
-		navigate({
-			search: (prev) => ({ ...prev, ...encode(debouncedIntent) }),
-			replace: debouncedIntent.replace,
-		});
+		writeToUrl(debouncedIntent);
 		lastWrittenKeyRef.current = debouncedKey;
-	}, [urlKey, urlIntent, debouncedIntent, intent.version, navigate, decode, encode]);
+	}, [urlKey, urlIntent, debouncedIntent, intent.version, decode, encode]);
 
 	const updateIntent = (patch: Partial<Omit<VersionedIntent, "version">>) => {
 		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
