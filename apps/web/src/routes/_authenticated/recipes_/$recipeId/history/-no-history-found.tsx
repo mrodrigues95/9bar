@@ -1,13 +1,5 @@
-import { SearchX } from "lucide-react";
-import {
-	Button,
-	Empty,
-	EmptyContent,
-	EmptyDescription,
-	EmptyHeader,
-	EmptyMedia,
-	EmptyTitle,
-} from "@9bar/toolkit/components";
+import { Button } from "@9bar/toolkit/components";
+import { ListEmpty } from "../../../../../components";
 
 interface NoHistoryFoundProps {
 	hasFilters: boolean;
@@ -16,25 +8,20 @@ interface NoHistoryFoundProps {
 
 export const NoHistoryFound = ({ hasFilters, onClearFilters }: NoHistoryFoundProps) => {
 	return (
-		<Empty>
-			<EmptyHeader>
-				<EmptyMedia variant="icon">
-					<SearchX />
-				</EmptyMedia>
-				<EmptyTitle>{hasFilters ? "No changes match" : "No changes yet"}</EmptyTitle>
-				<EmptyDescription>
-					{hasFilters
-						? "Try a different field, or clear the active filters."
-						: "Edits to this recipe's settings will appear here."}
-				</EmptyDescription>
-			</EmptyHeader>
-			{hasFilters && (
-				<EmptyContent>
+		<ListEmpty
+			title={hasFilters ? "No changes match" : "No changes yet"}
+			description={
+				hasFilters
+					? "Try a different field, or clear the active filters."
+					: "Edits to this recipe's settings will appear here."
+			}
+			action={
+				!!hasFilters && (
 					<Button variant="outline" size="sm" onPress={onClearFilters}>
 						Clear filters
 					</Button>
-				</EmptyContent>
-			)}
-		</Empty>
+				)
+			}
+		/>
 	);
 };

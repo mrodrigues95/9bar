@@ -1,9 +1,7 @@
 import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { z } from "zod";
-import { Card, CardContent, CardFooter, CardHeader } from "@9bar/toolkit/components";
-import { cn } from "@9bar/toolkit/utils";
-import { FilterBarPanel, Link, Pagination } from "../../../../../components";
+import { FilterBarPanel, Link, ListCard, ListResults } from "../../../../../components";
 import { useUrlFilterState } from "../../../../../utils/hooks";
 import { RecipeLogsList } from "./-logs-list";
 import { NoLogsFound } from "./-no-logs-found";
@@ -34,47 +32,42 @@ const RecipeLogs = () => {
 
 	return (
 		<>
-			<Card>
-				<CardHeader className="border-b border-b-border pb-6">
-					<div className="flex flex-wrap items-center justify-end gap-2">
-						<Link
-							to="/recipes/$recipeId/logs/new"
-							params={{ recipeId }}
-							variant="outline"
-							size="sm"
-						>
-							<Plus />
-							New Log
-						</Link>
-					</div>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-2">
-					<FilterBarPanel
-						definitions={LOG_FILTER_DEFINITIONS}
-						filters={filters}
-						onFiltersChange={setFilters}
-						label="log"
-					/>
-					<div
-						aria-busy={isStale}
-						className={cn("transition-opacity duration-200", isStale && "opacity-60")}
-					>
-						{!total && (
-							<NoLogsFound
-								hasFilters={hasFilters}
-								onClearFilters={() => {
-									setFilters([]);
-								}}
-								recipeId={recipeId}
-							/>
-						)}
-						{!!total && <RecipeLogsList />}
-					</div>
-				</CardContent>
-				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
-				</CardFooter>
-			</Card>
+			<ListCard
+				actions={
+					<Link to="/recipes/$recipeId/logs/new" params={{ recipeId }} variant="outline" size="sm">
+						<Plus />
+						New Log
+					</Link>
+				}
+				paginationProps={{
+					page,
+					pageSize,
+					total,
+					onPageChange: setPage,
+				}}
+			>
+				<FilterBarPanel
+					definitions={LOG_FILTER_DEFINITIONS}
+					filters={filters}
+					onFiltersChange={setFilters}
+					label="log"
+				/>
+				<ListResults
+					isBusy={isStale}
+					isEmpty={!total}
+					emptyState={
+						<NoLogsFound
+							hasFilters={hasFilters}
+							onClearFilters={() => {
+								setFilters([]);
+							}}
+							recipeId={recipeId}
+						/>
+					}
+				>
+					<RecipeLogsList />
+				</ListResults>
+			</ListCard>
 			<Outlet />
 		</>
 	);

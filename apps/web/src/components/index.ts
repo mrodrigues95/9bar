@@ -4,6 +4,7 @@ export * from "./breadcrumbs/with-breadcrumb";
 export * from "./filter-bar-panel/filter-bar-panel";
 export * from "./link/link";
 export * from "./list/list";
+export * from "./list/list-card";
 export * from "./logo/logo";
 export * from "./menu/menu";
 export * from "./page/page";

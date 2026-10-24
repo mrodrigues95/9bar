@@ -20,6 +20,7 @@ import {
 	type HistoryEvent,
 	type HistoryField,
 } from "../../-recipe-history/history-events";
+import { List } from "../../../../../components";
 import { formatShotAt } from "../../../../../utils/format";
 
 const HISTORY_FIELD_ICONS: Record<HistoryField, LucideIcon> = {
@@ -89,10 +90,10 @@ export const RecipeHistoryList = () => {
 	const deferredItems = useDeferredValue(items);
 
 	return (
-		<ul className="divide-y divide-border">
+		<List className="divide-y divide-border">
 			{deferredItems.map((event) => (
 				<HistoryRow key={event.id} event={event} />
 			))}
-		</ul>
+		</List>
 	);
 };

@@ -1,8 +1,6 @@
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { z } from "zod";
-import { Card, CardContent, CardFooter } from "@9bar/toolkit/components";
-import { cn } from "@9bar/toolkit/utils";
-import { FilterBarPanel, Pagination } from "../../../../../components";
+import { FilterBarPanel, ListCard, ListResults } from "../../../../../components";
 import { useUrlFilterState } from "../../../../../utils/hooks";
 import { RecipeHistoryList } from "./-history-list";
 import { NoHistoryFound } from "./-no-history-found";
@@ -33,33 +31,35 @@ const RecipeHistory = () => {
 	const hasFilters = filters.length > 0;
 
 	return (
-		<Card>
-			<CardContent className="flex flex-col gap-2">
-				<FilterBarPanel
-					definitions={HISTORY_FILTER_DEFINITIONS}
-					filters={filters}
-					onFiltersChange={setFilters}
-					label="history"
-				/>
-				<div
-					aria-busy={isStale}
-					className={cn("transition-opacity duration-200", isStale && "opacity-60")}
-				>
-					{!total && (
-						<NoHistoryFound
-							hasFilters={hasFilters}
-							onClearFilters={() => {
-								setFilters([]);
-							}}
-						/>
-					)}
-					{!!total && <RecipeHistoryList />}
-				</div>
-			</CardContent>
-			<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-				<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
-			</CardFooter>
-		</Card>
+		<ListCard
+			paginationProps={{
+				page,
+				pageSize,
+				total,
+				onPageChange: setPage,
+			}}
+		>
+			<FilterBarPanel
+				definitions={HISTORY_FILTER_DEFINITIONS}
+				filters={filters}
+				onFiltersChange={setFilters}
+				label="history"
+			/>
+			<ListResults
+				isBusy={isStale}
+				isEmpty={!total}
+				emptyState={
+					<NoHistoryFound
+						hasFilters={hasFilters}
+						onClearFilters={() => {
+							setFilters([]);
+						}}
+					/>
+				}
+			>
+				<RecipeHistoryList />
+			</ListResults>
+		</ListCard>
 	);
 };
 

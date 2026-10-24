@@ -1,18 +1,8 @@
 import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
 import { z } from "zod";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "@9bar/toolkit/components";
-import { cn } from "@9bar/toolkit/utils";
-import { FilterBarPanel, Link, Page, PageHeader } from "../../../components";
-import { Pagination } from "../../../components/pagination/pagination";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@9bar/toolkit/components";
+import { FilterBarPanel, Link, ListCard, ListResults, Page, PageHeader } from "../../../components";
 import { useUrlFilterState } from "../../../utils/hooks";
 import { NoRecipesFound } from "./-no-recipes-found";
 import { RecipesList } from "./-recipes-list";
@@ -54,9 +44,9 @@ const Recipes = () => {
 				title="Recipes"
 				description="Browse and dial in your espresso recipes, one shot at a time."
 			/>
-			<Card>
-				<CardHeader className="border-b border-b-border pb-6">
-					<div className="flex flex-wrap items-center justify-end gap-2">
+			<ListCard
+				actions={
+					<>
 						<Link variant="ghost" size="sm" to="/recipes/logs/new" search>
 							Log a shot
 						</Link>
@@ -64,42 +54,44 @@ const Recipes = () => {
 							<Plus />
 							New recipe
 						</Link>
-					</div>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-2">
-					<FilterBarPanel
-						definitions={FILTER_DEFINITIONS}
-						filters={filters}
-						onFiltersChange={setFilters}
-						label="recipe"
-						leading={
-							<InputGroup className="w-52 shrink-0">
-								<InputGroupAddon>
-									<Search className="size-4" />
-								</InputGroupAddon>
-								<InputGroupInput
-									value={q}
-									onChange={(event) => {
-										setQuery(event.target.value);
-									}}
-									placeholder="Search name or beans…"
-									aria-label="Search recipes by name or beans"
-								/>
-							</InputGroup>
-						}
-					/>
-					<div
-						aria-busy={isStale}
-						className={cn("transition-opacity duration-200", isStale && "opacity-60")}
-					>
-						{!total && <NoRecipesFound hasQuery={hasQuery} onClearQuery={clear} />}
-						{!!total && <RecipesList />}
-					</div>
-				</CardContent>
-				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
-				</CardFooter>
-			</Card>
+					</>
+				}
+				paginationProps={{
+					page,
+					pageSize,
+					total,
+					onPageChange: setPage,
+				}}
+			>
+				<FilterBarPanel
+					definitions={FILTER_DEFINITIONS}
+					filters={filters}
+					onFiltersChange={setFilters}
+					label="recipe"
+					leading={
+						<InputGroup className="w-52 shrink-0">
+							<InputGroupAddon>
+								<Search className="size-4" />
+							</InputGroupAddon>
+							<InputGroupInput
+								value={q}
+								onChange={(event) => {
+									setQuery(event.target.value);
+								}}
+								placeholder="Search name or beans…"
+								aria-label="Search recipes by name or beans"
+							/>
+						</InputGroup>
+					}
+				/>
+				<ListResults
+					isBusy={isStale}
+					isEmpty={!total}
+					emptyState={<NoRecipesFound hasQuery={hasQuery} onClearQuery={clear} />}
+				>
+					<RecipesList />
+				</ListResults>
+			</ListCard>
 			<Outlet />
 		</Page>
 	);
