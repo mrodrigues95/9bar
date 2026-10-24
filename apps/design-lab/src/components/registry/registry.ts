@@ -1,7 +1,6 @@
 import type { ComponentType } from "react";
 import { HomeHeroA } from "./variants/home-hero-a";
 import { HomeHeroB } from "./variants/home-hero-b";
-import { RecipeSectionA } from "./variants/recipe-section-a";
 
 export type DesignVariantEntry = {
 	id: string;
@@ -38,20 +37,6 @@ export const designGroups: Array<DesignGroup> = [
 				kind: "page",
 				description: "Split layout with a featured recipe card. Richer, more 9bar flavor.",
 				component: HomeHeroB,
-			},
-		],
-	},
-	{
-		id: "recipe-section",
-		title: "Recipe section",
-		question: "Which card treatment should the recipe section use?",
-		variants: [
-			{
-				id: "recipe-section-a",
-				title: "Recipe list section A — cards",
-				kind: "section",
-				description: "Section-scoped mock: recipe cards grid to drop into a page later.",
-				component: RecipeSectionA,
 			},
 		],
 	},

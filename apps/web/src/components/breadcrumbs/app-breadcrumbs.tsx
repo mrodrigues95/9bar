@@ -151,7 +151,7 @@ const useAppBreadcrumbs = () => {
 	});
 };
 
-interface AppBreadcrumbsProps extends ComponentProps<typeof ToolkitBreadcrumb> {}
+export interface AppBreadcrumbsProps extends ComponentProps<typeof ToolkitBreadcrumb> {}
 
 export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 	const breadcrumbs = useAppBreadcrumbs();

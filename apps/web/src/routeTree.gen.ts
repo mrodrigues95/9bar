@@ -21,6 +21,7 @@ import { Route as AuthenticatedRecipesRecipeIdRouteRouteImport } from './routes/
 import { Route as AuthenticatedRecipes_formRouteRouteImport } from './routes/_authenticated/recipes_/_form/route'
 import { Route as AuthenticatedRecipesLogsNewRouteRouteImport } from './routes/_authenticated/recipes/logs/new/route'
 import { Route as AuthenticatedRecipesRecipeIdIndexRouteImport } from './routes/_authenticated/recipes_/$recipeId/index'
+import { Route as AuthenticatedRecipesRecipeIdHistoryRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/history/route'
 import { Route as AuthenticatedRecipesRecipeIdLogsRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/logs/route'
 import { Route as AuthenticatedRecipesRecipeIdOverviewRouteRouteImport } from './routes/_authenticated/recipes_/$recipeId/overview/route'
 import { Route as AuthenticatedRecipes_formRecipeIdRouteRouteImport } from './routes/_authenticated/recipes_/_form/$recipeId_/route'
@@ -97,6 +98,12 @@ const AuthenticatedRecipesRecipeIdIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
   } as any)
+const AuthenticatedRecipesRecipeIdHistoryRouteRoute =
+  AuthenticatedRecipesRecipeIdHistoryRouteRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AuthenticatedRecipesRecipeIdRouteRoute,
+  } as any)
 const AuthenticatedRecipesRecipeIdLogsRouteRoute =
   AuthenticatedRecipesRecipeIdLogsRouteRouteImport.update({
     id: '/logs',
@@ -161,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/$recipeId': typeof AuthenticatedRecipes_formRecipeIdRouteRouteWithChildren
   '/recipes/logs/new': typeof AuthenticatedRecipesLogsNewRouteRoute
+  '/recipes/$recipeId/history': typeof AuthenticatedRecipesRecipeIdHistoryRouteRoute
   '/recipes/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren
   '/recipes/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/recipes/new': typeof AuthenticatedRecipes_formNewRouteRoute
@@ -179,6 +187,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof UnauthenticatedSignInRouteRoute
   '/sign-up': typeof UnauthenticatedSignUpRouteRoute
   '/recipes/logs/new': typeof AuthenticatedRecipesLogsNewRouteRoute
+  '/recipes/$recipeId/history': typeof AuthenticatedRecipesRecipeIdHistoryRouteRoute
   '/recipes/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren
   '/recipes/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/recipes/$recipeId': typeof AuthenticatedRecipesRecipeIdIndexRoute
@@ -202,6 +211,7 @@ export interface FileRoutesById {
   '/_authenticated/recipes_/$recipeId': typeof AuthenticatedRecipesRecipeIdRouteRouteWithChildren
   '/_authenticated/recipes_/_form': typeof AuthenticatedRecipes_formRouteRouteWithChildren
   '/_authenticated/recipes/logs/new': typeof AuthenticatedRecipesLogsNewRouteRoute
+  '/_authenticated/recipes_/$recipeId/history': typeof AuthenticatedRecipesRecipeIdHistoryRouteRoute
   '/_authenticated/recipes_/$recipeId/logs': typeof AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren
   '/_authenticated/recipes_/$recipeId/overview': typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   '/_authenticated/recipes_/_form/$recipeId_': typeof AuthenticatedRecipes_formRecipeIdRouteRouteWithChildren
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/recipes/$recipeId'
     | '/recipes/logs/new'
+    | '/recipes/$recipeId/history'
     | '/recipes/$recipeId/logs'
     | '/recipes/$recipeId/overview'
     | '/recipes/new'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/recipes/logs/new'
+    | '/recipes/$recipeId/history'
     | '/recipes/$recipeId/logs'
     | '/recipes/$recipeId/overview'
     | '/recipes/$recipeId'
@@ -264,6 +276,7 @@ export interface FileRouteTypes {
     | '/_authenticated/recipes_/$recipeId'
     | '/_authenticated/recipes_/_form'
     | '/_authenticated/recipes/logs/new'
+    | '/_authenticated/recipes_/$recipeId/history'
     | '/_authenticated/recipes_/$recipeId/logs'
     | '/_authenticated/recipes_/$recipeId/overview'
     | '/_authenticated/recipes_/_form/$recipeId_'
@@ -366,6 +379,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/recipes/$recipeId/'
       preLoaderRoute: typeof AuthenticatedRecipesRecipeIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
+    }
+    '/_authenticated/recipes_/$recipeId/history': {
+      id: '/_authenticated/recipes_/$recipeId/history'
+      path: '/history'
+      fullPath: '/recipes/$recipeId/history'
+      preLoaderRoute: typeof AuthenticatedRecipesRecipeIdHistoryRouteRouteImport
       parentRoute: typeof AuthenticatedRecipesRecipeIdRouteRoute
     }
     '/_authenticated/recipes_/$recipeId/logs': {
@@ -474,6 +494,7 @@ const AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren =
   )
 
 interface AuthenticatedRecipesRecipeIdRouteRouteChildren {
+  AuthenticatedRecipesRecipeIdHistoryRouteRoute: typeof AuthenticatedRecipesRecipeIdHistoryRouteRoute
   AuthenticatedRecipesRecipeIdLogsRouteRoute: typeof AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren
   AuthenticatedRecipesRecipeIdOverviewRouteRoute: typeof AuthenticatedRecipesRecipeIdOverviewRouteRoute
   AuthenticatedRecipesRecipeIdIndexRoute: typeof AuthenticatedRecipesRecipeIdIndexRoute
@@ -481,6 +502,8 @@ interface AuthenticatedRecipesRecipeIdRouteRouteChildren {
 
 const AuthenticatedRecipesRecipeIdRouteRouteChildren: AuthenticatedRecipesRecipeIdRouteRouteChildren =
   {
+    AuthenticatedRecipesRecipeIdHistoryRouteRoute:
+      AuthenticatedRecipesRecipeIdHistoryRouteRoute,
     AuthenticatedRecipesRecipeIdLogsRouteRoute:
       AuthenticatedRecipesRecipeIdLogsRouteRouteWithChildren,
     AuthenticatedRecipesRecipeIdOverviewRouteRoute:

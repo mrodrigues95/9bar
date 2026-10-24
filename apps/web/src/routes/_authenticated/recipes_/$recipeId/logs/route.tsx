@@ -1,108 +1,97 @@
-import { createFileRoute, Outlet, useLoaderData } from "@tanstack/react-router";
-import { EllipsisVertical, Fingerprint, Pencil, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
+import { z } from "zod";
+import { FilterBarPanel, Link, ListCard, ListResults } from "../../../../../components";
+import { useUrlFilterState } from "../../../../../utils/hooks";
+import { RecipeLogsList } from "./-logs-list";
+import { NoLogsFound } from "./-no-logs-found";
 import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	Heading,
-	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
-	Text,
-} from "@9bar/toolkit/components";
-import { Link, List, ListItem, Pagination } from "../../../../../components";
-import { GRINDER_OPTIONS, MACHINE_OPTIONS } from "../../../../../utils/data";
+	LOG_FILTER_DEFINITIONS,
+	LOG_FILTER_PARAM_SCHEMA,
+	LOGS_PAGE_SIZE,
+	decodeLogFilters,
+	encodeLogFilters,
+	listRecipeLogs,
+	type LogFilterSearchParams,
+} from "./-recipe-logs-query";
 
-const LOGS_PAGE_SIZE = 10;
+type LogsSearch = { page: number } & LogFilterSearchParams;
 
 const RecipeLogs = () => {
-	const { recipe } = useLoaderData({ from: "/_authenticated/recipes_/$recipeId" });
-	const [page, setPage] = useState(1);
-
-	const machine = MACHINE_OPTIONS.find((m) => m.id === recipe.snapshot.machine);
-	const grinder = GRINDER_OPTIONS.find((g) => g.id === recipe.snapshot.grinder);
-	if (!machine || !grinder) {
-		throw new Error(`Machine or grinder not found for recipe ${recipe.name}`);
-	}
+	const { recipeId } = Route.useParams();
+	const search = Route.useSearch();
+	const navigate = Route.useNavigate();
+	const { total, pageSize } = Route.useLoaderData();
+	const { filters, page, isStale, setFilters, setPage } = useUrlFilterState<LogsSearch>({
+		search,
+		navigate,
+		decode: (current) => ({ filters: decodeLogFilters(current), page: current.page }),
+		encode: (intent) => ({ page: intent.page, ...encodeLogFilters(intent.filters) }),
+	});
+	const hasFilters = filters.length > 0;
 
 	return (
 		<>
-			<Card>
-				<CardHeader className="flex flex-row items-center justify-between gap-4">
-					<Heading variant="section" as="p">
-						Logs
-					</Heading>
-					<Link
-						to="/recipes/$recipeId/logs/new"
-						params={{ recipeId: String(recipe.id) }}
-						variant="default"
-					>
+			<ListCard
+				actions={
+					<Link to="/recipes/$recipeId/logs/new" params={{ recipeId }} variant="outline" size="sm">
 						<Plus />
 						New Log
 					</Link>
-				</CardHeader>
-				<CardContent className="gap-4">
-					<List>
-						<ListItem className="justify-between">
-							<div className="flex flex-col">
-								<Text variant="body-sm" className="flex items-center gap-1 text-blue-950">
-									<Fingerprint className="size-4" />
-									{machine.name} · {grinder.name}
-								</Text>
-								<Text variant="body-sm" className="font-medium" color="primary">
-									{recipe.name}
-								</Text>
-								<Text variant="body-sm" className="text-xs">
-									{recipe.snapshot.beans}
-								</Text>
-								<Text variant="body-sm" className="text-xs">
-									{recipe.snapshot.dose}g → {recipe.snapshot.yield}g · {recipe.snapshot.brewTime}
-									{recipe.snapshot.brewTimeUnit}
-								</Text>
-							</div>
-							<div className="flex items-center gap-0.5">
-								<MenuTrigger>
-									<IconButton aria-label="Actions" size="sm" variant="ghost">
-										<EllipsisVertical />
-									</IconButton>
-									<Menu>
-										<MenuItem onAction={() => alert("rename")} textValue="Edit">
-											<Pencil className="size-3" />
-											Edit
-										</MenuItem>
-										<MenuSeparator />
-										<MenuItem
-											onAction={() => alert("delete")}
-											variant="destructive"
-											textValue="Delete"
-										>
-											<Trash2 className="size-3" />
-											Delete
-										</MenuItem>
-									</Menu>
-								</MenuTrigger>
-							</div>
-						</ListItem>
-					</List>
-				</CardContent>
-				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination
-						page={page}
-						pageSize={LOGS_PAGE_SIZE}
-						total={recipe.logs.length}
-						onPageChange={setPage}
-					/>
-				</CardFooter>
-			</Card>
+				}
+				paginationProps={{
+					page,
+					pageSize,
+					total,
+					onPageChange: setPage,
+				}}
+			>
+				<FilterBarPanel
+					definitions={LOG_FILTER_DEFINITIONS}
+					filters={filters}
+					onFiltersChange={setFilters}
+					label="log"
+				/>
+				<ListResults
+					isBusy={isStale}
+					isEmpty={!total}
+					emptyState={
+						<NoLogsFound
+							hasFilters={hasFilters}
+							onClearFilters={() => {
+								setFilters([]);
+							}}
+							recipeId={recipeId}
+						/>
+					}
+				>
+					<RecipeLogsList />
+				</ListResults>
+			</ListCard>
 			<Outlet />
 		</>
 	);
 };
 
+const SEARCH_DEFAULTS = { page: 1 };
+
+const searchSchema = z.object({
+	page: z.coerce.number().int().min(1).catch(1).default(1),
+	...LOG_FILTER_PARAM_SCHEMA,
+});
+
 export const Route = createFileRoute("/_authenticated/recipes_/$recipeId/logs")({
+	validateSearch: searchSchema,
+	search: { middlewares: [stripSearchParams(SEARCH_DEFAULTS)] },
+	loaderDeps: ({ search }) => search,
+	loader: ({ deps, params }) =>
+		listRecipeLogs({
+			data: {
+				recipeId: Number(params.recipeId),
+				filters: decodeLogFilters(deps),
+				page: deps.page,
+				pageSize: LOGS_PAGE_SIZE,
+			},
+		}),
 	component: RecipeLogs,
 });

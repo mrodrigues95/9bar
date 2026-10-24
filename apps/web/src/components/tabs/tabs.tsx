@@ -2,6 +2,7 @@ import {
 	type RegisteredRouter,
 	type UseLinkPropsOptions,
 	useLinkProps,
+	useRouter,
 } from "@tanstack/react-router";
 import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
 
@@ -24,20 +25,26 @@ export const TabLink = <
 	props: TabLinkProps<TRouter, TFrom, TTo, TMaskFrom, TMaskTo>,
 ) => {
 	const { children, id, className, isDisabled } = props;
-	const resolvedLinkProps = useLinkProps(props);
+	const { href } = useLinkProps(props);
+	const router = useRouter();
+
+	const preload = () => {
+		if (href) {
+			// SAFETY: `preloadRoute` builds its location with `buildLocation`, which ignores `href`,
+			// so preload by the tab's path. A generic `string` path cannot satisfy its literal `to`.
+			void router.preloadRoute({ to: href } as Parameters<typeof router.preloadRoute>[0]);
+		}
+	};
 
 	return (
 		<TabsTrigger
 			{...(id ? { id } : {})}
 			{...(className ? { className } : {})}
 			{...(isDisabled ? { isDisabled } : {})}
-			{...(resolvedLinkProps.href ? { href: resolvedLinkProps.href } : {})}
-			onClick={(e) => {
-				// SAFETY: TabsTrigger forwards the native click event, so the router's composed
-				// click handler receives a real React.MouseEvent at runtime. The single assertion
-				// only recovers the handler type that useLinkProps erases.
-				(resolvedLinkProps.onClick as ((e: React.MouseEvent) => void) | undefined)?.(e);
-			}}
+			{...(href ? { href } : {})}
+			onMouseEnter={preload}
+			onFocus={preload}
+			onTouchStart={preload}
 		>
 			{children}
 		</TabsTrigger>

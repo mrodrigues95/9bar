@@ -40,7 +40,7 @@ export const Info: Story = {
 	),
 };
 
-/** A success alert with a green theme, used to confirm that an action completed successfully. */
+/** A success alert with an emerald theme, used to confirm that an action completed successfully. */
 export const Success: Story = {
 	args: { variant: "success" },
 	render: (props) => (
@@ -52,7 +52,7 @@ export const Success: Story = {
 	),
 };
 
-/** A warning alert with a yellow theme, used to caution the user about a potential issue. */
+/** A warning alert with an amber theme, used to caution the user about a potential issue. */
 export const Warning: Story = {
 	args: { variant: "warning" },
 	render: (props) => (
@@ -119,6 +119,7 @@ export const WithoutIndicator: Story = {
 
 /** An alert with a dismiss button using `AlertAction` and an `IconButton`. */
 export const WithDismiss: Story = {
+	args: { variant: "success" },
 	render: (props) => (
 		<Alert {...props}>
 			<CircleCheck />
@@ -137,6 +138,7 @@ export const WithDismiss: Story = {
 
 /** An alert with an inline action button using `AlertAction` and a `Button`. */
 export const WithActionButton: Story = {
+	args: { variant: "warning" },
 	render: (props) => (
 		<Alert {...props}>
 			<TriangleAlert />

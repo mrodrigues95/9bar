@@ -4,38 +4,43 @@ import { cn } from "#lib/utils";
 
 const alertVariants = cva(
 	[
-		"group/alert relative grid w-full gap-0.5 rounded-lg border px-2 py-1.5 text-left text-xs/relaxed",
+		"group/alert relative grid w-full gap-0.5 rounded-lg border p-2 text-left",
+		"text-xs/relaxed text-card-foreground",
 		"has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18",
 		"has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-1.5",
-		"*:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-3.5",
+		"*:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg:not([class*='size-'])]:size-3.5",
 	],
 	{
 		variants: {
 			variant: {
-				default: "border-border bg-card text-card-foreground",
+				default: "border-transparent bg-card ring-1 ring-foreground/10",
 				info: [
-					"border-blue-200 bg-blue-50 text-blue-800",
-					"*:data-[slot=alert-description]:text-blue-700",
-					"dark:border-blue-900 dark:bg-blue-950 dark:text-blue-200",
-					"dark:*:data-[slot=alert-description]:text-blue-300",
+					"border-blue-500/32 bg-blue-500/4",
+					"*:[svg]:text-blue-500",
+					"[--input:--alpha(var(--color-blue-500)/20%)]",
+					"[--muted:--alpha(var(--color-blue-500)/10%)]",
+					"[--secondary:--alpha(var(--color-blue-500)/10%)]",
 				],
 				success: [
-					"border-green-200 bg-green-50 text-green-800",
-					"*:data-[slot=alert-description]:text-green-700",
-					"dark:border-green-900 dark:bg-green-950 dark:text-green-200",
-					"dark:*:data-[slot=alert-description]:text-green-300",
+					"border-emerald-500/32 bg-emerald-500/4",
+					"*:[svg]:text-emerald-500",
+					"[--input:--alpha(var(--color-emerald-500)/20%)]",
+					"[--muted:--alpha(var(--color-emerald-500)/10%)]",
+					"[--secondary:--alpha(var(--color-emerald-500)/10%)]",
 				],
 				warning: [
-					"border-yellow-200 bg-yellow-50 text-yellow-800",
-					"*:data-[slot=alert-description]:text-yellow-700",
-					"dark:border-yellow-900 dark:bg-yellow-950 dark:text-yellow-200",
-					"dark:*:data-[slot=alert-description]:text-yellow-300",
+					"border-amber-500/32 bg-amber-500/4",
+					"*:[svg]:text-amber-500",
+					"[--input:--alpha(var(--color-amber-500)/20%)]",
+					"[--muted:--alpha(var(--color-amber-500)/10%)]",
+					"[--secondary:--alpha(var(--color-amber-500)/10%)]",
 				],
 				destructive: [
-					"border-red-200 bg-red-50 text-red-800",
-					"*:data-[slot=alert-description]:text-red-700",
-					"dark:border-red-900 dark:bg-red-950 dark:text-red-200",
-					"dark:*:data-[slot=alert-description]:text-red-300",
+					"border-red-500/32 bg-red-500/4",
+					"*:[svg]:text-red-500",
+					"[--input:--alpha(var(--color-red-500)/20%)]",
+					"[--muted:--alpha(var(--color-red-500)/10%)]",
+					"[--secondary:--alpha(var(--color-red-500)/10%)]",
 				],
 			},
 		},
@@ -70,7 +75,7 @@ export const AlertTitle = ({ className, ...props }: AlertTitleProps) => {
 			data-slot="alert-title"
 			className={cn(
 				[
-					"font-medium group-has-[>svg]/alert:col-start-2",
+					"text-sm font-medium group-has-[>svg]/alert:col-start-2",
 					"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
 				],
 				className,
@@ -90,7 +95,7 @@ export const AlertDescription = ({ className, ...props }: AlertDescriptionProps)
 			data-slot="alert-description"
 			className={cn(
 				[
-					"text-xs/relaxed text-balance text-muted-foreground",
+					"text-sm text-balance text-muted-foreground",
 					"md:text-pretty",
 					"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
 					"[&_p:not(:last-child)]:mb-4",

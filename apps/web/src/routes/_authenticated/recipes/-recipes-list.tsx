@@ -7,7 +7,6 @@ import {
 	EllipsisVertical,
 	Fingerprint,
 	Gauge,
-	type LucideIcon,
 	Paperclip,
 	Pencil,
 	Pin,
@@ -27,7 +26,18 @@ import {
 	MenuTrigger,
 	Text,
 } from "@9bar/toolkit/components";
-import { Link, MenuItemLink } from "../../../components";
+import {
+	Link,
+	List,
+	ListLine,
+	ListMeta,
+	ListMetaItem,
+	ListRow,
+	ListRowActions,
+	ListRowBody,
+	ListRowHeading,
+	MenuItemLink,
+} from "../../../components";
 import {
 	RECIPE_STATUS_LABELS,
 	VERDICT_LABELS,
@@ -44,22 +54,13 @@ const UNTITLED_NAME = "(Untitled)";
 
 type LogListRow = Extract<RecipesListRow, { kind: "attached-log" | "quick-log" }>;
 
-const RowMetaItem = ({ icon: Icon, label }: { icon: LucideIcon; label: string }) => {
-	return (
-		<Text variant="caption" className="flex max-w-full min-w-0 items-center gap-1">
-			<Icon className="size-3 shrink-0" />
-			<span className="truncate">{label}</span>
-		</Text>
-	);
-};
-
 const RowMeta = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	return (
-		<div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-0.5">
-			<RowMetaItem icon={Bean} label={snapshot.beans} />
-			<RowMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
-			<RowMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
-		</div>
+		<ListMeta>
+			<ListMetaItem icon={Bean} label={snapshot.beans} />
+			<ListMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
+			<ListMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
+		</ListMeta>
 	);
 };
 
@@ -187,44 +188,41 @@ const QuickLogRowActions = ({ log }: { log: Log }) => {
 
 const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => {
 	return (
-		<Text variant="caption" className="mt-0.5 flex min-w-0 items-center gap-1 font-mono">
-			<Scale className="size-3 shrink-0" />
-			<span className="truncate">
-				{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
-				{formatBrewTime(row.snapshot)}
-				{shotAt && ` · Logged ${formatShotAt(shotAt)}`}
-			</span>
-		</Text>
+		<ListLine icon={Scale} mono>
+			{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
+			{formatBrewTime(row.snapshot)}
+			{!!shotAt && ` · Logged ${formatShotAt(shotAt)}`}
+		</ListLine>
 	);
 };
 
 const RecipeRow = ({ row }: { row: Extract<RecipesListRow, { kind: "recipe" }> }) => {
 	return (
-		<li className="flex items-center gap-3 py-2.5">
-			<div className="min-w-0 flex-1">
-				<div className="flex min-w-0 items-center gap-2">
+		<ListRow>
+			<ListRowBody>
+				<ListRowHeading>
 					<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
 					<Badge variant="default">
 						<Fingerprint />
 						{ROW_KIND_NAMES.recipe}
 					</Badge>
 					<Badge variant="outline">{RECIPE_STATUS_LABELS[row.recipe.status]}</Badge>
-				</div>
+				</ListRowHeading>
 				<DoseLine row={row} />
 				<RowMeta snapshot={row.snapshot} />
-			</div>
-			<div className="flex shrink-0 items-center gap-1">
+			</ListRowBody>
+			<ListRowActions>
 				<RecipeRowActions recipe={row.recipe} />
-			</div>
-		</li>
+			</ListRowActions>
+		</ListRow>
 	);
 };
 
 const LogRow = ({ row }: { row: LogListRow }) => {
 	return (
-		<li className="flex items-center gap-3 py-2.5">
-			<div className="min-w-0 flex-1">
-				<div className="flex min-w-0 items-center gap-2">
+		<ListRow>
+			<ListRowBody>
+				<ListRowHeading>
 					{row.kind === "attached-log" ? (
 						<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
 					) : (
@@ -233,19 +231,21 @@ const LogRow = ({ row }: { row: LogListRow }) => {
 						</Text>
 					)}
 					<Badge variant="outline">{ROW_KIND_NAMES[row.kind]}</Badge>
-					{row.log.verdict && <Badge variant="secondary">{VERDICT_LABELS[row.log.verdict]}</Badge>}
-				</div>
+					{!!row.log.verdict && (
+						<Badge variant="secondary">{VERDICT_LABELS[row.log.verdict]}</Badge>
+					)}
+				</ListRowHeading>
 				<DoseLine row={row} shotAt={row.log.shotAt} />
 				<RowMeta snapshot={row.snapshot} />
-			</div>
-			<div className="flex shrink-0 items-center gap-1">
+			</ListRowBody>
+			<ListRowActions>
 				{row.kind === "attached-log" ? (
 					<AttachedLogRowActions log={row.log} name={row.recipe.name} />
 				) : (
 					<QuickLogRowActions log={row.log} />
 				)}
-			</div>
-		</li>
+			</ListRowActions>
+		</ListRow>
 	);
 };
 
@@ -256,7 +256,7 @@ export const RecipesList = () => {
 	const deferredItems = useDeferredValue(items);
 
 	return (
-		<ul>
+		<List>
 			{deferredItems.map((row) =>
 				row.kind === "recipe" ? (
 					<RecipeRow key={row.key} row={row} />
@@ -264,6 +264,6 @@ export const RecipesList = () => {
 					<LogRow key={row.key} row={row} />
 				),
 			)}
-		</ul>
+		</List>
 	);
 };

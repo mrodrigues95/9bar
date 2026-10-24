@@ -1,19 +1,28 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet, Scripts, useRouter } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { StrictMode, type ReactNode, Suspense } from "react";
+import { RouterProvider } from "react-aria-components";
 import css from "../styles/globals.css?url";
 
 const RootComponent = () => {
+	const router = useRouter();
+
 	return (
 		<StrictMode>
-			<RootDocument>
-				<div className="flex min-h-screen flex-col">
-					<Suspense>
-						<Outlet />
-					</Suspense>
-					<TanStackRouterDevtools position="bottom-right" />
-				</div>
-			</RootDocument>
+			<RouterProvider
+				navigate={(href) => {
+					void router.navigate({ href });
+				}}
+			>
+				<RootDocument>
+					<div className="flex min-h-screen flex-col">
+						<Suspense>
+							<Outlet />
+						</Suspense>
+						<TanStackRouterDevtools position="bottom-right" />
+					</div>
+				</RootDocument>
+			</RouterProvider>
 		</StrictMode>
 	);
 };

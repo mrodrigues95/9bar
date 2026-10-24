@@ -16,7 +16,7 @@ export const Nav = () => {
 				<div className="flex items-center justify-between">
 					<div className="flex flex-1 items-center gap-10">
 						<Logo />
-						<nav>
+						<nav aria-label="Main">
 							<ul className="flex items-center gap-2.5">
 								{links.map(({ to, label }) => (
 									<li key={to}>

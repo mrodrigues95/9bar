@@ -1,28 +1,9 @@
-import { createFileRoute, Outlet, stripSearchParams, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, stripSearchParams } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import {
-	Button,
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	Heading,
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-} from "@9bar/toolkit/components";
-import {
-	FilterBar,
-	FilterBarActions,
-	type FilterBarFilterState,
-} from "@9bar/toolkit/components/composed";
-import { cn } from "@9bar/toolkit/utils";
-import { Link } from "../../../components";
-import { Pagination } from "../../../components/pagination/pagination";
-import { useDebouncedValue } from "../../../utils/hooks";
-import { FilterBarAddTrigger } from "./-filter-bar-add-trigger";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@9bar/toolkit/components";
+import { FilterBarPanel, Link, ListCard, ListResults, Page, PageHeader } from "../../../components";
+import { useUrlFilterState } from "../../../utils/hooks";
 import { NoRecipesFound } from "./-no-recipes-found";
 import { RecipesList } from "./-recipes-list";
 import {
@@ -35,100 +16,37 @@ import {
 	type FilterSearchParams,
 } from "./-recipes-query";
 
-const resolveIntent = (search: { q: string; page: number } & FilterSearchParams) => ({
-	version: 0,
-	q: search.q,
-	filters: decodeFilters(search),
-	page: search.page,
-	replace: true,
-});
-
-type RecipeSearchIntent = ReturnType<typeof resolveIntent>;
-
-const encodeIntent = (intent: RecipeSearchIntent) => {
-	return { q: intent.q, page: intent.page, ...encodeFilters(intent.filters) };
-};
-
-const intentKey = (intent: RecipeSearchIntent) => {
-	return JSON.stringify(encodeIntent(intent));
-};
-
-const useRecipesSearch = () => {
-	const search = Route.useSearch();
-	const navigate = Route.useNavigate();
-	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
-	const [intent, setIntent] = useState(() => resolveIntent(search));
-	const debouncedIntent = useDebouncedValue(intent, 250);
-
-	const urlIntent = resolveIntent(search);
-	const urlKey = intentKey(urlIntent);
-
-	const lastWrittenKeyRef = useRef(urlKey);
-	const lastUrlKeyRef = useRef(urlKey);
-
-	useEffect(() => {
-		const isNewUrl = urlKey !== lastUrlKeyRef.current;
-		lastUrlKeyRef.current = urlKey;
-
-		// Back/forward, a link, or a hand-edited URL: adopt it and drop a pending intent instead of
-		// writing back over the user's navigation. The version bump makes the drop stick.
-		if (isNewUrl && urlKey !== lastWrittenKeyRef.current) {
-			lastWrittenKeyRef.current = urlKey;
-			setIntent((prev) =>
-				intentKey(prev) === urlKey ? prev : { ...urlIntent, version: prev.version + 1 },
-			);
-			return;
-		}
-
-		const debouncedKey = intentKey(debouncedIntent);
-		if (debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
-			return;
-		}
-
-		navigate({
-			search: (prev) => ({ ...prev, ...encodeIntent(debouncedIntent) }),
-			replace: debouncedIntent.replace,
-		});
-		lastWrittenKeyRef.current = debouncedKey;
-	}, [urlKey, urlIntent, debouncedIntent, intent.version, navigate]);
-
-	const updateIntent = (patch: Partial<Omit<RecipeSearchIntent, "version">>) => {
-		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
-	};
-
-	return {
-		q: intent.q,
-		filters: intent.filters,
-		page: intent.page,
-		isStale: isRouteLoading || intentKey(intent) !== urlKey,
-		setQuery: (q: string) => {
-			updateIntent({ q, page: 1, replace: true });
-		},
-		setFilters: (filters: Array<FilterBarFilterState>) => {
-			updateIntent({ filters, page: 1, replace: false });
-		},
-		setPage: (page: number) => {
-			updateIntent({ page, replace: false });
-		},
-		clear: () => {
-			updateIntent({ q: "", filters: [], page: 1, replace: false });
-		},
-	};
-};
+interface RecipesSearch extends FilterSearchParams {
+	q: string;
+	page: number;
+}
 
 const Recipes = () => {
 	const { total, pageSize } = Route.useLoaderData();
-	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } = useRecipesSearch();
+	const search = Route.useSearch();
+	const navigate = Route.useNavigate();
+	const { q, filters, page, isStale, setQuery, setFilters, setPage, clear } =
+		useUrlFilterState<RecipesSearch>({
+			search,
+			navigate,
+			decode: (current) => ({
+				q: current.q,
+				filters: decodeFilters(current),
+				page: current.page,
+			}),
+			encode: (intent) => ({ q: intent.q, page: intent.page, ...encodeFilters(intent.filters) }),
+		});
 	const hasQuery = !!q.trim() || !!filters.length;
 
 	return (
-		<div className="space-y-4">
-			<Heading as="h1" variant="title">
-				Recipes
-			</Heading>
-			<Card>
-				<CardHeader className="border-b border-b-border pb-6">
-					<div className="flex flex-wrap items-center justify-end gap-2">
+		<Page>
+			<PageHeader
+				title="Recipes"
+				description="Browse and dial in your espresso recipes, one shot at a time."
+			/>
+			<ListCard
+				actions={
+					<>
 						<Link variant="ghost" size="sm" to="/recipes/logs/new" search>
 							Log a shot
 						</Link>
@@ -136,10 +54,21 @@ const Recipes = () => {
 							<Plus />
 							New recipe
 						</Link>
-					</div>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-2">
-					<div className="flex flex-wrap items-center justify-end gap-2">
+					</>
+				}
+				paginationProps={{
+					page,
+					pageSize,
+					total,
+					onPageChange: setPage,
+				}}
+			>
+				<FilterBarPanel
+					definitions={FILTER_DEFINITIONS}
+					filters={filters}
+					onFiltersChange={setFilters}
+					label="recipe"
+					leading={
 						<InputGroup className="w-52 shrink-0">
 							<InputGroupAddon>
 								<Search className="size-4" />
@@ -153,45 +82,18 @@ const Recipes = () => {
 								aria-label="Search recipes by name or beans"
 							/>
 						</InputGroup>
-						<FilterBarAddTrigger
-							definitions={FILTER_DEFINITIONS}
-							filters={filters}
-							onFiltersChange={setFilters}
-							aria-label="Add recipe filter"
-						/>
-					</div>
-					{filters.length > 0 && (
-						<div className="rounded-md bg-muted/50 px-2.5 py-2">
-							<FilterBar
-								definitions={FILTER_DEFINITIONS}
-								filters={filters}
-								onFiltersChange={setFilters}
-								aria-label="Active recipe filters"
-							>
-								{({ clearAll }) => (
-									<FilterBarActions>
-										<Button variant="ghost" size="xs" onPress={clearAll}>
-											Clear
-										</Button>
-									</FilterBarActions>
-								)}
-							</FilterBar>
-						</div>
-					)}
-					<div
-						aria-busy={isStale}
-						className={cn("transition-opacity duration-200", isStale && "opacity-60")}
-					>
-						{!total && <NoRecipesFound hasQuery={hasQuery} onClearQuery={clear} />}
-						{!!total && <RecipesList />}
-					</div>
-				</CardContent>
-				<CardFooter className="flex flex-row items-center justify-between border-t border-t-border pt-6">
-					<Pagination page={page} pageSize={pageSize} total={total} onPageChange={setPage} />
-				</CardFooter>
-			</Card>
+					}
+				/>
+				<ListResults
+					isBusy={isStale}
+					isEmpty={!total}
+					emptyState={<NoRecipesFound hasQuery={hasQuery} onClearQuery={clear} />}
+				>
+					<RecipesList />
+				</ListResults>
+			</ListCard>
 			<Outlet />
-		</div>
+		</Page>
 	);
 };
 
