@@ -16,7 +16,9 @@ import {
 	type HistoryFilterSearchParams,
 } from "./-recipe-history-query";
 
-type HistorySearch = { page: number } & HistoryFilterSearchParams;
+interface HistorySearch extends HistoryFilterSearchParams {
+	page: number;
+}
 
 const RecipeHistory = () => {
 	const search = Route.useSearch();

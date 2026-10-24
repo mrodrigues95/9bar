@@ -27,7 +27,10 @@ import {
 	type FilterSearchParams,
 } from "./-recipes-query";
 
-type RecipesSearch = { q: string; page: number } & FilterSearchParams;
+interface RecipesSearch extends FilterSearchParams {
+	q: string;
+	page: number;
+}
 
 const Recipes = () => {
 	const { total, pageSize } = Route.useLoaderData();

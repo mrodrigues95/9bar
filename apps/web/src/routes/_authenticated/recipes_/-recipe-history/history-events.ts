@@ -34,7 +34,7 @@ export const HISTORY_FIELD_LABELS: Record<HistoryField, string> = {
 	pressure: "Pressure",
 };
 
-export interface HistoryChange {
+interface HistoryChange {
 	field: HistoryField;
 	previous: string;
 	next: string;
