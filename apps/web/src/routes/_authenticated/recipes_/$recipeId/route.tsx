@@ -1,12 +1,12 @@
 import { createFileRoute, Outlet, redirect, useMatchRoute } from "@tanstack/react-router";
 import { FileClock, FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
-import { Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
+import { Badge, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
 import { getRecipeHistoryEvents } from "../-recipe-history/history-events";
-import { AppBreadcrumbs, TabLink, withBreadcrumb } from "../../../../components";
-import { buildRecipeGraph } from "../../../../utils/data";
+import { Page, PageHeader, TabLink, withBreadcrumb } from "../../../../components";
+import { buildRecipeGraph, RECIPE_STATUS_LABELS } from "../../../../utils/data";
 import { objectKeys } from "../../../../utils/utils";
-import { RecipeHeader } from "./-recipe-header";
+import { RecipeActions } from "./-recipe-actions";
 
 const TABS = {
 	overview: "overview",
@@ -34,10 +34,19 @@ const Recipe = () => {
 	}
 
 	return (
-		<>
-			<AppBreadcrumbs aria-label="Recipe navigation" className="mb-6" />
-			<RecipeHeader recipe={recipe} />
-			<Tabs selectedKey={tab} className="mt-4">
+		<Page breadcrumbsProps={{ "aria-label": "Recipe navigation" }}>
+			<PageHeader
+				title={recipe.name}
+				description={recipe.snapshot.beans}
+				rightContent={<RecipeActions recipe={recipe} />}
+			>
+				<Badge variant="secondary">
+					<Fingerprint className="size-3" />
+					Recipe
+				</Badge>
+				<Badge variant="outline">{RECIPE_STATUS_LABELS[recipe.status]}</Badge>
+			</PageHeader>
+			<Tabs selectedKey={tab}>
 				<TabsList variant="line" aria-label={`Manage ${recipe.name}`} className="w-fit shrink-0">
 					<TabLink
 						id={TABS.overview}
@@ -70,7 +79,7 @@ const Recipe = () => {
 					</TabsContent>
 				))}
 			</Tabs>
-		</>
+		</Page>
 	);
 };
 

@@ -6,5 +6,6 @@ export * from "./link/link";
 export * from "./list/list";
 export * from "./logo/logo";
 export * from "./menu/menu";
+export * from "./page/page";
 export * from "./pagination/pagination";
 export * from "./tabs/tabs";

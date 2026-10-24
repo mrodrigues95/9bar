@@ -6,13 +6,12 @@ import {
 	CardContent,
 	CardFooter,
 	CardHeader,
-	Heading,
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { FilterBarPanel, Link } from "../../../components";
+import { FilterBarPanel, Link, Page, PageHeader } from "../../../components";
 import { Pagination } from "../../../components/pagination/pagination";
 import { useUrlFilterState } from "../../../utils/hooks";
 import { NoRecipesFound } from "./-no-recipes-found";
@@ -50,10 +49,11 @@ const Recipes = () => {
 	const hasQuery = !!q.trim() || !!filters.length;
 
 	return (
-		<div className="space-y-4">
-			<Heading as="h1" variant="title">
-				Recipes
-			</Heading>
+		<Page>
+			<PageHeader
+				title="Recipes"
+				description="Browse and dial in your espresso recipes, one shot at a time."
+			/>
 			<Card>
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">
@@ -101,7 +101,7 @@ const Recipes = () => {
 				</CardFooter>
 			</Card>
 			<Outlet />
-		</div>
+		</Page>
 	);
 };
 
