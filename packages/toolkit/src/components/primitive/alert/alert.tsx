@@ -12,7 +12,7 @@ const alertVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: "border-border bg-card text-card-foreground",
+				default: "border-transparent bg-card text-card-foreground ring-1 ring-foreground/10",
 				info: [
 					"border-blue-200 bg-blue-50 text-blue-800",
 					"*:data-[slot=alert-description]:text-blue-700",
