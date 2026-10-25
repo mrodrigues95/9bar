@@ -25,7 +25,7 @@ export const Nav = () => {
 											variant="ghost"
 											size="sm"
 											activeProps={{
-												variant: "default",
+												variant: "secondary",
 												"aria-current": "page",
 											}}
 										>
