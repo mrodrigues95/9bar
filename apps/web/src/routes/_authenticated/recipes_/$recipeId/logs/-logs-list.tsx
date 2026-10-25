@@ -10,7 +10,7 @@ import {
 	Trash2,
 	Unlink,
 } from "lucide-react";
-import { useDeferredValue } from "react";
+import { useDeferredValue, useState } from "react";
 import {
 	Badge,
 	IconButton,
@@ -21,6 +21,7 @@ import {
 	Text,
 } from "@9bar/toolkit/components";
 import {
+	ConfirmDialog,
 	List,
 	ListLine,
 	ListMeta,
@@ -39,62 +40,81 @@ const noop = () => {};
 const LogRow = ({ row }: { row: RecipeLogRow }) => {
 	const { log, snapshot, pinned } = row;
 	const shotAt = formatShotAt(log.shotAt);
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
 	return (
-		<ListRow>
-			<ListRowBody>
-				<ListRowHeading>
-					<Text variant="label" color="primary" className="truncate">
-						{shotAt}
-					</Text>
-					{!!pinned && (
-						<Badge variant="secondary">
-							<Pin />
-							Pinned
-						</Badge>
-					)}
-					{!!log.verdict && <Badge variant="outline">{VERDICT_LABELS[log.verdict]}</Badge>}
-				</ListRowHeading>
-				<ListLine icon={Scale} mono>
-					{formatGrams(snapshot.dose)} → {formatGrams(snapshot.yield)} · {formatBrewTime(snapshot)}
-				</ListLine>
-				<ListMeta>
-					<ListMetaItem icon={Bean} label={snapshot.beans} />
-					<ListMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
-					<ListMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
-				</ListMeta>
-			</ListRowBody>
-			<ListRowActions>
-				<MenuTrigger>
-					<IconButton aria-label={`Actions for log from ${shotAt}`} size="sm" variant="ghost">
-						<EllipsisVertical />
-					</IconButton>
-					<Menu
-						aria-label={`Actions for log from ${shotAt}`}
-						placement="bottom end"
-						width="content"
-					>
-						<MenuItem onAction={noop} textValue="Edit log">
-							<Pencil className="size-3" />
-							Edit log
-						</MenuItem>
-						<MenuItem onAction={noop} textValue="Set as reference shot">
-							<Pin className="size-3" />
-							Set as reference shot
-						</MenuItem>
-						<MenuItem onAction={noop} textValue="Detach from recipe">
-							<Unlink className="size-3" />
-							Detach from recipe
-						</MenuItem>
-						<MenuSeparator />
-						<MenuItem onAction={noop} variant="destructive" textValue="Delete log">
-							<Trash2 className="size-3" />
-							Delete log
-						</MenuItem>
-					</Menu>
-				</MenuTrigger>
-			</ListRowActions>
-		</ListRow>
+		<>
+			<ListRow>
+				<ListRowBody>
+					<ListRowHeading>
+						<Text variant="label" color="primary" className="truncate">
+							{shotAt}
+						</Text>
+						{!!pinned && (
+							<Badge variant="secondary">
+								<Pin />
+								Pinned
+							</Badge>
+						)}
+						{!!log.verdict && <Badge variant="outline">{VERDICT_LABELS[log.verdict]}</Badge>}
+					</ListRowHeading>
+					<ListLine icon={Scale} mono>
+						{formatGrams(snapshot.dose)} → {formatGrams(snapshot.yield)} ·{" "}
+						{formatBrewTime(snapshot)}
+					</ListLine>
+					<ListMeta>
+						<ListMetaItem icon={Bean} label={snapshot.beans} />
+						<ListMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
+						<ListMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
+					</ListMeta>
+				</ListRowBody>
+				<ListRowActions>
+					<MenuTrigger>
+						<IconButton aria-label={`Actions for log from ${shotAt}`} size="sm" variant="ghost">
+							<EllipsisVertical />
+						</IconButton>
+						<Menu
+							aria-label={`Actions for log from ${shotAt}`}
+							placement="bottom end"
+							width="content"
+						>
+							<MenuItem onAction={noop} textValue="Edit log">
+								<Pencil className="size-3" />
+								Edit log
+							</MenuItem>
+							<MenuItem onAction={noop} textValue="Set as reference shot">
+								<Pin className="size-3" />
+								Set as reference shot
+							</MenuItem>
+							<MenuItem onAction={noop} textValue="Detach from recipe">
+								<Unlink className="size-3" />
+								Detach from recipe
+							</MenuItem>
+							<MenuSeparator />
+							<MenuItem
+								onAction={() => {
+									setIsDeleteOpen(true);
+								}}
+								textValue="Delete log"
+							>
+								<Trash2 className="size-3" />
+								Delete log
+							</MenuItem>
+						</Menu>
+					</MenuTrigger>
+				</ListRowActions>
+			</ListRow>
+			<ConfirmDialog
+				isOpen={isDeleteOpen}
+				onOpenChange={setIsDeleteOpen}
+				title="Delete this log?"
+				description="This permanently removes the shot from your brew log. It can't be undone."
+				confirmLabel="Delete"
+				onConfirm={() => {
+					// TODO: delete this log once the API is wired up.
+				}}
+			/>
+		</>
 	);
 };
 
