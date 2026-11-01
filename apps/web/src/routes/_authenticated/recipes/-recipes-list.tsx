@@ -1,33 +1,10 @@
 import { getRouteApi } from "@tanstack/react-router";
+import { Bean, Cog, Fingerprint, Gauge, Scale } from "lucide-react";
+import { useDeferredValue } from "react";
+import { Badge, Text } from "@9bar/toolkit/components";
+import { LogActionsMenu } from "../-recipe-actions/log-actions-menu";
+import { RecipeActionsMenu } from "../-recipe-actions/recipe-actions-menu";
 import {
-	Bean,
-	BookmarkPlus,
-	Cog,
-	Copy,
-	EllipsisVertical,
-	Fingerprint,
-	Gauge,
-	Paperclip,
-	Pencil,
-	Pin,
-	Repeat,
-	RotateCcw,
-	Scale,
-	Trash2,
-	Unlink,
-} from "lucide-react";
-import { useDeferredValue, useState } from "react";
-import {
-	Badge,
-	IconButton,
-	Menu,
-	MenuItem,
-	MenuSeparator,
-	MenuTrigger,
-	Text,
-} from "@9bar/toolkit/components";
-import {
-	ConfirmDialog,
 	Link,
 	List,
 	ListLine,
@@ -37,7 +14,6 @@ import {
 	ListRowActions,
 	ListRowBody,
 	ListRowHeading,
-	MenuItemLink,
 } from "../../../components";
 import {
 	RECIPE_STATUS_LABELS,
@@ -45,8 +21,6 @@ import {
 	grinderName,
 	machineName,
 	type BrewSnapshot,
-	type Log,
-	type Recipe,
 } from "../../../utils/data";
 import { formatBrewTime, formatGrams, formatShotAt } from "../../../utils/format";
 import { ROW_KIND_NAMES, type RecipesListRow } from "./-recipes-query";
@@ -77,173 +51,6 @@ const RowTitleLink = ({ recipeId, name }: { recipeId: number; name: string }) =>
 	);
 };
 
-const RecipeRowActions = ({ recipe }: { recipe: Recipe }) => {
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-	return (
-		<>
-			<MenuTrigger>
-				<IconButton aria-label={`Actions for ${recipe.name}`} size="sm" variant="ghost">
-					<EllipsisVertical />
-				</IconButton>
-				<Menu aria-label={`Actions for ${recipe.name}`} width="content">
-					<MenuItemLink
-						to="/recipes/$recipeId/edit"
-						params={{ recipeId: String(recipe.id) }}
-						textValue="Edit"
-					>
-						<Pencil className="size-3" />
-						Edit
-					</MenuItemLink>
-					<MenuItem textValue="Duplicate">
-						<Copy className="size-3" />
-						Duplicate
-					</MenuItem>
-					<MenuItem textValue="Log again">
-						<RotateCcw className="size-3" />
-						Log again
-					</MenuItem>
-					<MenuSeparator />
-					<MenuItem
-						onAction={() => {
-							setIsDeleteOpen(true);
-						}}
-						textValue="Delete"
-					>
-						<Trash2 className="size-3" />
-						Delete
-					</MenuItem>
-				</Menu>
-			</MenuTrigger>
-			<ConfirmDialog
-				isOpen={isDeleteOpen}
-				onOpenChange={setIsDeleteOpen}
-				title={`Delete ${recipe.name}?`}
-				description="This permanently deletes the recipe and its logs. It can't be undone."
-				confirmLabel="Delete"
-				onConfirm={() => {
-					// TODO: delete this recipe once the API is wired up.
-				}}
-			/>
-		</>
-	);
-};
-
-const AttachedLogRowActions = ({ log, name }: { log: Log; name: string }) => {
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-	return (
-		<>
-			<MenuTrigger>
-				<IconButton aria-label={`Actions for ${name}`} size="sm" variant="ghost">
-					<EllipsisVertical />
-				</IconButton>
-				<Menu aria-label={`Actions for ${name}`} width="content">
-					<MenuItemLink
-						to="/recipes/logs/$logId/edit"
-						params={{ logId: String(log.id) }}
-						search
-						textValue="Edit"
-					>
-						<Pencil className="size-3" />
-						Edit
-					</MenuItemLink>
-					<MenuItem textValue="Set as reference shot">
-						<Pin className="size-3" />
-						Set as reference shot
-					</MenuItem>
-					<MenuItem textValue="Detach from recipe">
-						<Unlink className="size-3" />
-						Detach from recipe
-					</MenuItem>
-					<MenuSeparator />
-					<MenuItem
-						onAction={() => {
-							setIsDeleteOpen(true);
-						}}
-						textValue="Delete"
-					>
-						<Trash2 className="size-3" />
-						Delete
-					</MenuItem>
-				</Menu>
-			</MenuTrigger>
-			<ConfirmDialog
-				isOpen={isDeleteOpen}
-				onOpenChange={setIsDeleteOpen}
-				title="Delete this log?"
-				description="This permanently removes the shot from your brew log. It can't be undone."
-				confirmLabel="Delete"
-				onConfirm={() => {
-					// TODO: delete this log once the API is wired up.
-				}}
-			/>
-		</>
-	);
-};
-
-const QuickLogRowActions = ({ log }: { log: Log }) => {
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-	return (
-		<>
-			<MenuTrigger>
-				<IconButton aria-label={`Actions for ${UNTITLED_NAME}`} size="sm" variant="ghost">
-					<EllipsisVertical />
-				</IconButton>
-				<Menu aria-label={`Actions for ${UNTITLED_NAME}`} width="content">
-					<MenuItemLink
-						to="/recipes/logs/$logId/edit"
-						params={{ logId: String(log.id) }}
-						search
-						textValue="Edit"
-					>
-						<Pencil className="size-3" />
-						Edit
-					</MenuItemLink>
-					<MenuItemLink
-						to="/recipes/logs/$logId/repeat"
-						params={{ logId: String(log.id) }}
-						search
-						textValue="Repeat"
-					>
-						<Repeat className="size-3" />
-						Repeat
-					</MenuItemLink>
-					<MenuItem textValue="Save as recipe">
-						<BookmarkPlus className="size-3" />
-						Save as recipe
-					</MenuItem>
-					<MenuItem textValue="Attach to recipe">
-						<Paperclip className="size-3" />
-						Attach to recipe
-					</MenuItem>
-					<MenuSeparator />
-					<MenuItem
-						onAction={() => {
-							setIsDeleteOpen(true);
-						}}
-						textValue="Delete"
-					>
-						<Trash2 className="size-3" />
-						Delete
-					</MenuItem>
-				</Menu>
-			</MenuTrigger>
-			<ConfirmDialog
-				isOpen={isDeleteOpen}
-				onOpenChange={setIsDeleteOpen}
-				title="Delete this log?"
-				description="This permanently removes the shot from your brew log. It can't be undone."
-				confirmLabel="Delete"
-				onConfirm={() => {
-					// TODO: delete this log once the API is wired up.
-				}}
-			/>
-		</>
-	);
-};
-
 const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => {
 	return (
 		<ListLine icon={Scale} mono>
@@ -270,7 +77,7 @@ const RecipeRow = ({ row }: { row: Extract<RecipesListRow, { kind: "recipe" }> }
 				<RowMeta snapshot={row.snapshot} />
 			</ListRowBody>
 			<ListRowActions>
-				<RecipeRowActions recipe={row.recipe} />
+				<RecipeActionsMenu recipe={row.recipe} variant="row" />
 			</ListRowActions>
 		</ListRow>
 	);
@@ -297,11 +104,15 @@ const LogRow = ({ row }: { row: LogListRow }) => {
 				<RowMeta snapshot={row.snapshot} />
 			</ListRowBody>
 			<ListRowActions>
-				{row.kind === "attached-log" ? (
-					<AttachedLogRowActions log={row.log} name={row.recipe.name} />
-				) : (
-					<QuickLogRowActions log={row.log} />
-				)}
+				<LogActionsMenu
+					log={row.log}
+					kind={row.kind}
+					label={
+						row.kind === "attached-log"
+							? `Actions for ${row.recipe.name}`
+							: `Actions for ${UNTITLED_NAME}`
+					}
+				/>
 			</ListRowActions>
 		</ListRow>
 	);

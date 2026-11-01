@@ -3,10 +3,10 @@ import { FileClock, FileText, Fingerprint } from "lucide-react";
 import type { Key } from "react-aria-components";
 import { Badge, Tabs, TabsContent, TabsList } from "@9bar/toolkit/components";
 import { getRecipeHistoryEvents } from "../-recipe-history/history-events";
+import { RecipeActionsMenu } from "../../-recipe-actions/recipe-actions-menu";
 import { Page, PageHeader, TabLink, withBreadcrumb } from "../../../../components";
 import { buildRecipeGraph, RECIPE_STATUS_LABELS } from "../../../../utils/data";
 import { objectKeys } from "../../../../utils/utils";
-import { RecipeActions } from "./-recipe-actions";
 
 const TABS = {
 	overview: "overview",
@@ -38,7 +38,7 @@ const Recipe = () => {
 			<PageHeader
 				title={recipe.name}
 				description={recipe.snapshot.beans}
-				rightContent={<RecipeActions recipe={recipe} />}
+				rightContent={<RecipeActionsMenu recipe={recipe} />}
 			>
 				<Badge variant="secondary">
 					<Fingerprint className="size-3" />
