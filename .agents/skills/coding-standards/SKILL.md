@@ -9,7 +9,7 @@ Flat reference. Every rule applies to every change; the completion bar is every 
 
 ## Functions
 
-- Write arrow functions with braces for the body; avoid inline returns.
+- Inline a single-expression body (`(id) => id.trim()`, `(recipe) => ({ id: recipe.id })`); braces are for bodies that need more than one statement.
 - Rely on inference for return types; annotate only to narrow, widen, or resolve a type error.
 
 ## Types
