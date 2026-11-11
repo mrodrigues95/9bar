@@ -19,19 +19,25 @@ const actions = {
 		icon: Pencil,
 		link: { to: "/recipes/$recipeId/edit", params: { recipeId: String(recipe.id) } },
 	}),
-	duplicate: () => ({
+	duplicate: (recipe: Recipe) => ({
 		id: "duplicate",
-		kind: "action",
+		kind: "link",
 		label: "Duplicate",
 		icon: Copy,
-		onAction: notImplemented,
+		link: { to: "/recipes/new", search: { duplicateOf: String(recipe.id) } },
 	}),
-	logAgain: () => ({
+	logAgain: (recipe: Recipe) => ({
 		id: "log-again",
 		kind: "action",
 		label: "Log again",
 		icon: RotateCcw,
-		onAction: notImplemented,
+		onAction: () => {
+			// TODO(log-again): replace this stub with a server fn that copies the recipe's current
+			// snapshot into a new log (recipeId set, verdict null, shotAt now) and calls the API.
+			// The Recipes list then re-renders with the new "· Logged <time>" dose line, announces
+			// "Logged at <time>" in a polite live region, and keeps focus on the menu trigger.
+			console.log("Log again:", { recipeId: recipe.id, shotAt: new Date().toISOString() });
+		},
 	}),
 	delete: (
 		openConfirmDialog: OpenConfirmDialog,
@@ -60,8 +66,8 @@ export const RecipeActionsMenu = ({ recipe, variant = "header" }: RecipeActionsM
 				label={`Actions for ${recipe.name}`}
 				items={[
 					actions.edit(recipe),
-					actions.duplicate(),
-					...(variant === "row" ? [actions.logAgain()] : []),
+					actions.duplicate(recipe),
+					...(variant === "row" ? [actions.logAgain(recipe)] : []),
 					actions.delete(open, {
 						title: `Delete ${recipe.name}?`,
 						description: "This permanently deletes the recipe and its logs. It can't be undone.",
