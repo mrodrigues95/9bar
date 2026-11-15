@@ -8,18 +8,18 @@ import {
 	recipeToFormValues,
 } from "../../-form/schemas/recipe-schema";
 import { buildLogGraph, buildRecipeGraph } from "../../../../../utils/data";
-import { DuplicateRecipeNotice } from "./-duplicate-recipe-notice";
-import { SaveLogAsRecipeNotice } from "./-save-log-as-recipe-notice";
+import { DuplicateRecipeAlert } from "./-duplicate-recipe-alert";
+import { SaveLogAsRecipeAlert } from "./-save-log-as-recipe-alert";
 
 const NewRecipe = () => {
-	const { duplicateSource, logSource } = Route.useRouteContext();
+	const { duplicateOf, fromLog } = Route.useRouteContext();
 	const navigate = useNavigate();
 	const form = useAppForm({
 		...recipeFormOpts,
-		defaultValues: logSource
-			? logToRecipeFormValues(logSource)
-			: duplicateSource
-				? { ...recipeToFormValues(duplicateSource), name: `Copy of ${duplicateSource.name}` }
+		defaultValues: fromLog
+			? logToRecipeFormValues(fromLog)
+			: duplicateOf
+				? { ...recipeToFormValues(duplicateOf), name: `Copy of ${duplicateOf.name}` }
 				: recipeFormOpts.defaultValues,
 		onSubmit: async ({ value }) => {
 			// TODO(save-log-as-recipe): server fn that creates the recipe and attaches the source log to it.
@@ -30,8 +30,8 @@ const NewRecipe = () => {
 
 	return (
 		<>
-			{!!logSource && <SaveLogAsRecipeNotice log={logSource} />}
-			{!!duplicateSource && <DuplicateRecipeNotice recipe={duplicateSource} />}
+			{!!fromLog && <SaveLogAsRecipeAlert log={fromLog} />}
+			{!!duplicateOf && <DuplicateRecipeAlert recipe={duplicateOf} />}
 			<RecipeForm form={form} mode="create" />
 		</>
 	);
@@ -44,12 +44,12 @@ export const Route = createFileRoute("/_authenticated/recipes_/_form/new")({
 		fromLog: z.coerce.number().int().positive().catch(Number.NaN).optional(),
 	}),
 	beforeLoad: ({ search }) => {
-		const duplicateSource = search.duplicateOf ? buildRecipeGraph(search.duplicateOf) : undefined;
-		const logSource = search.fromLog ? buildLogGraph(search.fromLog) : undefined;
-		if ((search.duplicateOf && !duplicateSource) || (search.fromLog && !logSource)) {
+		const duplicateOf = search.duplicateOf ? buildRecipeGraph(search.duplicateOf) : undefined;
+		const fromLog = search.fromLog ? buildLogGraph(search.fromLog) : undefined;
+		if ((search.duplicateOf && !duplicateOf) || (search.fromLog && !fromLog)) {
 			throw redirect({ to: "/recipes", replace: true });
 		}
-		return { duplicateSource, logSource };
+		return { duplicateOf, fromLog };
 	},
 	component: NewRecipe,
 });

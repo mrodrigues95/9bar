@@ -25,9 +25,6 @@ import {
 import { buildRecipeGraph, recipes, type BrewSnapshot, type LogGraph } from "../../../utils/data";
 import { formatGrams, formatPressure } from "../../../utils/format";
 
-const SETUP_FIELDS = ["method", "beans", "machine", "grinder"] as const;
-const SHOT_FIELDS = ["grindSize", "dose", "yield", "brewTime", "temperature", "pressure"] as const;
-
 const formatDelta = (difference: number, format: (value: number) => string) => {
 	const rounded = Math.round(difference * 10) / 10;
 	if (!rounded) {
@@ -36,6 +33,8 @@ const formatDelta = (difference: number, format: (value: number) => string) => {
 	return `${rounded > 0 ? "+" : "−"}${format(Math.abs(rounded))}`;
 };
 
+// TODO(log-comparison-api): move DELTAS, compareField, and isSameBrewField into the API once it exists;
+// it should return raw values, deltas, and mismatch flags per field. Keep only formatting here.
 const DELTAS: Partial<
 	Record<BrewField, (recipe: BrewSnapshot, log: BrewSnapshot) => string | null>
 > = {
@@ -94,13 +93,11 @@ const ComparisonRowItem = ({ row }: { row: ComparisonRow }) => {
 					<Text
 						as="span"
 						variant="body-sm"
-						className="leading-5 font-medium text-amber-700 tabular-nums dark:text-amber-400"
+						className="leading-5 font-medium text-amber-700 tabular-nums"
 					>
 						{row.logValue}
 						{!!row.delta && (
-							<span className="ml-1.5 text-xs font-normal text-amber-700/75 dark:text-amber-400/75">
-								{row.delta}
-							</span>
+							<span className="ml-1.5 text-xs font-normal text-amber-700/75">{row.delta}</span>
 						)}
 					</Text>
 				) : (
@@ -179,8 +176,8 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 	const recipe = selectedRecipeId === null ? undefined : buildRecipeGraph(selectedRecipeId);
 	const compare = (fields: ReadonlyArray<BrewField>) =>
 		recipe ? fields.map((field) => compareField(field, recipe.snapshot, log.snapshot)) : [];
-	const setupRows = compare(SETUP_FIELDS);
-	const shotRows = compare(SHOT_FIELDS);
+	const setupRows = compare(["method", "beans", "machine", "grinder"]);
+	const shotRows = compare(["grindSize", "dose", "yield", "brewTime", "temperature", "pressure"]);
 
 	const onAttach = () => {
 		// TODO(attach-to-recipe): server fn that points the log at the chosen recipe. Mismatches are advisory.

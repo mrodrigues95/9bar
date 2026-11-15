@@ -47,7 +47,12 @@ const LogRow = ({ row, recipe }: { row: RecipeLogRow; recipe: Recipe }) => {
 				</ListMeta>
 			</ListRowBody>
 			<ListRowActions>
-				<LogActionsMenu log={log} recipe={recipe} label={`Actions for log from ${shotAt}`} />
+				<LogActionsMenu
+					kind="attached-log"
+					log={log}
+					recipe={recipe}
+					label={`Actions for log from ${shotAt}`}
+				/>
 			</ListRowActions>
 		</ListRow>
 	);

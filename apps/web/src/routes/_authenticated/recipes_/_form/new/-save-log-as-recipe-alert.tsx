@@ -3,11 +3,11 @@ import { Alert, AlertDescription, AlertTitle } from "@9bar/toolkit/components";
 import type { Log } from "../../../../../utils/data";
 import { formatShotAt } from "../../../../../utils/format";
 
-interface SaveLogAsRecipeNoticeProps {
+interface SaveLogAsRecipeAlertProps {
 	log: Log;
 }
 
-export const SaveLogAsRecipeNotice = ({ log }: SaveLogAsRecipeNoticeProps) => {
+export const SaveLogAsRecipeAlert = ({ log }: SaveLogAsRecipeAlertProps) => {
 	return (
 		<Alert variant="info">
 			<Info />

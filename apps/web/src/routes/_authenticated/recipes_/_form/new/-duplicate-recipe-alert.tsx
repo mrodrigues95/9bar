@@ -3,11 +3,11 @@ import { Alert, AlertDescription, AlertTitle } from "@9bar/toolkit/components";
 import { Link } from "../../../../../components";
 import type { RecipeGraph } from "../../../../../utils/data";
 
-interface DuplicateRecipeNoticeProps {
+interface DuplicateRecipeAlertProps {
 	recipe: RecipeGraph;
 }
 
-export const DuplicateRecipeNotice = ({ recipe }: DuplicateRecipeNoticeProps) => {
+export const DuplicateRecipeAlert = ({ recipe }: DuplicateRecipeAlertProps) => {
 	return (
 		<Alert variant="info">
 			<Info />

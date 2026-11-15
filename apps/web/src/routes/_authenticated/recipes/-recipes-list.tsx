@@ -107,12 +107,9 @@ const LogRow = ({ row }: { row: LogListRow }) => {
 			<ListRowActions>
 				<LogActionsMenu
 					log={row.log}
-					recipe={row.kind === "attached-log" ? row.recipe : undefined}
-					label={
-						row.kind === "attached-log"
-							? `Actions for ${row.recipe.name}`
-							: `Actions for ${UNTITLED_NAME}`
-					}
+					{...(row.kind === "attached-log"
+						? { kind: row.kind, recipe: row.recipe, label: `Actions for ${row.recipe.name}` }
+						: { kind: row.kind, label: `Actions for ${UNTITLED_NAME}` })}
 				/>
 			</ListRowActions>
 		</ListRow>
