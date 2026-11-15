@@ -6,6 +6,7 @@ import { MenuItemLink } from "../../../components";
 type ActionsMenuItemLink =
 	| { to: "/recipes/$recipeId/edit"; params: { recipeId: string } }
 	| { to: "/recipes/new"; search: { duplicateOf: string } }
+	| { to: "/recipes/new"; search: { fromLog: string } }
 	| { to: "/recipes/logs/$logId/edit"; params: { logId: string }; search: true }
 	| { to: "/recipes/logs/$logId/repeat"; params: { logId: string }; search: true };
 

@@ -3,6 +3,7 @@ import z from "zod";
 import {
 	METHOD_OPTIONS,
 	RECIPE_STATUS_OPTIONS,
+	type LogGraph,
 	type RecipeGraph,
 	type RecipeStatus,
 } from "../../../../../utils/data";
@@ -50,6 +51,12 @@ export const recipeToFormValues = (recipe: RecipeGraph): RecipeFormValues => {
 		status: recipe.status,
 	};
 };
+
+export const logToRecipeFormValues = (log: LogGraph): RecipeFormValues => ({
+	...snapshotToFormFields(log.snapshot),
+	name: "",
+	status: "dialing-in",
+});
 
 export const defaultRecipeFormValues: RecipeFormValues = {
 	...basicInformationDefaults,

@@ -3,11 +3,11 @@ import { Alert, AlertDescription, AlertTitle } from "@9bar/toolkit/components";
 import { Link } from "../../../../../components";
 import type { RecipeGraph } from "../../../../../utils/data";
 
-interface DuplicateNoticeProps {
-	source: RecipeGraph;
+interface DuplicateRecipeNoticeProps {
+	recipe: RecipeGraph;
 }
 
-export const DuplicateNotice = ({ source }: DuplicateNoticeProps) => {
+export const DuplicateRecipeNotice = ({ recipe }: DuplicateRecipeNoticeProps) => {
 	return (
 		<Alert variant="info">
 			<Info />
@@ -15,12 +15,12 @@ export const DuplicateNotice = ({ source }: DuplicateNoticeProps) => {
 				Duplicating{" "}
 				<Link
 					to="/recipes/$recipeId"
-					params={{ recipeId: String(source.id) }}
+					params={{ recipeId: String(recipe.id) }}
 					target="_blank"
 					rel="noreferrer"
 					className="h-auto p-0 font-[inherit] text-[length:inherit] text-inherit italic"
 				>
-					{source.name}
+					{recipe.name}
 				</Link>
 			</AlertTitle>
 			<AlertDescription>

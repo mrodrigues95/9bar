@@ -3,6 +3,7 @@ import {
 	type BrewSnapshot,
 	type BrewValues,
 	type Log,
+	type LogGraph,
 	type Method,
 	type Recipe,
 	type RecipeGraph,
@@ -50,7 +51,7 @@ export const buildRecipeGraph = (id: number): RecipeGraph | undefined => {
 	return { ...recipe, snapshot, logs: getRecipeLogs(recipe.id) };
 };
 
-export const buildLogGraph = (id: number): (Log & { snapshot: BrewSnapshot }) | undefined => {
+export const buildLogGraph = (id: number): LogGraph | undefined => {
 	const log = getLog(id);
 	if (!log) {
 		return undefined;

@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from "react";
+import type { DialogCloseButtonProps } from "@9bar/toolkit/components";
 
 export interface ConfirmDialogRequest {
 	title: string;
 	description: ReactNode;
-	confirmLabel?: string;
+	confirmButtonProps?: DialogCloseButtonProps;
 	onConfirm: () => void;
 }
 
@@ -23,7 +24,7 @@ export const useConfirmDialogAction = () => {
 		onOpenChange: setIsOpen,
 		title: pending?.title ?? "",
 		description: pending?.description ?? "",
-		confirmLabel: pending?.confirmLabel,
+		confirmButtonProps: pending?.confirmButtonProps,
 		onConfirm: () => {
 			pending?.onConfirm();
 		},

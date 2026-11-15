@@ -1,12 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { Tag } from "lucide-react";
 import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/components/composed";
-import {
-	HISTORY_FIELD_LABELS,
-	HISTORY_FIELDS,
-	getRecipeHistoryEvents,
-	type HistoryEvent,
-} from "../../-recipe-history/history-events";
+import { getRecipeHistoryEvents, type HistoryEvent } from "../../-recipe-history/history-events";
+import { BREW_FIELD_LABELS, BREW_FIELDS } from "../../../../../utils/brew-fields";
 import {
 	DEFAULT_FILTER_OPERATOR_ID,
 	FILTER_OPERATOR_PAIRS,
@@ -29,9 +25,9 @@ export const HISTORY_FILTER_DEFINITIONS = [
 		operators: FILTER_OPERATORS,
 		defaultOperatorId: DEFAULT_FILTER_OPERATOR_ID,
 		operatorPairs: FILTER_OPERATOR_PAIRS,
-		options: HISTORY_FIELDS.map((field) => ({
+		options: BREW_FIELDS.map((field) => ({
 			id: field,
-			label: HISTORY_FIELD_LABELS[field],
+			label: BREW_FIELD_LABELS[field],
 		})),
 	},
 ] as const satisfies ReadonlyArray<FilterBarDefinition>;

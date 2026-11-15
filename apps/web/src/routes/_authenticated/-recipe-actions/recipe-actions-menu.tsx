@@ -71,7 +71,7 @@ export const RecipeActionsMenu = ({ recipe, variant = "header" }: RecipeActionsM
 					actions.delete(open, {
 						title: `Delete ${recipe.name}?`,
 						description: "This permanently deletes the recipe and its logs. It can't be undone.",
-						confirmLabel: "Delete",
+						confirmButtonProps: { children: "Delete" },
 					}),
 				]}
 			/>
