@@ -1,5 +1,5 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import { Droplets, Gauge, Info, Scale, Thermometer, Timer, type LucideIcon } from "lucide-react";
+import { Info } from "lucide-react";
 import {
 	Alert,
 	AlertAction,
@@ -16,6 +16,7 @@ import {
 	SelectValue,
 	Text,
 } from "@9bar/toolkit/components";
+import { BREW_FIELD_ICONS, type BrewField } from "../../../../../utils/brew-fields";
 import {
 	RECIPE_STATUS_OPTIONS,
 	grinderName,
@@ -75,13 +76,13 @@ const StatusSuggestionBanner = ({ recipeId }: { recipeId: number }) => {
 };
 
 const BrewParamsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
-	const params: Array<{ id: string; label: string; icon: LucideIcon; value: string }> = [
-		{ id: "dose", label: "Dose", icon: Scale, value: formatGrams(snapshot.dose) },
-		{ id: "yield", label: "Yield", icon: Droplets, value: formatGrams(snapshot.yield) },
-		{ id: "time", label: "Time", icon: Timer, value: formatBrewTime(snapshot) },
-		{ id: "temp", label: "Temp", icon: Thermometer, value: formatTemperature(snapshot) },
-		{ id: "pressure", label: "Pressure", icon: Gauge, value: formatPressure(snapshot.pressure) },
-	];
+	const params = [
+		{ field: "dose", label: "Dose", value: formatGrams(snapshot.dose) },
+		{ field: "yield", label: "Yield", value: formatGrams(snapshot.yield) },
+		{ field: "brewTime", label: "Time", value: formatBrewTime(snapshot) },
+		{ field: "temperature", label: "Temp", value: formatTemperature(snapshot) },
+		{ field: "pressure", label: "Pressure", value: formatPressure(snapshot.pressure) },
+	] satisfies Array<{ field: BrewField; label: string; value: string }>;
 
 	return (
 		<section aria-labelledby="recipe-brew-params">
@@ -89,22 +90,25 @@ const BrewParamsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 				Brew parameters
 			</CardTitle>
 			<dl className="mt-3 grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
-				{params.map((param) => (
-					<div key={param.id}>
-						<Text
-							as="dt"
-							variant="caption"
-							color="muted"
-							className="flex items-center justify-center gap-1"
-						>
-							<param.icon className="size-3" />
-							{param.label}
-						</Text>
-						<Text as="dd" variant="body-sm" color="primary" className="font-mono font-semibold">
-							{param.value}
-						</Text>
-					</div>
-				))}
+				{params.map((param) => {
+					const FieldIcon = BREW_FIELD_ICONS[param.field];
+					return (
+						<div key={param.field}>
+							<Text
+								as="dt"
+								variant="caption"
+								color="muted"
+								className="flex items-center justify-center gap-1"
+							>
+								<FieldIcon className="size-3" />
+								{param.label}
+							</Text>
+							<Text as="dd" variant="body-sm" color="primary" className="font-mono font-semibold">
+								{param.value}
+							</Text>
+						</div>
+					);
+				})}
 			</dl>
 		</section>
 	);

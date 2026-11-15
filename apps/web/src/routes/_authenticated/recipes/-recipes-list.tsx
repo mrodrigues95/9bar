@@ -1,5 +1,5 @@
 import { getRouteApi } from "@tanstack/react-router";
-import { Bean, Cog, Fingerprint, Gauge, Scale } from "lucide-react";
+import { Fingerprint, Scale } from "lucide-react";
 import { useDeferredValue } from "react";
 import { Badge, Text } from "@9bar/toolkit/components";
 import { LogActionsMenu } from "../-recipe-actions/log-actions-menu";
@@ -15,6 +15,7 @@ import {
 	ListRowBody,
 	ListRowHeading,
 } from "../../../components";
+import { BREW_FIELD_ICONS } from "../../../utils/brew-fields";
 import {
 	RECIPE_STATUS_LABELS,
 	VERDICT_LABELS,
@@ -32,9 +33,9 @@ type LogListRow = Extract<RecipesListRow, { kind: "attached-log" | "quick-log" }
 const RowMeta = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	return (
 		<ListMeta>
-			<ListMetaItem icon={Bean} label={snapshot.beans} />
-			<ListMetaItem icon={Gauge} label={machineName(snapshot.machine)} />
-			<ListMetaItem icon={Cog} label={grinderName(snapshot.grinder)} />
+			<ListMetaItem icon={BREW_FIELD_ICONS.beans} label={snapshot.beans} />
+			<ListMetaItem icon={BREW_FIELD_ICONS.machine} label={machineName(snapshot.machine)} />
+			<ListMetaItem icon={BREW_FIELD_ICONS.grinder} label={grinderName(snapshot.grinder)} />
 		</ListMeta>
 	);
 };
@@ -106,12 +107,9 @@ const LogRow = ({ row }: { row: LogListRow }) => {
 			<ListRowActions>
 				<LogActionsMenu
 					log={row.log}
-					kind={row.kind}
-					label={
-						row.kind === "attached-log"
-							? `Actions for ${row.recipe.name}`
-							: `Actions for ${UNTITLED_NAME}`
-					}
+					{...(row.kind === "attached-log"
+						? { kind: row.kind, recipe: row.recipe, label: `Actions for ${row.recipe.name}` }
+						: { kind: row.kind, label: `Actions for ${UNTITLED_NAME}` })}
 				/>
 			</ListRowActions>
 		</ListRow>

@@ -4,8 +4,7 @@ import z from "zod";
 import {
 	METHOD_OPTIONS,
 	VERDICT_OPTIONS,
-	type BrewSnapshot,
-	type Log,
+	type LogGraph,
 	type RecipeGraph,
 	type Verdict,
 } from "../../../../../utils/data";
@@ -67,7 +66,7 @@ export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): LogFormVal
 };
 
 export const logToFormValues = (
-	log: Log & { snapshot: BrewSnapshot },
+	log: LogGraph,
 	shotAt = toFormDateTime(new Date(log.shotAt)),
 ): LogFormValues => {
 	return {

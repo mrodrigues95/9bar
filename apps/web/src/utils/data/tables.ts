@@ -48,3 +48,5 @@ export interface Log {
 }
 
 export type RecipeGraph = Recipe & { snapshot: BrewSnapshot; logs: Array<Log> };
+
+export type LogGraph = Log & { snapshot: BrewSnapshot };

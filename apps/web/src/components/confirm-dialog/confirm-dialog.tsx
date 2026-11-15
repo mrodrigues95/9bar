@@ -7,6 +7,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
+	type DialogCloseButtonProps,
 } from "@9bar/toolkit/components";
 
 interface ConfirmDialogProps {
@@ -14,8 +15,7 @@ interface ConfirmDialogProps {
 	onOpenChange: (isOpen: boolean) => void;
 	title: string;
 	description: ReactNode;
-	confirmLabel?: string;
-	cancelLabel?: string;
+	confirmButtonProps?: DialogCloseButtonProps;
 	onConfirm: () => void;
 }
 
@@ -24,8 +24,7 @@ export const ConfirmDialog = ({
 	onOpenChange,
 	title,
 	description,
-	confirmLabel = "Confirm",
-	cancelLabel = "Cancel",
+	confirmButtonProps,
 	onConfirm,
 }: ConfirmDialogProps) => {
 	return (
@@ -36,10 +35,8 @@ export const ConfirmDialog = ({
 				<DialogCloseIconButton />
 			</DialogHeader>
 			<DialogFooter>
-				<DialogCloseButton>{cancelLabel}</DialogCloseButton>
-				<DialogCloseButton variant="destructive" onPress={onConfirm}>
-					{confirmLabel}
-				</DialogCloseButton>
+				<DialogCloseButton>Cancel</DialogCloseButton>
+				<DialogCloseButton variant="destructive" {...confirmButtonProps} onPress={onConfirm} />
 			</DialogFooter>
 		</Dialog>
 	);
