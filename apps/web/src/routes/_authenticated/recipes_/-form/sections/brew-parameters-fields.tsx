@@ -30,7 +30,6 @@ interface BrewParametersFieldsProps {
 	isGrindSizeRequired?: boolean;
 }
 
-// Exported so the quick-log dialog can focus this input after "Save and log another".
 export const grindSizeFieldName = "grindSize" satisfies keyof BrewParametersValues;
 
 const brewParametersProps: BrewParametersFieldsProps = {

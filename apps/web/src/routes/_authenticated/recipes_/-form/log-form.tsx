@@ -42,7 +42,6 @@ export const LogForm = withForm({
 			if (!recipe) {
 				return;
 			}
-			// Selecting a recipe seeds the log from the recipe's current values.
 			const fields = snapshotToFormFields(recipe.snapshot);
 			form.setFieldValue("method", fields.method);
 			form.setFieldValue("beans", fields.beans);

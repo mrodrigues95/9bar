@@ -62,10 +62,7 @@ export const FilterBar = ({
 
 	const definitionById = new Map(definitions.map((d) => [d.id, d]));
 
-	// Computes the next state eagerly so the updater stays pure: StrictMode
-	// double-invokes updater functions, so notifying inside one would call
-	// `onFiltersChange` twice. All callers are discrete UI events, so the
-	// closure snapshot is always fresh.
+	// EXTERNAL(https://react.dev/reference/react/useState#my-initializer-or-updater-function-runs-twice): StrictMode runs updaters twice, so compute `next` outside one to notify `onFiltersChange` once.
 	const update = (
 		getNext: (current: Array<FilterBarFilterState>) => Array<FilterBarFilterState>,
 	) => {
@@ -147,7 +144,6 @@ export const FilterBar = ({
 	);
 };
 
-/** Reads a definition from the lookup map, throwing for unknown filter ids. */
 const getDefinition = (
 	definitionById: ReadonlyMap<string, FilterBarDefinition>,
 	filterId: string,

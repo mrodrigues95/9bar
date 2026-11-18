@@ -8,7 +8,6 @@ import { resolveActionDefinitions, type ActionDefinition } from "./action-defini
 import { ActionsMenu } from "./actions-menu";
 import { AttachToRecipeDialog } from "./attach-to-recipe-dialog";
 
-// TODO: wire up once the flow is decided.
 const notImplemented = () => undefined;
 
 type ActionLog = Pick<Log, "id" | "shotAt">;
@@ -83,7 +82,6 @@ const actions = {
 					title: "Set as reference shot?",
 					description: `Your ${formatShotAt(log.shotAt)} shot becomes the reference for ${recipe.name}${replacing}. The recipe overview will show its values.`,
 					confirmButtonProps: { variant: "default", children: "Set as reference" },
-					// TODO(set-reference-shot): server fn that pins the log as the recipe's reference.
 					onConfirm: () =>
 						console.log("Set as reference shot:", { logId: log.id, recipeId: recipe.id }),
 				});
@@ -102,7 +100,6 @@ const actions = {
 					title: `Detach from ${recipe.name}?`,
 					description: `Your ${formatShotAt(log.shotAt)} shot moves to quick logs and keeps its values, verdict, and notes.${reference}`,
 					confirmButtonProps: { variant: "default", children: "Detach" },
-					// TODO(detach-from-recipe): server fn that clears the log's recipeId and the recipe's pinnedLogId.
 					onConfirm: () =>
 						console.log("Detached from recipe:", { logId: log.id, recipeId: recipe.id }),
 				});

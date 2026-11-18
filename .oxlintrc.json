@@ -21,6 +21,7 @@
 		"eslint/no-unused-vars": "error",
 		"react/exhaustive-deps": "error",
 		"anti-slop/no-chained-type-assertions": "error",
+		"anti-slop/no-comments": ["error", { "publicApi": ["/packages/toolkit/src/"] }],
 		"anti-slop/no-conditional-empty-object-spread": "error",
 		"anti-slop/no-effect": "error",
 		"anti-slop/no-known-value-widening": "error",

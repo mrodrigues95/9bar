@@ -40,7 +40,6 @@ export const Section = ({ title, description, children }: SectionProps) => (
 	</section>
 );
 
-/** The mock application chrome at the top of the overview canvas: brand, navigation breadcrumb, and account actions. */
 const AppHeader = () => (
 	<header className="flex flex-col gap-4 pb-10">
 		<div className="flex items-center justify-between gap-4">

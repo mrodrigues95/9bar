@@ -33,7 +33,6 @@ import {
 import { FilterBar } from "../../components/composed";
 import type { FilterBarDefinition, FilterBarFilterState } from "../../components/composed";
 
-/** One row of the recent-shots list. */
 const logEntries = [
 	{
 		id: "1",
@@ -70,7 +69,6 @@ const logEntries = [
 	},
 ];
 
-/** Filterable dimensions for the recent-shots list. */
 const RESULT_DEFINITION: FilterBarDefinition = {
 	id: "result",
 	label: "Result",

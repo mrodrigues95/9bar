@@ -31,7 +31,7 @@ export const LogFormDialog = ({ defaultValues, mode, onDone }: LogFormDialogProp
 			if (meta.intent === "log-another") {
 				setLoggedAt(formatTimeOfDay(value.shotAt));
 				form.reset({ ...value, shotAt: nowAsCalendarDateTime() });
-				// TanStack Form has no focus API; its docs recommend querying the form element.
+				// EXTERNAL(https://tanstack.com/form/latest/docs/framework/react/guides/focus-management): TanStack Form has no focus API; query the form element.
 				formRef.current?.querySelector<HTMLInputElement>(`[name="${grindSizeFieldName}"]`)?.focus();
 				return;
 			}
