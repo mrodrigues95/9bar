@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useId, useRef, useState, type ReactNode } from "react";
 import { Badge, Text } from "@9bar/toolkit/components";
 import {
 	readStoredPins,
@@ -91,67 +91,34 @@ const findElement = (root: Element, selector: string): Element | null => {
 const usePins = (variantId: string) => {
 	const [pins, setPins] = useState<Array<FeedbackPin>>(() => readStoredPins(variantId));
 
-	useEffect(() => {
-		writeStoredPins(variantId, pins);
-	}, [pins, variantId]);
+	const save = (next: Array<FeedbackPin>) => {
+		setPins(next);
+		writeStoredPins(variantId, next);
+	};
 
-	const addPin = useCallback((pin: FeedbackPin) => {
-		setPins((prev) => [...prev, pin]);
-	}, []);
-
-	const removePin = useCallback((id: string) => {
-		setPins((prev) => prev.filter((pin) => pin.id !== id));
-	}, []);
-
-	const clearPins = useCallback(() => {
-		setPins([]);
-	}, []);
-
-	return { pins, addPin, removePin, clearPins };
+	return {
+		pins,
+		addPin: (pin: FeedbackPin) => save([...pins, pin]),
+		removePin: (id: string) => save(pins.filter((pin) => pin.id !== id)),
+		clearPins: () => save([]),
+	};
 };
 
-const useAnnotatePicker = (enabled: boolean) => {
+const useAnnotatePicker = () => {
 	const [target, setTarget] = useState<PinnedTarget | null>(null);
 	const [draft, setDraft] = useState("");
 	const rootRef = useRef<HTMLDivElement>(null);
 	const hoveredRef = useRef<Element | null>(null);
 	const selectedRef = useRef<Element | null>(null);
 
-	const clearSelection = useCallback(() => {
+	const clearSelection = () => {
 		if (selectedRef.current) {
 			unpaint(selectedRef.current);
 			selectedRef.current = null;
 		}
 		setTarget(null);
 		setDraft("");
-	}, []);
-
-	useEffect(() => {
-		if (enabled) {
-			return;
-		}
-		if (hoveredRef.current) {
-			unpaint(hoveredRef.current);
-			hoveredRef.current = null;
-		}
-		// oxlint-disable-next-line react/set-state-in-effect
-		clearSelection();
-	}, [enabled, clearSelection]);
-
-	useEffect(() => {
-		if (!enabled || !target) {
-			return;
-		}
-		const onKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape") {
-				clearSelection();
-			}
-		};
-		window.addEventListener("keydown", onKeyDown);
-		return () => {
-			window.removeEventListener("keydown", onKeyDown);
-		};
-	}, [enabled, target, clearSelection]);
+	};
 
 	const highlight = (event: React.MouseEvent | React.FocusEvent) => {
 		const candidate = event.target;
@@ -232,14 +199,17 @@ const useAnnotatePicker = (enabled: boolean) => {
 };
 
 export const AnnotateScope = ({ variantId, enabled, children }: AnnotateScopeProps) => {
-	const { rootRef, previewHandlers, target, draft, setDraft, clearSelection, locatePin } =
-		useAnnotatePicker(enabled);
-	const { pins, addPin, removePin, clearPins } = usePins(variantId);
-	const hintId = useId();
-
 	if (!enabled) {
 		return <>{children}</>;
 	}
+	return <AnnotateSession variantId={variantId}>{children}</AnnotateSession>;
+};
+
+const AnnotateSession = ({ variantId, children }: Omit<AnnotateScopeProps, "enabled">) => {
+	const { rootRef, previewHandlers, target, draft, setDraft, clearSelection, locatePin } =
+		useAnnotatePicker();
+	const { pins, addPin, removePin, clearPins } = usePins(variantId);
+	const hintId = useId();
 
 	const savePin = () => {
 		const comment = draft.trim();

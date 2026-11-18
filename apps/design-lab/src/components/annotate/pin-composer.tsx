@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from "react";
+import { useId } from "react";
 import {
 	Button,
 	Card,
@@ -28,11 +28,6 @@ export const PinComposer = ({
 	onCancel,
 }: PinComposerProps) => {
 	const fieldId = useId();
-	const fieldRef = useRef<HTMLTextAreaElement>(null);
-
-	useEffect(() => {
-		fieldRef.current?.focus();
-	}, []);
 
 	return (
 		<Card>
@@ -53,7 +48,12 @@ export const PinComposer = ({
 				<Field>
 					<FieldLabel htmlFor={fieldId}>What should change here?</FieldLabel>
 					<Textarea
-						ref={fieldRef}
+						ref={(node) => node?.focus()}
+						onKeyDown={(event) => {
+							if (event.key === "Escape") {
+								onCancel();
+							}
+						}}
 						id={fieldId}
 						rows={3}
 						value={draft}
