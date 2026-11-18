@@ -21,14 +21,12 @@ export const Button = ({
 	variant = "default",
 	size = "default",
 	...props
-}: ButtonProps) => {
-	return (
-		<AriaButton
-			data-slot="button"
-			data-variant={variant}
-			data-size={size}
-			className={composeTailwindRenderProps(className, buttonVariants({ variant, size }))}
-			{...props}
-		/>
-	);
-};
+}: ButtonProps) => (
+	<AriaButton
+		data-slot="button"
+		data-variant={variant}
+		data-size={size}
+		className={composeTailwindRenderProps(className, buttonVariants({ variant, size }))}
+		{...props}
+	/>
+);

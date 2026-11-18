@@ -54,39 +54,33 @@ export const logFormSchema = z.object({
 	notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 });
 
-export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): LogFormValues => {
-	return {
-		...basicInformationDefaults,
-		...brewParametersDefaults,
-		...additionalDetailsDefaults,
-		recipeId: null,
-		shotAt,
-		verdict: null,
-	};
-};
+export const emptyLogFormValues = (shotAt = nowAsCalendarDateTime()): LogFormValues => ({
+	...basicInformationDefaults,
+	...brewParametersDefaults,
+	...additionalDetailsDefaults,
+	recipeId: null,
+	shotAt,
+	verdict: null,
+});
 
 export const logToFormValues = (
 	log: LogGraph,
 	shotAt = toFormDateTime(new Date(log.shotAt)),
-): LogFormValues => {
-	return {
-		...emptyLogFormValues(shotAt),
-		...snapshotToFormFields(log.snapshot),
-		recipeId: log.recipeId === null ? null : String(log.recipeId),
-		verdict: log.verdict,
-	};
-};
+): LogFormValues => ({
+	...emptyLogFormValues(shotAt),
+	...snapshotToFormFields(log.snapshot),
+	recipeId: log.recipeId === null ? null : String(log.recipeId),
+	verdict: log.verdict,
+});
 
 export const recipeToLogFormValues = (
 	recipe: RecipeGraph,
 	shotAt = nowAsCalendarDateTime(),
-): LogFormValues => {
-	return {
-		...emptyLogFormValues(shotAt),
-		...snapshotToFormFields(recipe.snapshot),
-		recipeId: String(recipe.id),
-	};
-};
+): LogFormValues => ({
+	...emptyLogFormValues(shotAt),
+	...snapshotToFormFields(recipe.snapshot),
+	recipeId: String(recipe.id),
+});
 
 export const logFormOpts = formOptions({
 	defaultValues: emptyLogFormValues(),

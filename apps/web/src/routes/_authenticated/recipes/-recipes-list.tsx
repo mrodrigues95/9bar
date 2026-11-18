@@ -30,91 +30,79 @@ const UNTITLED_NAME = "(Untitled)";
 
 type LogListRow = Extract<RecipesListRow, { kind: "attached-log" | "quick-log" }>;
 
-const RowMeta = ({ snapshot }: { snapshot: BrewSnapshot }) => {
-	return (
-		<ListMeta>
-			<ListMetaItem icon={BREW_FIELD_ICONS.beans} label={snapshot.beans} />
-			<ListMetaItem icon={BREW_FIELD_ICONS.machine} label={machineName(snapshot.machine)} />
-			<ListMetaItem icon={BREW_FIELD_ICONS.grinder} label={grinderName(snapshot.grinder)} />
-		</ListMeta>
-	);
-};
+const RowMeta = ({ snapshot }: { snapshot: BrewSnapshot }) => (
+	<ListMeta>
+		<ListMetaItem icon={BREW_FIELD_ICONS.beans} label={snapshot.beans} />
+		<ListMetaItem icon={BREW_FIELD_ICONS.machine} label={machineName(snapshot.machine)} />
+		<ListMetaItem icon={BREW_FIELD_ICONS.grinder} label={grinderName(snapshot.grinder)} />
+	</ListMeta>
+);
 
-const RowTitleLink = ({ recipeId, name }: { recipeId: number; name: string }) => {
-	return (
-		<Link
-			to="/recipes/$recipeId"
-			params={{ recipeId: String(recipeId) }}
-			className="h-auto min-w-0 px-0 text-sm font-medium"
-		>
-			<span className="truncate">{name}</span>
-		</Link>
-	);
-};
+const RowTitleLink = ({ recipeId, name }: { recipeId: number; name: string }) => (
+	<Link
+		to="/recipes/$recipeId"
+		params={{ recipeId: String(recipeId) }}
+		className="h-auto min-w-0 px-0 text-sm font-medium"
+	>
+		<span className="truncate">{name}</span>
+	</Link>
+);
 
-const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => {
-	return (
-		<ListLine icon={Scale} mono>
-			{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
-			{formatBrewTime(row.snapshot)}
-			{shotAt !== undefined && ` · Logged ${formatShotAt(shotAt)}`}
-		</ListLine>
-	);
-};
+const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => (
+	<ListLine icon={Scale} mono>
+		{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
+		{formatBrewTime(row.snapshot)}
+		{shotAt !== undefined && ` · Logged ${formatShotAt(shotAt)}`}
+	</ListLine>
+);
 
-const RecipeRow = ({ row }: { row: Extract<RecipesListRow, { kind: "recipe" }> }) => {
-	return (
-		<ListRow>
-			<ListRowBody>
-				<ListRowHeading>
+const RecipeRow = ({ row }: { row: Extract<RecipesListRow, { kind: "recipe" }> }) => (
+	<ListRow>
+		<ListRowBody>
+			<ListRowHeading>
+				<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
+				<Badge variant="default">
+					<Fingerprint />
+					{ROW_KIND_NAMES.recipe}
+				</Badge>
+				<Badge variant="outline">{RECIPE_STATUS_LABELS[row.recipe.status]}</Badge>
+			</ListRowHeading>
+			<DoseLine row={row} />
+			<RowMeta snapshot={row.snapshot} />
+		</ListRowBody>
+		<ListRowActions>
+			<RecipeActionsMenu recipe={row.recipe} variant="row" />
+		</ListRowActions>
+	</ListRow>
+);
+
+const LogRow = ({ row }: { row: LogListRow }) => (
+	<ListRow>
+		<ListRowBody>
+			<ListRowHeading>
+				{row.kind === "attached-log" ? (
 					<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
-					<Badge variant="default">
-						<Fingerprint />
-						{ROW_KIND_NAMES.recipe}
-					</Badge>
-					<Badge variant="outline">{RECIPE_STATUS_LABELS[row.recipe.status]}</Badge>
-				</ListRowHeading>
-				<DoseLine row={row} />
-				<RowMeta snapshot={row.snapshot} />
-			</ListRowBody>
-			<ListRowActions>
-				<RecipeActionsMenu recipe={row.recipe} variant="row" />
-			</ListRowActions>
-		</ListRow>
-	);
-};
-
-const LogRow = ({ row }: { row: LogListRow }) => {
-	return (
-		<ListRow>
-			<ListRowBody>
-				<ListRowHeading>
-					{row.kind === "attached-log" ? (
-						<RowTitleLink recipeId={row.recipe.id} name={row.recipe.name} />
-					) : (
-						<Text variant="label" color="primary" className="truncate">
-							{UNTITLED_NAME}
-						</Text>
-					)}
-					<Badge variant="outline">{ROW_KIND_NAMES[row.kind]}</Badge>
-					{!!row.log.verdict && (
-						<Badge variant="secondary">{VERDICT_LABELS[row.log.verdict]}</Badge>
-					)}
-				</ListRowHeading>
-				<DoseLine row={row} shotAt={row.log.shotAt} />
-				<RowMeta snapshot={row.snapshot} />
-			</ListRowBody>
-			<ListRowActions>
-				<LogActionsMenu
-					log={row.log}
-					{...(row.kind === "attached-log"
-						? { kind: row.kind, recipe: row.recipe, label: `Actions for ${row.recipe.name}` }
-						: { kind: row.kind, label: `Actions for ${UNTITLED_NAME}` })}
-				/>
-			</ListRowActions>
-		</ListRow>
-	);
-};
+				) : (
+					<Text variant="label" color="primary" className="truncate">
+						{UNTITLED_NAME}
+					</Text>
+				)}
+				<Badge variant="outline">{ROW_KIND_NAMES[row.kind]}</Badge>
+				{!!row.log.verdict && <Badge variant="secondary">{VERDICT_LABELS[row.log.verdict]}</Badge>}
+			</ListRowHeading>
+			<DoseLine row={row} shotAt={row.log.shotAt} />
+			<RowMeta snapshot={row.snapshot} />
+		</ListRowBody>
+		<ListRowActions>
+			<LogActionsMenu
+				log={row.log}
+				{...(row.kind === "attached-log"
+					? { kind: row.kind, recipe: row.recipe, label: `Actions for ${row.recipe.name}` }
+					: { kind: row.kind, label: `Actions for ${UNTITLED_NAME}` })}
+			/>
+		</ListRowActions>
+	</ListRow>
+);
 
 const routeApi = getRouteApi("/_authenticated/recipes");
 

@@ -26,18 +26,16 @@ export const ConfirmDialog = ({
 	description,
 	confirmButtonProps,
 	onConfirm,
-}: ConfirmDialogProps) => {
-	return (
-		<Dialog isOpen={isOpen} onOpenChange={onOpenChange}>
-			<DialogHeader>
-				<DialogTitle>{title}</DialogTitle>
-				<DialogDescription>{description}</DialogDescription>
-				<DialogCloseIconButton />
-			</DialogHeader>
-			<DialogFooter>
-				<DialogCloseButton>Cancel</DialogCloseButton>
-				<DialogCloseButton variant="destructive" {...confirmButtonProps} onPress={onConfirm} />
-			</DialogFooter>
-		</Dialog>
-	);
-};
+}: ConfirmDialogProps) => (
+	<Dialog isOpen={isOpen} onOpenChange={onOpenChange}>
+		<DialogHeader>
+			<DialogTitle>{title}</DialogTitle>
+			<DialogDescription>{description}</DialogDescription>
+			<DialogCloseIconButton />
+		</DialogHeader>
+		<DialogFooter>
+			<DialogCloseButton>Cancel</DialogCloseButton>
+			<DialogCloseButton variant="destructive" {...confirmButtonProps} onPress={onConfirm} />
+		</DialogFooter>
+	</Dialog>
+);

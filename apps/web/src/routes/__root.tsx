@@ -27,19 +27,17 @@ const RootComponent = () => {
 	);
 };
 
-const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
-	return (
-		<html lang="en">
-			<head>
-				<HeadContent />
-			</head>
-			<body className="antialiased">
-				{children}
-				<Scripts />
-			</body>
-		</html>
-	);
-};
+const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => (
+	<html lang="en">
+		<head>
+			<HeadContent />
+		</head>
+		<body className="antialiased">
+			{children}
+			<Scripts />
+		</body>
+	</html>
+);
 
 export const Route = createRootRoute({
 	head: () => ({

@@ -33,57 +33,49 @@ export type DatePickerProps<TValue extends DateValue> = AriaDatePickerProps<TVal
 export const DatePicker = <TValue extends DateValue>({
 	className,
 	...props
-}: DatePickerProps<TValue>) => {
-	return (
-		<AriaDatePicker
-			data-slot="date-picker"
-			className={composeTailwindRenderProps(className, "flex flex-col gap-2")}
-			{...props}
-		/>
-	);
-};
+}: DatePickerProps<TValue>) => (
+	<AriaDatePicker
+		data-slot="date-picker"
+		className={composeTailwindRenderProps(className, "flex flex-col gap-2")}
+		{...props}
+	/>
+);
 
 /** Props for the {@link DatePickerGroup} component. */
 export type DatePickerGroupProps = InputGroupProps;
 
 /** The bordered group of a {@link DatePicker}, reusing the {@link InputGroup} surface with date-field focus and invalid ring states. */
-export const DatePickerGroup = ({ className, ...props }: DatePickerGroupProps) => {
-	return (
-		<InputGroup
-			data-slot="date-picker-group"
-			className={composeTailwindRenderProps(className, datePickerGroupVariants())}
-			{...props}
-		/>
-	);
-};
+export const DatePickerGroup = ({ className, ...props }: DatePickerGroupProps) => (
+	<InputGroup
+		data-slot="date-picker-group"
+		className={composeTailwindRenderProps(className, datePickerGroupVariants())}
+		{...props}
+	/>
+);
 
 /** Props for the {@link DatePickerInput} component. */
 export type DatePickerInputProps = AriaDateInputProps;
 
 /** The segment input of a {@link DatePicker} inside a {@link DatePickerGroup}. Render {@link DatePickerSegment} for each segment. */
-export const DatePickerInput = ({ className, ...props }: DatePickerInputProps) => {
-	return (
-		<AriaDateInput
-			data-slot="input-group-control"
-			className={composeTailwindRenderProps(className, datePickerInputVariants())}
-			{...props}
-		/>
-	);
-};
+export const DatePickerInput = ({ className, ...props }: DatePickerInputProps) => (
+	<AriaDateInput
+		data-slot="input-group-control"
+		className={composeTailwindRenderProps(className, datePickerInputVariants())}
+		{...props}
+	/>
+);
 
 /** Props for the {@link DatePickerSegment} component. */
 export type DatePickerSegmentProps = AriaDateSegmentProps;
 
 /** A single date or time segment (month, day, hour, …) inside a {@link DatePickerInput}. */
-export const DatePickerSegment = ({ className, ...props }: DatePickerSegmentProps) => {
-	return (
-		<AriaDateSegment
-			data-slot="date-picker-segment"
-			className={composeTailwindRenderProps(className, datePickerSegmentVariants())}
-			{...props}
-		/>
-	);
-};
+export const DatePickerSegment = ({ className, ...props }: DatePickerSegmentProps) => (
+	<AriaDateSegment
+		data-slot="date-picker-segment"
+		className={composeTailwindRenderProps(className, datePickerSegmentVariants())}
+		{...props}
+	/>
+);
 
 /** Props for the {@link DatePickerTrigger} component. */
 export type DatePickerTriggerProps = ButtonProps;
@@ -95,20 +87,18 @@ export const DatePickerTrigger = ({
 	size = "icon-sm",
 	children,
 	...props
-}: DatePickerTriggerProps) => {
-	return (
-		<Button
-			slot="trigger"
-			data-slot="date-picker-trigger"
-			variant={variant}
-			size={size}
-			className={composeTailwindRenderProps(className, "mr-0.5 shrink-0 text-muted-foreground")}
-			{...props}
-		>
-			{children ?? <CalendarIcon />}
-		</Button>
-	);
-};
+}: DatePickerTriggerProps) => (
+	<Button
+		slot="trigger"
+		data-slot="date-picker-trigger"
+		variant={variant}
+		size={size}
+		className={composeTailwindRenderProps(className, "mr-0.5 shrink-0 text-muted-foreground")}
+		{...props}
+	>
+		{children ?? <CalendarIcon />}
+	</Button>
+);
 
 /** Props for the {@link DatePickerPopover} component. */
 export type DatePickerPopoverProps = React.ComponentProps<typeof AriaPopover>;
@@ -122,17 +112,15 @@ export const DatePickerPopover = ({
 	offset = 4,
 	crossOffset = 0,
 	...props
-}: DatePickerPopoverProps) => {
-	return (
-		<AriaPopover
-			data-slot="popover-content"
-			offset={offset}
-			crossOffset={crossOffset}
-			className={composeTailwindRenderProps(className, [
-				popoverVariants(),
-				"w-fit overflow-hidden p-0",
-			])}
-			{...props}
-		/>
-	);
-};
+}: DatePickerPopoverProps) => (
+	<AriaPopover
+		data-slot="popover-content"
+		offset={offset}
+		crossOffset={crossOffset}
+		className={composeTailwindRenderProps(className, [
+			popoverVariants(),
+			"w-fit overflow-hidden p-0",
+		])}
+		{...props}
+	/>
+);

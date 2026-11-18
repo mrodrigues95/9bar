@@ -76,9 +76,8 @@ const getTargetInfo = (el: Element, root: Element): PinnedTarget => {
 	};
 };
 
-const inAnnotateUi = (node: EventTarget | null): boolean => {
-	return node instanceof Element && node.closest("[data-annotate-ui]") !== null;
-};
+const inAnnotateUi = (node: EventTarget | null): boolean =>
+	node instanceof Element && node.closest("[data-annotate-ui]") !== null;
 
 const findElement = (root: Element, selector: string): Element | null => {
 	try {

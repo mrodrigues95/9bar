@@ -9,36 +9,34 @@ const links: Array<{ to: FileRouteTypes["to"]; label: string }> = [
 	{ to: "/profile", label: "Profile" },
 ];
 
-export const Nav = () => {
-	return (
-		<header className="border-b border-neutral-200 bg-white">
-			<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-				<div className="flex items-center justify-between">
-					<div className="flex flex-1 items-center gap-10">
-						<Logo />
-						<nav aria-label="Main">
-							<ul className="flex items-center gap-2.5">
-								{links.map(({ to, label }) => (
-									<li key={to}>
-										<Link
-											to={to}
-											variant="ghost"
-											size="sm"
-											activeProps={{
-												variant: "secondary",
-												"aria-current": "page",
-											}}
-										>
-											{label}
-										</Link>
-									</li>
-								))}
-							</ul>
-						</nav>
-					</div>
-					<ProfileMenu />
+export const Nav = () => (
+	<header className="border-b border-neutral-200 bg-white">
+		<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+			<div className="flex items-center justify-between">
+				<div className="flex flex-1 items-center gap-10">
+					<Logo />
+					<nav aria-label="Main">
+						<ul className="flex items-center gap-2.5">
+							{links.map(({ to, label }) => (
+								<li key={to}>
+									<Link
+										to={to}
+										variant="ghost"
+										size="sm"
+										activeProps={{
+											variant: "secondary",
+											"aria-current": "page",
+										}}
+									>
+										{label}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</nav>
 				</div>
+				<ProfileMenu />
 			</div>
-		</header>
-	);
-};
+		</div>
+	</header>
+);

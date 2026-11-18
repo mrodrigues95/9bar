@@ -20,9 +20,9 @@ interface PaginationProps {
 	onPageChange: (page: number) => void;
 }
 
-const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => {
-	return <span className="font-medium text-primary">{children}</span>;
-};
+const PaginationSummaryHighlight = ({ children }: { children: ReactNode }) => (
+	<span className="font-medium text-primary">{children}</span>
+);
 
 const PaginationSummary = ({ page, pageSize, total }: Omit<PaginationProps, "onPageChange">) => {
 	const startItem = total ? (page - 1) * pageSize + 1 : total;
@@ -37,12 +37,11 @@ const PaginationSummary = ({ page, pageSize, total }: Omit<PaginationProps, "onP
 	);
 };
 
-const resolvePageItems = (pages: Array<number | "ellipsis">) => {
-	return pages.map((item, index) => ({
+const resolvePageItems = (pages: Array<number | "ellipsis">) =>
+	pages.map((item, index) => ({
 		key: item === "ellipsis" ? `ellipsis-${pages[index + 1] ?? "end"}` : `page-${item}`,
 		item,
 	}));
-};
 
 export const Pagination = ({ page, pageSize, total, onPageChange }: PaginationProps) => {
 	const totalPages = Math.max(1, Math.ceil(total / pageSize));

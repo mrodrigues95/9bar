@@ -30,9 +30,8 @@ import { toLabels } from "../../../utils/utils";
 
 export const PAGE_SIZE = 10;
 
-const toFilterOptions = (options: ReadonlyArray<{ id: string; name: string }>) => {
-	return options.map((option) => ({ id: option.id, label: option.name }));
-};
+const toFilterOptions = (options: ReadonlyArray<{ id: string; name: string }>) =>
+	options.map((option) => ({ id: option.id, label: option.name }));
 
 const ROW_KIND_OPTIONS = [
 	{ id: "recipe", name: "Recipe", pluralName: "Recipes" },
@@ -200,13 +199,11 @@ const buildRows = () => {
 	return rows;
 };
 
-export const decodeFilters = (params: FilterSearchParams) => {
-	return decodeSharedFilters(FILTER_DEFINITIONS, params);
-};
+export const decodeFilters = (params: FilterSearchParams) =>
+	decodeSharedFilters(FILTER_DEFINITIONS, params);
 
-export const encodeFilters = (filters: Array<FilterBarFilterState>) => {
-	return encodeSharedFilters(FILTER_DEFINITIONS, filters);
-};
+export const encodeFilters = (filters: Array<FilterBarFilterState>) =>
+	encodeSharedFilters(FILTER_DEFINITIONS, filters);
 
 const FIELD_BY_FILTER_ID = new Map<string, (row: RecipesListRow) => string | null>([
 	["type", (row) => row.kind],
@@ -228,8 +225,8 @@ const FIELD_BY_FILTER_ID = new Map<string, (row: RecipesListRow) => string | nul
 	["grinder", (row) => row.snapshot.grinder],
 ]);
 
-const matchesFilters = (row: RecipesListRow, filters: ReadonlyArray<FilterBarFilterState>) => {
-	return filters.every((filter) => {
+const matchesFilters = (row: RecipesListRow, filters: ReadonlyArray<FilterBarFilterState>) =>
+	filters.every((filter) => {
 		const readField = FIELD_BY_FILTER_ID.get(filter.filterId);
 		if (!readField) {
 			return true;
@@ -240,11 +237,9 @@ const matchesFilters = (row: RecipesListRow, filters: ReadonlyArray<FilterBarFil
 		}
 		return matchesOperator(filter.operatorId, filter.values, value);
 	});
-};
 
-const matchesQuery = (values: Array<string>, query: string) => {
-	return values.some((value) => value.toLowerCase().includes(query));
-};
+const matchesQuery = (values: Array<string>, query: string) =>
+	values.some((value) => value.toLowerCase().includes(query));
 
 const matchesSearch = (row: RecipesListRow, query: string) => {
 	if (!query) {

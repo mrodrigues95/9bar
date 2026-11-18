@@ -8,6 +8,6 @@ export interface FilterBarActionsProps extends ComponentProps<"div"> {}
  * Right-aligned container for {@link FilterBar} actions (e.g. a "Clear all"
  * button), rendered inside the toolbar via the children render prop.
  */
-export const FilterBarActions = ({ className, ...props }: FilterBarActionsProps) => {
-	return <div className={cn("ml-auto flex items-center gap-1", className)} {...props} />;
-};
+export const FilterBarActions = ({ className, ...props }: FilterBarActionsProps) => (
+	<div className={cn("ml-auto flex items-center gap-1", className)} {...props} />
+);

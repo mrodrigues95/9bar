@@ -39,7 +39,7 @@ const routeMasks = [
 	}),
 ];
 
-export function createRouter() {
+export const createRouter = () => {
 	const router = createTanStackRouter({
 		routeTree,
 		routeMasks,
@@ -50,11 +50,9 @@ export function createRouter() {
 	});
 
 	return router;
-}
+};
 
-export function getRouter() {
-	return createRouter();
-}
+export const getRouter = () => createRouter();
 
 declare module "@tanstack/react-router" {
 	interface Register {

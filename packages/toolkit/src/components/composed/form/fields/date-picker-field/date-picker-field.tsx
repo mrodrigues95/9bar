@@ -263,8 +263,8 @@ export const FormDatePickerField = <
 >({
 	codec,
 	...props
-}: FormDatePickerFieldProps<TValue, TFieldValue>) => {
-	return codec ? (
+}: FormDatePickerFieldProps<TValue, TFieldValue>) =>
+	codec ? (
 		<FormDatePickerFieldInner<TValue, TFieldValue> {...props} codec={codec} />
 	) : (
 		<FormDatePickerFieldInner<TValue, TValue | null>
@@ -272,4 +272,3 @@ export const FormDatePickerField = <
 			codec={identityDateCodec<TValue>()}
 		/>
 	);
-};

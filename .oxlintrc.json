@@ -17,7 +17,9 @@
 			}
 		],
 		"typescript/no-inferrable-types": "error",
+		"eslint/arrow-body-style": ["error", "as-needed"],
 		"eslint/curly": "error",
+		"eslint/func-style": ["error", "expression"],
 		"eslint/no-unused-vars": "error",
 		"react/exhaustive-deps": "error",
 		"anti-slop/no-chained-type-assertions": "error",

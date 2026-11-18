@@ -17,28 +17,24 @@ import { cn, composeTailwindRenderProps } from "#lib/utils";
 export type BreadcrumbRootProps = React.ComponentProps<"nav">;
 
 /** A navigation landmark that shows the user's location in the app hierarchy. */
-export const Breadcrumb = ({ className, ...props }: BreadcrumbRootProps) => {
-	return (
-		<nav aria-label="breadcrumb" data-slot="breadcrumb" className={cn(className)} {...props} />
-	);
-};
+export const Breadcrumb = ({ className, ...props }: BreadcrumbRootProps) => (
+	<nav aria-label="breadcrumb" data-slot="breadcrumb" className={cn(className)} {...props} />
+);
 
 /** Props for the {@link BreadcrumbList} component. */
 export type { BreadcrumbsProps };
 
 /** A flex list of {@link BreadcrumbItem} elements, automatically separated. */
-export const BreadcrumbList = <T extends object>({ className, ...props }: BreadcrumbsProps<T>) => {
-	return (
-		<AriaBreadcrumbs
-			data-slot="breadcrumb-list"
-			className={cn(
-				"flex flex-wrap items-center gap-1.5 text-xs/relaxed wrap-break-word text-muted-foreground",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const BreadcrumbList = <T extends object>({ className, ...props }: BreadcrumbsProps<T>) => (
+	<AriaBreadcrumbs
+		data-slot="breadcrumb-list"
+		className={cn(
+			"flex flex-wrap items-center gap-1.5 text-xs/relaxed wrap-break-word text-muted-foreground",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link BreadcrumbItem} component. */
 export type BreadcrumbItemProps = Omit<BreadcrumbProps, "children"> & {
@@ -52,31 +48,29 @@ export const BreadcrumbItem = ({
 	children,
 	separatorClassName,
 	...props
-}: BreadcrumbItemProps) => {
-	return (
-		<AriaBreadcrumb
-			data-slot="breadcrumb-item"
-			className={composeTailwindRenderProps(className, "inline-flex items-center gap-1")}
-			{...props}
-		>
-			{composeRenderProps(children, (children, { isCurrent }) => (
-				<>
-					{children}
-					{!isCurrent && (
-						<span
-							data-slot="breadcrumb-separator"
-							role="presentation"
-							aria-hidden="true"
-							className={cn("[&>svg]:size-3.5", separatorClassName)}
-						>
-							<ChevronRightIcon />
-						</span>
-					)}
-				</>
-			))}
-		</AriaBreadcrumb>
-	);
-};
+}: BreadcrumbItemProps) => (
+	<AriaBreadcrumb
+		data-slot="breadcrumb-item"
+		className={composeTailwindRenderProps(className, "inline-flex items-center gap-1")}
+		{...props}
+	>
+		{composeRenderProps(children, (children, { isCurrent }) => (
+			<>
+				{children}
+				{!isCurrent && (
+					<span
+						data-slot="breadcrumb-separator"
+						role="presentation"
+						aria-hidden="true"
+						className={cn("[&>svg]:size-3.5", separatorClassName)}
+					>
+						<ChevronRightIcon />
+					</span>
+				)}
+			</>
+		))}
+	</AriaBreadcrumb>
+);
 
 /** Props for the {@link BreadcrumbLink} component. */
 export type BreadcrumbLinkProps = LinkProps & {
@@ -85,50 +79,44 @@ export type BreadcrumbLinkProps = LinkProps & {
 };
 
 /** A navigable crumb rendered as a link, styled as the current page when active. */
-export const BreadcrumbLink = ({ className, render, ...props }: BreadcrumbLinkProps) => {
-	return (
-		<AriaLink
-			data-slot="breadcrumb-link"
-			className={composeTailwindRenderProps(className, [
-				"inline-flex items-center gap-1.5 transition-colors hover:text-foreground",
-				"[&>svg:not([class*='size-'])]:size-3.5",
-			])}
-			render={render}
-			{...props}
-		/>
-	);
-};
+export const BreadcrumbLink = ({ className, render, ...props }: BreadcrumbLinkProps) => (
+	<AriaLink
+		data-slot="breadcrumb-link"
+		className={composeTailwindRenderProps(className, [
+			"inline-flex items-center gap-1.5 transition-colors hover:text-foreground",
+			"[&>svg:not([class*='size-'])]:size-3.5",
+		])}
+		render={render}
+		{...props}
+	/>
+);
 
 /** Props for the {@link BreadcrumbPage} component. */
 export type BreadcrumbPageProps = React.ComponentProps<"span">;
 
 /** The current page crumb, rendered as non-interactive text. */
-export const BreadcrumbPage = ({ className, ...props }: BreadcrumbPageProps) => {
-	return (
-		<span
-			data-slot="breadcrumb-page"
-			aria-current="page"
-			className={cn("font-normal text-foreground", className)}
-			{...props}
-		/>
-	);
-};
+export const BreadcrumbPage = ({ className, ...props }: BreadcrumbPageProps) => (
+	<span
+		data-slot="breadcrumb-page"
+		aria-current="page"
+		className={cn("font-normal text-foreground", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link BreadcrumbEllipsis} component. */
 export type BreadcrumbEllipsisProps = React.ComponentProps<"span">;
 
 /** A collapsed crumb indicator, used to hide intermediate breadcrumb levels. */
-export const BreadcrumbEllipsis = ({ className, ...props }: BreadcrumbEllipsisProps) => {
-	return (
-		<span
-			data-slot="breadcrumb-ellipsis"
-			role="presentation"
-			aria-hidden="true"
-			className={cn("flex size-4 items-center justify-center [&>svg]:size-3.5", className)}
-			{...props}
-		>
-			<MoreHorizontalIcon />
-			<span className="sr-only">More</span>
-		</span>
-	);
-};
+export const BreadcrumbEllipsis = ({ className, ...props }: BreadcrumbEllipsisProps) => (
+	<span
+		data-slot="breadcrumb-ellipsis"
+		role="presentation"
+		aria-hidden="true"
+		className={cn("flex size-4 items-center justify-center [&>svg]:size-3.5", className)}
+		{...props}
+	>
+		<MoreHorizontalIcon />
+		<span className="sr-only">More</span>
+	</span>
+);

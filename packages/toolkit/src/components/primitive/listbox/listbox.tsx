@@ -27,20 +27,18 @@ export interface ListboxProps<T extends object> extends Omit<
 > {}
 
 /** A list of options that allows single or multiple selection. */
-export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T>) => {
-	return (
-		<AriaListBox
-			data-slot="listbox"
-			{...props}
-			className={composeTailwindRenderProps(
-				props.className,
-				"relative h-full overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-xs outline-0",
-			)}
-		>
-			{children}
-		</AriaListBox>
-	);
-};
+export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T>) => (
+	<AriaListBox
+		data-slot="listbox"
+		{...props}
+		className={composeTailwindRenderProps(
+			props.className,
+			"relative h-full overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-xs outline-0",
+		)}
+	>
+		{children}
+	</AriaListBox>
+);
 
 export type ListboxItemProps<T extends object> = Omit<
 	AriaListBoxItemProps<T>,
@@ -96,14 +94,12 @@ export const ListboxSection = <T extends object>({
 	items,
 	children,
 	...props
-}: ListboxSectionProps<T>) => {
-	return (
-		<AriaListBoxSection data-slot="listbox-section" {...props}>
-			{title}
-			<Collection items={items ?? []}>{children}</Collection>
-		</AriaListBoxSection>
-	);
-};
+}: ListboxSectionProps<T>) => (
+	<AriaListBoxSection data-slot="listbox-section" {...props}>
+		{title}
+		<Collection items={items ?? []}>{children}</Collection>
+	</AriaListBoxSection>
+);
 
 export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
 	/** The text label displayed for this section. */
@@ -111,28 +107,24 @@ export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
 }
 
 /** A styled header rendered above a {@link ListboxSection}. */
-export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderProps) => {
-	return (
-		<AriaHeader
-			data-slot="listbox-section-header"
-			{...props}
-			className={cn(listboxSectionHeaderVariants(), "truncate", props.className)}
-		>
-			{title}
-		</AriaHeader>
-	);
-};
+export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderProps) => (
+	<AriaHeader
+		data-slot="listbox-section-header"
+		{...props}
+		className={cn(listboxSectionHeaderVariants(), "truncate", props.className)}
+	>
+		{title}
+	</AriaHeader>
+);
 
 export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
 
 /** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
-export const ListboxSeparator = ({ className, ...props }: ListboxSeparatorProps) => {
-	return (
-		<Separator
-			data-slot="listbox-separator"
-			{...props}
-			className={cn("pointer-events-none my-1 bg-border/50", className)}
-			render={(renderProps) => <div {...renderProps} role="presentation" />}
-		/>
-	);
-};
+export const ListboxSeparator = ({ className, ...props }: ListboxSeparatorProps) => (
+	<Separator
+		data-slot="listbox-separator"
+		{...props}
+		className={cn("pointer-events-none my-1 bg-border/50", className)}
+		render={(renderProps) => <div {...renderProps} role="presentation" />}
+	/>
+);

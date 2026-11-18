@@ -139,24 +139,22 @@ const DetailsGrid = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 	);
 };
 
-const NotesSection = ({ snapshot }: { snapshot: BrewSnapshot }) => {
-	return (
-		<section aria-labelledby="recipe-notes">
-			<CardTitle id="recipe-notes" className="border-b border-border pb-2">
-				Notes
-			</CardTitle>
-			{snapshot.notes !== null && snapshot.notes !== "" ? (
-				<Text as="p" variant="body-sm" color="primary" className="mt-1.5">
-					{snapshot.notes}
-				</Text>
-			) : (
-				<Text as="p" variant="body-sm" color="muted" className="mt-1.5">
-					No notes yet.
-				</Text>
-			)}
-		</section>
-	);
-};
+const NotesSection = ({ snapshot }: { snapshot: BrewSnapshot }) => (
+	<section aria-labelledby="recipe-notes">
+		<CardTitle id="recipe-notes" className="border-b border-border pb-2">
+			Notes
+		</CardTitle>
+		{snapshot.notes !== null && snapshot.notes !== "" ? (
+			<Text as="p" variant="body-sm" color="primary" className="mt-1.5">
+				{snapshot.notes}
+			</Text>
+		) : (
+			<Text as="p" variant="body-sm" color="muted" className="mt-1.5">
+				No notes yet.
+			</Text>
+		)}
+	</section>
+);
 
 const RecipeOverview = () => {
 	const { recipe } = routeApi.useLoaderData();

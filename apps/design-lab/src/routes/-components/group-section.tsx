@@ -5,20 +5,18 @@ import type { DesignGroup, DesignVariantEntry } from "../../components/registry/
 import { VariantCanvas } from "../../components/variant-canvas";
 import { VariantCard } from "../../components/variant-card";
 
-const VariantLinks = ({ entry }: { entry: DesignVariantEntry }) => {
-	return (
-		<div className="flex flex-wrap gap-2">
-			<Link to="/$variantId" params={{ variantId: entry.id }}>
-				Open
-				<ArrowRight />
-			</Link>
-			<Link to="/$variantId" params={{ variantId: entry.id }} search={{ annotate: true }}>
-				<MousePointerClick />
-				Annotate
-			</Link>
-		</div>
-	);
-};
+const VariantLinks = ({ entry }: { entry: DesignVariantEntry }) => (
+	<div className="flex flex-wrap gap-2">
+		<Link to="/$variantId" params={{ variantId: entry.id }}>
+			Open
+			<ArrowRight />
+		</Link>
+		<Link to="/$variantId" params={{ variantId: entry.id }} search={{ annotate: true }}>
+			<MousePointerClick />
+			Annotate
+		</Link>
+	</div>
+);
 
 export const GroupSection = ({ group }: { group: DesignGroup }) => {
 	const { variants } = group;
@@ -46,15 +44,13 @@ export const GroupSection = ({ group }: { group: DesignGroup }) => {
 			</div>
 
 			<div className="grid gap-4 md:grid-cols-2">
-				{variants.map((entry) => {
-					return (
-						<VariantCard key={entry.id} entry={entry} footer={<VariantLinks entry={entry} />}>
-							<div inert className="max-h-56 overflow-hidden">
-								<VariantCanvas entry={entry} />
-							</div>
-						</VariantCard>
-					);
-				})}
+				{variants.map((entry) => (
+					<VariantCard key={entry.id} entry={entry} footer={<VariantLinks entry={entry} />}>
+						<div inert className="max-h-56 overflow-hidden">
+							<VariantCanvas entry={entry} />
+						</div>
+					</VariantCard>
+				))}
 			</div>
 		</section>
 	);

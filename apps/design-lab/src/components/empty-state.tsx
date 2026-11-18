@@ -17,17 +17,15 @@ type EmptyStateProps = {
 	as?: "h1" | "h2";
 };
 
-export const EmptyState = ({ title, body, action, icon, as = "h2" }: EmptyStateProps) => {
-	return (
-		<Empty>
-			<EmptyHeader>
-				<EmptyMedia variant="icon">{icon ?? <SearchX />}</EmptyMedia>
-				<Heading as={as} variant={as === "h1" ? "title" : "subsection"}>
-					{title}
-				</Heading>
-				<EmptyDescription>{body}</EmptyDescription>
-			</EmptyHeader>
-			{action !== undefined && <EmptyContent>{action}</EmptyContent>}
-		</Empty>
-	);
-};
+export const EmptyState = ({ title, body, action, icon, as = "h2" }: EmptyStateProps) => (
+	<Empty>
+		<EmptyHeader>
+			<EmptyMedia variant="icon">{icon ?? <SearchX />}</EmptyMedia>
+			<Heading as={as} variant={as === "h1" ? "title" : "subsection"}>
+				{title}
+			</Heading>
+			<EmptyDescription>{body}</EmptyDescription>
+		</EmptyHeader>
+		{action !== undefined && <EmptyContent>{action}</EmptyContent>}
+	</Empty>
+);

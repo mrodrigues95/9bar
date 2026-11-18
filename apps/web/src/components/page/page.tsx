@@ -7,14 +7,12 @@ interface PageProps extends ComponentProps<"div"> {
 	breadcrumbsProps?: AppBreadcrumbsProps;
 }
 
-export const Page = ({ children, breadcrumbsProps, className, ...props }: PageProps) => {
-	return (
-		<div className={cn("flex flex-col gap-4", className)} {...props}>
-			<AppBreadcrumbs {...breadcrumbsProps} />
-			<div className="flex flex-col gap-4">{children}</div>
-		</div>
-	);
-};
+export const Page = ({ children, breadcrumbsProps, className, ...props }: PageProps) => (
+	<div className={cn("flex flex-col gap-4", className)} {...props}>
+		<AppBreadcrumbs {...breadcrumbsProps} />
+		<div className="flex flex-col gap-4">{children}</div>
+	</div>
+);
 
 interface PageHeaderProps extends Omit<ComponentProps<"header">, "title"> {
 	title: ReactNode;
@@ -29,26 +27,21 @@ export const PageHeader = ({
 	className,
 	children,
 	...props
-}: PageHeaderProps) => {
-	return (
-		<header
-			className={cn("flex flex-wrap items-start justify-between gap-3", className)}
-			{...props}
-		>
-			<div>
-				<Heading as="h1" variant="title">
-					{title}
-				</Heading>
-				{description !== undefined && (
-					<Text variant="body-sm" color="secondary">
-						{description}
-					</Text>
-				)}
-				{children !== undefined && (
-					<div className="mt-2 flex flex-wrap items-center gap-2">{children}</div>
-				)}
-			</div>
-			{rightContent}
-		</header>
-	);
-};
+}: PageHeaderProps) => (
+	<header className={cn("flex flex-wrap items-start justify-between gap-3", className)} {...props}>
+		<div>
+			<Heading as="h1" variant="title">
+				{title}
+			</Heading>
+			{description !== undefined && (
+				<Text variant="body-sm" color="secondary">
+					{description}
+				</Text>
+			)}
+			{children !== undefined && (
+				<div className="mt-2 flex flex-wrap items-center gap-2">{children}</div>
+			)}
+		</div>
+		{rightContent}
+	</header>
+);

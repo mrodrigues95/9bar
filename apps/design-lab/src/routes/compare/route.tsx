@@ -22,13 +22,11 @@ const searchSchema = z.object({
 
 type CompareSearch = z.infer<typeof searchSchema>;
 
-const resolveGroup = (id: string | undefined): DesignGroup | undefined => {
-	return designGroups.find((group) => group.id === id) ?? designGroups[0];
-};
+const resolveGroup = (id: string | undefined): DesignGroup | undefined =>
+	designGroups.find((group) => group.id === id) ?? designGroups[0];
 
-const resolveWidth = (id: CompareSearch["w"]) => {
-	return WIDTHS.find((preset) => preset.id === id) ?? WIDTHS[0];
-};
+const resolveWidth = (id: CompareSearch["w"]) =>
+	WIDTHS.find((preset) => preset.id === id) ?? WIDTHS[0];
 
 const resolvePair = (group: DesignGroup, search: CompareSearch) => {
 	const { variants } = group;
@@ -72,17 +70,15 @@ const CompareDesigns = () => {
 			/>
 
 			<Picker label="Groups">
-				{designGroups.map((option) => {
-					return (
-						<PickerLink
-							key={option.id}
-							active={option.id === group.id}
-							search={{ ...search, group: option.id }}
-						>
-							{option.title}
-						</PickerLink>
-					);
-				})}
+				{designGroups.map((option) => (
+					<PickerLink
+						key={option.id}
+						active={option.id === group.id}
+						search={{ ...search, group: option.id }}
+					>
+						{option.title}
+					</PickerLink>
+				))}
 			</Picker>
 
 			{pair ? (
