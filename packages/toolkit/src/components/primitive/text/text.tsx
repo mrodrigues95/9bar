@@ -24,6 +24,7 @@ const textVariants = cva("", {
 	},
 });
 
+/** Props for the {@link Text} component. */
 export interface TextProps
 	extends Omit<AriaTextProps, "elementType" | "color">, VariantProps<typeof textVariants> {
 	/** The HTML element type to render. Defaults to `"p"`. */

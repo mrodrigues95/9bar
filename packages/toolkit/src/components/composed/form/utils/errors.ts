@@ -1,9 +1,11 @@
 import { type FieldErrorItem, toErrorMessage } from "#components/field";
 
+/** Converts raw form-library errors into field error items, a single message, or nothing. */
 export type ErrorFormatter<TError = unknown> = (
 	errors: Array<TError>,
 ) => Array<FieldErrorItem> | string | undefined;
 
+/** The fallback {@link ErrorFormatter}: keeps each error's message and drops values with none. */
 export const defaultErrorFormatter: ErrorFormatter = (errors) => {
 	// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: raw form-library errors arrive untyped; toErrorMessage yields no message for values outside FieldErrorItem.
 	const items = errors as Array<FieldErrorItem | null>;

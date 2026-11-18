@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** Layout styles for a field, by orientation. */
 export const fieldVariants = cva(
 	"group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
 	{

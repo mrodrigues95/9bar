@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** Styles for an addon (icon, text, or button) placed inside an input group, by alignment. */
 export const inputGroupAddonVariants = cva(
 	[
 		"flex h-auto cursor-text items-center justify-center gap-1 py-2 select-none",
@@ -31,6 +32,7 @@ export const inputGroupAddonVariants = cva(
 	},
 );
 
+/** Size styles for compact buttons and select triggers placed inside an input group. */
 export const inputGroupButtonVariants = cva("flex items-center gap-2 text-xs/relaxed shadow-none", {
 	variants: {
 		size: {

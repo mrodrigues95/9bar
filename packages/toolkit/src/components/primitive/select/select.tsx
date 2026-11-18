@@ -13,7 +13,7 @@ import {
 	type ListBoxProps,
 	SearchField,
 	type SearchFieldProps,
-	type ListBoxSectionProps as SelectGroupProps,
+	type ListBoxSectionProps as AriaListBoxSectionProps,
 	type SelectProps,
 	type SelectValueProps,
 } from "react-aria-components";
@@ -50,7 +50,7 @@ export const Select = <T extends object, M extends "single" | "multiple" = "sing
 );
 
 /** Props for the {@link SelectGroup} component. */
-export type { SelectGroupProps };
+export type SelectGroupProps<T extends object> = AriaListBoxSectionProps<T>;
 
 /** A semantic group of related {@link SelectItem} elements within a {@link SelectList}. */
 export const SelectGroup = <T extends object>({ className, ...props }: SelectGroupProps<T>) => (
@@ -274,7 +274,8 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 					"rounded-md px-2 py-1 text-xs/relaxed outline-hidden",
 					"focus:bg-accent focus:text-accent-foreground",
 					"not-data-[variant=destructive]:focus:**:text-accent-foreground",
-					"data-focused:bg-accent data-focused:text-accent-foreground data-disabled:pointer-events-none",
+					"data-focused:bg-accent data-focused:text-accent-foreground",
+					"data-disabled:pointer-events-none",
 					"data-disabled:opacity-50",
 					"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 					"*:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",

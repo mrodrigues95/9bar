@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** Styles for the calendar root. */
 export const calendarVariants = cva([
 	"group/calendar w-fit bg-background p-3",
 	"[--cell-radius:var(--radius-md)] [--cell-size:--spacing(6)]",
@@ -7,8 +8,12 @@ export const calendarVariants = cva([
 	"in-data-[slot=popover-content]:bg-transparent",
 ]);
 
+/** Styles for one calendar day cell across its selected, today, outside-month, and disabled states. */
 export const calendarCellVariants = cva(
-	"group/day relative h-full w-full cursor-default rounded-(--cell-radius) p-0 text-center select-none",
+	[
+		"group/day relative h-full w-full cursor-default rounded-(--cell-radius) p-0 text-center",
+		"select-none",
+	],
 	{
 		variants: {
 			isToday: {

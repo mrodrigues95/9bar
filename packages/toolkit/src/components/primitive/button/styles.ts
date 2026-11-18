@@ -1,8 +1,11 @@
 import { cva } from "class-variance-authority";
 
+/** Styles for buttons and button-like links, by variant and size. */
 export const buttonVariants = cva(
 	[
-		"group/button inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-xs/relaxed font-medium whitespace-nowrap transition-all outline-none select-none",
+		"group/button inline-flex shrink-0 items-center justify-center rounded-md border",
+		"border-transparent bg-clip-padding text-xs/relaxed font-medium whitespace-nowrap",
+		"transition-all outline-none select-none",
 		"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
 		"active:not-aria-[haspopup]:translate-y-px",
 		"disabled:pointer-events-none disabled:opacity-50",
