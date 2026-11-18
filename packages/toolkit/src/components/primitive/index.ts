@@ -6,6 +6,7 @@ export * from "./button";
 export * from "./calendar";
 export * from "./card";
 export * from "./checkbox";
+export * from "./date-picker";
 export * from "./dialog";
 export * from "./empty";
 export * from "./field";
