@@ -17,6 +17,7 @@
 		"web": "pnpm --filter @9bar/web",
 		"toolkit": "pnpm --filter @9bar/toolkit",
 		"lab": "pnpm --filter @9bar/design-lab",
+		"check": "pnpm lint && pnpm format:check && pnpm typecheck",
 		"lint": "oxlint .",
 		"lint:fix": "oxlint --fix .",
 		"format": "oxfmt",
