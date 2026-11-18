@@ -11,7 +11,6 @@ import {
 } from "../../components";
 import { Form, useAppForm } from "../../components/composed";
 
-/** Validation messages for the fields of the recipe overview form. */
 interface RecipeFormFieldErrors {
 	recipeName?: string;
 	reminders?: string;

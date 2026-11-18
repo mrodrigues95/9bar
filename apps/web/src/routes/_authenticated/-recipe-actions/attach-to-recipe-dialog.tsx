@@ -33,8 +33,6 @@ const formatDelta = (difference: number, format: (value: number) => string) => {
 	return `${rounded > 0 ? "+" : "−"}${format(Math.abs(rounded))}`;
 };
 
-// TODO(log-comparison-api): move DELTAS, compareField, and isSameBrewField into the API once it exists;
-// it should return raw values, deltas, and mismatch flags per field. Keep only formatting here.
 const DELTAS: Partial<
 	Record<BrewField, (recipe: BrewSnapshot, log: BrewSnapshot) => string | null>
 > = {
@@ -180,7 +178,6 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 	const shotRows = compare(["grindSize", "dose", "yield", "brewTime", "temperature", "pressure"]);
 
 	const onAttach = () => {
-		// TODO(attach-to-recipe): server fn that points the log at the chosen recipe. Mismatches are advisory.
 		console.log("Log attached to recipe:", {
 			logId: log.id,
 			recipeId: recipe?.id ?? null,

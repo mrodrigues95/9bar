@@ -24,11 +24,6 @@ interface UseUrlFilterStateOptions<TSearch> {
 	debounceMs?: number;
 }
 
-/**
- * Exposes query/filter/page state whose single source of truth is the route's URL search params.
- * Filter and page changes push a history entry at once. Typing is held as a draft and written
- * with `replace` after `debounceMs`. Any URL change the draft was not based on discards it.
- */
 export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSearch>) => {
 	const { search, navigate, decode, encode, debounceMs = 250 } = options;
 	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });

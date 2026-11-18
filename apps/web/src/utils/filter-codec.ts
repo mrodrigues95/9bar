@@ -17,11 +17,6 @@ export const DEFAULT_FILTER_OPERATOR_ID = FILTER_OPERATORS[0].id;
 
 export const filterParamSchema = z.string().optional().catch(undefined);
 
-/**
- * Reads active filters from URL params written as `<operatorId>.<value>|<value>`,
- * dropping unknown definitions, operators, and values so a hand-edited URL
- * degrades instead of throwing.
- */
 export const decodeFilters = <TFilterId extends string>(
 	definitions: ReadonlyArray<FilterBarDefinition & { id: TFilterId }>,
 	params: Partial<Record<TFilterId, string | undefined>>,
@@ -52,7 +47,6 @@ export const decodeFilters = <TFilterId extends string>(
 	return filters;
 };
 
-/** Writes active filters into URL params; empty filters become `undefined` so a removed chip leaves the URL. */
 export const encodeFilters = <TFilterId extends string>(
 	definitions: ReadonlyArray<FilterBarDefinition & { id: TFilterId }>,
 	filters: Array<FilterBarFilterState>,
@@ -71,7 +65,6 @@ export const encodeFilters = <TFilterId extends string>(
 	return params;
 };
 
-/** Applies one filter's operator to a field value; rows with no value only match negative operators. */
 export const matchesOperator = (
 	operatorId: string,
 	selected: Array<string>,

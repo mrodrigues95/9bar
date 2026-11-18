@@ -11,8 +11,6 @@ export const toErrorMessage = (error: FieldErrorItem | null): string | undefined
 		return undefined;
 	}
 
-	// String primitives are never instanceof Object, so this discriminates the
-	// FieldErrorItem union without a runtime typeof check.
 	if (error instanceof Object) {
 		const message = error.message;
 		return message !== undefined && message.length > 0 ? message : undefined;

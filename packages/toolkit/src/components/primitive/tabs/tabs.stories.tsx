@@ -24,7 +24,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Shared tab bar with icon+label triggers and content panels. Pass `disabledKey` to disable one trigger. */
 const TabsDemo = ({ disabledKey, ...props }: TabsProps & { disabledKey?: string }) => (
 	<Tabs {...props} defaultSelectedKey="home" className="p-4">
 		<TabsList>

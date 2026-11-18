@@ -22,7 +22,6 @@ const NewRecipe = () => {
 				? { ...recipeToFormValues(duplicateOf), name: `Copy of ${duplicateOf.name}` }
 				: recipeFormOpts.defaultValues,
 		onSubmit: async ({ value }) => {
-			// TODO(save-log-as-recipe): server fn that creates the recipe and attaches the source log to it.
 			console.log("Recipe created:", value);
 			await navigate({ to: "/recipes" });
 		},

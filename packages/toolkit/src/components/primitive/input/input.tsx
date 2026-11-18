@@ -8,10 +8,6 @@ import { inputVariants } from "./styles";
 /** Props for the {@link Input} component. */
 export type InputProps = React.ComponentProps<typeof AriaInput>;
 
-/**
- * Shared control surface styles for text inputs, reused by {@link Input} and
- * other input primitives (such as {@link Textarea}) to avoid duplicated styling.
- */
 /** A single-line text input for user-entered values, typically used inside a {@link Field}. */
 export const Input = ({ className, type, ...props }: InputProps) => {
 	return (

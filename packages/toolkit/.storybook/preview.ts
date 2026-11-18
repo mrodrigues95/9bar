@@ -14,14 +14,11 @@ const preview: Preview = {
 		},
 		options: {
 			storySort: {
-				// Pin the overview canvas (Overview / Preview) at the top of the sidebar.
 				order: ["Overview", "*"],
 			},
 		},
 	},
 	decorators: [
-		// Light/dark theme toolbar global. Applies the `.dark` class to <html>,
-		// which drives the token overrides in src/styles/globals.css.
 		withThemeByClassName({
 			themes: {
 				light: "",

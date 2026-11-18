@@ -56,7 +56,6 @@ export const generatePagination = ({
 				? [boundaryCount + 1]
 				: []),
 
-		// Sibling pages around current page.
 		...range(siblingsStart, siblingsEnd),
 
 		...(siblingsEnd < totalPages - boundaryCount - 1

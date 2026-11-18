@@ -27,10 +27,6 @@ export type BrewFormFields = BasicInformationValues &
 	BrewParametersValues &
 	AdditionalDetailsValues;
 
-/**
- * Coerces a string (from an HTML input) to a number while preserving the `number`
- * input type for StandardSchema compatibility.
- */
 export const coercedNumber = (checks: (n: z.ZodNumber) => z.ZodNumber = (n) => n) =>
 	z.pipe(
 		z.transform<number, number>((val) => Number(val)),

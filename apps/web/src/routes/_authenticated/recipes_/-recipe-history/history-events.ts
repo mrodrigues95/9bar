@@ -18,10 +18,6 @@ export interface HistoryEvent {
 	changes: Array<HistoryChange>;
 }
 
-/**
- * Groups each recipe save's setting changes into newest-first events. Saves with no
- * tracked field changes (e.g. notes-only edits) produce no event.
- */
 export const getRecipeHistoryEvents = (recipeId: number) => {
 	const snapshots = getRecipeSnapshots(recipeId);
 	const events: Array<HistoryEvent> = [];

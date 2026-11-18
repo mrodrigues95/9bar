@@ -135,13 +135,11 @@ export const CalendarNextButton = ({
 	);
 };
 
-/** The render props React Aria hands to the month and year picker render functions. */
 interface CalendarPickerProps {
 	className?: string;
 	picker: CalendarMonthPickerAria | CalendarYearPickerAria;
 }
 
-/** A caption dropdown for a calendar month or year, rendered as a {@link Select}. */
 const CalendarPicker = ({ className, picker }: CalendarPickerProps) => (
 	<Select
 		aria-label={picker["aria-label"]}

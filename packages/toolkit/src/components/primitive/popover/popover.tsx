@@ -9,10 +9,6 @@ import {
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { popoverVariants } from "./styles";
 
-/**
- * Shared surface styles for popovers, reused by {@link Popover} and other
- * overlay primitives (such as select and menu) to avoid duplicated styling.
- */
 /** Props for the {@link PopoverTrigger} component. */
 export type PopoverTriggerProps = DialogTriggerProps;
 
