@@ -1,0 +1,41 @@
+name: Protected paths
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: protected-paths-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  protected-paths:
+    name: Protected paths
+    timeout-minutes: 2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require approved:checks when checks change
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'approved:checks') }}
+        run: |
+          pattern='(^|/)\.oxlintrc\.json$|^tools/oxlint/|^tools/checks/|^\.github/'
+          changed=$(gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename' | grep -E "$pattern" || true)
+          if [ -z "$changed" ]; then
+            echo "No protected paths changed."
+            exit 0
+          fi
+          echo "Protected paths changed:"
+          echo "$changed"
+          if [ "$APPROVED" = "true" ]; then
+            echo "Owner applied approved:checks."
+            exit 0
+          fi
+          echo "::error::This PR changes lint config, custom rules, structure checks, or workflows. The repo owner must review it and apply the approved:checks label. Agents never apply this label."
+          exit 1
