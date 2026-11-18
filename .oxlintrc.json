@@ -23,12 +23,16 @@
 		"eslint/no-unused-vars": "error",
 		"react/exhaustive-deps": "error",
 		"anti-slop/no-chained-type-assertions": "error",
-		"anti-slop/no-comments": ["error", { "publicApi": ["/packages/toolkit/src/"] }],
+		"anti-slop/no-comments": [
+			"error",
+			{
+				"publicApi": ["/packages/toolkit/src/"]
+			}
+		],
 		"anti-slop/no-conditional-empty-object-spread": "error",
 		"anti-slop/no-effect": "error",
 		"anti-slop/no-known-value-widening": "error",
 		"anti-slop/no-manual-memo": "error",
-		"anti-slop/no-module-mocking": "error",
 		"anti-slop/no-object-parameters": "error",
 		"anti-slop/no-reflect-apply": "error",
 		"anti-slop/no-reflect-get": "error",
@@ -40,6 +44,15 @@
 		"anti-slop/no-unsafe-dictionary-type": "error",
 		"anti-slop/no-widen-then-assert": "error",
 		"anti-slop/require-safety-comment-for-type-assertion": "error",
+		"landmines-testing/no-test-doubles": "error",
+		"landmines-testing/no-fixed-sleep": "error",
+		"landmines-testing/no-unsignaled-poll": "error",
+		"landmines-testing/no-flake-masking": "error",
+		"landmines-testing/strict-msw": "error",
+		"landmines-structure/colocated-tests": "error",
+		"landmines-structure/test-file-names": "error",
+		"landmines-structure/package-exports": "error",
+		"landmines-types/no-explicit-return-types": "error",
 		"typescript/switch-exhaustiveness-check": "error",
 		"typescript/no-floating-promises": "error",
 		"typescript/no-misused-promises": "error",
@@ -62,6 +75,18 @@
 		{
 			"name": "anti-slop",
 			"specifier": "./tools/oxlint/anti-slop/index.ts"
+		},
+		{
+			"name": "landmines-testing",
+			"specifier": "@interfere/landmines/testing"
+		},
+		{
+			"name": "landmines-structure",
+			"specifier": "@interfere/landmines/structure"
+		},
+		{
+			"name": "landmines-types",
+			"specifier": "@interfere/landmines/types"
 		}
 	]
 }

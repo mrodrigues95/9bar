@@ -14,7 +14,7 @@ export interface QueryDraft {
 export const reconcileDraft = (draft: QueryDraft | null, urlKey: string) =>
 	draft !== null && draft.baseKey === urlKey ? draft : null;
 
-export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null): UrlFilterIntent =>
+export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null) =>
 	draft === null ? url : { ...url, q: draft.q, page: 1 };
 
 export const applyDraft = (draft: QueryDraft, current: UrlFilterIntent, currentKey: string) =>

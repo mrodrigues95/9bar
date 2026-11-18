@@ -29,7 +29,7 @@ export function Breadcrumb({
 	to,
 	activeOptions,
 	isDisabled,
-}: BreadcrumbProps): ReactNode {
+}: BreadcrumbProps) {
 	return (
 		<ToolkitBreadcrumbItem className={className}>
 			{({ isCurrent }) =>

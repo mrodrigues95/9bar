@@ -32,7 +32,7 @@ const unpaint = (el: Element) => {
 	}
 };
 
-const buildSelector = (el: Element, root: Element): string => {
+const buildSelector = (el: Element, root: Element) => {
 	const parts: Array<string> = [];
 	let node: Element | null = el;
 	while (node && node !== root && parts.length < 6) {
@@ -65,7 +65,7 @@ const buildSelector = (el: Element, root: Element): string => {
 	return parts.length > 0 ? parts.join(" > ") : el.tagName.toLowerCase();
 };
 
-const getTargetInfo = (el: Element, root: Element): PinnedTarget => {
+const getTargetInfo = (el: Element, root: Element) => {
 	const rawText = el.textContent.replace(/\s+/g, " ").trim();
 	const dataSlot = el.closest("[data-slot]")?.getAttribute("data-slot") ?? null;
 	return {
@@ -76,10 +76,10 @@ const getTargetInfo = (el: Element, root: Element): PinnedTarget => {
 	};
 };
 
-const inAnnotateUi = (node: EventTarget | null): boolean =>
+const inAnnotateUi = (node: EventTarget | null) =>
 	node instanceof Element && node.closest("[data-annotate-ui]") !== null;
 
-const findElement = (root: Element, selector: string): Element | null => {
+const findElement = (root: Element, selector: string) => {
 	try {
 		return root.querySelector(selector);
 	} catch {

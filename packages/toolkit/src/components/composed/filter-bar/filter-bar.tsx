@@ -147,7 +147,7 @@ export const FilterBar = ({
 const getDefinition = (
 	definitionById: ReadonlyMap<string, FilterBarDefinition>,
 	filterId: string,
-): FilterBarDefinition => {
+) => {
 	const def = definitionById.get(filterId);
 	if (!def) {
 		throw new Error(`Unknown filter definition: ${filterId}`);

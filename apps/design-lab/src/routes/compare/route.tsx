@@ -22,7 +22,7 @@ const searchSchema = z.object({
 
 type CompareSearch = z.infer<typeof searchSchema>;
 
-const resolveGroup = (id: string | undefined): DesignGroup | undefined =>
+const resolveGroup = (id: string | undefined) =>
 	designGroups.find((group) => group.id === id) ?? designGroups[0];
 
 const resolveWidth = (id: CompareSearch["w"]) =>
