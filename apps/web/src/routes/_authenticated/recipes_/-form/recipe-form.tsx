@@ -30,7 +30,11 @@ export const RecipeForm = withForm({
 		const method = useStore(form.store, (state) => state.values.method);
 
 		return (
-			<Form className="space-y-6" validationBehavior="aria" onSubmit={() => form.handleSubmit()}>
+			<Form
+				className="space-y-6"
+				validationBehavior="aria"
+				onSubmit={() => void form.handleSubmit()}
+			>
 				<BasicInformationFields form={form} fields={basicInformationFields} isIdentityRequired>
 					<form.AppField name="name">
 						{(field) => (
@@ -68,7 +72,7 @@ export const RecipeForm = withForm({
 				<div className="flex items-center justify-end gap-2">
 					<Link
 						variant="outline"
-						{...(recipeId
+						{...(recipeId !== undefined
 							? { to: "/recipes/$recipeId", params: { recipeId } }
 							: { to: "/recipes" })}
 					>

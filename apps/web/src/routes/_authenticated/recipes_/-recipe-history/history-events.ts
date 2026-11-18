@@ -43,7 +43,7 @@ export const getRecipeHistoryEvents = (recipeId: number) => {
 				next: formatBrewField(next, field),
 			});
 		}
-		if (!changes.length) {
+		if (changes.length === 0) {
 			continue;
 		}
 		events.push({ id: next.id, dateTime: next.createdAt, changes });

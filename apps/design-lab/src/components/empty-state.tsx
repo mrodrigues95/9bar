@@ -27,7 +27,7 @@ export const EmptyState = ({ title, body, action, icon, as = "h2" }: EmptyStateP
 				</Heading>
 				<EmptyDescription>{body}</EmptyDescription>
 			</EmptyHeader>
-			{action && <EmptyContent>{action}</EmptyContent>}
+			{action !== undefined && <EmptyContent>{action}</EmptyContent>}
 		</Empty>
 	);
 };

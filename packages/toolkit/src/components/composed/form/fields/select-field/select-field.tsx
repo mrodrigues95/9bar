@@ -72,18 +72,27 @@ export const SelectField = <T extends object>({
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const isInvalid = props.isInvalid ?? (resolvedErrors?.length ?? 0) > 0;
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
 		<Field data-invalid={isInvalid || undefined} className={className}>
-			{label && (
+			{label !== undefined && (
 				<FieldLabel id={labelId} htmlFor={triggerId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
-			<Select {...props} isInvalid={isInvalid} aria-labelledby={label ? labelId : undefined}>
+			<Select
+				{...props}
+				isInvalid={isInvalid}
+				aria-labelledby={label !== undefined ? labelId : undefined}
+			>
 				<SelectTrigger
 					id={triggerId}
 					aria-invalid={isInvalid || undefined}
@@ -99,7 +108,7 @@ export const SelectField = <T extends object>({
 					<SelectList items={items}>{children}</SelectList>
 				</SelectContent>
 			</Select>
-			{description && (
+			{description !== undefined && (
 				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>

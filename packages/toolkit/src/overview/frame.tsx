@@ -32,7 +32,9 @@ export const Section = ({ title, description, children }: SectionProps) => (
 	<section className="flex flex-col gap-4 py-10">
 		<div className="flex flex-col gap-1">
 			<h2 className="text-sm font-semibold tracking-tight">{title}</h2>
-			{description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
+			{description !== undefined ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 		</div>
 		{children}
 	</section>

@@ -32,6 +32,15 @@ function Home() {
 	const router = useRouter();
 	const state = Route.useLoaderData();
 
+	const addOne = async () => {
+		try {
+			await updateCount({ data: 1 });
+			await router.invalidate();
+		} catch (error) {
+			console.error("Failed to update count", error);
+		}
+	};
+
 	return (
 		<div className="space-y-4 p-8">
 			<Heading as="h1" variant="heading">
@@ -43,14 +52,7 @@ function Home() {
 			<button
 				type="button"
 				className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-				onClick={async () => {
-					try {
-						await updateCount({ data: 1 });
-						await router.invalidate();
-					} catch (error) {
-						console.error("Failed to update count", error);
-					}
-				}}
+				onClick={() => void addOne()}
 			>
 				Add 1 to {state}?
 			</button>

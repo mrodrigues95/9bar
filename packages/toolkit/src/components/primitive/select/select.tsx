@@ -1,3 +1,4 @@
+import { type VariantProps } from "class-variance-authority";
 import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
 import type * as React from "react";
 import {
@@ -17,7 +18,12 @@ import {
 	type SelectValueProps,
 } from "react-aria-components";
 import { Button, type ButtonProps } from "#components/button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "#components/input-group";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
+	inputGroupButtonVariants,
+} from "#components/input-group";
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
@@ -195,6 +201,34 @@ export const SelectList = <T extends object>({ className, ...props }: ListBoxPro
 			data-slot="select-list"
 			className={composeTailwindRenderProps(className, [
 				"group/select-list max-h-[inherit] overflow-x-hidden overflow-y-auto p-1 outline-hidden",
+			])}
+			{...props}
+		/>
+	);
+};
+
+/** Props for the {@link InputGroupSelectTrigger} component. */
+export type InputGroupSelectTriggerProps = Omit<
+	React.ComponentProps<typeof SelectTrigger>,
+	"size"
+> &
+	VariantProps<typeof inputGroupButtonVariants>;
+
+/** A compact select trigger rendered inside an {@link InputGroup}, sharing {@link inputGroupButtonVariants} sizing with {@link InputGroupButton}. */
+export const InputGroupSelectTrigger = ({
+	className,
+	size = "xs",
+	variant = "ghost",
+	...props
+}: InputGroupSelectTriggerProps) => {
+	return (
+		<SelectTrigger
+			variant={variant}
+			data-size={size}
+			className={composeTailwindRenderProps(className, [
+				inputGroupButtonVariants({ size }),
+				"bg-transparent",
+				"dark:bg-transparent",
 			])}
 			{...props}
 		/>

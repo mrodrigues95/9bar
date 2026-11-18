@@ -60,7 +60,7 @@ const CompareDesigns = () => {
 
 	const pair = resolvePair(group, search);
 	const width = resolveWidth(search.w);
-	const annotate = !!search.annotate;
+	const annotate = search.annotate === true;
 
 	return (
 		<div className="space-y-6">

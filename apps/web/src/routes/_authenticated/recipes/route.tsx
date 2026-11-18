@@ -36,7 +36,7 @@ const Recipes = () => {
 			}),
 			encode: (intent) => ({ q: intent.q, page: intent.page, ...encodeFilters(intent.filters) }),
 		});
-	const hasQuery = !!q.trim() || !!filters.length;
+	const hasQuery = !!q.trim() || filters.length > 0;
 
 	return (
 		<Page>

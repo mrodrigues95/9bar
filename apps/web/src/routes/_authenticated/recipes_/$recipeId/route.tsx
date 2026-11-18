@@ -27,9 +27,9 @@ const Recipe = () => {
 	});
 
 	let tab: Key = TABS.logs;
-	if (overviewMatch) {
+	if (overviewMatch !== false) {
 		tab = TABS.overview;
-	} else if (historyMatch) {
+	} else if (historyMatch !== false) {
 		tab = TABS.history;
 	}
 

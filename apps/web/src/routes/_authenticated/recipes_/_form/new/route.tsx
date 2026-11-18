@@ -24,7 +24,7 @@ const NewRecipe = () => {
 		onSubmit: async ({ value }) => {
 			// TODO(save-log-as-recipe): server fn that creates the recipe and attaches the source log to it.
 			console.log("Recipe created:", value);
-			navigate({ to: "/recipes" });
+			await navigate({ to: "/recipes" });
 		},
 	});
 
@@ -37,6 +37,9 @@ const NewRecipe = () => {
 	);
 };
 
+const isId = (value: number | undefined): value is number =>
+	value !== undefined && !Number.isNaN(value);
+
 export const Route = createFileRoute("/_authenticated/recipes_/_form/new")({
 	staticData: { breadcrumb: { label: "New" } },
 	validateSearch: z.object({
@@ -44,9 +47,12 @@ export const Route = createFileRoute("/_authenticated/recipes_/_form/new")({
 		fromLog: z.coerce.number().int().positive().catch(Number.NaN).optional(),
 	}),
 	beforeLoad: ({ search }) => {
-		const duplicateOf = search.duplicateOf ? buildRecipeGraph(search.duplicateOf) : undefined;
-		const fromLog = search.fromLog ? buildLogGraph(search.fromLog) : undefined;
-		if ((search.duplicateOf && !duplicateOf) || (search.fromLog && !fromLog)) {
+		const duplicateOf = isId(search.duplicateOf) ? buildRecipeGraph(search.duplicateOf) : undefined;
+		const fromLog = isId(search.fromLog) ? buildLogGraph(search.fromLog) : undefined;
+		if (
+			(isId(search.duplicateOf) && duplicateOf === undefined) ||
+			(isId(search.fromLog) && fromLog === undefined)
+		) {
 			throw redirect({ to: "/recipes", replace: true });
 		}
 		return { duplicateOf, fromLog };

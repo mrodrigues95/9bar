@@ -3,13 +3,19 @@ import { CircleAlert, Search } from "lucide-react";
 import { useId } from "react";
 import { Field } from "../field/field";
 import { Label } from "../label/label";
-import { Select, SelectContent, SelectItem, SelectList, SelectValue } from "../select/select";
+import {
+	InputGroupSelectTrigger,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectList,
+	SelectValue,
+} from "../select/select";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
-	InputGroupSelectTrigger,
 	InputGroupText,
 } from "./input-group";
 

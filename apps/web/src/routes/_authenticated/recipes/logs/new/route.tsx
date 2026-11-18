@@ -10,7 +10,7 @@ const NewQuickLog = () => {
 			defaultValues={emptyLogFormValues()}
 			mode="create"
 			onDone={() => {
-				navigate({ to: "/recipes", search: true });
+				void navigate({ to: "/recipes", search: true });
 			}}
 		/>
 	);

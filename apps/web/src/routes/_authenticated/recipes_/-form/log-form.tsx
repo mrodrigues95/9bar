@@ -63,7 +63,7 @@ export const LogForm = withForm({
 		];
 
 		return (
-			<Form ref={formRef} validationBehavior="aria" onSubmit={() => form.handleSubmit()}>
+			<Form ref={formRef} validationBehavior="aria" onSubmit={() => void form.handleSubmit()}>
 				<div className="-mx-4 no-scrollbar flex max-h-[50vh] flex-col gap-6 overflow-y-auto px-4">
 					<BasicInformationFields
 						form={form}

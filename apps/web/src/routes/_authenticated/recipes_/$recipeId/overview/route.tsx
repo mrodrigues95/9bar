@@ -149,7 +149,7 @@ const NotesSection = ({ snapshot }: { snapshot: BrewSnapshot }) => {
 			<CardTitle id="recipe-notes" className="border-b border-border pb-2">
 				Notes
 			</CardTitle>
-			{snapshot.notes ? (
+			{snapshot.notes !== null && snapshot.notes !== "" ? (
 				<Text as="p" variant="body-sm" color="primary" className="mt-1.5">
 					{snapshot.notes}
 				</Text>

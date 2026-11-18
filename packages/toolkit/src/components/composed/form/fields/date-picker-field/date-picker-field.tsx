@@ -126,8 +126,13 @@ export const DatePickerField = <
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 	const pickerValue = value == null ? null : codec ? codec.parse(value) : value;
 
 	return (
@@ -136,8 +141,7 @@ export const DatePickerField = <
 				{...props}
 				value={pickerValue}
 				onChange={(nextValue) => {
-					// SAFETY: React Aria maps the picker value to the field's granularity, so it is
-					// always the same DateValue subtype the caller supplied as TValue.
+					// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: React Aria returns the same DateValue subtype the caller supplied as TValue.
 					const next = nextValue as TValue | null;
 					if (codec) {
 						onChange?.(codec.format(next));
@@ -151,12 +155,12 @@ export const DatePickerField = <
 				isReadOnly={isReadOnly}
 				aria-describedby={describedBy}
 			>
-				{label && <FieldLabel {...labelProps}>{label}</FieldLabel>}
+				{label !== undefined && <FieldLabel {...labelProps}>{label}</FieldLabel>}
 				<DatePickerGroup>
 					<DatePickerInput>{(segment) => <DatePickerSegment segment={segment} />}</DatePickerInput>
 					<DatePickerTrigger />
 				</DatePickerGroup>
-				{description && (
+				{description !== undefined && (
 					<FieldDescription id={descriptionId} {...descriptionProps}>
 						{description}
 					</FieldDescription>

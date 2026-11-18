@@ -23,7 +23,7 @@ const VariantView = () => {
 	const { variantId } = Route.useParams();
 	const { annotate } = Route.useSearch();
 	const entry = findVariant(variantId);
-	const annotateOn = !!annotate;
+	const annotateOn = annotate === true;
 
 	if (!entry) {
 		return (

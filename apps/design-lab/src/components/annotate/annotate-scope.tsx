@@ -37,13 +37,13 @@ const buildSelector = (el: Element, root: Element): string => {
 	let node: Element | null = el;
 	while (node && node !== root && parts.length < 6) {
 		const id = node.getAttribute("id");
-		if (id) {
+		if (id !== null && id !== "") {
 			parts.unshift(`#${CSS.escape(id)}`);
 			break;
 		}
 		const tag = node.tagName.toLowerCase();
 		const slot = node.getAttribute("data-slot");
-		if (slot) {
+		if (slot !== null && slot !== "") {
 			parts.unshift(`${tag}[data-slot="${slot}"]`);
 		} else {
 			const parent = node.parentElement;
@@ -66,7 +66,7 @@ const buildSelector = (el: Element, root: Element): string => {
 };
 
 const getTargetInfo = (el: Element, root: Element): PinnedTarget => {
-	const rawText = el.textContent?.replace(/\s+/g, " ").trim() ?? "";
+	const rawText = el.textContent.replace(/\s+/g, " ").trim();
 	const dataSlot = el.closest("[data-slot]")?.getAttribute("data-slot") ?? null;
 	return {
 		selector: buildSelector(el, root),

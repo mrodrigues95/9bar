@@ -14,7 +14,7 @@ export const Form = (props: FormProps) => {
 		<AriaForm
 			{...props}
 			className={cn("space-y-4", props.className)}
-			{...(!props.action && {
+			{...(props.action === undefined && {
 				onSubmit: (e) => {
 					e.preventDefault();
 					e.stopPropagation();

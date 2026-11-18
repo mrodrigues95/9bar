@@ -35,11 +35,13 @@ export type AvatarImageProps = React.ComponentProps<"img">;
 
 /** The image displayed inside an {@link Avatar}. Tracks its own load state to show or hide the fallback. */
 export const AvatarImage = ({ className, ...props }: AvatarImageProps) => {
-	const [state, setState] = useState<ImageState>(props.src ? "loading" : "error");
+	const [state, setState] = useState<ImageState>(
+		props.src !== undefined && props.src !== "" ? "loading" : "error",
+	);
 	return (
 		<img
 			data-slot="avatar-image"
-			alt={props.alt || ""}
+			alt={props.alt ?? ""}
 			data-state={state}
 			onLoad={() => setState("loaded")}
 			onError={() => setState("error")}

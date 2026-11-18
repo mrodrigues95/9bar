@@ -39,12 +39,14 @@ export const PageHeader = ({
 				<Heading as="h1" variant="title">
 					{title}
 				</Heading>
-				{!!description && (
+				{description !== undefined && (
 					<Text variant="body-sm" color="secondary">
 						{description}
 					</Text>
 				)}
-				{!!children && <div className="mt-2 flex flex-wrap items-center gap-2">{children}</div>}
+				{children !== undefined && (
+					<div className="mt-2 flex flex-wrap items-center gap-2">{children}</div>
+				)}
 			</div>
 			{rightContent}
 		</header>

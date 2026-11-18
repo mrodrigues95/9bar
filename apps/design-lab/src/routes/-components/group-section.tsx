@@ -22,7 +22,7 @@ const VariantLinks = ({ entry }: { entry: DesignVariantEntry }) => {
 
 export const GroupSection = ({ group }: { group: DesignGroup }) => {
 	const { variants } = group;
-	if (!variants.length) {
+	if (variants.length === 0) {
 		return null;
 	}
 	const [first, second] = variants;
