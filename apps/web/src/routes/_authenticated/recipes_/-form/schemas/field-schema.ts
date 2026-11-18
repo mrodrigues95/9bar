@@ -49,22 +49,25 @@ export const toFormDateTime = (date: Date) =>
 
 export const nowAsCalendarDateTime = () => toFormDateTime(new Date());
 
-export const snapshotToFormFields = (snapshot: BrewSnapshot): BrewFormFields => ({
-	method: snapshot.method,
-	beans: snapshot.beans,
-	grinder: snapshot.grinder,
-	machine: snapshot.machine,
-	grindSize: snapshot.grindSize,
-	dose: snapshot.dose,
-	yield: snapshot.yield,
-	brewTime: {
-		inputValue: snapshot.brewTime,
-		selectValue: snapshot.brewTimeUnit,
-	},
-	temperature: {
-		inputValue: snapshot.temperature,
-		selectValue: snapshot.temperatureUnit,
-	},
-	pressure: snapshot.pressure,
-	notes: snapshot.notes ?? "",
-});
+export const snapshotToFormFields = (snapshot: BrewSnapshot) => {
+	const values: BrewFormFields = {
+		method: snapshot.method,
+		beans: snapshot.beans,
+		grinder: snapshot.grinder,
+		machine: snapshot.machine,
+		grindSize: snapshot.grindSize,
+		dose: snapshot.dose,
+		yield: snapshot.yield,
+		brewTime: {
+			inputValue: snapshot.brewTime,
+			selectValue: snapshot.brewTimeUnit,
+		},
+		temperature: {
+			inputValue: snapshot.temperature,
+			selectValue: snapshot.temperatureUnit,
+		},
+		pressure: snapshot.pressure,
+		notes: snapshot.notes ?? "",
+	};
+	return values;
+};

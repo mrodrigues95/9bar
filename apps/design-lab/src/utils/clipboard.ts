@@ -1,4 +1,4 @@
-export const copyText = async (text: string): Promise<boolean> => {
+export const copyText = async (text: string) => {
 	if (!("clipboard" in navigator)) {
 		return false;
 	}

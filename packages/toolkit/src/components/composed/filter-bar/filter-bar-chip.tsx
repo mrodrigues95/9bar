@@ -117,7 +117,7 @@ const getVisibleOperators = (
 	operators: ReadonlyArray<{ id: string; label: string }>,
 	valueCount: number,
 	operatorPairs?: ReadonlyArray<{ singular: string; plural: string }>,
-): Array<{ id: string; label: string }> => {
+) => {
 	if (!operatorPairs) {
 		return [...operators];
 	}
@@ -136,7 +136,7 @@ const formatValues = (
 	values: ReadonlyArray<string>,
 	options: ReadonlyArray<FilterBarOption>,
 	pluralLabel: string,
-): string => {
+) => {
 	if (values.length === 0) {
 		return "";
 	}

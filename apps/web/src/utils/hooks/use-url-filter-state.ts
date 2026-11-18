@@ -17,7 +17,7 @@ export interface QueryDraft {
 export const reconcileDraft = (draft: QueryDraft | null, urlKey: string) =>
 	draft !== null && draft.baseKey === urlKey ? draft : null;
 
-export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null): UrlFilterIntent =>
+export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null) =>
 	draft === null ? url : { ...url, q: draft.q, page: 1 };
 
 export const applyDraft = (draft: QueryDraft, current: UrlFilterIntent, currentKey: string) =>
@@ -41,7 +41,7 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 	const { search, navigate, decode, encode, debounceMs = 250 } = options;
 	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
 
-	const read = (value: TSearch): UrlFilterIntent => {
+	const read = (value: TSearch) => {
 		const decoded = decode(value);
 		return { q: decoded.q ?? "", filters: decoded.filters, page: decoded.page };
 	};

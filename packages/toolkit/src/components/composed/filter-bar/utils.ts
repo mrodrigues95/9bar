@@ -5,7 +5,7 @@ export const resolveOperator = (
 	currentOp: string,
 	valueCount: number,
 	operatorPairs?: ReadonlyArray<{ singular: string; plural: string }>,
-): string => {
+) => {
 	if (!operatorPairs) {
 		return currentOp;
 	}
@@ -39,7 +39,7 @@ export const applyFilterSelection = ({
 	filters,
 	definition,
 	selectedIds,
-}: ApplyFilterSelectionOptions): Array<FilterBarFilterState> => {
+}: ApplyFilterSelectionOptions) => {
 	const values = [...selectedIds].map((id) => id.toString());
 	const existing = filters.find((filter) => filter.filterId === definition.id);
 	if (!existing) {

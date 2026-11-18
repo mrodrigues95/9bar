@@ -1,8 +1,4 @@
-import type {
-	AnyRouteMatch,
-	RegisteredRouter,
-	StaticDataRouteOption,
-} from "@tanstack/react-router";
+import type { AnyRouteMatch, RegisteredRouter } from "@tanstack/react-router";
 import { useMatches, useRouter } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
 import { z } from "zod";
@@ -29,9 +25,7 @@ interface AppBreadcrumb {
 
 type RoutesById = RegisteredRouter["routesById"];
 
-const getRouteStaticData = (
-	route: RoutesById[keyof RoutesById],
-): StaticDataRouteOption | undefined => route.options.staticData;
+const getRouteStaticData = (route: RoutesById[keyof RoutesById]) => route.options.staticData;
 
 const isRouteId = (id: string, routesById: RoutesById): id is keyof RoutesById =>
 	Object.hasOwn(routesById, id);
@@ -44,7 +38,7 @@ const routerBreadcrumbSchema = z.object({
 const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
 	routerBreadcrumbSchema.safeParse(value).success;
 
-const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => {
+const getLoaderBreadcrumb = (match?: AnyRouteMatch) => {
 	const data = match?.loaderData;
 	return isRouterBreadcrumb(data?.breadcrumb) ? data.breadcrumb : null;
 };
