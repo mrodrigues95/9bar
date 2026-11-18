@@ -1,10 +1,25 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx } from "clsx";
 import type { ReactNode } from "react";
 import { composeRenderProps } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 
+/**
+ * A class value `cn` accepts: strings, conditional dictionaries, and nested arrays of them.
+ * Functions are excluded so a React Aria render-prop `className` is a type error here;
+ * merge those with {@link composeTailwindRenderProps}.
+ */
+export type StaticClassValue =
+	| string
+	| number
+	| bigint
+	| boolean
+	| null
+	| undefined
+	| ReadonlyArray<StaticClassValue>
+	| { readonly [className: string]: boolean | null | undefined };
+
 /** Merges Tailwind class names, resolving conflicts in favor of the later ones. */
-export const cn = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs));
+export const cn = (...inputs: Array<StaticClassValue>) => twMerge(clsx(inputs));
 
 /**
  * Composes a React Aria `className` render prop with a base set of Tailwind
@@ -13,7 +28,7 @@ export const cn = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs));
  */
 export const composeTailwindRenderProps = <T>(
 	className: string | ((v: T) => string) | undefined,
-	tw: ClassValue,
+	tw: StaticClassValue,
 ) => composeRenderProps(className, (className) => cn(tw, className));
 
 /**
