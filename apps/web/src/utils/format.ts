@@ -20,38 +20,25 @@ const CHANGE_DATE_FORMATTER = new DateFormatter("en-US", {
 	month: "short",
 });
 
-const formatParts = (parts: Array<Intl.DateTimeFormatPart>) => {
-	return parts
-		.map((part) => (part.type === "dayPeriod" ? part.value.toUpperCase() : part.value))
-		.join("");
-};
+const formatParts = (parts: Array<Intl.DateTimeFormatPart>) =>
+	parts.map((part) => (part.type === "dayPeriod" ? part.value.toUpperCase() : part.value)).join("");
 
-export const formatShotAt = (shotAt: string) => {
-	return formatParts(SHOT_AT_FORMATTER.formatToParts(new Date(shotAt)));
-};
+export const formatShotAt = (shotAt: string) =>
+	formatParts(SHOT_AT_FORMATTER.formatToParts(new Date(shotAt)));
 
-export const formatTimeOfDay = (dateTime: CalendarDateTime) => {
-	return formatParts(TIME_OF_DAY_FORMATTER.formatToParts(dateTime.toDate(getLocalTimeZone())));
-};
+export const formatTimeOfDay = (dateTime: CalendarDateTime) =>
+	formatParts(TIME_OF_DAY_FORMATTER.formatToParts(dateTime.toDate(getLocalTimeZone())));
 
-export const formatChangeDate = (changedAt: string) => {
-	return CHANGE_DATE_FORMATTER.format(new Date(changedAt));
-};
+export const formatChangeDate = (changedAt: string) =>
+	CHANGE_DATE_FORMATTER.format(new Date(changedAt));
 
-export const formatBrewTime = (snapshot: Pick<BrewSnapshot, "brewTime" | "brewTimeUnit">) => {
-	return `${snapshot.brewTime}${snapshot.brewTimeUnit}`;
-};
+export const formatBrewTime = (snapshot: Pick<BrewSnapshot, "brewTime" | "brewTimeUnit">) =>
+	`${snapshot.brewTime}${snapshot.brewTimeUnit}`;
 
 export const formatTemperature = (
 	snapshot: Pick<BrewSnapshot, "temperature" | "temperatureUnit">,
-) => {
-	return `${snapshot.temperature}°${snapshot.temperatureUnit}`;
-};
+) => `${snapshot.temperature}°${snapshot.temperatureUnit}`;
 
-export const formatGrams = (grams: number) => {
-	return `${grams}g`;
-};
+export const formatGrams = (grams: number) => `${grams}g`;
 
-export const formatPressure = (bar: number) => {
-	return `${bar} bar`;
-};
+export const formatPressure = (bar: number) => `${bar} bar`;

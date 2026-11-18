@@ -15,9 +15,7 @@ export type FeedbackPin = z.infer<typeof feedbackPinsSchema>[number];
 
 export type PinnedTarget = Omit<FeedbackPin, "id" | "variantId" | "comment">;
 
-const storageKey = (variantId: string): string => {
-	return `9bar-design-feedback:${variantId}`;
-};
+const storageKey = (variantId: string): string => `9bar-design-feedback:${variantId}`;
 
 export const readStoredPins = (variantId: string): Array<FeedbackPin> => {
 	if (typeof window === "undefined") {

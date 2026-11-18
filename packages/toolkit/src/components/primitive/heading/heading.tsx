@@ -25,13 +25,11 @@ export interface HeadingProps
 }
 
 /** A typographic heading component that maps visual variants to semantic HTML heading levels. */
-export const Heading = ({ as = "h1", variant, className, ...props }: HeadingProps) => {
-	return (
-		<Text
-			data-slot="heading"
-			{...props}
-			elementType={as}
-			className={cn(headingVariants({ variant, className }))}
-		/>
-	);
-};
+export const Heading = ({ as = "h1", variant, className, ...props }: HeadingProps) => (
+	<Text
+		data-slot="heading"
+		{...props}
+		elementType={as}
+		className={cn(headingVariants({ variant, className }))}
+	/>
+);

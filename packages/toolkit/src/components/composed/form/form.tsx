@@ -9,18 +9,16 @@ export interface FormProps extends AriaFormProps {
 }
 
 /** A form container that prevents default submission and vertically spaces its child fields. */
-export const Form = (props: FormProps) => {
-	return (
-		<AriaForm
-			{...props}
-			className={cn("space-y-4", props.className)}
-			{...(props.action === undefined && {
-				onSubmit: (e) => {
-					e.preventDefault();
-					e.stopPropagation();
-					props.onSubmit?.(e);
-				},
-			})}
-		/>
-	);
-};
+export const Form = (props: FormProps) => (
+	<AriaForm
+		{...props}
+		className={cn("space-y-4", props.className)}
+		{...(props.action === undefined && {
+			onSubmit: (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				props.onSubmit?.(e);
+			},
+		})}
+	/>
+);

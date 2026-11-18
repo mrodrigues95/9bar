@@ -9,21 +9,19 @@ import { cn } from "#lib/utils";
 export type TextareaProps = React.ComponentProps<typeof AriaTextarea>;
 
 /** A multi-line text input for longer user-entered values, typically used inside a {@link Field}. */
-export const Textarea = ({ className, ...props }: TextareaProps) => {
-	return (
-		<AriaTextarea
-			data-slot="textarea"
-			className={composeRenderProps(className, (className) =>
-				cn(
-					[
-						inputVariants(),
-						"flex field-sizing-content min-h-16 resize-none py-2",
-						"disabled:cursor-not-allowed disabled:opacity-50",
-					],
-					className,
-				),
-			)}
-			{...props}
-		/>
-	);
-};
+export const Textarea = ({ className, ...props }: TextareaProps) => (
+	<AriaTextarea
+		data-slot="textarea"
+		className={composeRenderProps(className, (className) =>
+			cn(
+				[
+					inputVariants(),
+					"flex field-sizing-content min-h-16 resize-none py-2",
+					"disabled:cursor-not-allowed disabled:opacity-50",
+				],
+				className,
+			),
+		)}
+		{...props}
+	/>
+);

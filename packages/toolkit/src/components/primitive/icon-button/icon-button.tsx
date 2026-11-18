@@ -20,10 +20,8 @@ export interface IconButtonProps extends Omit<ButtonProps, "size" | "children"> 
 }
 
 /** A button that displays only an icon, requiring an `aria-label` for accessibility. */
-export const IconButton = ({ size = "md", children, ...props }: IconButtonProps) => {
-	return (
-		<Button size={iconButtonSizeMap[size]} {...props}>
-			{children}
-		</Button>
-	);
-};
+export const IconButton = ({ size = "md", children, ...props }: IconButtonProps) => (
+	<Button size={iconButtonSizeMap[size]} {...props}>
+		{children}
+	</Button>
+);

@@ -7,12 +7,10 @@ interface SaveLogAsRecipeAlertProps {
 	log: Log;
 }
 
-export const SaveLogAsRecipeAlert = ({ log }: SaveLogAsRecipeAlertProps) => {
-	return (
-		<Alert variant="info">
-			<Info />
-			<AlertTitle>New recipe from your {formatShotAt(log.shotAt)} shot</AlertTitle>
-			<AlertDescription>Give it a name and adjust anything you want to change.</AlertDescription>
-		</Alert>
-	);
-};
+export const SaveLogAsRecipeAlert = ({ log }: SaveLogAsRecipeAlertProps) => (
+	<Alert variant="info">
+		<Info />
+		<AlertTitle>New recipe from your {formatShotAt(log.shotAt)} shot</AlertTitle>
+		<AlertDescription>Give it a name and adjust anything you want to change.</AlertDescription>
+	</Alert>
+);

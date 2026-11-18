@@ -19,17 +19,15 @@ export const InputGroupSelectTrigger = ({
 	size = "xs",
 	variant = "ghost",
 	...props
-}: InputGroupSelectTriggerProps) => {
-	return (
-		<SelectTrigger
-			variant={variant}
-			data-size={size}
-			className={composeTailwindRenderProps(className, [
-				inputGroupButtonVariants({ size }),
-				"bg-transparent",
-				"dark:bg-transparent",
-			])}
-			{...props}
-		/>
-	);
-};
+}: InputGroupSelectTriggerProps) => (
+	<SelectTrigger
+		variant={variant}
+		data-size={size}
+		className={composeTailwindRenderProps(className, [
+			inputGroupButtonVariants({ size }),
+			"bg-transparent",
+			"dark:bg-transparent",
+		])}
+		{...props}
+	/>
+);

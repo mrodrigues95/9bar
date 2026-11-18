@@ -31,9 +31,7 @@ type RoutesById = RegisteredRouter["routesById"];
 
 const getRouteStaticData = (
 	route: RoutesById[keyof RoutesById],
-): StaticDataRouteOption | undefined => {
-	return route.options.staticData;
-};
+): StaticDataRouteOption | undefined => route.options.staticData;
 
 const isRouteId = (id: string, routesById: RoutesById): id is keyof RoutesById =>
 	Object.hasOwn(routesById, id);

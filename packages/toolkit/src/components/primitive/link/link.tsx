@@ -16,14 +16,12 @@ export interface LinkProps extends AriaLinkProps, VariantProps<typeof buttonVari
 }
 
 /** A navigation element that allows a user to navigate to another page or resource. */
-export const Link = ({ variant = "link", size, ...props }: LinkProps) => {
-	return (
-		<AriaLink
-			data-slot="link"
-			{...props}
-			className={composeRenderProps(props.className, (className) =>
-				cn(buttonVariants({ variant, size, className })),
-			)}
-		/>
-	);
-};
+export const Link = ({ variant = "link", size, ...props }: LinkProps) => (
+	<AriaLink
+		data-slot="link"
+		{...props}
+		className={composeRenderProps(props.className, (className) =>
+			cn(buttonVariants({ variant, size, className })),
+		)}
+	/>
+);

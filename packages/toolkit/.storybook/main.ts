@@ -20,9 +20,7 @@ const excludedProps = new Set([
 	"onInput",
 ]);
 
-function getAbsolutePath(value: string) {
-	return dirname(require.resolve(join(value, "package.json")));
-}
+const getAbsolutePath = (value: string) => dirname(require.resolve(join(value, "package.json")));
 
 const config: StorybookConfig = {
 	stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],

@@ -8,17 +8,15 @@ type PickerLinkProps = {
 	children: ReactNode;
 };
 
-export const PickerLink = ({ active, search, children }: PickerLinkProps) => {
-	return (
-		<Link
-			to="/compare"
-			search={search}
-			resetScroll={false}
-			variant={active ? "outline" : "ghost"}
-			size="sm"
-			aria-current={active ? "true" : undefined}
-		>
-			{children}
-		</Link>
-	);
-};
+export const PickerLink = ({ active, search, children }: PickerLinkProps) => (
+	<Link
+		to="/compare"
+		search={search}
+		resetScroll={false}
+		variant={active ? "outline" : "ghost"}
+		size="sm"
+		aria-current={active ? "true" : undefined}
+	>
+		{children}
+	</Link>
+);
