@@ -16,6 +16,10 @@ import { noUnknownReturnsRule } from "./rules/no-unknown-returns.ts";
 import { noUnknownTypeAliasesRule } from "./rules/no-unknown-type-aliases.ts";
 import { noUnsafeDictionaryTypeRule } from "./rules/no-unsafe-dictionary-type.ts";
 import { noWidenThenAssertRule } from "./rules/no-widen-then-assert.ts";
+import { maxClassStringLengthRule } from "./rules/max-class-string-length.ts";
+import { reactAriaImportAliasRule } from "./rules/react-aria-import-alias.ts";
+import { requireExportJsdocRule } from "./rules/require-export-jsdoc.ts";
+import { typeNamingRule } from "./rules/type-naming.ts";
 import { requireSafetyCommentForTypeAssertionRule } from "./rules/require-safety-comment-for-type-assertion.ts";
 
 /** Generic Oxlint rules that reject low-evidence and low-signal implementation patterns. */
@@ -38,7 +42,11 @@ const antiSlopPlugin = eslintCompatPlugin({
 		"no-unknown-returns": noUnknownReturnsRule,
 		"no-unknown-type-aliases": noUnknownTypeAliasesRule,
 		"no-widen-then-assert": noWidenThenAssertRule,
+		"max-class-string-length": maxClassStringLengthRule,
+		"react-aria-import-alias": reactAriaImportAliasRule,
+		"require-export-jsdoc": requireExportJsdocRule,
 		"require-safety-comment-for-type-assertion": requireSafetyCommentForTypeAssertionRule,
+		"type-naming": typeNamingRule,
 	},
 });
 

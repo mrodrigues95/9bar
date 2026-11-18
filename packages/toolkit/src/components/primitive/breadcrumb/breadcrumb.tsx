@@ -6,7 +6,7 @@ import {
 	Breadcrumb as AriaBreadcrumb,
 	Breadcrumbs as AriaBreadcrumbs,
 	Link as AriaLink,
-	type BreadcrumbProps,
+	type BreadcrumbProps as AriaBreadcrumbProps,
 	type BreadcrumbsProps,
 	composeRenderProps,
 	type LinkProps,
@@ -14,10 +14,10 @@ import {
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Breadcrumb} component. */
-export type BreadcrumbRootProps = React.ComponentProps<"nav">;
+export type BreadcrumbProps = React.ComponentProps<"nav">;
 
 /** A navigation landmark that shows the user's location in the app hierarchy. */
-export const Breadcrumb = ({ className, ...props }: BreadcrumbRootProps) => (
+export const Breadcrumb = ({ className, ...props }: BreadcrumbProps) => (
 	<nav aria-label="breadcrumb" data-slot="breadcrumb" className={cn(className)} {...props} />
 );
 
@@ -37,7 +37,7 @@ export const BreadcrumbList = <T extends object>({ className, ...props }: Breadc
 );
 
 /** Props for the {@link BreadcrumbItem} component. */
-export type BreadcrumbItemProps = Omit<BreadcrumbProps, "children"> & {
+export type BreadcrumbItemProps = Omit<AriaBreadcrumbProps, "children"> & {
 	separatorClassName?: string;
 	children?: React.ReactNode | ((state: { isCurrent: boolean }) => React.ReactNode);
 };

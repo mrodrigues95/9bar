@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** Styles for the dimmed backdrop behind a dialog. */
 export const dialogOverlayVariants = cva([
 	"fixed inset-0 isolate z-50 bg-black/40 duration-100",
 	"data-entering:animate-in data-entering:fade-in-0",
@@ -7,6 +8,7 @@ export const dialogOverlayVariants = cva([
 	"supports-backdrop-filter:backdrop-blur-xs",
 ]);
 
+/** Styles for the dialog panel, including its enter and exit animation. */
 export const dialogContentVariants = cva([
 	"fixed top-1/2 left-1/2 z-50 grid w-full -translate-x-1/2 -translate-y-1/2",
 	"max-w-[calc(100%-2rem)] gap-4 rounded-xl bg-popover p-4",

@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** The shared control surface for text inputs, reused by {@link Input}, {@link Textarea}, and other input primitives. */
 export const inputVariants = cva([
 	"w-full rounded-md border border-input bg-input/20 px-2 transition-colors outline-none",
 	"text-sm placeholder:text-muted-foreground",

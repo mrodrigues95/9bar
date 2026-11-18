@@ -17,6 +17,7 @@ interface FilterBarChipProps {
 	onRemove: (filterId: string) => void;
 }
 
+/** A removable chip showing one active filter, with menus to change its operator and values. */
 export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: FilterBarChipProps) => {
 	const currentOp = definition.operators.find((o) => o.id === filter.operatorId);
 	const visibleOperators = getVisibleOperators(

@@ -9,6 +9,7 @@ import { FormTextareaField } from "../fields/textarea-field";
 import { FormSubmitButton } from "../form-submit-button";
 import { fieldContext, formContext } from "./form-context";
 
+/** The toolkit form hook and HOCs, with every toolkit field and form component pre-registered. */
 export const { useAppForm, withForm, withFieldGroup } = createFormHook({
 	fieldContext,
 	formContext,

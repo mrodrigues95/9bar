@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** The shared overlay surface for popovers, reused by select and menu. */
 export const popoverVariants = cva([
 	"data-entering:fade-in-0 data-entering:zoom-in-95",
 	"data-exiting:fade-out-0 data-exiting:zoom-out-95",

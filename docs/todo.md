@@ -46,6 +46,10 @@ Replace the placeholder avatar with a real profile menu. File: `apps/web/src/rou
 
 ## Tooling
 
+### focus-ring
+
+Focus rings are written per primitive in two styles: `ring-2 ring-ring/30` (button, input) and `ring-[3px] ring-ring/50` (badge, tabs). Pick one, extract it into a shared variant, then add `anti-slop/no-raw-focus-ring` to ban `focus*:ring-*` tokens outside it.
+
 ### code-splitting
 
 Look into code splitting routes. File: `apps/web/src/routes/__root.tsx`.

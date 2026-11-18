@@ -21,6 +21,7 @@ import {
 import { Separator, type SeparatorProps } from "../separator/separator";
 import { listboxItemVariants, listboxSectionHeaderVariants } from "./styles";
 
+/** Props for the {@link Listbox} component. */
 export interface ListboxProps<T extends object> extends Omit<
 	AriaListBoxProps<T>,
 	"layout" | "orientation"
@@ -31,15 +32,16 @@ export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T
 	<AriaListBox
 		data-slot="listbox"
 		{...props}
-		className={composeTailwindRenderProps(
-			props.className,
-			"relative h-full overflow-y-auto rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-xs outline-0",
-		)}
+		className={composeTailwindRenderProps(props.className, [
+			"relative h-full overflow-y-auto rounded-lg border border-border bg-popover p-1",
+			"text-popover-foreground shadow-xs outline-0",
+		])}
 	>
 		{children}
 	</AriaListBox>
 );
 
+/** Props for the {@link ListboxItem} component. */
 export type ListboxItemProps<T extends object> = Omit<
 	AriaListBoxItemProps<T>,
 	"children" | "textValue"
@@ -83,6 +85,7 @@ export const ListboxItem = <T extends object>({
 	);
 };
 
+/** Props for the {@link ListboxSection} component. */
 export interface ListboxSectionProps<T extends object> extends AriaListBoxSectionProps<T> {
 	/** A header element rendered above the section items. */
 	title?: ReactNode;
@@ -101,6 +104,7 @@ export const ListboxSection = <T extends object>({
 	</AriaListBoxSection>
 );
 
+/** Props for the {@link ListboxSectionHeader} component. */
 export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
 	/** The text label displayed for this section. */
 	title: string;
@@ -117,6 +121,7 @@ export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderPr
 	</AriaHeader>
 );
 
+/** Props for the {@link ListboxSeparator} component. */
 export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
 
 /** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
