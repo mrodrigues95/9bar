@@ -34,16 +34,21 @@ export const CheckboxField = ({
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const isInvalid = props.isInvalid ?? (resolvedErrors?.length ?? 0) > 0;
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
 		<Field data-invalid={isInvalid || undefined}>
 			<Checkbox {...props} aria-invalid={isInvalid || undefined} aria-describedby={describedBy}>
 				{label}
 			</Checkbox>
-			{description && (
+			{description !== undefined && (
 				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>

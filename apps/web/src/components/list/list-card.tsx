@@ -24,7 +24,7 @@ interface ListCardProps {
 export const ListCard = ({ actions, paginationProps, children }: ListCardProps) => {
 	return (
 		<Card>
-			{!!actions && (
+			{actions !== undefined && (
 				<CardHeader className="border-b border-b-border pb-6">
 					<div className="flex flex-wrap items-center justify-end gap-2">{actions}</div>
 				</CardHeader>
@@ -71,7 +71,7 @@ export const ListEmpty = ({ title, description, action }: ListEmptyProps) => {
 				<EmptyTitle>{title}</EmptyTitle>
 				<EmptyDescription>{description}</EmptyDescription>
 			</EmptyHeader>
-			{!!action && <EmptyContent>{action}</EmptyContent>}
+			{action !== undefined && <EmptyContent>{action}</EmptyContent>}
 		</Empty>
 	);
 };

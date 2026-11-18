@@ -13,7 +13,7 @@ const RepeatLog = () => {
 			defaultValues={logToFormValues(log, nowAsCalendarDateTime())}
 			mode="create"
 			onDone={() => {
-				navigate({ to: "/recipes", search: true });
+				void navigate({ to: "/recipes", search: true });
 			}}
 		/>
 	);

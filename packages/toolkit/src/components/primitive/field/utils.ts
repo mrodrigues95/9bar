@@ -29,5 +29,5 @@ export const getFieldDescribedBy = (
 	errorId: string,
 ) => {
 	const ids = [hasDescription && descriptionId, showError && errorId].filter(Boolean);
-	return ids.length ? ids.join(" ") : undefined;
+	return ids.length > 0 ? ids.join(" ") : undefined;
 };

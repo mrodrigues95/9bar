@@ -53,12 +53,17 @@ export const TextField = ({
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
 		<Field data-invalid={isInvalid || undefined} className={className}>
-			{label && (
+			{label !== undefined && (
 				<FieldLabel htmlFor={id ?? controlId} {...labelProps}>
 					{label}
 				</FieldLabel>
@@ -74,7 +79,7 @@ export const TextField = ({
 				aria-invalid={isInvalid || undefined}
 				aria-describedby={describedBy}
 			/>
-			{description && (
+			{description !== undefined && (
 				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>

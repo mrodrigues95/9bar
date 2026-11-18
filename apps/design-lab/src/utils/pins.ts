@@ -1,12 +1,17 @@
-export type FeedbackPin = {
-	id: string;
-	variantId: string;
-	selector: string;
-	tag: string;
-	dataSlot: string | null;
-	textSnippet: string;
-	comment: string;
-};
+import { z } from "zod";
+const feedbackPinsSchema = z.array(
+	z.object({
+		id: z.string(),
+		variantId: z.string(),
+		selector: z.string(),
+		tag: z.string(),
+		dataSlot: z.string().nullable(),
+		textSnippet: z.string(),
+		comment: z.string(),
+	}),
+);
+
+export type FeedbackPin = z.infer<typeof feedbackPinsSchema>[number];
 
 export type PinnedTarget = Omit<FeedbackPin, "id" | "variantId" | "comment">;
 
@@ -20,13 +25,11 @@ export const readStoredPins = (variantId: string): Array<FeedbackPin> => {
 	}
 	try {
 		const raw = window.localStorage.getItem(storageKey(variantId));
-		if (!raw) {
+		if (raw === null) {
 			return [];
 		}
-		const parsed: unknown = JSON.parse(raw);
-		// SAFETY: pins are only ever written by this same module via JSON.stringify,
-		// so an array parsed from our own storage key already has the FeedbackPin shape.
-		return Array.isArray(parsed) ? (parsed as Array<FeedbackPin>) : [];
+		const parsed = feedbackPinsSchema.safeParse(JSON.parse(raw));
+		return parsed.success ? parsed.data : [];
 	} catch {
 		return [];
 	}
@@ -41,7 +44,7 @@ export const writeStoredPins = (variantId: string, pins: Array<FeedbackPin>): vo
 };
 
 export const pinsToMarkdown = (variantId: string, pins: Array<FeedbackPin>): string => {
-	if (!pins.length) {
+	if (pins.length === 0) {
 		return `## Design feedback — ${variantId}\n\nNo pins. Looks good.`;
 	}
 	const lines = pins.map((pin, index) => {

@@ -15,7 +15,7 @@ type CompareActionsProps = {
 
 export const CompareActions = ({ a, b, groupId, search }: CompareActionsProps) => {
 	const [copied, setCopied] = useState(false);
-	const annotate = !!search.annotate;
+	const annotate = search.annotate === true;
 
 	const copyPair = async () => {
 		const text = [a.id, b.id]
@@ -29,7 +29,7 @@ export const CompareActions = ({ a, b, groupId, search }: CompareActionsProps) =
 
 	return (
 		<div className="flex flex-wrap gap-2">
-			<Button size="sm" variant="outline" onPress={copyPair}>
+			<Button size="sm" variant="outline" onPress={() => void copyPair()}>
 				{copied ? "Copied!" : "Copy A+B for agent"}
 			</Button>
 			<Link

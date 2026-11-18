@@ -56,13 +56,13 @@ export const LogFormDialog = ({ defaultValues, mode, onDone }: LogFormDialogProp
 				</DialogDescription>
 				<DialogCloseIconButton />
 			</DialogHeader>
-			<output className="sr-only">{loggedAt ? `Logged at ${loggedAt}` : ""}</output>
+			<output className="sr-only">{loggedAt !== null ? `Logged at ${loggedAt}` : ""}</output>
 			<LogForm
 				form={form}
 				formRef={formRef}
 				onCancel={onDone}
 				onLogAnother={
-					mode === "create" ? () => form.handleSubmit({ intent: "log-another" }) : undefined
+					mode === "create" ? () => void form.handleSubmit({ intent: "log-another" }) : undefined
 				}
 			/>
 		</Dialog>

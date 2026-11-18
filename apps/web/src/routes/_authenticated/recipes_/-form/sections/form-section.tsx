@@ -12,7 +12,7 @@ const LOG_DIALOG_ROUTES = [
 
 const useFormSectionVariant = () => {
 	const matchRoute = useMatchRoute();
-	return LOG_DIALOG_ROUTES.some((to) => !!matchRoute({ to })) ? "plain" : "card";
+	return LOG_DIALOG_ROUTES.some((to) => matchRoute({ to }) !== false) ? "plain" : "card";
 };
 
 interface FormSectionProps {

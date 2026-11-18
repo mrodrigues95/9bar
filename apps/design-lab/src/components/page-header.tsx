@@ -18,7 +18,7 @@ export const PageHeader = ({ title, lede, badge, actions }: PageHeaderProps) => 
 						{title}
 					</Heading>
 				</div>
-				{lede && <Text variant="body-lg">{lede}</Text>}
+				{lede !== undefined && <Text variant="body-lg">{lede}</Text>}
 			</div>
 			{actions}
 		</div>

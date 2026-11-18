@@ -96,7 +96,7 @@ const ComparisonRowItem = ({ row }: { row: ComparisonRow }) => {
 						className="leading-5 font-medium text-amber-700 tabular-nums"
 					>
 						{row.logValue}
-						{!!row.delta && (
+						{row.delta !== null && (
 							<span className="ml-1.5 text-xs font-normal text-amber-700/75">{row.delta}</span>
 						)}
 					</Text>
@@ -195,7 +195,7 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 			<DialogHeader>
 				<DialogTitle>Attach to recipe</DialogTitle>
 				<DialogDescription>
-					{recipes.length
+					{recipes.length > 0
 						? "Pick the recipe this shot belongs to. It will be added to that recipe's logs."
 						: "You don't have any recipes yet. Create a recipe first, then attach this log to it."}
 				</DialogDescription>

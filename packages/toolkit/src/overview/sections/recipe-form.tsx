@@ -37,7 +37,7 @@ export const FormSection = () => {
 					fields.recipeName = "Give the recipe a name";
 				}
 
-				if (!value.reminders.length) {
+				if (value.reminders.length === 0) {
 					fields.reminders = "Pick at least one reminder";
 				}
 
@@ -59,7 +59,7 @@ export const FormSection = () => {
 				<Form
 					onSubmit={(e) => {
 						e.preventDefault();
-						form.handleSubmit();
+						void form.handleSubmit();
 					}}
 					validationBehavior="aria"
 				>

@@ -13,7 +13,7 @@ const EditRecipe = () => {
 		defaultValues: recipeToFormValues(recipe),
 		onSubmit: async ({ value }) => {
 			console.log("Recipe updated:", value);
-			navigate({
+			await navigate({
 				to: "/recipes/$recipeId",
 				params: { recipeId: String(recipe.id) },
 			});

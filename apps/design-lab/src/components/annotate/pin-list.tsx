@@ -60,7 +60,7 @@ export const PinList = ({ variantId, pins, onLocate, onDelete, onClear }: PinLis
 					})}
 				</ol>
 				<div className="flex flex-wrap gap-2">
-					<Button size="sm" variant="outline" onPress={copy}>
+					<Button size="sm" variant="outline" onPress={() => void copy()}>
 						{copied ? "Copied!" : "Copy for agent"}
 					</Button>
 					<Button size="sm" variant="ghost" onPress={onClear}>

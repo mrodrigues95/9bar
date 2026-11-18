@@ -57,7 +57,7 @@ const DoseLine = ({ row, shotAt }: { row: RecipesListRow; shotAt?: string }) => 
 		<ListLine icon={Scale} mono>
 			{formatGrams(row.snapshot.dose)} → {formatGrams(row.snapshot.yield)} ·{" "}
 			{formatBrewTime(row.snapshot)}
-			{!!shotAt && ` · Logged ${formatShotAt(shotAt)}`}
+			{shotAt !== undefined && ` · Logged ${formatShotAt(shotAt)}`}
 		</ListLine>
 	);
 };

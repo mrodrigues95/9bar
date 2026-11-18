@@ -5,14 +5,13 @@ export type ErrorFormatter<TError = unknown> = (
 ) => Array<FieldErrorItem> | string | undefined;
 
 export const defaultErrorFormatter: ErrorFormatter = (errors) => {
-	// SAFETY: this is the documented generic-fallback boundary: raw form-library errors
-	// arrive as unknown and are normalized into messages here. Values outside the
-	// FieldErrorItem contract yield no message instead of crashing.
-	const messages = errors
-		.map((error) => toErrorMessage(error as FieldErrorItem | null))
-		.filter((err): err is string => !!err);
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: raw form-library errors arrive untyped; toErrorMessage yields no message for values outside FieldErrorItem.
+	const items = errors as Array<FieldErrorItem | null>;
+	const messages = items
+		.map((error) => toErrorMessage(error))
+		.filter((message): message is string => message !== undefined);
 
-	return messages.length ? messages : undefined;
+	return messages.length > 0 ? messages : undefined;
 };
 
 /**
@@ -23,7 +22,8 @@ export const resolveFieldErrors = (
 	errors?: Array<FieldErrorItem>,
 	errorMessage?: string,
 ): Array<FieldErrorItem> | undefined =>
-	errors ?? (errorMessage ? [{ message: errorMessage }] : undefined);
+	errors ??
+	(errorMessage !== undefined && errorMessage !== "" ? [{ message: errorMessage }] : undefined);
 
 /**
  * Resolves the error items displayed by a form-connected field: an explicit
@@ -49,9 +49,7 @@ export const normalizeFormErrors = <TError = unknown>(
 	formatErrors?: ErrorFormatter<TError>,
 ): Array<FieldErrorItem> | undefined => {
 	if (!formatErrors) {
-		// SAFETY: without a formatter the caller passes already-displayable errors (strings or
-		// `{ message }` objects). FieldError normalizes each entry again via toErrorMessage, so
-		// non-conforming values yield no message instead of crashing.
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: without a formatter the caller passes displayable errors; FieldError normalizes each entry via toErrorMessage.
 		return errors as Array<FieldErrorItem> | undefined;
 	}
 

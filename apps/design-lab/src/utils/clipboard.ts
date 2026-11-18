@@ -1,5 +1,5 @@
 export const copyText = async (text: string): Promise<boolean> => {
-	if (!navigator.clipboard?.writeText) {
+	if (!("clipboard" in navigator)) {
 		return false;
 	}
 	try {

@@ -32,7 +32,7 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 			return;
 		}
 		const selected = [...keys][0]?.toString();
-		if (selected) {
+		if (selected !== undefined) {
 			onUpdate(filter.filterId, { operatorId: selected });
 		}
 	};

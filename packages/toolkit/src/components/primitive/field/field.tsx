@@ -164,7 +164,7 @@ export const FieldSeparator = ({ children, className, ...props }: FieldSeparator
 	return (
 		<div
 			data-slot="field-separator"
-			data-content={!!children}
+			data-content={children !== undefined}
 			className={cn(
 				"relative -my-2 h-5 text-xs/relaxed group-data-[variant=outline]/field-group:-mb-2",
 				className,
@@ -172,7 +172,7 @@ export const FieldSeparator = ({ children, className, ...props }: FieldSeparator
 			{...props}
 		>
 			<Separator className="absolute inset-0 top-1/2" />
-			{children && (
+			{children !== undefined && (
 				<span
 					className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
 					data-slot="field-separator-content"
@@ -216,11 +216,11 @@ export interface FieldComponentProps {
 /** An error message for a form field, rendered when validation fails. Accepts an `errors` array from a form library such as TanStack Form. */
 export const FieldError = ({ className, children, errors, ...props }: FieldErrorProps) => {
 	const content = useMemo(() => {
-		if (children) {
+		if (children !== undefined) {
 			return children;
 		}
 
-		if (!errors?.length) {
+		if (errors === undefined || errors.length === 0) {
 			return null;
 		}
 
@@ -228,7 +228,7 @@ export const FieldError = ({ className, children, errors, ...props }: FieldError
 			...new Map(
 				errors
 					.map((error) => toErrorMessage(error))
-					.filter((message): message is string => !!message)
+					.filter((message): message is string => message !== undefined)
 					.map((message) => [message, message] as const),
 			).values(),
 		];
@@ -246,7 +246,7 @@ export const FieldError = ({ className, children, errors, ...props }: FieldError
 		);
 	}, [children, errors]);
 
-	if (!content) {
+	if (content === null || content === undefined) {
 		return null;
 	}
 

@@ -11,7 +11,7 @@ const NewRecipeLog = () => {
 			defaultValues={recipeToLogFormValues(recipe)}
 			mode="create"
 			onDone={() => {
-				navigate({ to: "/recipes/$recipeId/logs", params: { recipeId: String(recipe.id) } });
+				void navigate({ to: "/recipes/$recipeId/logs", params: { recipeId: String(recipe.id) } });
 			}}
 		/>
 	);
