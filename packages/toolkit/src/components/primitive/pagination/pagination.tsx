@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import type * as React from "react";
 import { Link } from "#components/link";
-import { cn } from "#lib/utils";
+import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Pagination} component. */
 export type PaginationProps = React.ComponentProps<"nav">;
@@ -57,7 +57,7 @@ export const PaginationLink = ({
 	<Link
 		variant={isActive === true ? "outline" : "ghost"}
 		size={size}
-		className={cn(className)}
+		className={className}
 		aria-current={isActive === true ? "page" : undefined}
 		data-slot="pagination-link"
 		data-active={isActive}
@@ -79,7 +79,7 @@ export const PaginationPrevious = ({
 	<PaginationLink
 		aria-label="Go to previous page"
 		size="default"
-		className={cn("pl-2!", className)}
+		className={composeTailwindRenderProps(className, "pl-2!")}
 		{...props}
 	>
 		<ChevronLeftIcon data-icon="inline-start" />
@@ -97,7 +97,7 @@ export const PaginationNext = ({ className, text = "Next", ...props }: Paginatio
 	<PaginationLink
 		aria-label="Go to next page"
 		size="default"
-		className={cn("pr-2!", className)}
+		className={composeTailwindRenderProps(className, "pr-2!")}
 		{...props}
 	>
 		<span className="hidden sm:block">{text}</span>
@@ -137,7 +137,11 @@ export const PaginationButton = ({
 	children,
 	...props
 }: PaginationButtonProps) => (
-	<PaginationLink isActive={isActive} className={cn("size-7 p-0", className)} {...props}>
+	<PaginationLink
+		isActive={isActive}
+		className={composeTailwindRenderProps(className, "size-7 p-0")}
+		{...props}
+	>
 		{children}
 	</PaginationLink>
 );
@@ -147,7 +151,11 @@ export type PaginationFirstProps = Omit<PaginationLinkProps, "size" | "children"
 
 /** A link that navigates to the first page. */
 export const PaginationFirst = ({ className, ...props }: PaginationFirstProps) => (
-	<PaginationLink aria-label="Go to first page" className={cn("size-7 p-0", className)} {...props}>
+	<PaginationLink
+		aria-label="Go to first page"
+		className={composeTailwindRenderProps(className, "size-7 p-0")}
+		{...props}
+	>
 		<ChevronsLeftIcon />
 	</PaginationLink>
 );
@@ -157,7 +165,11 @@ export type PaginationLastProps = Omit<PaginationLinkProps, "size" | "children">
 
 /** A link that navigates to the last page. */
 export const PaginationLast = ({ className, ...props }: PaginationLastProps) => (
-	<PaginationLink aria-label="Go to last page" className={cn("size-7 p-0", className)} {...props}>
+	<PaginationLink
+		aria-label="Go to last page"
+		className={composeTailwindRenderProps(className, "size-7 p-0")}
+		{...props}
+	>
 		<ChevronsRightIcon />
 	</PaginationLink>
 );
