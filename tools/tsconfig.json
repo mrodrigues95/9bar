@@ -8,5 +8,5 @@
 		"allowImportingTsExtensions": true,
 		"lib": ["ESNext", "DOM"]
 	},
-	"include": ["checks/**/*.ts", "control/**/*.ts"]
+	"include": ["checks/**/*.ts", "control/**/*.ts", "../vitest.config.ts"]
 }

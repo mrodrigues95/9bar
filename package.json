@@ -24,6 +24,7 @@
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
 		"typecheck": "pnpm -r typecheck && tsc -p tools",
+		"test": "vitest run",
 		"react-doctor": "react-doctor . --include-untracked",
 		"react-doctor:full": "react-doctor . --scope full"
 	},
@@ -41,7 +42,8 @@
 		"oxlint": "^1.94.0",
 		"react-doctor": "0.9.14",
 		"tsrs": "0.25.0-ts7.1.0-beta",
-		"typescript": "npm:@typescript/typescript6@^6.0.2"
+		"typescript": "npm:@typescript/typescript6@^6.0.2",
+		"vitest": "4.1.12"
 	},
 	"engines": {
 		"node": ">=24.0.0",
