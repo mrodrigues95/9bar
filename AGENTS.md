@@ -32,7 +32,10 @@ Before editing files for a substantial task:
 
 ## Verification
 
-Verification stops at lint, format, and typecheck. Add react-doctor when React code changed. Browser, dev-server, and end-to-end runs are user-initiated.
+1. `pnpm check` (lint, format, typecheck, structure).
+2. `pnpm test`. A logic bug starts with a failing test.
+3. `pnpm react-doctor` when React code changed.
+4. UI changes are proven in a real browser: the `verify-web` skill for apps/web, the `verify-toolkit` skill for packages/toolkit. Both drive the app through `pnpm control`, which starts and stops its own servers. Attach the screenshots or snapshots as evidence.
 
 ## Commit Messages
 
