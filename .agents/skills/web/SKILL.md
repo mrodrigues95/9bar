@@ -12,7 +12,7 @@ Repo-specific conventions on top of TanStack Start/Router. For framework-level g
 - Routes live in `src/routes/`; the route tree is auto-generated into `routeTree.gen.ts` — never edit it manually
 - Layout routes use the `_` prefix convention (e.g. `_authenticated`, `_unauthenticated`)
 - Pathless layout routes group related routes without affecting the URL (e.g. `recipes_/_form/`)
-- Private/co-located components use the `-` prefix convention (e.g. `-nav/nav.tsx`, `-form-sections/`)
+- Private/co-located components use the `-` prefix convention (e.g. `-nav/nav.tsx`, `recipes_/-form/`)
 - Breadcrumb data is attached to routes via `staticData`
 
 ## Forms

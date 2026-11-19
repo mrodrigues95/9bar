@@ -44,7 +44,7 @@ Load `toolkit`, `coding-standards`, `web`, and `a11y`, then classify every decis
 | Decision | Home | Companion work |
 | --- | --- | --- |
 | Tweak to an existing toolkit component (variant, prop, token) | `packages/toolkit/src/components/<tier>/<name>/` | story + overview section, same commit |
-| New reusable UI unit | toolkit — primitive or composed by the tier test | the full "Adding a New Component" flow |
+| New reusable UI unit | toolkit — primitive or composed by the tier test | the full "Adding a new component" flow |
 | Composition shared by ≥2 web routes, no domain | `apps/web/src/components/` | — |
 | Single-route composition, section, or screen | `apps/web/src/routes/...` (`route.tsx`, `-components/`, `-` siblings) | `web` route conventions |
 | Sample data, placeholder copy, inline sketches | dropped | replaced by the app's real data contract |
@@ -73,7 +73,7 @@ Write show-me artifacts outside the repo (e.g. `/tmp/show-me-convert-<variant>.h
 
 Follow the approved plan and the owning skill per piece:
 
-- **New toolkit component** → the `toolkit` skill's "Adding a New Component": tier decision, shadcn CLI from `apps/web`, directory move, barrel, JSDoc, story, overview section.
+- **New toolkit component** → the `toolkit` skill's "Adding a new component": tier decision, shadcn CLI from `apps/web`, directory move, barrel, JSDoc, story, overview section.
 - **Toolkit tweak** → extend the component's variants/props instead of overriding at the call site, then update its story and overview section.
 - **Web route** → the `web` skill's conventions (file-based routes, `_` layouts, `-` colocated components, breadcrumbs via `staticData`); load the matching TanStack intent skills for routing, data, and server functions.
 - **Every change** → `coding-standards` for placement, functions, types, booleans, and JSX; `a11y` for interactive pieces.
