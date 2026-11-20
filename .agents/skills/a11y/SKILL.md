@@ -30,4 +30,4 @@ When a field doesn't map to one React Aria field context (e.g. `InputGroupSelect
 - `Alert` is `role="alert"` (assertive): use it for errors that need attention now.
 - Status updates and confirmations ("Logged at 8:50 PM") go in a polite live region (`<output>` or `aria-live="polite"`).
 - One `main` per page, a labelled `nav` for each navigation (unique labels when there are several), `aria-current="page"` on the active link (toolkit `Link`, breadcrumb, and pagination support it).
-- Focus follows the spec's Feedback rules after save, delete, and validation (`research/recipes-and-logs-flows.md#feedback`); verify it with `focused` in `pnpm control` output.
+- Focus follows the spec's Feedback rules after save, delete, and validation (`docs/recipes-and-logs-flows.md#feedback`); verify it with `focused` in `pnpm control` output.
