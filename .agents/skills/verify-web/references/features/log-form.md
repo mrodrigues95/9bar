@@ -1,6 +1,6 @@
 # Log form
 
-The log sheet records a shot, with or without a recipe. It opens over the current page as a dialog. Save closes it; Save and log another keeps it open with the values prefilled. Spec: [Capture](../../../../../research/recipes-and-logs-flows.md#capture), [Feedback](../../../../../research/recipes-and-logs-flows.md#feedback).
+The log sheet records a shot, with or without a recipe. It opens over the current page as a dialog. Save closes it; Save and log another keeps it open with the values prefilled. Spec: [Capture](../../../../../docs/recipes-and-logs-flows.md#capture), [Feedback](../../../../../docs/recipes-and-logs-flows.md#feedback).
 
 ## Sub-features
 

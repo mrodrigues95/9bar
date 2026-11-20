@@ -74,7 +74,7 @@ Stops only the server and browser process groups that `launch` recorded, and rem
 
 ## Feature map
 
-[`references/features/`](references/features/README.md) has one file per feature: how a user reaches it, how to drive it, and what proves it. Behaviour is defined in [`research/recipes-and-logs-flows.md`](../../../research/recipes-and-logs-flows.md); the map links to it rather than restating it. Keep the map current with `/maintain-verification-skill`.
+[`references/features/`](references/features/README.md) has one file per feature: how a user reaches it, how to drive it, and what proves it. Behaviour is defined in [`docs/recipes-and-logs-flows.md`](../../../docs/recipes-and-logs-flows.md); the map links to it rather than restating it. Keep the map current with `/maintain-verification-skill`.
 
 ## Helpers
 

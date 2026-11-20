@@ -1,6 +1,6 @@
 # 9bar web verification map
 
-This directory is the maintained source for verifying apps/web from a user's point of view. Read this index, then use the matching feature file as the recipe. Behaviour is specified in [`research/recipes-and-logs-flows.md`](../../../../../research/recipes-and-logs-flows.md); feature files link to its sections.
+This directory is the maintained source for verifying apps/web from a user's point of view. Read this index, then use the matching feature file as the recipe. Behaviour is specified in [`docs/recipes-and-logs-flows.md`](../../../../../docs/recipes-and-logs-flows.md); feature files link to its sections.
 
 ## Baseline
 

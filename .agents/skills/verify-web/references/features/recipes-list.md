@@ -1,6 +1,6 @@
 # Recipes list
 
-One flat list of recipes, attached logs, and quick logs, 10 per page, with search and filters whose state lives in the URL. Spec: [Recipes list](../../../../../research/recipes-and-logs-flows.md#recipes-list).
+One flat list of recipes, attached logs, and quick logs, 10 per page, with search and filters whose state lives in the URL. Spec: [Recipes list](../../../../../docs/recipes-and-logs-flows.md#recipes-list).
 
 ## Sub-features
 

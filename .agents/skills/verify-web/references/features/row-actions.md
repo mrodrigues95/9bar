@@ -1,6 +1,6 @@
 # Row actions
 
-Each row in the Recipes list (and the overview header) has an actions menu whose items depend on the row type. Spec: [Actions by surface](../../../../../research/recipes-and-logs-flows.md#actions-by-surface), [Delete](../../../../../research/recipes-and-logs-flows.md#delete), [Attach to recipe](../../../../../research/recipes-and-logs-flows.md#attach-to-recipe).
+Each row in the Recipes list (and the overview header) has an actions menu whose items depend on the row type. Spec: [Actions by surface](../../../../../docs/recipes-and-logs-flows.md#actions-by-surface), [Delete](../../../../../docs/recipes-and-logs-flows.md#delete), [Attach to recipe](../../../../../docs/recipes-and-logs-flows.md#attach-to-recipe).
 
 ## Sub-features
 

@@ -1,6 +1,6 @@
 # Recipe overview
 
-A recipe page with three tabs: Overview (settings and status), Logs (attached logs, filterable, paginated), and History (each settings change, filterable, paginated). Each tab has its own URL. Spec: [Overview](../../../../../research/recipes-and-logs-flows.md#overview), [Logs tab](../../../../../research/recipes-and-logs-flows.md#logs-tab), [History tab](../../../../../research/recipes-and-logs-flows.md#history-tab), [Status](../../../../../research/recipes-and-logs-flows.md#status).
+A recipe page with three tabs: Overview (settings and status), Logs (attached logs, filterable, paginated), and History (each settings change, filterable, paginated). Each tab has its own URL. Spec: [Overview](../../../../../docs/recipes-and-logs-flows.md#overview), [Logs tab](../../../../../docs/recipes-and-logs-flows.md#logs-tab), [History tab](../../../../../docs/recipes-and-logs-flows.md#history-tab), [Status](../../../../../docs/recipes-and-logs-flows.md#status).
 
 ## Sub-features
 

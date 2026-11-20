@@ -1,6 +1,6 @@
 # Recipe form
 
-A full-page form to create or edit a recipe. Required fields show inline errors on submit. Spec: [Create and edit](../../../../../research/recipes-and-logs-flows.md#create-and-edit), [Duplicate](../../../../../research/recipes-and-logs-flows.md#duplicate), [Feedback](../../../../../research/recipes-and-logs-flows.md#feedback).
+A full-page form to create or edit a recipe. Required fields show inline errors on submit. Spec: [Create and edit](../../../../../docs/recipes-and-logs-flows.md#create-and-edit), [Duplicate](../../../../../docs/recipes-and-logs-flows.md#duplicate), [Feedback](../../../../../docs/recipes-and-logs-flows.md#feedback).
 
 ## Sub-features
 
