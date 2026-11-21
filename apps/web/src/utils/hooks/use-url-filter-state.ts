@@ -2,13 +2,26 @@ import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import type { FilterBarFilterState } from "@9bar/toolkit/components/composed";
-import {
-	applyDraft,
-	type QueryDraft,
-	reconcileDraft,
-	resolveView,
-	type UrlFilterIntent,
-} from "./url-filter-draft";
+
+export interface UrlFilterIntent {
+	q: string;
+	filters: Array<FilterBarFilterState>;
+	page: number;
+}
+
+export interface QueryDraft {
+	q: string;
+	baseKey: string;
+}
+
+export const reconcileDraft = (draft: QueryDraft | null, urlKey: string) =>
+	draft !== null && draft.baseKey === urlKey ? draft : null;
+
+export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null): UrlFilterIntent =>
+	draft === null ? url : { ...url, q: draft.q, page: 1 };
+
+export const applyDraft = (draft: QueryDraft, current: UrlFilterIntent, currentKey: string) =>
+	currentKey === draft.baseKey ? { ...current, q: draft.q, page: 1 } : null;
 
 interface DecodedUrlFilters {
 	q?: string;
