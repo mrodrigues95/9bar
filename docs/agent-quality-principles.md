@@ -1,6 +1,6 @@
 # Agent quality: principles
 
-Use when deciding how to stop an agent mistake from coming back, or when adding a rule, lint, check, or skill. Describes the model behind the repo's checks, not the checks themselves. The enforcers are listed in `AGENTS.md`.
+Use when deciding how to stop an agent mistake from coming back, or when adding a rule, lint, check, or skill. Describes the model behind the repo's checks, not the checks themselves. The enforcers are listed in `AGENTS.md`. `/correct` reads this before picking a fix.
 
 ## The goal
 
@@ -16,7 +16,7 @@ Each layer is less reliable than the one above it. Fix a problem at the highest 
 | 2. Static       | Make the wrong thing fail in CI, with an error that names the fix. | oxlint + `anti-slop` + `landmines`, type-aware lint (tsrs), tsc, `check:structure` |
 | 3. Verification | Make the agent prove the change on the running thing.              | Vitest + fast-check, Storybook story tests with axe, `pnpm control`, verify skills |
 | 4. Prose        | Judgment calls only, phrased without "unless" or "only when".      | `AGENTS.md` rule table, skills                                                     |
-| 5. Human review | The exception path.                                                | `/correct`, `/no-comments`                                                         |
+| 5. Human review | The exception path.                                                | `/correct`                                                                         |
 
 ## Principles by layer
 
@@ -61,7 +61,7 @@ Each layer is less reliable than the one above it. Fix a problem at the highest 
 
 | Note                                      | Layer | Lands as                                                         |
 | ----------------------------------------- | ----- | ---------------------------------------------------------------- |
-| Ban useEffect and comments                | 2     | `anti-slop/no-effect`, `anti-slop/no-comments`, `/no-comments`   |
+| Ban useEffect and comments                | 2     | `anti-slop/no-effect`, `anti-slop/no-comments`                   |
 | Create a feature map                      | 3     | `verify-web` feature map; toolkit uses the Storybook story index |
 | Avoid nuance, design better APIs          | 1     | `cn` type, import boundaries, React Compiler memo ban            |
 | If you correct the agent, lint against it | 5→1–3 | `/correct` replaces `reflect`, enforcement table in `AGENTS.md`  |
