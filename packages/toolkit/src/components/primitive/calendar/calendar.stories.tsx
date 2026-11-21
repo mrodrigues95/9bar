@@ -13,8 +13,8 @@ import {
 	CalendarNextButton,
 	CalendarPreviousButton,
 	CalendarYearPicker,
-	type CalendarGridProps,
 } from "./calendar";
+import type { CalendarGridProps } from "./calendar";
 
 const meta = {
 	component: Calendar,

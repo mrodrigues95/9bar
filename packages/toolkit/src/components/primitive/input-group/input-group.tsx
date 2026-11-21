@@ -1,8 +1,9 @@
 "use client";
 
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import { Group, type GroupProps } from "react-aria-components";
+import { Group } from "react-aria-components";
+import type { GroupProps } from "react-aria-components";
 import { Button } from "#components/button";
 import { Input } from "#components/input";
 import { Textarea } from "#components/textarea";

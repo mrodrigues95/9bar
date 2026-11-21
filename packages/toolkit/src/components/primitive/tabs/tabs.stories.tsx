@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Cog, FileText, Home, Search } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger, type TabsProps } from "./tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import type { TabsProps } from "./tabs";
 
 const meta = {
 	title: "Primitives/Tabs",

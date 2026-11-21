@@ -1,11 +1,8 @@
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Badge, Text } from "@9bar/toolkit/components";
-import {
-	readStoredPins,
-	writeStoredPins,
-	type FeedbackPin,
-	type PinnedTarget,
-} from "../../utils/pins";
+import { readStoredPins, writeStoredPins } from "../../utils/pins";
+import type { FeedbackPin, PinnedTarget } from "../../utils/pins";
 import { PinComposer } from "./pin-composer";
 import { PinList } from "./pin-list";
 
@@ -66,7 +63,7 @@ const buildSelector = (el: Element, root: Element) => {
 };
 
 const getTargetInfo = (el: Element, root: Element) => {
-	const rawText = el.textContent.replace(/\s+/g, " ").trim();
+	const rawText = el.textContent.replaceAll(/\s+/g, " ").trim();
 	const dataSlot = el.closest("[data-slot]")?.getAttribute("data-slot") ?? null;
 	return {
 		selector: buildSelector(el, root),

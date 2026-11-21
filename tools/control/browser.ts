@@ -1,16 +1,12 @@
 import { appendFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-import { chromium, type ConsoleMessage, type Page } from "playwright-core";
+import { chromium } from "playwright-core";
+import type { ConsoleMessage, Page } from "playwright-core";
 import { z } from "zod";
 import { fail } from "./output.ts";
 import { responds } from "./processes.ts";
-import {
-	eventsPath,
-	readState,
-	type ControlState,
-	type EventLog,
-	type RecordedEvent,
-} from "./state.ts";
+import { eventsPath, readState } from "./state.ts";
+import type { ControlState, EventLog, RecordedEvent } from "./state.ts";
 
 export const chromiumPath = () => chromium.executablePath();
 

@@ -1,24 +1,23 @@
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
 	Header as AriaHeader,
 	ListBox as AriaListBox,
 	ListBoxItem as AriaListBoxItem,
-	type ListBoxItemProps as AriaListBoxItemProps,
-	type ListBoxProps as AriaListBoxProps,
 	ListBoxSection as AriaListBoxSection,
-	type ListBoxSectionProps as AriaListBoxSectionProps,
 	Collection,
 	composeRenderProps,
 } from "react-aria-components";
-import {
-	cn,
-	composeTailwindRenderProps,
-	resolveItemTextValue,
-	type ItemLabelProps,
-} from "../../../utils";
-import { Separator, type SeparatorProps } from "../separator/separator";
+import type {
+	ListBoxItemProps as AriaListBoxItemProps,
+	ListBoxProps as AriaListBoxProps,
+	ListBoxSectionProps as AriaListBoxSectionProps,
+} from "react-aria-components";
+import { cn, composeTailwindRenderProps, resolveItemTextValue } from "../../../utils";
+import type { ItemLabelProps } from "../../../utils";
+import { Separator } from "../separator/separator";
+import type { SeparatorProps } from "../separator/separator";
 import { listboxItemVariants, listboxSectionHeaderVariants } from "./styles";
 
 /** Props for the {@link Listbox} component. */

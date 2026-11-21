@@ -1,11 +1,6 @@
 import type * as React from "react";
-import {
-	Popover as AriaPopover,
-	type PopoverProps as AriaPopoverProps,
-	DialogTrigger,
-	type DialogTriggerProps,
-	Heading,
-} from "react-aria-components";
+import { Popover as AriaPopover, DialogTrigger, Heading } from "react-aria-components";
+import type { PopoverProps as AriaPopoverProps, DialogTriggerProps } from "react-aria-components";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { popoverVariants } from "./styles";
 

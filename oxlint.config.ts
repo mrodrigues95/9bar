@@ -46,6 +46,8 @@ export default defineConfig({
 		"eslint/func-style": ["error", "expression"],
 		"unicorn/explicit-length-check": "error",
 		"import/no-cycle": "error",
+		// EXTERNAL(https://zod.dev/api#catch): Zod schemas end in `.catch(fallback)`, which this rule reads as a promise chain.
+		"unicorn/prefer-top-level-await": "off",
 	},
 	overrides: [
 		...(cloudflare.overrides ?? []),
@@ -79,15 +81,6 @@ export default defineConfig({
 		{
 			files: ["**/*"],
 			rules: {
-				"import/consistent-type-specifier-style": "off",
-				"typescript/consistent-type-imports": "off",
-				"typescript/no-import-type-side-effects": "off",
-				"unicorn/prefer-native-coercion-functions": "off",
-				"unicorn/prefer-string-replace-all": "off",
-				"unicorn/prefer-number-properties": "off",
-				"unicorn/prefer-set-has": "off",
-				"unicorn/text-encoding-identifier-case": "off",
-				"unicorn/prefer-top-level-await": "off",
 				"typescript/no-unsafe-member-access": "off",
 				"typescript/no-unsafe-return": "off",
 				"typescript/no-empty-object-type": "off",

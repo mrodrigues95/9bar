@@ -1,13 +1,14 @@
-import { createLink, type RegisteredRouter } from "@tanstack/react-router";
+import { createLink } from "@tanstack/react-router";
+import type { RegisteredRouter } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import {
 	BreadcrumbItem as ToolkitBreadcrumbItem,
 	BreadcrumbLink as ToolkitBreadcrumbLink,
 	BreadcrumbList as ToolkitBreadcrumbList,
 	BreadcrumbPage as ToolkitBreadcrumbPage,
-	type BreadcrumbsProps as ToolkitBreadcrumbsProps,
 } from "@9bar/toolkit/components";
-import { type LinkProps } from "../link/link";
+import type { BreadcrumbsProps as ToolkitBreadcrumbsProps } from "@9bar/toolkit/components";
+import type { LinkProps } from "../link/link";
 
 const BreadcrumbLink = createLink(ToolkitBreadcrumbLink);
 

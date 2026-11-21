@@ -6,10 +6,12 @@ import {
 	Breadcrumb as AriaBreadcrumb,
 	Breadcrumbs as AriaBreadcrumbs,
 	Link as AriaLink,
-	type BreadcrumbProps as AriaBreadcrumbProps,
-	type BreadcrumbsProps,
 	composeRenderProps,
-	type LinkProps,
+} from "react-aria-components";
+import type {
+	BreadcrumbProps as AriaBreadcrumbProps,
+	BreadcrumbsProps,
+	LinkProps,
 } from "react-aria-components";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 

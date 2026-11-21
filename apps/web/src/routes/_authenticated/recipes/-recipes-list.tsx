@@ -21,10 +21,11 @@ import {
 	VERDICT_LABELS,
 	grinderName,
 	machineName,
-	type BrewSnapshot,
 } from "../../../utils/data";
+import type { BrewSnapshot } from "../../../utils/data";
 import { formatBrewTime, formatGrams, formatShotAt } from "../../../utils/format";
-import { ROW_KIND_NAMES, type RecipesListRow } from "./-recipes-query";
+import { ROW_KIND_NAMES } from "./-recipes-query";
+import type { RecipesListRow } from "./-recipes-query";
 
 const UNTITLED_NAME = "(Untitled)";
 

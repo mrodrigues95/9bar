@@ -1,9 +1,5 @@
-import {
-	BREW_FIELDS,
-	formatBrewField,
-	isSameBrewField,
-	type BrewField,
-} from "../../../../utils/brew-fields";
+import { BREW_FIELDS, formatBrewField, isSameBrewField } from "../../../../utils/brew-fields";
+import type { BrewField } from "../../../../utils/brew-fields";
 import { getRecipeSnapshots } from "../../../../utils/data";
 
 interface HistoryChange {

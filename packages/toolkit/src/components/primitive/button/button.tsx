@@ -1,6 +1,7 @@
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import { Button as AriaButton, type ButtonProps as AriaButtonProps } from "react-aria-components";
+import { Button as AriaButton } from "react-aria-components";
+import type { ButtonProps as AriaButtonProps } from "react-aria-components";
 import { composeTailwindRenderProps } from "#lib/utils";
 import { buttonVariants } from "./styles";
 

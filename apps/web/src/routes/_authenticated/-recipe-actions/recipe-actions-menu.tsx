@@ -1,8 +1,10 @@
 import { Copy, Pencil, RotateCcw, Trash2 } from "lucide-react";
 import { ConfirmDialog } from "../../../components";
 import type { Recipe } from "../../../utils/data";
-import { useConfirmDialogAction, type OpenConfirmDialog } from "../../../utils/hooks";
-import { resolveActionDefinitions, type ActionDefinition } from "./action-definitions";
+import { useConfirmDialogAction } from "../../../utils/hooks";
+import type { OpenConfirmDialog } from "../../../utils/hooks";
+import { resolveActionDefinitions } from "./action-definitions";
+import type { ActionDefinition } from "./action-definitions";
 import { ActionsMenu } from "./actions-menu";
 
 const notImplemented = () => undefined;

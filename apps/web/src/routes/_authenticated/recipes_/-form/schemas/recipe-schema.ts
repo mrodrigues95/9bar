@@ -1,22 +1,15 @@
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
-import {
-	METHOD_OPTIONS,
-	RECIPE_STATUS_OPTIONS,
-	type LogGraph,
-	type RecipeGraph,
-	type RecipeStatus,
-} from "../../../../../utils/data";
+import { METHOD_OPTIONS, RECIPE_STATUS_OPTIONS } from "../../../../../utils/data";
+import type { LogGraph, RecipeGraph, RecipeStatus } from "../../../../../utils/data";
 import { additionalDetailsDefaults } from "../sections/additional-details-fields";
 import { basicInformationDefaults } from "../sections/basic-information-fields";
 import { brewParametersDefaults } from "../sections/brew-parameters-fields";
-import {
-	coercedNumber,
-	inputGroupSelectValue,
-	snapshotToFormFields,
-	type AdditionalDetailsValues,
-	type BasicInformationValues,
-	type BrewParametersValues,
+import { coercedNumber, inputGroupSelectValue, snapshotToFormFields } from "./field-schema";
+import type {
+	AdditionalDetailsValues,
+	BasicInformationValues,
+	BrewParametersValues,
 } from "./field-schema";
 
 export interface RecipeFormValues

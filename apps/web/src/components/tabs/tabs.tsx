@@ -1,10 +1,7 @@
-import {
-	type RegisteredRouter,
-	type UseLinkPropsOptions,
-	useLinkProps,
-	useRouter,
-} from "@tanstack/react-router";
-import { TabsTrigger, type TabsTriggerProps } from "@9bar/toolkit/components";
+import { useLinkProps, useRouter } from "@tanstack/react-router";
+import type { RegisteredRouter, UseLinkPropsOptions } from "@tanstack/react-router";
+import { TabsTrigger } from "@9bar/toolkit/components";
+import type { TabsTriggerProps } from "@9bar/toolkit/components";
 
 type TabLinkProps<
 	TRouter extends RegisteredRouter = RegisteredRouter,

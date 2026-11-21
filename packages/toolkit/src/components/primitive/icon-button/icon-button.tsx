@@ -1,5 +1,6 @@
 import type * as React from "react";
-import { Button, type ButtonProps } from "../button/button";
+import { Button } from "../button/button";
+import type { ButtonProps } from "../button/button";
 
 const iconButtonSizeMap = {
 	xs: "icon-xs",

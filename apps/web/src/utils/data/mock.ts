@@ -1,14 +1,14 @@
 import { toLabels } from "../utils";
-import {
-	type BrewSnapshot,
-	type BrewValues,
-	type Log,
-	type LogGraph,
-	type Method,
-	type Recipe,
-	type RecipeGraph,
-	type RecipeStatus,
-	type Verdict,
+import type {
+	BrewSnapshot,
+	BrewValues,
+	Log,
+	LogGraph,
+	Method,
+	Recipe,
+	RecipeGraph,
+	RecipeStatus,
+	Verdict,
 } from "./tables";
 
 const brewSnapshots: Array<BrewSnapshot> = [];

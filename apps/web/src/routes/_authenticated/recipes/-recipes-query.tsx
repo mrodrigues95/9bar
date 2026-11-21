@@ -11,10 +11,8 @@ import {
 	getRecipeLogs,
 	logs,
 	recipes,
-	type BrewSnapshot,
-	type Log,
-	type Recipe,
 } from "../../../utils/data";
+import type { BrewSnapshot, Log, Recipe } from "../../../utils/data";
 import {
 	DEFAULT_FILTER_OPERATOR_ID,
 	FILTER_OPERATOR_PAIRS,

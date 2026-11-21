@@ -5,23 +5,21 @@ import {
 	Header as AriaHeader,
 	Menu as AriaMenu,
 	MenuItem as AriaMenuItem,
-	type MenuItemProps as AriaMenuItemProps,
 	MenuSection as AriaMenuSection,
-	type MenuSectionProps as AriaMenuSectionProps,
 	MenuTrigger as AriaMenuTrigger,
 	Popover as AriaPopover,
 	SubmenuTrigger as AriaSubmenuTrigger,
 	composeRenderProps,
 } from "react-aria-components";
+import type {
+	MenuItemProps as AriaMenuItemProps,
+	MenuSectionProps as AriaMenuSectionProps,
+} from "react-aria-components";
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import {
-	cn,
-	composeTailwindRenderProps,
-	resolveItemTextValue,
-	type ItemLabelProps,
-} from "#lib/utils";
+import { cn, composeTailwindRenderProps, resolveItemTextValue } from "#lib/utils";
+import type { ItemLabelProps } from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
 export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;

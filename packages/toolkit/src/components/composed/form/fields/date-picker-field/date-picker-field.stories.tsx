@@ -1,7 +1,8 @@
 import { CalendarDateTime, parseDateTime } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { DatePickerField, type DatePickerValueCodec } from "./date-picker-field";
+import { DatePickerField } from "./date-picker-field";
+import type { DatePickerValueCodec } from "./date-picker-field";
 
 const meta = {
 	component: DatePickerField,

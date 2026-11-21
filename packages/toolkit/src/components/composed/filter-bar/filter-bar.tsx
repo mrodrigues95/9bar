@@ -1,10 +1,8 @@
 import { Plus } from "lucide-react";
-import { useState, type ReactNode } from "react";
-import {
-	Toolbar as AriaToolbar,
-	type ToolbarProps as AriaToolbarProps,
-	type Selection,
-} from "react-aria-components";
+import { useState } from "react";
+import type { ReactNode } from "react";
+import { Toolbar as AriaToolbar } from "react-aria-components";
+import type { ToolbarProps as AriaToolbarProps, Selection } from "react-aria-components";
 import { IconButton } from "#components/icon-button";
 import {
 	Menu,

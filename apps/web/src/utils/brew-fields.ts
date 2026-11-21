@@ -10,7 +10,8 @@ import {
 	Thermometer,
 	Timer,
 } from "lucide-react";
-import { METHOD_LABELS, grinderName, machineName, type BrewSnapshot } from "./data";
+import { METHOD_LABELS, grinderName, machineName } from "./data";
+import type { BrewSnapshot } from "./data";
 import { formatBrewTime, formatGrams, formatPressure, formatTemperature } from "./format";
 
 export const BREW_FIELDS = [

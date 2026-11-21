@@ -1,10 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import type { Ref } from "react";
-import {
-	Link as AriaLink,
-	type LinkProps as AriaLinkProps,
-	composeRenderProps,
-} from "react-aria-components";
+import { Link as AriaLink, composeRenderProps } from "react-aria-components";
+import type { LinkProps as AriaLinkProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 import { buttonVariants } from "../button/styles";
 

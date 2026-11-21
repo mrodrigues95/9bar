@@ -9,23 +9,22 @@ import {
 	Select as AriaSelect,
 	SelectValue as AriaSelectValue,
 	composeRenderProps,
-	type ListBoxProps,
 	SearchField,
-	type SearchFieldProps,
-	type ListBoxSectionProps as AriaListBoxSectionProps,
-	type SelectProps,
-	type SelectValueProps,
 } from "react-aria-components";
-import { Button, type ButtonProps } from "#components/button";
+import type {
+	ListBoxProps,
+	SearchFieldProps,
+	ListBoxSectionProps as AriaListBoxSectionProps,
+	SelectProps,
+	SelectValueProps,
+} from "react-aria-components";
+import { Button } from "#components/button";
+import type { ButtonProps } from "#components/button";
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
-import {
-	cn,
-	composeTailwindRenderProps,
-	resolveItemTextValue,
-	type ItemLabelProps,
-} from "#lib/utils";
+import { cn, composeTailwindRenderProps, resolveItemTextValue } from "#lib/utils";
+import type { ItemLabelProps } from "#lib/utils";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
 
 /** Props for the {@link Select} component. */

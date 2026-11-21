@@ -1,17 +1,18 @@
 import { existsSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
-import { type Failure, fromRoot, relativeImports, toRepoPath, walkFiles } from "./files.ts";
+import { fromRoot, relativeImports, toRepoPath, walkFiles } from "./files.ts";
+import type { Failure } from "./files.ts";
 
 const webSource = fromRoot("apps/web/src");
 const routesRoot = join(webSource, "routes");
-const SHARED_AREAS = ["components", "utils"];
+const SHARED_AREAS = new Set(["components", "utils"]);
 
 const isSourceFile = (file: string) =>
 	!basename(file).includes(".gen.") && !basename(file).includes(".test.");
 
 const sharedModuleOf = (file: string) => {
 	const [area, name] = relative(webSource, file).split(sep);
-	if (area === undefined || !SHARED_AREAS.includes(area) || name === undefined) {
+	if (area === undefined || !SHARED_AREAS.has(area) || name === undefined) {
 		return undefined;
 	}
 	return join(webSource, area, name.replace(/\.tsx?$/u, ""));

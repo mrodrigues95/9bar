@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
-import { Group as AriaGroup, type Key, type Selection } from "react-aria-components";
+import { Group as AriaGroup } from "react-aria-components";
+import type { Key, Selection } from "react-aria-components";
 import { Button } from "#components/button";
 import { IconButton } from "#components/icon-button";
 import { Menu, MenuItem, MenuTrigger } from "#components/menu";

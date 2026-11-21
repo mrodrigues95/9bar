@@ -2,21 +2,16 @@ import type { ReactNode } from "react";
 import { useId } from "react";
 import { CheckboxGroup } from "react-aria-components";
 import {
-	type FieldComponentProps,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
-	type FieldLabelProps,
 	getFieldDescribedBy,
 } from "#components/field";
+import type { FieldComponentProps, FieldLabelProps } from "#components/field";
 import { cn } from "#lib/utils";
-import {
-	getFieldErrorState,
-	resolveFieldErrors,
-	resolveFormFieldErrors,
-	type ErrorFormatter,
-} from "../../utils/errors";
+import { getFieldErrorState, resolveFieldErrors, resolveFormFieldErrors } from "../../utils/errors";
+import type { ErrorFormatter } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link CheckboxGroupField} component. */

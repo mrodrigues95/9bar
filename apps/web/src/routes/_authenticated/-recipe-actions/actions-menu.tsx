@@ -1,4 +1,5 @@
-import { EllipsisVertical, type LucideIcon } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Fragment } from "react";
 import { IconButton, Menu, MenuItem, MenuSeparator, MenuTrigger } from "@9bar/toolkit/components";
 import { MenuItemLink } from "../../../components";

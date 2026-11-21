@@ -1,6 +1,7 @@
 import { createRootRoute, HeadContent, Outlet, Scripts, useRouter } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { StrictMode, type ReactNode, Suspense } from "react";
+import { StrictMode, Suspense } from "react";
+import type { ReactNode } from "react";
 import { RouterProvider } from "react-aria-components";
 import css from "../styles/globals.css?url";
 
@@ -43,7 +44,7 @@ export const Route = createRootRoute({
 	head: () => ({
 		meta: [
 			{
-				charSet: "utf-8",
+				charSet: "utf8",
 			},
 			{
 				name: "viewport",

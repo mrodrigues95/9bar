@@ -1,4 +1,5 @@
-import { useId, type ReactNode } from "react";
+import { useId } from "react";
+import type { ReactNode } from "react";
 import { Text } from "@9bar/toolkit/components";
 
 export const Picker = ({ label, children }: { label: string; children: ReactNode }) => {

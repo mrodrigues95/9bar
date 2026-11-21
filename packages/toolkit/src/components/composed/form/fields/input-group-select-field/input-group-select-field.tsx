@@ -1,36 +1,27 @@
 import { useId } from "react";
 import {
 	Field,
-	type FieldComponentProps,
 	FieldDescription,
 	FieldError,
 	FieldLabel,
-	type FieldLabelProps,
 	getFieldDescribedBy,
 } from "#components/field";
+import type { FieldComponentProps, FieldLabelProps } from "#components/field";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-	type InputGroupInputProps,
-	type InputGroupProps,
 	InputGroupSelectTrigger,
-	type InputGroupSelectTriggerProps,
 } from "#components/input-group";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectList,
-	type SelectProps,
-	SelectValue,
-} from "#components/select";
-import {
-	getFieldErrorState,
-	resolveFieldErrors,
-	resolveFormFieldErrors,
-	type ErrorFormatter,
-} from "../../utils/errors";
+import type {
+	InputGroupInputProps,
+	InputGroupProps,
+	InputGroupSelectTriggerProps,
+} from "#components/input-group";
+import { Select, SelectContent, SelectItem, SelectList, SelectValue } from "#components/select";
+import type { SelectProps } from "#components/select";
+import { getFieldErrorState, resolveFieldErrors, resolveFormFieldErrors } from "../../utils/errors";
+import type { ErrorFormatter } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
 /** An item in the select dropdown of an InputGroupSelectField. */

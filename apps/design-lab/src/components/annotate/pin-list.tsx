@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Card, CardContent, CardHeader, Heading, Text } from "@9bar/toolkit/components";
 import { copyText } from "../../utils/clipboard";
-import { pinsToMarkdown, type FeedbackPin } from "../../utils/pins";
+import { pinsToMarkdown } from "../../utils/pins";
+import type { FeedbackPin } from "../../utils/pins";
 
 type PinListProps = {
 	variantId: string;

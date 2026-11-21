@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SelectItem } from "#components/select";
-import { SelectField, type SelectFieldProps } from "./select-field";
+import { SelectField } from "./select-field";
+import type { SelectFieldProps } from "./select-field";
 
 const items = [
 	{ id: "apple", name: "Apple" },

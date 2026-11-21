@@ -14,7 +14,8 @@ import {
 	ListRowHeading,
 } from "../../../../../components";
 import { BREW_FIELD_ICONS } from "../../../../../utils/brew-fields";
-import { VERDICT_LABELS, grinderName, machineName, type Recipe } from "../../../../../utils/data";
+import { VERDICT_LABELS, grinderName, machineName } from "../../../../../utils/data";
+import type { Recipe } from "../../../../../utils/data";
 import { formatBrewTime, formatGrams, formatShotAt } from "../../../../../utils/format";
 import type { RecipeLogRow } from "./-recipe-logs-query";
 

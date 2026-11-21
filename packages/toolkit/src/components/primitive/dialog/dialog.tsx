@@ -6,12 +6,16 @@ import {
 	Heading as AriaHeading,
 	Modal as AriaModal,
 	ModalOverlay as AriaModalOverlay,
-	type DialogTriggerProps as AriaDialogTriggerProps,
-	type HeadingProps as AriaHeadingProps,
-	type ModalOverlayProps as AriaModalOverlayProps,
 } from "react-aria-components";
-import { Button, type ButtonProps } from "#components/button";
-import { IconButton, type IconButtonProps } from "#components/icon-button";
+import type {
+	DialogTriggerProps as AriaDialogTriggerProps,
+	HeadingProps as AriaHeadingProps,
+	ModalOverlayProps as AriaModalOverlayProps,
+} from "react-aria-components";
+import { Button } from "#components/button";
+import type { ButtonProps } from "#components/button";
+import { IconButton } from "#components/icon-button";
+import type { IconButtonProps } from "#components/icon-button";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { dialogContentVariants, dialogOverlayVariants } from "./styles";
 

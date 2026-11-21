@@ -20,9 +20,10 @@ import {
 	BREW_FIELD_LABELS,
 	formatBrewField,
 	isSameBrewField,
-	type BrewField,
 } from "../../../utils/brew-fields";
-import { buildRecipeGraph, recipes, type BrewSnapshot, type LogGraph } from "../../../utils/data";
+import type { BrewField } from "../../../utils/brew-fields";
+import { buildRecipeGraph, recipes } from "../../../utils/data";
+import type { BrewSnapshot, LogGraph } from "../../../utils/data";
 import { formatGrams, formatPressure } from "../../../utils/format";
 
 const formatDelta = (difference: number, format: (value: number) => string) => {

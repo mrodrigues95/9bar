@@ -7,7 +7,7 @@ import { Link } from "../components";
 const filePath = "count.txt";
 
 const readCount = async () =>
-	parseInt(await fs.promises.readFile(filePath, "utf-8").catch(() => "0"), 10);
+	Number.parseInt(await fs.promises.readFile(filePath, "utf8").catch(() => "0"), 10);
 
 const getCount = createServerFn({
 	method: "GET",

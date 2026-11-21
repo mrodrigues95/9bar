@@ -1,13 +1,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import {
-	type Failure,
-	fromRoot,
-	listDirectories,
-	readText,
-	toRepoPath,
-	walkFiles,
-} from "./files.ts";
+import { fromRoot, listDirectories, readText, toRepoPath, walkFiles } from "./files.ts";
+import type { Failure } from "./files.ts";
 
 const toolkitSource = fromRoot("packages/toolkit/src");
 const componentsRoot = join(toolkitSource, "components");

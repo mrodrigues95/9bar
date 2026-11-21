@@ -1,5 +1,6 @@
 import type * as React from "react";
-import { Button, type ButtonProps } from "#components/button";
+import { Button } from "#components/button";
+import type { ButtonProps } from "#components/button";
 import { useFormContext } from "./utils/form-context";
 
 /** Props for the {@link FormSubmitButton} component. */
