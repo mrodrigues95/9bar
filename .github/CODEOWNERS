@@ -1,4 +1,6 @@
-**/.oxlintrc.json @mrodrigues95
+/oxlint.config.ts @mrodrigues95
+/oxfmt.config.ts @mrodrigues95
+/tools/config/ @mrodrigues95
 /tools/oxlint/ @mrodrigues95
 /tools/checks/ @mrodrigues95
 /.github/ @mrodrigues95
