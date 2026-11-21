@@ -14,10 +14,10 @@ import {
 	InputGroupInput,
 	type InputGroupInputProps,
 	type InputGroupProps,
-} from "#components/input-group";
-import {
 	InputGroupSelectTrigger,
 	type InputGroupSelectTriggerProps,
+} from "#components/input-group";
+import {
 	Select,
 	SelectContent,
 	SelectItem,

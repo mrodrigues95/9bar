@@ -3,14 +3,7 @@ import { CircleAlert, Search } from "lucide-react";
 import { useId } from "react";
 import { Field } from "../field/field";
 import { Label } from "../label/label";
-import {
-	InputGroupSelectTrigger,
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectList,
-	SelectValue,
-} from "../select/select";
+import { Select, SelectContent, SelectItem, SelectList, SelectValue } from "../select/select";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -18,6 +11,7 @@ import {
 	InputGroupInput,
 	InputGroupText,
 } from "./input-group";
+import { InputGroupSelectTrigger } from "./input-group-select-trigger";
 
 const meta = {
 	component: InputGroup,
