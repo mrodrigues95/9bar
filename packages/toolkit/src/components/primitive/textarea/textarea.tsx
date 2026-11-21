@@ -1,12 +1,12 @@
 "use client";
 
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import { TextArea as AriaTextArea, composeRenderProps } from "react-aria-components";
 import { inputVariants } from "#components/input";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Textarea} component. */
-export type TextareaProps = React.ComponentProps<typeof AriaTextArea>;
+export type TextareaProps = ComponentProps<typeof AriaTextArea>;
 
 /** A multi-line text input for longer user-entered values, typically used inside a {@link Field}. */
 export const Textarea = ({ className, ...props }: TextareaProps) => (

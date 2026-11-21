@@ -11,8 +11,7 @@ const EditRecipe = () => {
 	const form = useAppForm({
 		...recipeFormOpts,
 		defaultValues: recipeToFormValues(recipe),
-		onSubmit: async ({ value }) => {
-			console.log("Recipe updated:", value);
+		onSubmit: async () => {
 			await navigate({
 				to: "/recipes/$recipeId",
 				params: { recipeId: String(recipe.id) },

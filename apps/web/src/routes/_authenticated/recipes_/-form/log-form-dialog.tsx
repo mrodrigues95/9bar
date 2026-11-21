@@ -28,7 +28,6 @@ export const LogFormDialog = ({ defaultValues, mode, onDone }: LogFormDialogProp
 		...logFormOpts,
 		defaultValues,
 		onSubmit: async ({ value, meta }) => {
-			console.log(mode === "create" ? "Log created:" : "Log updated:", value);
 			if (meta.intent === "log-another") {
 				setLoggedAt(formatTimeOfDay(value.shotAt));
 				form.reset({ ...value, shotAt: nowAsCalendarDateTime() });

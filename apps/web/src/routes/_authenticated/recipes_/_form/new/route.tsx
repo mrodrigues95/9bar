@@ -21,8 +21,7 @@ const NewRecipe = () => {
 			: duplicateOf
 				? { ...recipeToFormValues(duplicateOf), name: `Copy of ${duplicateOf.name}` }
 				: recipeFormOpts.defaultValues,
-		onSubmit: async ({ value }) => {
-			console.log("Recipe created:", value);
+		onSubmit: async () => {
 			await navigate({ to: "/recipes" });
 		},
 	});

@@ -85,8 +85,7 @@ const actions = {
 					title: "Set as reference shot?",
 					description: `Your ${formatShotAt(log.shotAt)} shot becomes the reference for ${recipe.name}${replacing}. The recipe overview will show its values.`,
 					confirmButtonProps: { variant: "default", children: "Set as reference" },
-					onConfirm: () =>
-						console.log("Set as reference shot:", { logId: log.id, recipeId: recipe.id }),
+					onConfirm: notImplemented,
 				});
 			},
 		}),
@@ -103,8 +102,7 @@ const actions = {
 					title: `Detach from ${recipe.name}?`,
 					description: `Your ${formatShotAt(log.shotAt)} shot moves to quick logs and keeps its values, verdict, and notes.${reference}`,
 					confirmButtonProps: { variant: "default", children: "Detach" },
-					onConfirm: () =>
-						console.log("Detached from recipe:", { logId: log.id, recipeId: recipe.id }),
+					onConfirm: notImplemented,
 				});
 			},
 		}),

@@ -1,5 +1,5 @@
 import { CalendarIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import {
 	DateInput as AriaDateInput,
 	DatePicker as AriaDatePicker,
@@ -105,7 +105,7 @@ export const DatePickerTrigger = ({
 );
 
 /** Props for the {@link DatePickerPopover} component. */
-export type DatePickerPopoverProps = React.ComponentProps<typeof AriaPopover>;
+export type DatePickerPopoverProps = ComponentProps<typeof AriaPopover>;
 
 /**
  * The floating overlay of a {@link DatePicker} that holds the calendar.

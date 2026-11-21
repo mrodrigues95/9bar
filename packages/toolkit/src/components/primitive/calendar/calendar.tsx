@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import type { CalendarMonthPickerAria, CalendarYearPickerAria } from "react-aria";
 import {
 	Calendar as AriaCalendar,
@@ -59,7 +59,7 @@ export const Calendar = <TValue extends DateValue>({
 );
 
 /** Props for the {@link CalendarHeader} component. */
-export type CalendarHeaderProps = React.ComponentProps<"div">;
+export type CalendarHeaderProps = ComponentProps<"div">;
 
 /** The caption row of a {@link Calendar}, holding the navigation buttons and the heading or month/year dropdowns. */
 export const CalendarHeader = ({ className, ...props }: CalendarHeaderProps) => (

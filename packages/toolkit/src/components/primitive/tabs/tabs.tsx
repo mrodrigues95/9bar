@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import {
 	Tab as AriaTab,
 	TabList as AriaTabList,
@@ -10,7 +10,7 @@ import {
 import { composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Tabs} component. */
-export type TabsProps = React.ComponentProps<typeof AriaTabs>;
+export type TabsProps = ComponentProps<typeof AriaTabs>;
 
 /** A set of layered panels where only one panel is visible at a time, controlled by a tabbed navigation bar. */
 export const Tabs = ({ className, ...props }: TabsProps) => (
@@ -45,7 +45,7 @@ const tabsListVariants = cva(
 );
 
 /** Props for the {@link TabsList} component. */
-export type TabsListProps = React.ComponentProps<typeof AriaTabList> &
+export type TabsListProps = ComponentProps<typeof AriaTabList> &
 	VariantProps<typeof tabsListVariants>;
 
 /** A horizontal or vertical bar containing the {@link TabsTrigger} elements that control panel visibility. */
@@ -59,7 +59,7 @@ export const TabsList = ({ className, variant = "default", ...props }: TabsListP
 );
 
 /** Props for the {@link TabsTrigger} component. */
-export type TabsTriggerProps = React.ComponentProps<typeof AriaTab>;
+export type TabsTriggerProps = ComponentProps<typeof AriaTab>;
 
 /** An individual tab button that activates its corresponding {@link TabsContent}. */
 export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => (
@@ -106,7 +106,7 @@ export const TabsTrigger = ({ className, ...props }: TabsTriggerProps) => (
 );
 
 /** Props for the {@link TabsContent} component. */
-export type TabsContentProps = React.ComponentProps<typeof AriaTabPanel>;
+export type TabsContentProps = ComponentProps<typeof AriaTabPanel>;
 
 /** The content area associated with a single {@link TabsTrigger}. Only the active panel is visible. */
 export const TabsContent = ({ className, ...props }: TabsContentProps) => (

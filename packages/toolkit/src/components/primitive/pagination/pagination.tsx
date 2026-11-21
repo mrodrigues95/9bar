@@ -5,12 +5,12 @@ import {
 	ChevronsRightIcon,
 	MoreHorizontalIcon,
 } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import { Link } from "#components/link";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Pagination} component. */
-export type PaginationProps = React.ComponentProps<"nav">;
+export type PaginationProps = ComponentProps<"nav">;
 
 /** The root navigation landmark for a set of pagination controls. */
 export const Pagination = ({ className, ...props }: PaginationProps) => (
@@ -23,7 +23,7 @@ export const Pagination = ({ className, ...props }: PaginationProps) => (
 );
 
 /** Props for the {@link PaginationContent} component. */
-export type PaginationContentProps = React.ComponentProps<"ul">;
+export type PaginationContentProps = ComponentProps<"ul">;
 
 /** A horizontal list that lays out {@link PaginationItem} elements. */
 export const PaginationContent = ({ className, ...props }: PaginationContentProps) => (
@@ -35,7 +35,7 @@ export const PaginationContent = ({ className, ...props }: PaginationContentProp
 );
 
 /** Props for the {@link PaginationItem} component. */
-export type PaginationItemProps = React.ComponentProps<"li">;
+export type PaginationItemProps = ComponentProps<"li">;
 
 /** A list item wrapper for a single pagination control (button or ellipsis). */
 export const PaginationItem = ({ ...props }: PaginationItemProps) => (
@@ -45,7 +45,7 @@ export const PaginationItem = ({ ...props }: PaginationItemProps) => (
 /** Props for the {@link PaginationLink} component. */
 export type PaginationLinkProps = {
 	isActive?: boolean;
-} & Omit<React.ComponentProps<typeof Link>, "variant">;
+} & Omit<ComponentProps<typeof Link>, "variant">;
 
 /** A page-number link within a {@link PaginationContent}, styled to indicate the active page. */
 export const PaginationLink = ({
@@ -66,7 +66,7 @@ export const PaginationLink = ({
 );
 
 /** Props for the {@link PaginationPrevious} component. */
-export type PaginationPreviousProps = React.ComponentProps<typeof PaginationLink> & {
+export type PaginationPreviousProps = ComponentProps<typeof PaginationLink> & {
 	text?: string;
 };
 
@@ -88,7 +88,7 @@ export const PaginationPrevious = ({
 );
 
 /** Props for the {@link PaginationNext} component. */
-export type PaginationNextProps = React.ComponentProps<typeof PaginationLink> & {
+export type PaginationNextProps = ComponentProps<typeof PaginationLink> & {
 	text?: string;
 };
 
@@ -106,7 +106,7 @@ export const PaginationNext = ({ className, text = "Next", ...props }: Paginatio
 );
 
 /** Props for the {@link PaginationEllipsis} component. */
-export type PaginationEllipsisProps = React.ComponentProps<"span">;
+export type PaginationEllipsisProps = ComponentProps<"span">;
 
 /** A non-interactive indicator representing omitted page numbers between visible ranges. */
 export const PaginationEllipsis = ({ className, ...props }: PaginationEllipsisProps) => (

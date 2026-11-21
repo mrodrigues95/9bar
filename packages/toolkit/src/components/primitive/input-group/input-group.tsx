@@ -1,7 +1,7 @@
 "use client";
 
 import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import { Group } from "react-aria-components";
 import type { GroupProps } from "react-aria-components";
 import { Button } from "#components/button";
@@ -46,7 +46,7 @@ export const InputGroup = ({ className, ...props }: GroupProps) => (
 );
 
 /** Props for the {@link InputGroupAddon} component. */
-export type InputGroupAddonProps = React.ComponentProps<"div"> &
+export type InputGroupAddonProps = ComponentProps<"div"> &
 	VariantProps<typeof inputGroupAddonVariants>;
 
 /** A label, icon, or button placed at the edge of an {@link InputGroup}. */
@@ -64,7 +64,7 @@ export const InputGroupAddon = ({
 );
 
 /** Props for the {@link InputGroupButton} component. */
-export type InputGroupButtonProps = Omit<React.ComponentProps<typeof Button>, "size" | "type"> &
+export type InputGroupButtonProps = Omit<ComponentProps<typeof Button>, "size" | "type"> &
 	VariantProps<typeof inputGroupButtonVariants> & {
 		type?: "button" | "submit" | "reset";
 	};
@@ -87,7 +87,7 @@ export const InputGroupButton = ({
 );
 
 /** Props for the {@link InputGroupText} component. */
-export type InputGroupTextProps = React.ComponentProps<"span">;
+export type InputGroupTextProps = ComponentProps<"span">;
 
 /** Static text rendered inside an {@link InputGroup}, such as a unit of measure. */
 export const InputGroupText = ({ className, ...props }: InputGroupTextProps) => (
@@ -104,7 +104,7 @@ export const InputGroupText = ({ className, ...props }: InputGroupTextProps) => 
 );
 
 /** Props for the {@link InputGroupInput} component. */
-export type InputGroupInputProps = React.ComponentProps<"input">;
+export type InputGroupInputProps = ComponentProps<"input">;
 
 /** The input control embedded in an {@link InputGroup}. */
 export const InputGroupInput = ({ className, ...props }: InputGroupInputProps) => (
@@ -122,7 +122,7 @@ export const InputGroupInput = ({ className, ...props }: InputGroupInputProps) =
 );
 
 /** Props for the {@link InputGroupTextarea} component. */
-export type InputGroupTextareaProps = React.ComponentProps<"textarea">;
+export type InputGroupTextareaProps = ComponentProps<"textarea">;
 
 /** The textarea control embedded in an {@link InputGroup}. */
 export const InputGroupTextarea = ({ className, ...props }: InputGroupTextareaProps) => (

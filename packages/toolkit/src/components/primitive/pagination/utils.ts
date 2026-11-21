@@ -9,6 +9,9 @@ interface GeneratePaginationOptions {
 	boundaryCount?: number;
 }
 
+const range = (start: number, end: number) =>
+	Array.from({ length: end - start + 1 }, (_, i) => start + i);
+
 /**
  * Generates an array of page numbers with ellipsis markers for pagination.
  *
@@ -29,11 +32,6 @@ export const generatePagination = ({
 	siblingCount = 1,
 	boundaryCount = 1,
 }: GeneratePaginationOptions) => {
-	const range = (start: number, end: number) => {
-		const length = end - start + 1;
-		return Array.from({ length }, (_, i) => start + i);
-	};
-
 	const startPages = range(1, Math.min(boundaryCount, totalPages));
 	const endPages = range(Math.max(totalPages - boundaryCount + 1, boundaryCount + 1), totalPages);
 

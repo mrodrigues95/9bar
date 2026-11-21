@@ -26,6 +26,8 @@ import { buildRecipeGraph, recipes } from "../../../utils/data";
 import type { BrewSnapshot, LogGraph } from "../../../utils/data";
 import { formatGrams, formatPressure } from "../../../utils/format";
 
+const notImplemented = () => undefined;
+
 const formatDelta = (difference: number, format: (value: number) => string) => {
 	const rounded = Math.round(difference * 10) / 10;
 	if (!rounded) {
@@ -176,16 +178,6 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 	const setupRows = compare(["method", "beans", "machine", "grinder"]);
 	const shotRows = compare(["grindSize", "dose", "yield", "brewTime", "temperature", "pressure"]);
 
-	const onAttach = () => {
-		console.log("Log attached to recipe:", {
-			logId: log.id,
-			recipeId: recipe?.id ?? null,
-			mismatchedFields: [...setupRows, ...shotRows]
-				.filter((row) => row.isMismatched)
-				.map((row) => row.field),
-		});
-	};
-
 	return (
 		<Dialog defaultOpen className="sm:max-w-xl" onOpenChange={onOpenChange}>
 			<DialogHeader>
@@ -225,7 +217,7 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 			)}
 			<DialogFooter>
 				<DialogCloseButton>Cancel</DialogCloseButton>
-				<DialogCloseButton variant="default" isDisabled={!recipe} onPress={onAttach}>
+				<DialogCloseButton variant="default" isDisabled={!recipe} onPress={notImplemented}>
 					Attach
 				</DialogCloseButton>
 			</DialogFooter>

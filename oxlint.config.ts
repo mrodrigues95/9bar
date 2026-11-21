@@ -93,13 +93,12 @@ export default defineConfig({
 			"Inside composed, import sibling composed components relatively.",
 		),
 		{
+			files: ["tools/checks/**", "tools/control/**"],
+			rules: { "eslint/no-console": "off" },
+		},
+		{
 			files: ["**/*"],
 			rules: {
-				"eslint/eqeqeq": "off",
-				"eslint/no-console": "off",
-				"import/no-namespace": "off",
-				"@nkzw/no-instanceof": "off",
-				"unicorn/consistent-function-scoping": "off",
 				"quality/no-array-filter-map": "off",
 			},
 		},

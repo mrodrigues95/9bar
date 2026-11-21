@@ -130,7 +130,8 @@ export const DatePickerField = <
 		showError,
 		errorId,
 	);
-	const pickerValue = value == null ? null : codec ? codec.parse(value) : value;
+	const pickerValue =
+		value === null || value === undefined ? null : codec ? codec.parse(value) : value;
 
 	return (
 		<Field data-invalid={isInvalid || undefined} className={className}>

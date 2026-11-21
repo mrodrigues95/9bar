@@ -36,14 +36,12 @@ const actions = {
 		}),
 	},
 	logAgain: {
-		build: ({ recipe }) => ({
+		build: () => ({
 			id: "log-again",
 			kind: "action",
 			label: "Log again",
 			icon: RotateCcw,
-			onAction: () => {
-				console.log("Log again:", { recipeId: recipe.id, shotAt: new Date().toISOString() });
-			},
+			onAction: notImplemented,
 		}),
 	},
 	delete: {

@@ -54,8 +54,9 @@ const consoleArgs = async (message: ConsoleMessage) => {
 	return parsed.success ? parsed.data : undefined;
 };
 
+const now = () => new Date().toISOString();
+
 const recordPageEvents = (target: string, page: Page, pending: Array<Promise<void>>) => {
-	const now = () => new Date().toISOString();
 	page.on("console", (message) => {
 		const at = now();
 		pending.push(

@@ -320,10 +320,10 @@ const schema = z.object({
 		.refine(({ inputValue }) => !!inputValue && Number(inputValue) > 0, {
 			message: "[Zod] Brew time must be greater than 0",
 		}),
-	preferredDate: z.custom<CalendarDateTime | null>(
-		(value) => value instanceof CalendarDateTime,
-		"[Zod] Preferred date is required",
-	),
+	preferredDate: z
+		.instanceof(CalendarDateTime)
+		.nullable()
+		.refine(Boolean, "[Zod] Preferred date is required"),
 	bio: z
 		.string()
 		.min(20, "[Zod] Bio must be at least 20 characters")

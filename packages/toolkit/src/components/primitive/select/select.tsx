@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps, ReactNode } from "react";
 import {
 	Header as AriaHeader,
 	ListBox as AriaListBox,
@@ -71,16 +71,15 @@ export const SelectValue = <T extends object>({
 		)}
 		{...props}
 	>
-		{children instanceof Function
-			? children
-			: ({ selectedItems, selectedText, defaultChildren }) =>
-					selectedItems.length > 1 ? selectedText : defaultChildren}
+		{children ??
+			(({ selectedItems, selectedText, defaultChildren }) =>
+				selectedItems.length > 1 ? selectedText : defaultChildren)}
 	</AriaSelectValue>
 );
 
 /** Props for the {@link SelectTrigger} component. */
 export type SelectTriggerProps = Omit<ButtonProps, "children" | "size"> & {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	size?: "default" | "sm";
 };
 
@@ -115,8 +114,8 @@ export const SelectTrigger = ({
 );
 
 /** Props for the {@link SelectContent} component. */
-export type SelectContentProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
-	children?: React.ReactNode;
+export type SelectContentProps = Omit<ComponentProps<typeof AriaPopover>, "children"> & {
+	children?: ReactNode;
 };
 
 /** The floating overlay that wraps a {@link SelectList} and its items. */
@@ -140,8 +139,8 @@ export const SelectContent = ({
 );
 
 /** Props for the {@link SelectPopover} component. */
-export type SelectPopoverProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
-	children?: React.ReactNode;
+export type SelectPopoverProps = Omit<ComponentProps<typeof AriaPopover>, "children"> & {
+	children?: ReactNode;
 };
 
 /** The popover that anchors the {@link SelectList} to the {@link SelectTrigger}. */
@@ -211,7 +210,7 @@ export const SelectInput = ({ className, ...props }: SearchFieldProps) => (
 );
 
 /** Props for the {@link SelectLabel} component. */
-export type SelectLabelProps = React.ComponentProps<typeof AriaHeader>;
+export type SelectLabelProps = ComponentProps<typeof AriaHeader>;
 
 /** A heading rendered above a group of {@link SelectItem} elements. */
 export const SelectLabel = ({ className, ...props }: SelectLabelProps) => (
@@ -222,7 +221,7 @@ export const SelectLabel = ({ className, ...props }: SelectLabelProps) => (
 	/>
 );
 
-type SelectItemBaseProps = React.ComponentProps<typeof AriaListBoxItem>;
+type SelectItemBaseProps = ComponentProps<typeof AriaListBoxItem>;
 
 /** Props for the {@link SelectItem} component. */
 export type SelectItemProps = Omit<SelectItemBaseProps, "children" | "textValue"> &
@@ -264,7 +263,7 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 };
 
 /** Props for the {@link SelectSeparator} component. */
-export type SelectSeparatorProps = React.ComponentProps<typeof Separator>;
+export type SelectSeparatorProps = ComponentProps<typeof Separator>;
 
 /** A divider between {@link SelectGroup} sections within a {@link SelectList}. */
 export const SelectSeparator = ({ className, ...props }: SelectSeparatorProps) => (
@@ -276,7 +275,7 @@ export const SelectSeparator = ({ className, ...props }: SelectSeparatorProps) =
 );
 
 /** Props for the {@link SelectEmpty} component. */
-export type SelectEmptyProps = React.ComponentProps<"div">;
+export type SelectEmptyProps = ComponentProps<"div">;
 
 /** A message displayed when a filtered {@link SelectList} has no matching options. */
 export const SelectEmpty = ({ className, ...props }: SelectEmptyProps) => (

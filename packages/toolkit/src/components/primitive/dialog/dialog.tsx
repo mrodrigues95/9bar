@@ -1,5 +1,5 @@
 import { XIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps, ReactNode } from "react";
 import {
 	Dialog as AriaDialog,
 	DialogTrigger as AriaDialogTrigger,
@@ -29,7 +29,7 @@ export const DialogTrigger = (props: DialogTriggerProps) => (
 
 /** Props for the {@link Dialog} component. */
 export type DialogProps = Omit<AriaModalOverlayProps, "children"> & {
-	children: React.ReactNode;
+	children: ReactNode;
 };
 
 /**
@@ -100,7 +100,7 @@ export const DialogCloseIconButton = ({
 );
 
 /** Props for the {@link DialogHeader} component. */
-export type DialogHeaderProps = React.ComponentProps<"div">;
+export type DialogHeaderProps = ComponentProps<"div">;
 
 /** The header section of a {@link Dialog}, containing its {@link DialogTitle} and {@link DialogDescription}. */
 export const DialogHeader = ({ className, ...props }: DialogHeaderProps) => (
@@ -108,7 +108,7 @@ export const DialogHeader = ({ className, ...props }: DialogHeaderProps) => (
 );
 
 /** Props for the {@link DialogFooter} component. */
-export type DialogFooterProps = React.ComponentProps<"div">;
+export type DialogFooterProps = ComponentProps<"div">;
 
 /** The footer section of a {@link Dialog}, typically holding the action buttons aligned to the end. */
 export const DialogFooter = ({ className, ...props }: DialogFooterProps) => (
@@ -139,7 +139,7 @@ export const DialogTitle = ({ className, ...props }: DialogTitleProps) => (
 );
 
 /** Props for the {@link DialogDescription} component. */
-export type DialogDescriptionProps = React.ComponentProps<"div">;
+export type DialogDescriptionProps = ComponentProps<"div">;
 
 /** Supporting text that explains the purpose of a {@link Dialog}. */
 export const DialogDescription = ({ className, ...props }: DialogDescriptionProps) => (

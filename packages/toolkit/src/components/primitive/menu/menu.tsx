@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import {
 	Header as AriaHeader,
 	Menu as AriaMenu,
@@ -22,7 +22,7 @@ import { cn, composeTailwindRenderProps, resolveItemTextValue } from "#lib/utils
 import type { ItemLabelProps } from "#lib/utils";
 
 /** Props for the {@link MenuTrigger} component. */
-export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;
+export type MenuTriggerProps = ComponentProps<typeof AriaMenuTrigger>;
 
 /** The trigger that opens the {@link Menu}, wrapping the element that receives the interaction. */
 export const MenuTrigger = ({ ...props }: MenuTriggerProps) => (
@@ -30,14 +30,8 @@ export const MenuTrigger = ({ ...props }: MenuTriggerProps) => (
 );
 
 /** Props for the {@link Menu} component. */
-export type MenuProps<T extends object> = Omit<
-	React.ComponentProps<typeof AriaMenu<T>>,
-	"className"
-> &
-	Pick<
-		React.ComponentProps<typeof AriaPopover>,
-		"placement" | "offset" | "crossOffset" | "className"
-	> & {
+export type MenuProps<T extends object> = Omit<ComponentProps<typeof AriaMenu<T>>, "className"> &
+	Pick<ComponentProps<typeof AriaPopover>, "placement" | "offset" | "crossOffset" | "className"> & {
 		"data-slot"?: string;
 		/**
 		 * Popover width: `"trigger"` matches the trigger width, `"content"` sizes to
@@ -90,7 +84,7 @@ export const MenuGroup = <T extends object>({ ...props }: MenuGroupProps<T>) => 
 );
 
 /** Props for the {@link MenuLabel} component. */
-export type MenuLabelProps = React.ComponentProps<typeof AriaHeader> & {
+export type MenuLabelProps = ComponentProps<typeof AriaHeader> & {
 	inset?: boolean;
 };
 
@@ -194,7 +188,7 @@ export const MenuItem = <T extends object>({
 };
 
 /** Props for the {@link MenuSub} component. */
-export type MenuSubProps = React.ComponentProps<typeof AriaSubmenuTrigger>;
+export type MenuSubProps = ComponentProps<typeof AriaSubmenuTrigger>;
 
 /** A nested submenu within a {@link Menu}, pairing a {@link MenuSubTrigger} with a {@link MenuSubContent}. */
 export const MenuSub = ({ ...props }: MenuSubProps) => (
@@ -265,7 +259,7 @@ export const MenuSubContent = <T extends object>({
 );
 
 /** Props for the {@link MenuSeparator} component. */
-export type MenuSeparatorProps = React.ComponentProps<typeof Separator>;
+export type MenuSeparatorProps = ComponentProps<typeof Separator>;
 
 /** A divider between {@link MenuItem} elements or groups. */
 export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => (
@@ -277,7 +271,7 @@ export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => (
 );
 
 /** Props for the {@link MenuShortcut} component. */
-export type MenuShortcutProps = React.ComponentProps<"span">;
+export type MenuShortcutProps = ComponentProps<"span">;
 
 /** A keyboard shortcut hint aligned to the end of a {@link MenuItem}. */
 export const MenuShortcut = ({ className, ...props }: MenuShortcutProps) => (

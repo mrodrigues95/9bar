@@ -1,12 +1,12 @@
 import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 import { cn } from "#lib/utils";
 import { badgeVariants } from "./styles";
 
 /** Props for the {@link Badge} component. */
-export type BadgeProps = React.ComponentProps<"span"> &
+export type BadgeProps = ComponentProps<"span"> &
 	VariantProps<typeof badgeVariants> & {
-		render?: (props: React.HTMLAttributes<HTMLElement>) => React.ReactNode;
+		render?: (props: HTMLAttributes<HTMLElement>) => ReactNode;
 	};
 
 /** A compact label used to highlight status, category, or metadata. Use `badgeVariants` with a plain element to render a badge-styled link. */

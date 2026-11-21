@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import type { RefAttributes } from "react";
 import { Button as AriaButton } from "react-aria-components";
 import type { ButtonProps as AriaButtonProps } from "react-aria-components";
 import { composeTailwindRenderProps } from "#lib/utils";
@@ -7,7 +7,7 @@ import { buttonVariants } from "./styles";
 
 /** Props for the {@link Button} component. */
 export type ButtonProps = Omit<AriaButtonProps, "className"> &
-	React.RefAttributes<HTMLButtonElement> &
+	RefAttributes<HTMLButtonElement> &
 	VariantProps<typeof buttonVariants> & {
 		className?: AriaButtonProps["className"];
 	};
