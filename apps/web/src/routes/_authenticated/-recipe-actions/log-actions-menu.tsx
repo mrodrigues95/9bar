@@ -6,6 +6,7 @@ import type { Log, Recipe } from "../../../utils/data";
 import { formatShotAt } from "../../../utils/format";
 import { useConfirmDialogAction } from "../../../utils/hooks";
 import type { OpenConfirmDialog } from "../../../utils/hooks";
+import { logStubSave } from "../../../utils/stub-save";
 import { resolveActionDefinitions } from "./action-definitions";
 import type { ActionDefinition } from "./action-definitions";
 import { ActionsMenu } from "./actions-menu";
@@ -85,7 +86,8 @@ const actions = {
 					title: "Set as reference shot?",
 					description: `Your ${formatShotAt(log.shotAt)} shot becomes the reference for ${recipe.name}${replacing}. The recipe overview will show its values.`,
 					confirmButtonProps: { variant: "default", children: "Set as reference" },
-					onConfirm: notImplemented,
+					onConfirm: () =>
+						logStubSave("Set as reference shot:", { logId: log.id, recipeId: recipe.id }),
 				});
 			},
 		}),
@@ -102,7 +104,8 @@ const actions = {
 					title: `Detach from ${recipe.name}?`,
 					description: `Your ${formatShotAt(log.shotAt)} shot moves to quick logs and keeps its values, verdict, and notes.${reference}`,
 					confirmButtonProps: { variant: "default", children: "Detach" },
-					onConfirm: notImplemented,
+					onConfirm: () =>
+						logStubSave("Detached from recipe:", { logId: log.id, recipeId: recipe.id }),
 				});
 			},
 		}),
