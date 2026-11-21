@@ -12,7 +12,7 @@ const EditLog = () => {
 			defaultValues={logToFormValues(log)}
 			mode="edit"
 			onDone={() => {
-				navigate({ to: "/recipes", search: true });
+				void navigate({ to: "/recipes", search: true });
 			}}
 		/>
 	);

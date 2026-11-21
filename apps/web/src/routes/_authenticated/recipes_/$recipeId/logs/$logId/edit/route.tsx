@@ -13,7 +13,7 @@ const EditRecipeLog = () => {
 			defaultValues={logToFormValues(log)}
 			mode="edit"
 			onDone={() => {
-				navigate({ to: "/recipes/$recipeId/logs", params: { recipeId: String(recipe.id) } });
+				void navigate({ to: "/recipes/$recipeId/logs", params: { recipeId: String(recipe.id) } });
 			}}
 		/>
 	);

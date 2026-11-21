@@ -5,7 +5,6 @@ import type * as React from "react";
 import { Group, type GroupProps } from "react-aria-components";
 import { Button } from "#components/button";
 import { Input } from "#components/input";
-import { SelectTrigger } from "#components/select";
 import { Textarea } from "#components/textarea";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { inputGroupAddonVariants, inputGroupButtonVariants } from "./styles";
@@ -87,34 +86,6 @@ export const InputGroupButton = ({
 			data-size={size}
 			variant={variant}
 			className={composeTailwindRenderProps(className, inputGroupButtonVariants({ size }))}
-			{...props}
-		/>
-	);
-};
-
-/** Props for the {@link InputGroupSelectTrigger} component. */
-export type InputGroupSelectTriggerProps = Omit<
-	React.ComponentProps<typeof SelectTrigger>,
-	"size"
-> &
-	VariantProps<typeof inputGroupButtonVariants>;
-
-/** A compact select trigger rendered inside an {@link InputGroup}, sharing {@link inputGroupButtonVariants} sizing with {@link InputGroupButton}. */
-export const InputGroupSelectTrigger = ({
-	className,
-	size = "xs",
-	variant = "ghost",
-	...props
-}: InputGroupSelectTriggerProps) => {
-	return (
-		<SelectTrigger
-			variant={variant}
-			data-size={size}
-			className={composeTailwindRenderProps(className, [
-				inputGroupButtonVariants({ size }),
-				"bg-transparent",
-				"dark:bg-transparent",
-			])}
 			{...props}
 		/>
 	);

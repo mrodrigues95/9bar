@@ -29,7 +29,7 @@ export const decodeFilters = <TFilterId extends string>(
 	const filters: Array<FilterBarFilterState> = [];
 	for (const definition of definitions) {
 		const param = params[definition.id];
-		if (!param) {
+		if (param === undefined || param === "") {
 			continue;
 		}
 		const operatorSeparator = param.indexOf(".");
@@ -44,7 +44,7 @@ export const decodeFilters = <TFilterId extends string>(
 			.slice(operatorSeparator + 1)
 			.split("|")
 			.filter((value) => definition.options.some((option) => option.id === value));
-		if (!values.length) {
+		if (values.length === 0) {
 			continue;
 		}
 		filters.push({ filterId: definition.id, operatorId, values });
@@ -63,9 +63,10 @@ export const encodeFilters = <TFilterId extends string>(
 	);
 	for (const definition of definitions) {
 		const filter = filterByFilterId.get(definition.id);
-		params[definition.id] = filter?.values.length
-			? `${filter.operatorId}.${filter.values.join("|")}`
-			: undefined;
+		params[definition.id] =
+			filter !== undefined && filter.values.length > 0
+				? `${filter.operatorId}.${filter.values.join("|")}`
+				: undefined;
 	}
 	return params;
 };

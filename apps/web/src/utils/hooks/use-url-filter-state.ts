@@ -16,7 +16,7 @@ interface VersionedIntent extends UrlFilterIntent {
 
 interface UseUrlFilterStateOptions<TSearch> {
 	search: TSearch;
-	navigate: (options: { search: (prev: TSearch) => TSearch; replace?: boolean }) => void;
+	navigate: (options: { search: (prev: TSearch) => TSearch; replace?: boolean }) => Promise<void>;
 	decode: (search: TSearch) => UrlFilterIntent;
 	encode: (intent: UrlFilterIntent) => Partial<TSearch>;
 	debounceMs?: number;
@@ -51,7 +51,7 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 	const lastUrlKeyRef = useRef(urlKey);
 
 	const writeToUrl = useEffectEvent((next: VersionedIntent) => {
-		navigate({
+		void navigate({
 			search: (prev) => ({ ...prev, ...encode(next) }),
 			replace: next.replace,
 		});

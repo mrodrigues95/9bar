@@ -82,7 +82,8 @@ export const formatBrewField = (snapshot: BrewSnapshot, field: BrewField) => {
 			return formatGrams(snapshot.yield);
 		case "pressure":
 			return formatPressure(snapshot.pressure);
-		default:
+		case "beans":
+		case "grindSize":
 			return snapshot[field];
 	}
 };

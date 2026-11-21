@@ -9,9 +9,9 @@ import {
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
-	InputGroupSelectTrigger,
 	InputGroupText,
 } from "./input-group";
+import { InputGroupSelectTrigger } from "./input-group-select-trigger";
 
 const meta = {
 	component: InputGroup,

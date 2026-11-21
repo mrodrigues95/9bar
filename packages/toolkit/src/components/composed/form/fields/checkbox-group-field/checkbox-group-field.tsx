@@ -53,9 +53,14 @@ export const CheckboxGroupField = ({
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const isInvalid = props.isInvalid ?? !!resolvedErrors?.length;
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const isInvalid = props.isInvalid ?? (resolvedErrors?.length ?? 0) > 0;
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
 		<CheckboxGroup
@@ -65,8 +70,8 @@ export const CheckboxGroupField = ({
 			isInvalid={isInvalid}
 			aria-describedby={describedBy}
 		>
-			{label && <FieldLabel {...labelProps}>{label}</FieldLabel>}
-			{description && (
+			<FieldLabel {...labelProps}>{label}</FieldLabel>
+			{description !== undefined && (
 				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>

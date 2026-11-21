@@ -109,20 +109,25 @@ export const InputGroupSelectField = ({
 	const descriptionId = useId();
 	const errorId = useId();
 	const resolvedErrors = resolveFieldErrors(errors, errorMessage);
-	const showError = isInvalid && !!resolvedErrors?.length;
-	const describedBy = getFieldDescribedBy(!!description, descriptionId, showError, errorId);
+	const showError = isInvalid && (resolvedErrors?.length ?? 0) > 0;
+	const describedBy = getFieldDescribedBy(
+		description !== undefined,
+		descriptionId,
+		showError,
+		errorId,
+	);
 
 	return (
 		<Field data-invalid={isInvalid || undefined}>
-			{label && (
+			{label !== undefined && (
 				<FieldLabel id={labelId} htmlFor={inputId} {...labelProps}>
 					{label}
 				</FieldLabel>
 			)}
 			<InputGroup
 				{...props}
-				{...(label ? { "aria-labelledby": labelId } : {})}
-				{...(describedBy ? { "aria-describedby": describedBy } : {})}
+				{...(label !== undefined ? { "aria-labelledby": labelId } : {})}
+				{...(describedBy !== undefined ? { "aria-describedby": describedBy } : {})}
 				isInvalid={isInvalid || undefined}
 			>
 				<InputGroupInput
@@ -162,7 +167,7 @@ export const InputGroupSelectField = ({
 					</Select>
 				</InputGroupAddon>
 			</InputGroup>
-			{description && (
+			{description !== undefined && (
 				<FieldDescription id={descriptionId} {...descriptionProps}>
 					{description}
 				</FieldDescription>

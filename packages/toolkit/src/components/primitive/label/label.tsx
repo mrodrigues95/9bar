@@ -26,7 +26,7 @@ export const Label = ({ className, htmlFor, slot, ...props }: LabelProps) => {
 		/>
 	);
 
-	if (htmlFor && slot === undefined) {
+	if (htmlFor !== undefined && htmlFor !== "" && slot === undefined) {
 		return <LabelContext.Provider value={null}>{label}</LabelContext.Provider>;
 	}
 

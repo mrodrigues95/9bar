@@ -194,7 +194,7 @@ export const ComposedForm: Story = {
 						errors.fields.preferredDate = "Preferred date is required";
 					}
 
-					if (!value.newsletter?.length) {
+					if (value.newsletter.length === 0) {
 						errors.fields.newsletter = "You must subscribe to receive updates";
 					}
 
@@ -211,7 +211,7 @@ export const ComposedForm: Story = {
 				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
-					form.handleSubmit();
+					void form.handleSubmit();
 				}}
 				validationBehavior="aria"
 			>
@@ -361,7 +361,7 @@ export const WithZodValidation: Story = {
 				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
-					form.handleSubmit();
+					void form.handleSubmit();
 				}}
 				validationBehavior="aria"
 			>
@@ -596,7 +596,7 @@ const ContactFormComponent = withForm({
 					name="notifications"
 					validators={{
 						onChange: ({ value }) =>
-							!value.length ? "Notification preference is required" : undefined,
+							value.length === 0 ? "Notification preference is required" : undefined,
 					}}
 				>
 					{(field) => (
@@ -634,7 +634,7 @@ export const ReusableContactForm: Story = {
 				{...props}
 				onSubmit={(e) => {
 					e.preventDefault();
-					form.handleSubmit();
+					void form.handleSubmit();
 				}}
 				validationBehavior="aria"
 			>

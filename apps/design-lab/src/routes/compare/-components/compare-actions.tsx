@@ -29,7 +29,7 @@ export const CompareActions = ({ a, b, groupId, search }: CompareActionsProps) =
 
 	return (
 		<div className="flex flex-wrap gap-2">
-			<Button size="sm" variant="outline" onPress={copyPair}>
+			<Button size="sm" variant="outline" onPress={() => void copyPair()}>
 				{copied ? "Copied!" : "Copy A+B for agent"}
 			</Button>
 			<Link

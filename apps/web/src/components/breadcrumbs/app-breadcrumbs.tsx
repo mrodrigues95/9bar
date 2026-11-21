@@ -32,8 +32,11 @@ type RoutesById = RegisteredRouter["routesById"];
 const getRouteStaticData = (
 	route: RoutesById[keyof RoutesById],
 ): StaticDataRouteOption | undefined => {
-	return route.options?.staticData;
+	return route.options.staticData;
 };
+
+const isRouteId = (id: string, routesById: RoutesById): id is keyof RoutesById =>
+	Object.hasOwn(routesById, id);
 
 const routerBreadcrumbSchema = z.object({
 	label: z.string(),
@@ -72,7 +75,7 @@ const resolveSuffixParentBreadcrumbs = (
 
 	for (let i = 0; i < segments.length; i++) {
 		const segment = segments[i];
-		if (!segment || segment.length <= 1 || !segment.endsWith("_")) {
+		if (segment === undefined || segment.length <= 1 || !segment.endsWith("_")) {
 			continue;
 		}
 
@@ -81,23 +84,18 @@ const resolveSuffixParentBreadcrumbs = (
 		const parentSegments = segments.slice(0, i + 1);
 		parentSegments[i] = segment.slice(0, -1);
 
-		// SAFETY: the joined segments are only a candidate route ID; the routesById
-		// lookup below validates it and skips unknown IDs.
-		const parentId = parentSegments.join("/") as keyof RoutesById;
-		if (seen.has(parentId)) {
+		const parentId = parentSegments.join("/");
+		if (seen.has(parentId) || !isRouteId(parentId, routesById)) {
 			continue;
 		}
 
 		const route = routesById[parentId];
-		if (!route) {
-			continue;
-		}
 
 		const parentMatch = matchesById.get(parentId);
 		const parentStaticData = getRouteStaticData(route);
 		const parentBreadcrumb = getLoaderBreadcrumb(parentMatch) ?? parentStaticData?.breadcrumb;
 
-		if (parentBreadcrumb?.label) {
+		if (parentBreadcrumb?.label !== undefined && parentBreadcrumb.label !== "") {
 			seen.add(parentId);
 			breadcrumbs.push({
 				id: parentId,
@@ -132,8 +130,8 @@ const useAppBreadcrumbs = () => {
 				);
 				breadcrumbs.push(...parentBreadcrumbs);
 
-				const breadcrumb = getLoaderBreadcrumb(match) ?? match.staticData?.breadcrumb;
-				if (!breadcrumb?.label) {
+				const breadcrumb = getLoaderBreadcrumb(match) ?? match.staticData.breadcrumb;
+				if (breadcrumb?.label === undefined || breadcrumb.label === "") {
 					continue;
 				}
 

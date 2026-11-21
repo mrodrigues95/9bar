@@ -29,7 +29,7 @@ export const TabLink = <
 	const router = useRouter();
 
 	const preload = () => {
-		if (href) {
+		if (href !== undefined) {
 			// SAFETY: `preloadRoute` builds its location with `buildLocation`, which ignores `href`,
 			// so preload by the tab's path. A generic `string` path cannot satisfy its literal `to`.
 			void router.preloadRoute({ to: href } as Parameters<typeof router.preloadRoute>[0]);
@@ -38,10 +38,10 @@ export const TabLink = <
 
 	return (
 		<TabsTrigger
-			{...(id ? { id } : {})}
-			{...(className ? { className } : {})}
+			{...(id !== undefined ? { id } : {})}
+			{...(className !== undefined ? { className } : {})}
 			{...(isDisabled ? { isDisabled } : {})}
-			{...(href ? { href } : {})}
+			{...(href !== undefined ? { href } : {})}
 			onMouseEnter={preload}
 			onFocus={preload}
 			onTouchStart={preload}

@@ -39,5 +39,5 @@ export const resolveItemTextValue = (
 	children: ReactNode | ((values: never) => ReactNode),
 	textValue: string | undefined,
 ): string | undefined =>
-	// SAFETY: ItemLabelProps requires textValue unless children is a plain string, so the fallback only ever receives the string label.
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: ItemLabelProps requires textValue unless children is a plain string.
 	textValue ?? (children as string);

@@ -74,7 +74,8 @@ const actions = {
 			label: "Set as reference shot",
 			icon: Pin,
 			onAction: () => {
-				const currentReference = recipe.pinnedLogId ? getLog(recipe.pinnedLogId) : undefined;
+				const currentReference =
+					recipe.pinnedLogId !== null ? getLog(recipe.pinnedLogId) : undefined;
 				const replacing = currentReference
 					? `, replacing ${getShotDescription(currentReference)}`
 					: "";

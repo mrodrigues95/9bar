@@ -17,7 +17,6 @@ import {
 	type SelectValueProps,
 } from "react-aria-components";
 import { Button, type ButtonProps } from "#components/button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "#components/input-group";
 import { listboxSectionHeaderVariants } from "#components/listbox";
 import { popoverVariants } from "#components/popover";
 import { Separator } from "#components/separator";
@@ -27,6 +26,7 @@ import {
 	resolveItemTextValue,
 	type ItemLabelProps,
 } from "#lib/utils";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
 
 /** Props for the {@link Select} component. */
 export type { SelectProps };

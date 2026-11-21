@@ -10,26 +10,30 @@ interface SegmentMap {
 	linkTo: FileRouteTypes["to"];
 }
 
-const segmentMap: Partial<Record<FileRouteTypes["to"], SegmentMap>> = {
-	"/sign-in": {
-		text: "New to 9bar?",
-		linkText: "Create an account",
-		linkTo: "/sign-up",
-	},
-	"/sign-up": {
-		text: "Already have an account?",
-		linkText: "Sign in",
-		linkTo: "/sign-in",
-	},
-};
+const segmentMap = new Map<string, SegmentMap>([
+	[
+		"/sign-in",
+		{
+			text: "New to 9bar?",
+			linkText: "Create an account",
+			linkTo: "/sign-up",
+		},
+	],
+	[
+		"/sign-up",
+		{
+			text: "Already have an account?",
+			linkText: "Sign in",
+			linkTo: "/sign-in",
+		},
+	],
+]);
 
 export const Footer = () => {
 	const location = useLocation();
-	// SAFETY: the footer only renders on the sign-in/sign-up routes, so the pathname is
-	// always a known route. The lookup yields undefined elsewhere and the component renders null.
-	const segment = segmentMap[location.pathname as FileRouteTypes["to"]];
+	const segment = segmentMap.get(location.pathname);
 
-	if (!segment) {
+	if (segment === undefined) {
 		return null;
 	}
 
