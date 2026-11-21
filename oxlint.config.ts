@@ -53,7 +53,21 @@ export default defineConfig({
 		...(cloudflare.overrides ?? []),
 		{
 			files: ["**/*.{ts,tsx,mts,cts}"],
-			rules: { "no-unreachable": "error" },
+			rules: {
+				"no-unreachable": "error",
+				"typescript/only-throw-error": [
+					"error",
+					{
+						allow: [
+							{
+								from: "package",
+								package: "@tanstack/router-core",
+								name: ["Redirect", "NotFoundError"],
+							},
+						],
+					},
+				],
+			},
 		},
 		{
 			files: ["packages/toolkit/src/**"],
@@ -81,10 +95,6 @@ export default defineConfig({
 		{
 			files: ["**/*"],
 			rules: {
-				"typescript/no-unsafe-member-access": "off",
-				"typescript/no-unsafe-return": "off",
-				"typescript/no-empty-object-type": "off",
-				"typescript/only-throw-error": "off",
 				"react/rules-of-hooks": "off",
 				"react/no-unescaped-entities": "off",
 				"eslint/eqeqeq": "off",

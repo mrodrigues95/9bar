@@ -21,10 +21,7 @@ import type { SeparatorProps } from "../separator/separator";
 import { listboxItemVariants, listboxSectionHeaderVariants } from "./styles";
 
 /** Props for the {@link Listbox} component. */
-export interface ListboxProps<T extends object> extends Omit<
-	AriaListBoxProps<T>,
-	"layout" | "orientation"
-> {}
+export type ListboxProps<T extends object> = Omit<AriaListBoxProps<T>, "layout" | "orientation">;
 
 /** A list of options that allows single or multiple selection. */
 export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T>) => (
@@ -121,7 +118,7 @@ export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderPr
 );
 
 /** Props for the {@link ListboxSeparator} component. */
-export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
+export type ListboxSeparatorProps = Omit<SeparatorProps, "render">;
 
 /** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
 export const ListboxSeparator = ({ className, ...props }: ListboxSeparatorProps) => (

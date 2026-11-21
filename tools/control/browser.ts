@@ -47,7 +47,9 @@ const record = (target: string, event: RecordedEvent) => {
 };
 
 const consoleArgs = async (message: ConsoleMessage) => {
-	const values = await Promise.all(message.args().map(async (handle) => handle.jsonValue()));
+	const values: Array<unknown> = await Promise.all(
+		message.args().map((handle) => handle.jsonValue()),
+	);
 	const parsed = z.array(z.json()).safeParse(values);
 	return parsed.success ? parsed.data : undefined;
 };
