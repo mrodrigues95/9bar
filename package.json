@@ -21,6 +21,7 @@
 		"tools": "pnpm --filter @9bar/tools",
 		"check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm check:structure",
 		"check:structure": "pnpm tools check:structure",
+		"control": "pnpm tools control",
 		"lint": "oxlint .",
 		"lint:fix": "oxlint --fix .",
 		"format": "oxfmt",

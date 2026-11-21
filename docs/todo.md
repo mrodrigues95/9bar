@@ -36,6 +36,22 @@ Server fn that creates the recipe and attaches the source log to it. File: `apps
 
 Recipe and log menu actions still call `notImplemented`. Wire each one once its flow is decided. Files: `apps/web/src/routes/_authenticated/-recipe-actions/recipe-actions-menu.tsx`, `log-actions-menu.tsx`.
 
+### recipe-form-invalid-focus
+
+Submitting the recipe form with missing required fields marks them invalid but leaves focus on `body`; the spec's Feedback rule moves focus to the first invalid field. Found by the verify-web recipe-form journey. File: `apps/web/src/routes/_authenticated/recipes_/-form/recipe-form.tsx`.
+
+### delete-keeps-logs
+
+The recipe delete dialog says it deletes the recipe and its logs. The spec's Delete flow names the log count and defaults to keeping the logs as quick logs, with deleting them a separate option. File: `apps/web/src/routes/_authenticated/-recipe-actions/recipe-actions-menu.tsx`.
+
+### raw-form-values
+
+Log and recipe `onSubmit` receive raw form values, so a typed Dose arrives as the string `"18"` although the form types `dose` as `number` (`BrewParametersValues`); `coercedNumber` only runs in validation. Parse with the schema before handing values to the save once saves are real. Files: `apps/web/src/routes/_authenticated/recipes_/-form/log-form-dialog.tsx`, `apps/web/src/routes/_authenticated/recipes_/_form/new/route.tsx`.
+
+### shot-time-hydration-mismatch
+
+Every server-rendered Recipes list hydrates with a mismatch on "· Logged <date>": Node's ICU formats `3:10 AM` with U+202F before AM, Chromium with a plain space, and in production the server's timezone will also differ from the user's. Format shot times on the client, or render them in a fixed timezone and normalize the space. File: `apps/web/src/utils/format.ts`.
+
 ### logo
 
 Replace the "9" avatar with the real logo graphic. File: `apps/web/src/components/logo/logo.tsx`.

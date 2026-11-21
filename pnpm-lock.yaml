@@ -310,6 +310,12 @@ importers:
       '@types/node':
         specifier: ^24.13.3
         version: 24.13.3
+      axe-core:
+        specifier: 4.10.3
+        version: 4.10.3
+      playwright-core:
+        specifier: 1.65.1
+        version: 1.65.1
       typescript:
         specifier: npm:@typescript/typescript6@^6.0.2
         version: '@typescript/typescript6@6.0.2'
@@ -4368,11 +4374,6 @@ packages:
     resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
     engines: {node: '>=8'}
 
-  playwright-core@1.63.0:
-    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
-    engines: {node: '>=20'}
-    hasBin: true
-
   playwright-core@1.65.1:
     resolution: {integrity: sha512-hqPpz7blSMPxWVdoeE1yiBSzXsKiVOd2k+kjCvmUywD2GPO2Dd9HfcWnq9NN0GHbNZDFgZ9JfBFr+X5/BLo0qw==}
     engines: {node: '>=20'}
@@ -7057,7 +7058,7 @@ snapshots:
       ufo: 1.6.1
       vitefu: 1.1.1(vite@8.1.5(@types/node@24.13.3)(jiti@2.7.0)(terser@5.43.1)(tsx@4.20.5)(yaml@2.9.0))
       xmlbuilder2: 4.0.3
-      zod: 4.4.3
+      zod: 4.6.6
     optionalDependencies:
       vite: 8.1.5(@types/node@24.13.3)(jiti@2.7.0)(terser@5.43.1)(tsx@4.20.5)(yaml@2.9.0)
     transitivePeerDependencies:
@@ -8871,8 +8872,6 @@ snapshots:
     dependencies:
       find-up: 3.0.0
 
-  playwright-core@1.63.0: {}
-
   playwright-core@1.65.1: {}
 
   playwright@1.65.1:
@@ -9002,7 +9001,7 @@ snapshots:
       oxc-resolver: 11.24.2
       oxlint: 1.81.0
       oxlint-plugin-react-doctor: 0.9.14
-      playwright-core: 1.63.0
+      playwright-core: 1.65.1
       prompts: 2.4.2
       typescript: 5.9.3
       yaml: 2.9.0
