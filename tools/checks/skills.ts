@@ -2,12 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { fromRoot, readText, toRepoPath } from "./files.ts";
 
-const FORKED_SKILLS = [
-	"correct",
-	"no-comments",
-	"create-verification-skill",
-	"maintain-verification-skill",
-];
+const FORKED_SKILLS = ["correct", "create-verification-skill", "maintain-verification-skill"];
 const FORK_HEADER = /<!-- Forked from https:\/\/github\.com\/[^/]+\/[^/]+\/blob\/[0-9a-f]{40}\//u;
 
 export const checkSkills = () =>
