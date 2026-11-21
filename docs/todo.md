@@ -73,3 +73,7 @@ Run `verify-web` journeys headless in CI once the dev setup seeds data reproduci
 ### tsrs-type-check
 
 Replace `tsc` with `oxlint --type-check` once tsrs leaves beta and the false TS2882 on the side-effect CSS import in `packages/toolkit/.storybook/preview.ts` is fixed.
+
+### phantom-dependencies
+
+`apps/web` and `packages/toolkit` import `zod` without declaring it and resolve the root copy, because Node walks up to `/node_modules`. Declare `zod` in each package that imports it, drop it from the root `dependencies` so the root holds only repo tooling, and audit the other packages for imports they don't declare. Files: `package.json`, `apps/web/package.json`, `packages/toolkit/package.json`.

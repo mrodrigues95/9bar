@@ -15,7 +15,12 @@ import {
 	CalendarPreviousButton,
 	CalendarYearPicker,
 	Checkbox,
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
 	IconButton,
+	Input,
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
@@ -133,6 +138,27 @@ export const VariantsSection = () => (
 					errorMessage="Recipe names must be unique"
 					inputProps={{ defaultValue: "Honey Blend" }}
 				/>
+			</Strip>
+			<Strip label="Field anatomy">
+				<Field className="w-56">
+					<FieldLabel htmlFor="overview-field-dose">Dose</FieldLabel>
+					<Input
+						id="overview-field-dose"
+						defaultValue="18"
+						aria-describedby="overview-field-dose-help"
+					/>
+					<FieldDescription id="overview-field-dose-help">Grams of ground coffee.</FieldDescription>
+				</Field>
+				<Field className="w-56" data-invalid>
+					<FieldLabel htmlFor="overview-field-yield">Yield</FieldLabel>
+					<Input
+						id="overview-field-yield"
+						defaultValue="0"
+						aria-invalid
+						aria-describedby="overview-field-yield-error"
+					/>
+					<FieldError id="overview-field-yield-error" errors={["Yield must be above 0"]} />
+				</Field>
 			</Strip>
 			<Strip label="Calendar">
 				<CalendarDemo />

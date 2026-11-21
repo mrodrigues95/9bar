@@ -1,6 +1,6 @@
 // Forked from https://github.com/interfere-inc/landmines/blob/92084b12872103b0f9245c0325ab571df00a574b/packages/landmines/src/rules/no-comments.ts (MIT, Interfere, Inc.).
-// Local changes: SAFETY and EXTERNAL(<url>) comments, required reasons on disable and
-// @ts-expect-error directives, @ts-ignore/@ts-nocheck banned, TODO routed to docs/todo.md,
+// Local changes: SAFETY and EXTERNAL(<url>) comments, required reasons on disable
+// directives and @ts-expect-error, @ts-ignore/@ts-nocheck banned, TODO routed to docs/todo.md,
 // no WARNING exception, and publicApi is required for JSDoc to survive.
 import { defineRule } from "@oxlint/plugins";
 import type { Comment, ESTree, Scope } from "@oxlint/plugins";
