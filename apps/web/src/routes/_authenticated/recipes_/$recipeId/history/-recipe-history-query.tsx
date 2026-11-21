@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { Tag } from "lucide-react";
 import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/components/composed";
-import { getRecipeHistoryEvents, type HistoryEvent } from "../../-recipe-history/history-events";
+import { getRecipeHistoryEvents } from "../../-recipe-history/history-events";
+import type { HistoryEvent } from "../../-recipe-history/history-events";
 import { BREW_FIELD_LABELS, BREW_FIELDS } from "../../../../../utils/brew-fields";
 import {
 	DEFAULT_FILTER_OPERATOR_ID,

@@ -1,6 +1,9 @@
 /** A single validation error entry, compatible with TanStack Form's `field.state.meta.errors`. */
 export type FieldErrorItem = { message?: string } | string | undefined;
 
+const isMessageObject = (error: NonNullable<FieldErrorItem>): error is { message?: string } =>
+	Object(error) === error;
+
 /**
  * Extracts a human-readable message from a normalized error value (string,
  * `{ message }` object, null, or undefined). Values outside the
@@ -11,7 +14,7 @@ export const toErrorMessage = (error: FieldErrorItem | null) => {
 		return undefined;
 	}
 
-	if (error instanceof Object) {
+	if (isMessageObject(error)) {
 		const message = error.message;
 		return message !== undefined && message.length > 0 ? message : undefined;
 	}

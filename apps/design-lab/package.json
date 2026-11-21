@@ -12,24 +12,24 @@
 	},
 	"dependencies": {
 		"@9bar/toolkit": "workspace:*",
-		"@tailwindcss/vite": "^4.3.3",
-		"@tanstack/react-router": "^1.170.18",
-		"@tanstack/react-router-devtools": "^1.167.0",
-		"@tanstack/zod-adapter": "^1.167.0",
-		"lucide-react": "^1.28.0",
-		"react": "^19.2.8",
-		"react-dom": "^19.2.8",
-		"tailwindcss": "^4.3.3",
-		"tailwindcss-react-aria-components": "^2.2.0",
-		"zod": "^4.4.3"
+		"@tailwindcss/vite": "catalog:",
+		"@tanstack/react-router": "catalog:",
+		"@tanstack/react-router-devtools": "catalog:",
+		"@tanstack/zod-adapter": "catalog:",
+		"lucide-react": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"tailwindcss": "catalog:",
+		"tailwindcss-react-aria-components": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@tanstack/router-plugin": "1.168.23",
-		"@types/react": "^19.2.17",
-		"@types/react-dom": "^19.2.3",
-		"@typescript/native": "npm:typescript@^7.0.2",
-		"@vitejs/plugin-react": "^6.0.4",
-		"typescript": "npm:@typescript/typescript6@^6.0.2",
-		"vite": "^8.1.5"
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@typescript/native": "catalog:",
+		"@vitejs/plugin-react": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
 	}
 }

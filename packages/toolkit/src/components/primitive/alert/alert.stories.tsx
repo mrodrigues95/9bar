@@ -102,7 +102,7 @@ export const CustomIcon: Story = {
 		<Alert {...props}>
 			<Users />
 			<AlertTitle>Team Invitation</AlertTitle>
-			<AlertDescription>You've been invited to join the team workspace.</AlertDescription>
+			<AlertDescription>You’ve been invited to join the team workspace.</AlertDescription>
 		</Alert>
 	),
 };
@@ -112,7 +112,7 @@ export const WithoutIndicator: Story = {
 	render: (props) => (
 		<Alert {...props}>
 			<AlertTitle>Simple Alert</AlertTitle>
-			<AlertDescription>This alert doesn't use an icon.</AlertDescription>
+			<AlertDescription>This alert doesn’t use an icon.</AlertDescription>
 		</Alert>
 	),
 };
@@ -125,7 +125,7 @@ export const WithDismiss: Story = {
 			<CircleCheck />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
-				You're using 90% of your available storage. Consider upgrading your plan.
+				You’re using 90% of your available storage. Consider upgrading your plan.
 			</AlertDescription>
 			<AlertAction>
 				<IconButton aria-label="Close" variant="ghost" size="sm">
@@ -144,7 +144,7 @@ export const WithActionButton: Story = {
 			<TriangleAlert />
 			<AlertTitle>Storage Almost Full</AlertTitle>
 			<AlertDescription>
-				You're using 90% of your available storage. Consider upgrading your plan.
+				You’re using 90% of your available storage. Consider upgrading your plan.
 			</AlertDescription>
 			<AlertAction>
 				<Button variant="ghost">Upgrade Plan</Button>

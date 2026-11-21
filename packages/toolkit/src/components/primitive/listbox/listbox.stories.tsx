@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BookOpen, Key, Pencil } from "lucide-react";
+import type { ComponentProps } from "react";
 import { useState } from "react";
 import type { Selection } from "react-aria-components";
 import { Text } from "../text/text";
@@ -128,35 +129,37 @@ export const Sections: Story = {
 	),
 };
 
+const MultipleSelectionExample = (props: ComponentProps<typeof Listbox>) => {
+	const [selected, setSelected] = useState<Selection>(new Set(["cheese"]));
+
+	return (
+		<div className="space-y-4">
+			<Listbox
+				{...props}
+				aria-label="Sandwich contents"
+				selectionMode="multiple"
+				selectedKeys={selected}
+				onSelectionChange={setSelected}
+			>
+				<ListboxItem id="lettuce">Lettuce</ListboxItem>
+				<ListboxItem id="tomato">Tomato</ListboxItem>
+				<ListboxItem id="cheese">Cheese</ListboxItem>
+				<ListboxItem id="tuna" isDisabled>
+					Tuna Salad
+				</ListboxItem>
+				<ListboxItem id="egg">Egg Salad</ListboxItem>
+				<ListboxItem id="ham">Ham</ListboxItem>
+			</Listbox>
+			<p className="text-sm text-gray-600">
+				Current selection: {selected === "all" ? "all" : [...selected].join(", ")}
+			</p>
+		</div>
+	);
+};
+
 /** Demonstrates controlled multi-select with a disabled item and a live readout of the current selection. */
 export const MultipleSelection: Story = {
-	render: (props) => {
-		const [selected, setSelected] = useState<Selection>(new Set(["cheese"]));
-
-		return (
-			<div className="space-y-4">
-				<Listbox
-					{...props}
-					aria-label="Sandwich contents"
-					selectionMode="multiple"
-					selectedKeys={selected}
-					onSelectionChange={setSelected}
-				>
-					<ListboxItem id="lettuce">Lettuce</ListboxItem>
-					<ListboxItem id="tomato">Tomato</ListboxItem>
-					<ListboxItem id="cheese">Cheese</ListboxItem>
-					<ListboxItem id="tuna" isDisabled>
-						Tuna Salad
-					</ListboxItem>
-					<ListboxItem id="egg">Egg Salad</ListboxItem>
-					<ListboxItem id="ham">Ham</ListboxItem>
-				</Listbox>
-				<p className="text-sm text-gray-600">
-					Current selection: {selected === "all" ? "all" : [...selected].join(", ")}
-				</p>
-			</div>
-		);
-	},
+	render: (props) => <MultipleSelectionExample {...props} />,
 };
 
 /** Shows the placeholder rendered by `renderEmptyState` when the listbox has no items. */

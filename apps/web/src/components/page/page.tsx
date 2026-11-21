@@ -1,7 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Heading, Text } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";
-import { AppBreadcrumbs, type AppBreadcrumbsProps } from "../breadcrumbs/app-breadcrumbs";
+import { AppBreadcrumbs } from "../breadcrumbs/app-breadcrumbs";
+import type { AppBreadcrumbsProps } from "../breadcrumbs/app-breadcrumbs";
 
 interface PageProps extends ComponentProps<"div"> {
 	breadcrumbsProps?: AppBreadcrumbsProps;

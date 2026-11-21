@@ -1,13 +1,8 @@
 import { CalendarDateTime } from "@internationalized/date";
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
-import {
-	METHOD_OPTIONS,
-	VERDICT_OPTIONS,
-	type LogGraph,
-	type RecipeGraph,
-	type Verdict,
-} from "../../../../../utils/data";
+import { METHOD_OPTIONS, VERDICT_OPTIONS } from "../../../../../utils/data";
+import type { LogGraph, RecipeGraph, Verdict } from "../../../../../utils/data";
 import { additionalDetailsDefaults } from "../sections/additional-details-fields";
 import { basicInformationDefaults } from "../sections/basic-information-fields";
 import { brewParametersDefaults } from "../sections/brew-parameters-fields";
@@ -17,9 +12,11 @@ import {
 	nowAsCalendarDateTime,
 	snapshotToFormFields,
 	toFormDateTime,
-	type AdditionalDetailsValues,
-	type BasicInformationValues,
-	type BrewParametersValues,
+} from "./field-schema";
+import type {
+	AdditionalDetailsValues,
+	BasicInformationValues,
+	BrewParametersValues,
 } from "./field-schema";
 
 export interface LogFormValues

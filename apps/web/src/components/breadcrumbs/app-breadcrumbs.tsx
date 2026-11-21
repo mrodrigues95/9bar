@@ -35,12 +35,12 @@ const routerBreadcrumbSchema = z.object({
 	disabled: z.boolean().optional(),
 });
 
-const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
-	routerBreadcrumbSchema.safeParse(value).success;
+const loaderDataSchema = z.object({ breadcrumb: routerBreadcrumbSchema });
 
 const getLoaderBreadcrumb = (match?: AnyRouteMatch) => {
-	const breadcrumb: unknown = match?.loaderData?.breadcrumb;
-	return isRouterBreadcrumb(breadcrumb) ? breadcrumb : null;
+	const loaderData: unknown = match?.loaderData;
+	const parsed = loaderDataSchema.safeParse(loaderData);
+	return parsed.success ? parsed.data.breadcrumb : null;
 };
 
 const resolveSuffixParentBreadcrumbs = (
@@ -126,7 +126,7 @@ const useAppBreadcrumbs = () => {
 	});
 };
 
-export interface AppBreadcrumbsProps extends ComponentProps<typeof ToolkitBreadcrumb> {}
+export type AppBreadcrumbsProps = ComponentProps<typeof ToolkitBreadcrumb>;
 
 export const AppBreadcrumbs = (props: AppBreadcrumbsProps) => {
 	const breadcrumbs = useAppBreadcrumbs();

@@ -1,11 +1,7 @@
 import type { ReactNode } from "react";
 import { Button } from "@9bar/toolkit/components";
-import {
-	FilterBar,
-	FilterBarActions,
-	type FilterBarDefinition,
-	type FilterBarFilterState,
-} from "@9bar/toolkit/components/composed";
+import { FilterBar, FilterBarActions } from "@9bar/toolkit/components/composed";
+import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/components/composed";
 import { FilterBarAddTrigger } from "./filter-bar-add-trigger";
 
 interface FilterBarPanelProps {

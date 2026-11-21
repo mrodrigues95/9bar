@@ -1,31 +1,27 @@
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
 	Header as AriaHeader,
 	ListBox as AriaListBox,
 	ListBoxItem as AriaListBoxItem,
-	type ListBoxItemProps as AriaListBoxItemProps,
-	type ListBoxProps as AriaListBoxProps,
 	ListBoxSection as AriaListBoxSection,
-	type ListBoxSectionProps as AriaListBoxSectionProps,
 	Collection,
 	composeRenderProps,
 } from "react-aria-components";
-import {
-	cn,
-	composeTailwindRenderProps,
-	resolveItemTextValue,
-	type ItemLabelProps,
-} from "../../../utils";
-import { Separator, type SeparatorProps } from "../separator/separator";
+import type {
+	ListBoxItemProps as AriaListBoxItemProps,
+	ListBoxProps as AriaListBoxProps,
+	ListBoxSectionProps as AriaListBoxSectionProps,
+} from "react-aria-components";
+import { cn, composeTailwindRenderProps, resolveItemTextValue } from "../../../utils";
+import type { ItemLabelProps } from "../../../utils";
+import { Separator } from "../separator/separator";
+import type { SeparatorProps } from "../separator/separator";
 import { listboxItemVariants, listboxSectionHeaderVariants } from "./styles";
 
 /** Props for the {@link Listbox} component. */
-export interface ListboxProps<T extends object> extends Omit<
-	AriaListBoxProps<T>,
-	"layout" | "orientation"
-> {}
+export type ListboxProps<T extends object> = Omit<AriaListBoxProps<T>, "layout" | "orientation">;
 
 /** A list of options that allows single or multiple selection. */
 export const Listbox = <T extends object>({ children, ...props }: ListboxProps<T>) => (
@@ -122,7 +118,7 @@ export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderPr
 );
 
 /** Props for the {@link ListboxSeparator} component. */
-export interface ListboxSeparatorProps extends Omit<SeparatorProps, "render"> {}
+export type ListboxSeparatorProps = Omit<SeparatorProps, "render">;
 
 /** A visual divider placed between {@link ListboxSection} elements. Rendered as a presentational element because a `separator` role is not permitted inside a listbox. */
 export const ListboxSeparator = ({ className, ...props }: ListboxSeparatorProps) => (

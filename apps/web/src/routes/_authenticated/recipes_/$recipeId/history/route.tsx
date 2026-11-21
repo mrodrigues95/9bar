@@ -11,8 +11,8 @@ import {
 	decodeHistoryFilters,
 	encodeHistoryFilters,
 	listRecipeHistory,
-	type HistoryFilterSearchParams,
 } from "./-recipe-history-query";
+import type { HistoryFilterSearchParams } from "./-recipe-history-query";
 
 interface HistorySearch extends HistoryFilterSearchParams {
 	page: number;

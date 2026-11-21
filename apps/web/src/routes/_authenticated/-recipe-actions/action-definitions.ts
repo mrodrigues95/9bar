@@ -9,6 +9,6 @@ export const resolveActionDefinitions = <TContext>(
 	definitions: Array<ActionDefinition<TContext>>,
 	context: NoInfer<TContext>,
 ) =>
-	definitions
-		.filter((definition) => definition.isAvailable?.(context) ?? true)
-		.map((definition) => definition.build(context));
+	definitions.flatMap((definition) =>
+		(definition.isAvailable?.(context) ?? true) ? [definition.build(context)] : [],
+	);

@@ -8,11 +8,8 @@ import {
 	MenuSubTrigger,
 	MenuTrigger,
 } from "@9bar/toolkit/components";
-import {
-	applyFilterSelection,
-	type FilterBarDefinition,
-	type FilterBarFilterState,
-} from "@9bar/toolkit/components/composed";
+import { applyFilterSelection } from "@9bar/toolkit/components/composed";
+import type { FilterBarDefinition, FilterBarFilterState } from "@9bar/toolkit/components/composed";
 
 interface FilterBarAddTriggerProps {
 	definitions: ReadonlyArray<FilterBarDefinition>;

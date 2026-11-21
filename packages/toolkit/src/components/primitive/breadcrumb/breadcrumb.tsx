@@ -1,20 +1,22 @@
 "use client";
 
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps, ReactNode, Ref } from "react";
 import {
 	Breadcrumb as AriaBreadcrumb,
 	Breadcrumbs as AriaBreadcrumbs,
 	Link as AriaLink,
-	type BreadcrumbProps as AriaBreadcrumbProps,
-	type BreadcrumbsProps,
 	composeRenderProps,
-	type LinkProps,
+} from "react-aria-components";
+import type {
+	BreadcrumbProps as AriaBreadcrumbProps,
+	BreadcrumbsProps,
+	LinkProps,
 } from "react-aria-components";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 
 /** Props for the {@link Breadcrumb} component. */
-export type BreadcrumbProps = React.ComponentProps<"nav">;
+export type BreadcrumbProps = ComponentProps<"nav">;
 
 /** A navigation landmark that shows the user's location in the app hierarchy. */
 export const Breadcrumb = ({ className, ...props }: BreadcrumbProps) => (
@@ -39,7 +41,7 @@ export const BreadcrumbList = <T extends object>({ className, ...props }: Breadc
 /** Props for the {@link BreadcrumbItem} component. */
 export type BreadcrumbItemProps = Omit<AriaBreadcrumbProps, "children"> & {
 	separatorClassName?: string;
-	children?: React.ReactNode | ((state: { isCurrent: boolean }) => React.ReactNode);
+	children?: ReactNode | ((state: { isCurrent: boolean }) => ReactNode);
 };
 
 /** A single crumb in a {@link BreadcrumbList}, rendering a separator after non-current items. */
@@ -75,7 +77,7 @@ export const BreadcrumbItem = ({
 /** Props for the {@link BreadcrumbLink} component. */
 export type BreadcrumbLinkProps = LinkProps & {
 	/** A ref to the underlying anchor element. */
-	ref?: React.Ref<HTMLAnchorElement>;
+	ref?: Ref<HTMLAnchorElement>;
 };
 
 /** A navigable crumb rendered as a link, styled as the current page when active. */
@@ -92,7 +94,7 @@ export const BreadcrumbLink = ({ className, render, ...props }: BreadcrumbLinkPr
 );
 
 /** Props for the {@link BreadcrumbPage} component. */
-export type BreadcrumbPageProps = React.ComponentProps<"span">;
+export type BreadcrumbPageProps = ComponentProps<"span">;
 
 /** The current page crumb, rendered as non-interactive text. */
 export const BreadcrumbPage = ({ className, ...props }: BreadcrumbPageProps) => (
@@ -105,7 +107,7 @@ export const BreadcrumbPage = ({ className, ...props }: BreadcrumbPageProps) => 
 );
 
 /** Props for the {@link BreadcrumbEllipsis} component. */
-export type BreadcrumbEllipsisProps = React.ComponentProps<"span">;
+export type BreadcrumbEllipsisProps = ComponentProps<"span">;
 
 /** A collapsed crumb indicator, used to hide intermediate breadcrumb levels. */
 export const BreadcrumbEllipsis = ({ className, ...props }: BreadcrumbEllipsisProps) => (

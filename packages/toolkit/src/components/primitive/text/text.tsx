@@ -1,5 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { Text as AriaText, type TextProps as AriaTextProps } from "react-aria-components";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { Text as AriaText } from "react-aria-components";
+import type { TextProps as AriaTextProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 const textVariants = cva("", {

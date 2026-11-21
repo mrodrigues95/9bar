@@ -1,8 +1,8 @@
-import { type ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link FilterBarActions} component. */
-export interface FilterBarActionsProps extends ComponentProps<"div"> {}
+export type FilterBarActionsProps = ComponentProps<"div">;
 
 /**
  * Right-aligned container for {@link FilterBar} actions (e.g. a "Clear all"

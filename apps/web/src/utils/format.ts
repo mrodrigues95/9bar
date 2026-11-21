@@ -1,4 +1,5 @@
-import { DateFormatter, getLocalTimeZone, type CalendarDateTime } from "@internationalized/date";
+import { DateFormatter, getLocalTimeZone } from "@internationalized/date";
+import type { CalendarDateTime } from "@internationalized/date";
 import type { BrewSnapshot } from "./data";
 
 const SHOT_AT_FORMATTER = new DateFormatter("en-US", {

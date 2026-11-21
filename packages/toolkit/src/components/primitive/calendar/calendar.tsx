@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import type { CalendarMonthPickerAria, CalendarYearPickerAria } from "react-aria";
 import {
 	Calendar as AriaCalendar,
@@ -12,18 +12,21 @@ import {
 	CalendarMonthPicker as AriaCalendarMonthPicker,
 	CalendarYearPicker as AriaCalendarYearPicker,
 	composeRenderProps,
-	type CalendarCellProps as AriaCalendarCellProps,
-	type CalendarGridBodyProps as AriaCalendarGridBodyProps,
-	type CalendarGridHeaderProps as AriaCalendarGridHeaderProps,
-	type CalendarGridProps as AriaCalendarGridProps,
-	type CalendarHeaderCellProps as AriaCalendarHeaderCellProps,
-	type CalendarHeadingProps as AriaCalendarHeadingProps,
-	type CalendarMonthPickerProps as AriaCalendarMonthPickerProps,
-	type CalendarProps as AriaCalendarProps,
-	type CalendarYearPickerProps as AriaCalendarYearPickerProps,
-	type DateValue,
 } from "react-aria-components";
-import { Button, ButtonProps, buttonVariants } from "#components/button";
+import type {
+	CalendarCellProps as AriaCalendarCellProps,
+	CalendarGridBodyProps as AriaCalendarGridBodyProps,
+	CalendarGridHeaderProps as AriaCalendarGridHeaderProps,
+	CalendarGridProps as AriaCalendarGridProps,
+	CalendarHeaderCellProps as AriaCalendarHeaderCellProps,
+	CalendarHeadingProps as AriaCalendarHeadingProps,
+	CalendarMonthPickerProps as AriaCalendarMonthPickerProps,
+	CalendarProps as AriaCalendarProps,
+	CalendarYearPickerProps as AriaCalendarYearPickerProps,
+	DateValue,
+} from "react-aria-components";
+import type { ButtonProps } from "#components/button";
+import { Button, buttonVariants } from "#components/button";
 import {
 	Select,
 	SelectContent,
@@ -56,7 +59,7 @@ export const Calendar = <TValue extends DateValue>({
 );
 
 /** Props for the {@link CalendarHeader} component. */
-export type CalendarHeaderProps = React.ComponentProps<"div">;
+export type CalendarHeaderProps = ComponentProps<"div">;
 
 /** The caption row of a {@link Calendar}, holding the navigation buttons and the heading or month/year dropdowns. */
 export const CalendarHeader = ({ className, ...props }: CalendarHeaderProps) => (

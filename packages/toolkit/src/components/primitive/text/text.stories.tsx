@@ -87,7 +87,7 @@ export const RealWorldExample: Story = {
 		<div className="mx-auto max-w-2xl space-y-6 p-8">
 			<div className="space-y-2">
 				<Text as="p" variant="body-lg" color="primary">
-					Welcome to our platform! We're excited to have you here.
+					Welcome to our platform! We’re excited to have you here.
 				</Text>
 				<Text as="p" variant="body">
 					Our mission is to make web development accessible and enjoyable for everyone. With our

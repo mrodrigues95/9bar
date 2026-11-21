@@ -20,10 +20,12 @@ import {
 	BREW_FIELD_LABELS,
 	formatBrewField,
 	isSameBrewField,
-	type BrewField,
 } from "../../../utils/brew-fields";
-import { buildRecipeGraph, recipes, type BrewSnapshot, type LogGraph } from "../../../utils/data";
+import type { BrewField } from "../../../utils/brew-fields";
+import { buildRecipeGraph, recipes } from "../../../utils/data";
+import type { BrewSnapshot, LogGraph } from "../../../utils/data";
 import { formatGrams, formatPressure } from "../../../utils/format";
+import { logStubSave } from "../../../utils/stub-save";
 
 const formatDelta = (difference: number, format: (value: number) => string) => {
 	const rounded = Math.round(difference * 10) / 10;
@@ -176,12 +178,12 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 	const shotRows = compare(["grindSize", "dose", "yield", "brewTime", "temperature", "pressure"]);
 
 	const onAttach = () => {
-		console.log("Log attached to recipe:", {
+		logStubSave("Log attached to recipe:", {
 			logId: log.id,
 			recipeId: recipe?.id ?? null,
-			mismatchedFields: [...setupRows, ...shotRows]
-				.filter((row) => row.isMismatched)
-				.map((row) => row.field),
+			mismatchedFields: [...setupRows, ...shotRows].flatMap((row) =>
+				row.isMismatched ? [row.field] : [],
+			),
 		});
 	};
 
@@ -211,7 +213,7 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 						<Alert variant="warning" aria-labelledby={mismatchTitleId}>
 							<Info />
 							<AlertTitle id={mismatchTitleId}>
-								This log doesn't match the recipe's setup
+								This log doesn’t match the recipe’s setup
 							</AlertTitle>
 							<AlertDescription>
 								It was brewed with a different method, beans, or gear, marked below. You can still

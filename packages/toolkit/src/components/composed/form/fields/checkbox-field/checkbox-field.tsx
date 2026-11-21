@@ -1,18 +1,10 @@
 import { useId } from "react";
-import { Checkbox, type CheckboxProps } from "#components/checkbox";
-import {
-	Field,
-	type FieldComponentProps,
-	FieldDescription,
-	FieldError,
-	getFieldDescribedBy,
-} from "#components/field";
-import {
-	getFieldErrorState,
-	resolveFieldErrors,
-	resolveFormFieldErrors,
-	type ErrorFormatter,
-} from "../../utils/errors";
+import { Checkbox } from "#components/checkbox";
+import type { CheckboxProps } from "#components/checkbox";
+import { Field, FieldDescription, FieldError, getFieldDescribedBy } from "#components/field";
+import type { FieldComponentProps } from "#components/field";
+import { getFieldErrorState, resolveFieldErrors, resolveFormFieldErrors } from "../../utils/errors";
+import type { ErrorFormatter } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link CheckboxField} component. */

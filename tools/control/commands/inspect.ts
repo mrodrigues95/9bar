@@ -4,7 +4,8 @@ import type { AxeResults } from "axe-core";
 import { withPage } from "../browser.ts";
 import { booleanFlag, stringFlag } from "../flags.ts";
 import { fail } from "../output.ts";
-import { eventsPath, recordedEventSchema, type EventLog } from "../state.ts";
+import { eventsPath, recordedEventSchema } from "../state.ts";
+import type { EventLog } from "../state.ts";
 import type { Command, Flags } from "../types.ts";
 
 const readEvents = (target: string, log: EventLog, flags: Flags) => {

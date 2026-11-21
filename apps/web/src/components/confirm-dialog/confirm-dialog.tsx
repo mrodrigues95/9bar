@@ -7,8 +7,8 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	type DialogCloseButtonProps,
 } from "@9bar/toolkit/components";
+import type { DialogCloseButtonProps } from "@9bar/toolkit/components";
 
 interface ConfirmDialogProps {
 	isOpen: boolean;

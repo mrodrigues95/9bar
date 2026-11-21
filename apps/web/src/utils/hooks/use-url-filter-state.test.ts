@@ -3,13 +3,11 @@ import { describe, expect, it } from "vitest";
 import {
 	applyChange,
 	applyDraft,
-	type QueryDraft,
 	reconcileDraft,
 	resolveView,
 	settleDraft,
-	type UrlFilterChange,
-	type UrlFilterIntent,
 } from "./use-url-filter-state";
+import type { QueryDraft, UrlFilterChange, UrlFilterIntent } from "./use-url-filter-state";
 
 type UserEvent =
 	| { type: "type"; q: string }

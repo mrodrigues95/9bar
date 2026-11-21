@@ -8,6 +8,7 @@ import {
 	recipeToFormValues,
 } from "../../-form/schemas/recipe-schema";
 import { buildLogGraph, buildRecipeGraph } from "../../../../../utils/data";
+import { logStubSave } from "../../../../../utils/stub-save";
 import { DuplicateRecipeAlert } from "./-duplicate-recipe-alert";
 import { SaveLogAsRecipeAlert } from "./-save-log-as-recipe-alert";
 
@@ -22,7 +23,7 @@ const NewRecipe = () => {
 				? { ...recipeToFormValues(duplicateOf), name: `Copy of ${duplicateOf.name}` }
 				: recipeFormOpts.defaultValues,
 		onSubmit: async ({ value }) => {
-			console.log("Recipe created:", value);
+			logStubSave("Recipe created:", value);
 			await navigate({ to: "/recipes" });
 		},
 	});

@@ -12,8 +12,8 @@ import {
 	repoRoot,
 	targetDir,
 	writeState,
-	type ControlState,
 } from "../state.ts";
+import type { ControlState } from "../state.ts";
 import type { Command, Target } from "../types.ts";
 
 const fromRoot = (path: string) => relative(repoRoot, path);

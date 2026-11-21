@@ -16,13 +16,10 @@ import {
 	SelectValue,
 	Text,
 } from "@9bar/toolkit/components";
-import { BREW_FIELD_ICONS, type BrewField } from "../../../../../utils/brew-fields";
-import {
-	RECIPE_STATUS_OPTIONS,
-	grinderName,
-	machineName,
-	type BrewSnapshot,
-} from "../../../../../utils/data";
+import { BREW_FIELD_ICONS } from "../../../../../utils/brew-fields";
+import type { BrewField } from "../../../../../utils/brew-fields";
+import { RECIPE_STATUS_OPTIONS, grinderName, machineName } from "../../../../../utils/data";
+import type { BrewSnapshot } from "../../../../../utils/data";
 import {
 	formatBrewTime,
 	formatGrams,

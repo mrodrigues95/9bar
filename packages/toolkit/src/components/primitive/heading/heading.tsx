@@ -1,5 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import { Text, type TextProps } from "react-aria-components";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { Text } from "react-aria-components";
+import type { TextProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 const headingVariants = cva("text-primary", {

@@ -1,5 +1,6 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "react";
 import { cn } from "#lib/utils";
 
 const alertVariants = cva(
@@ -51,7 +52,7 @@ const alertVariants = cva(
 );
 
 /** Props for the {@link Alert} component. */
-export type AlertProps = React.ComponentProps<"div"> & VariantProps<typeof alertVariants>;
+export type AlertProps = ComponentProps<"div"> & VariantProps<typeof alertVariants>;
 
 /** An alert displays a brief, important message in a way that attracts the user's attention without interrupting their task. Combine with {@link AlertTitle} and {@link AlertDescription}. */
 export const Alert = ({ className, variant, ...props }: AlertProps) => (
@@ -64,7 +65,7 @@ export const Alert = ({ className, variant, ...props }: AlertProps) => (
 );
 
 /** Props for the {@link AlertTitle} component. */
-export type AlertTitleProps = React.ComponentProps<"div">;
+export type AlertTitleProps = ComponentProps<"div">;
 
 /** A short heading that labels the {@link Alert}. */
 export const AlertTitle = ({ className, ...props }: AlertTitleProps) => (
@@ -82,7 +83,7 @@ export const AlertTitle = ({ className, ...props }: AlertTitleProps) => (
 );
 
 /** Props for the {@link AlertDescription} component. */
-export type AlertDescriptionProps = React.ComponentProps<"div">;
+export type AlertDescriptionProps = ComponentProps<"div">;
 
 /** Supplementary text that provides additional context for the {@link Alert}. */
 export const AlertDescription = ({ className, ...props }: AlertDescriptionProps) => (
@@ -102,7 +103,7 @@ export const AlertDescription = ({ className, ...props }: AlertDescriptionProps)
 );
 
 /** Props for the {@link AlertAction} component. */
-export type AlertActionProps = React.ComponentProps<"div">;
+export type AlertActionProps = ComponentProps<"div">;
 
 /** A container for interactive elements (such as a dismiss button) placed at the end of an {@link Alert}. */
 export const AlertAction = ({ className, ...props }: AlertActionProps) => (

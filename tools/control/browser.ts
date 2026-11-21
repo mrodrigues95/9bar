@@ -1,16 +1,12 @@
 import { appendFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
-import { chromium, type ConsoleMessage, type Page } from "playwright-core";
+import { chromium } from "playwright-core";
+import type { ConsoleMessage, Page } from "playwright-core";
 import { z } from "zod";
 import { fail } from "./output.ts";
 import { responds } from "./processes.ts";
-import {
-	eventsPath,
-	readState,
-	type ControlState,
-	type EventLog,
-	type RecordedEvent,
-} from "./state.ts";
+import { eventsPath, readState } from "./state.ts";
+import type { ControlState, EventLog, RecordedEvent } from "./state.ts";
 
 export const chromiumPath = () => chromium.executablePath();
 
@@ -51,13 +47,16 @@ const record = (target: string, event: RecordedEvent) => {
 };
 
 const consoleArgs = async (message: ConsoleMessage) => {
-	const values = await Promise.all(message.args().map(async (handle) => handle.jsonValue()));
+	const values: Array<unknown> = await Promise.all(
+		message.args().map((handle) => handle.jsonValue()),
+	);
 	const parsed = z.array(z.json()).safeParse(values);
 	return parsed.success ? parsed.data : undefined;
 };
 
+const now = () => new Date().toISOString();
+
 const recordPageEvents = (target: string, page: Page, pending: Array<Promise<void>>) => {
-	const now = () => new Date().toISOString();
 	page.on("console", (message) => {
 		const at = now();
 		pending.push(

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, useRouteContext } from "@tanstack/react-r
 import { useAppForm } from "@9bar/toolkit/components/composed";
 import { RecipeForm } from "../../../-form/recipe-form";
 import { recipeFormOpts, recipeToFormValues } from "../../../-form/schemas/recipe-schema";
+import { logStubSave } from "../../../../../../utils/stub-save";
 
 const EditRecipe = () => {
 	const { recipe } = useRouteContext({
@@ -12,7 +13,7 @@ const EditRecipe = () => {
 		...recipeFormOpts,
 		defaultValues: recipeToFormValues(recipe),
 		onSubmit: async ({ value }) => {
-			console.log("Recipe updated:", value);
+			logStubSave("Recipe updated:", value);
 			await navigate({
 				to: "/recipes/$recipeId",
 				params: { recipeId: String(recipe.id) },

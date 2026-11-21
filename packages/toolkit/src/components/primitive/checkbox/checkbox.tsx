@@ -1,12 +1,14 @@
 "use client";
 
 import { CheckIcon, MinusIcon } from "lucide-react";
-import { type ComponentProps, type ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import {
 	CheckboxButton as AriaCheckboxButton,
 	CheckboxField as AriaCheckboxField,
-	type CheckboxFieldProps as AriaCheckboxFieldProps,
-	type CheckboxButtonRenderProps,
+} from "react-aria-components";
+import type {
+	CheckboxFieldProps as AriaCheckboxFieldProps,
+	CheckboxButtonRenderProps,
 } from "react-aria-components";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 

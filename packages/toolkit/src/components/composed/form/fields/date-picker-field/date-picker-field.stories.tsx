@@ -1,7 +1,8 @@
 import { CalendarDateTime, parseDateTime } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { DatePickerField, type DatePickerValueCodec } from "./date-picker-field";
+import { DatePickerField } from "./date-picker-field";
+import type { DatePickerValueCodec } from "./date-picker-field";
 
 const meta = {
 	component: DatePickerField,
@@ -131,20 +132,22 @@ const dateTimeLocalCodec: DatePickerValueCodec<CalendarDateTime, string> = {
 	format: (value) => (value ? value.toString().slice(0, 16) : ""),
 };
 
+const WithCodecExample = () => {
+	const [value, setValue] = useState("2026-10-12T09:30");
+
+	return (
+		<DatePickerField
+			label="Time"
+			description="Bound to a datetime-local string through a codec."
+			granularity="minute"
+			value={value}
+			onChange={setValue}
+			codec={dateTimeLocalCodec}
+		/>
+	);
+};
+
 /** A field bound to a `datetime-local` string value through a parse/format codec. */
 export const WithCodec: Story = {
-	render: () => {
-		const [value, setValue] = useState("2026-10-12T09:30");
-
-		return (
-			<DatePickerField
-				label="Time"
-				description="Bound to a datetime-local string through a codec."
-				granularity="minute"
-				value={value}
-				onChange={setValue}
-				codec={dateTimeLocalCodec}
-			/>
-		);
-	},
+	render: () => <WithCodecExample />,
 };

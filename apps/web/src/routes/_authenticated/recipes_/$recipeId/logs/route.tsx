@@ -12,8 +12,8 @@ import {
 	decodeLogFilters,
 	encodeLogFilters,
 	listRecipeLogs,
-	type LogFilterSearchParams,
 } from "./-recipe-logs-query";
+import type { LogFilterSearchParams } from "./-recipe-logs-query";
 
 type LogsSearch = { page: number } & LogFilterSearchParams;
 

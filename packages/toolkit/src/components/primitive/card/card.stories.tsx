@@ -102,7 +102,7 @@ export const WithoutHeader: Story = {
 		<Card {...props} className="w-full max-w-sm">
 			<CardContent>
 				<p className="text-sm text-muted-foreground">
-					This card doesn't have a header, just content.
+					This card doesn’t have a header, just content.
 				</p>
 			</CardContent>
 			<CardFooter>

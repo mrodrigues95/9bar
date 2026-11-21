@@ -1,8 +1,8 @@
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Card} component. */
-export type CardProps = React.ComponentProps<"div"> & {
+export type CardProps = ComponentProps<"div"> & {
 	size?: "default" | "sm";
 };
 
@@ -27,7 +27,7 @@ export const Card = ({ className, size = "default", ...props }: CardProps) => (
 );
 
 /** Props for the {@link CardHeader} component. */
-export type CardHeaderProps = React.ComponentProps<"div">;
+export type CardHeaderProps = ComponentProps<"div">;
 
 /** The top section of a {@link Card}, containing its title, description, and optional action. */
 export const CardHeader = ({ className, ...props }: CardHeaderProps) => (
@@ -48,7 +48,7 @@ export const CardHeader = ({ className, ...props }: CardHeaderProps) => (
 );
 
 /** Props for the {@link CardTitle} component. */
-export type CardTitleProps = React.ComponentProps<"div">;
+export type CardTitleProps = ComponentProps<"div">;
 
 /** A short heading for a {@link Card}. */
 export const CardTitle = ({ className, ...props }: CardTitleProps) => (
@@ -60,7 +60,7 @@ export const CardTitle = ({ className, ...props }: CardTitleProps) => (
 );
 
 /** Props for the {@link CardDescription} component. */
-export type CardDescriptionProps = React.ComponentProps<"div">;
+export type CardDescriptionProps = ComponentProps<"div">;
 
 /** Supporting text displayed beneath a {@link CardTitle}. */
 export const CardDescription = ({ className, ...props }: CardDescriptionProps) => (
@@ -72,7 +72,7 @@ export const CardDescription = ({ className, ...props }: CardDescriptionProps) =
 );
 
 /** Props for the {@link CardAction} component. */
-export type CardActionProps = React.ComponentProps<"div">;
+export type CardActionProps = ComponentProps<"div">;
 
 /** An action (such as a button or menu) aligned to the end of a {@link CardHeader}. */
 export const CardAction = ({ className, ...props }: CardActionProps) => (
@@ -84,7 +84,7 @@ export const CardAction = ({ className, ...props }: CardActionProps) => (
 );
 
 /** Props for the {@link CardContent} component. */
-export type CardContentProps = React.ComponentProps<"div">;
+export type CardContentProps = ComponentProps<"div">;
 
 /** The main body of a {@link Card}. */
 export const CardContent = ({ className, ...props }: CardContentProps) => (
@@ -92,7 +92,7 @@ export const CardContent = ({ className, ...props }: CardContentProps) => (
 );
 
 /** Props for the {@link CardFooter} component. */
-export type CardFooterProps = React.ComponentProps<"div">;
+export type CardFooterProps = ComponentProps<"div">;
 
 /** The bottom section of a {@link Card}, typically holding actions. */
 export const CardFooter = ({ className, ...props }: CardFooterProps) => (
