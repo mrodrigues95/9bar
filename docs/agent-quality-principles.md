@@ -1,6 +1,6 @@
 # Agent quality: principles
 
-Use when deciding how to stop an agent mistake from coming back, or when adding a rule, lint, check, or skill. Describes the model behind the repo's checks, not the checks themselves. The enforcers are listed in `AGENTS.md`.
+Use when deciding how to stop an agent mistake from coming back, or when adding a rule, lint, check, or skill. Describes the model behind the repo's checks, not the checks themselves. The enforcers are listed in `AGENTS.md`. `/correct` reads this before picking a fix.
 
 ## The goal
 
@@ -61,7 +61,7 @@ Each layer is less reliable than the one above it. Fix a problem at the highest 
 
 | Note                                      | Layer | Lands as                                                         |
 | ----------------------------------------- | ----- | ---------------------------------------------------------------- |
-| Ban useEffect and comments                | 2     | `anti-slop/no-effect`, `anti-slop/no-comments`, `/no-comments`   |
+| Ban useEffect and comments                | 2     | `anti-slop/no-effect`, `anti-slop/no-comments`                   |
 | Create a feature map                      | 3     | `verify-web` feature map; toolkit uses the Storybook story index |
 | Avoid nuance, design better APIs          | 1     | `cn` type, import boundaries, React Compiler memo ban            |
 | If you correct the agent, lint against it | 5→1–3 | `/correct` replaces `reflect`, enforcement table in `AGENTS.md`  |

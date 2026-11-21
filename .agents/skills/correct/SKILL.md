@@ -4,7 +4,7 @@ description: "Find the mistakes agents keep repeating in this repo and make each
 disable-model-invocation: true
 ---
 
-<!-- Forked from https://github.com/cursor/plugins/blob/93b916d4a1e806507e22f4716b352fa91f2b227e/pstack/skills/correct/SKILL.md (MIT, Lauren Tan). Local changes: collecting the operator's raw corrections and rewrites (from 9bar's former reflect skill), lint as its own level, 9bar commands, protected-path approval, propose before applying. -->
+<!-- Forked from https://github.com/cursor/plugins/blob/93b916d4a1e806507e22f4716b352fa91f2b227e/pstack/skills/correct/SKILL.md (MIT, Lauren Tan). Local changes: collecting the operator's raw corrections and rewrites (from 9bar's former reflect skill), lint as its own level, principles read from docs/agent-quality-principles.md instead of a ratchet, 9bar commands, protected-path approval, propose before applying. -->
 
 # Correct
 
@@ -24,9 +24,11 @@ Group the mistakes into classes. A class counts once it has happened twice. A si
 
 ## Fix each class at the highest level that works
 
-1. **Eliminate it with architecture.** Give each piece of state one owner and each task one supported way. Hide internals so the wrong import fails. Replace hand-synced lists with one source of truth. Delete old ways and dead code an agent would copy.
+Read `docs/agent-quality-principles.md` before picking a fix. Its pyramid sets the order below, and the principles for each layer decide what a good fix at that level looks like.
+
+1. **Eliminate it with architecture.** Apply the codebase principles. Replace hand-synced lists with one source of truth, and delete the old way and any dead code an agent would copy.
 2. **Enforce it with types so the bad state can't be written.** Example: `cn` rejects React Aria render-prop classNames, so the only way to pass one compiles through `composeTailwindRenderProps`.
-3. **Catch it with a lint or check whose error names the fix.** Use an oxlint rule (built-in, landmines, or a new `anti-slop` rule in `tools/oxlint/anti-slop/`), an `.oxlintrc.json` override, or a `tools/checks/` structure check. The message names the file, type, or function to use instead. If the pattern is already common, fail only when a change adds more.
+3. **Catch it with a lint or check whose error names the fix.** Use an oxlint rule (built-in, landmines, or a new `anti-slop` rule in `tools/oxlint/anti-slop/`), an `.oxlintrc.json` override, or a `tools/checks/` structure check. The message names the file, type, or function to use instead. Land the rule with every fix it needs.
 4. **Test the behavior.** A property test for pure logic (`pnpm web test`), a story with a `play` function for a component. Fix or delete any test that still passes when the behavior it checks breaks, or that fails when only the internals change.
 5. **Write docs or agent rules last, only for judgment calls.** Nothing fails when an agent skips them. Put them in the skill that owns the code, not a general list.
 
