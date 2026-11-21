@@ -14,7 +14,7 @@ export const cn = (...inputs: Array<ClassValue>) => twMerge(clsx(inputs));
 export const composeTailwindRenderProps = <T>(
 	className: string | ((v: T) => string) | undefined,
 	tw: ClassValue,
-): ((renderProps: T) => string) => composeRenderProps(className, (className) => cn(tw, className));
+) => composeRenderProps(className, (className) => cn(tw, className));
 
 /**
  * `children`/`textValue` contract for item components (listbox options, menu
@@ -34,6 +34,6 @@ export type ItemLabelProps<TChildren> =
 export const resolveItemTextValue = (
 	children: ReactNode | ((values: never) => ReactNode),
 	textValue: string | undefined,
-): string | undefined =>
+) =>
 	// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: ItemLabelProps requires textValue unless children is a plain string.
 	textValue ?? (children as string);

@@ -44,17 +44,23 @@ export const recipeFormSchema = z.object({
 	notes: z.string().max(2000, "Notes cannot exceed 2000 characters"),
 });
 
-export const recipeToFormValues = (recipe: RecipeGraph): RecipeFormValues => ({
-	...snapshotToFormFields(recipe.snapshot),
-	name: recipe.name,
-	status: recipe.status,
-});
+export const recipeToFormValues = (recipe: RecipeGraph) => {
+	const values: RecipeFormValues = {
+		...snapshotToFormFields(recipe.snapshot),
+		name: recipe.name,
+		status: recipe.status,
+	};
+	return values;
+};
 
-export const logToRecipeFormValues = (log: LogGraph): RecipeFormValues => ({
-	...snapshotToFormFields(log.snapshot),
-	name: "",
-	status: "dialing-in",
-});
+export const logToRecipeFormValues = (log: LogGraph) => {
+	const values: RecipeFormValues = {
+		...snapshotToFormFields(log.snapshot),
+		name: "",
+		status: "dialing-in",
+	};
+	return values;
+};
 
 export const defaultRecipeFormValues: RecipeFormValues = {
 	...basicInformationDefaults,

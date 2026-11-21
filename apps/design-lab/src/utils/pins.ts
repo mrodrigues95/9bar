@@ -15,9 +15,9 @@ export type FeedbackPin = z.infer<typeof feedbackPinsSchema>[number];
 
 export type PinnedTarget = Omit<FeedbackPin, "id" | "variantId" | "comment">;
 
-const storageKey = (variantId: string): string => `9bar-design-feedback:${variantId}`;
+const storageKey = (variantId: string) => `9bar-design-feedback:${variantId}`;
 
-export const readStoredPins = (variantId: string): Array<FeedbackPin> => {
+export const readStoredPins = (variantId: string) => {
 	if (typeof window === "undefined") {
 		return [];
 	}
@@ -33,7 +33,7 @@ export const readStoredPins = (variantId: string): Array<FeedbackPin> => {
 	}
 };
 
-export const writeStoredPins = (variantId: string, pins: Array<FeedbackPin>): void => {
+export const writeStoredPins = (variantId: string, pins: Array<FeedbackPin>) => {
 	try {
 		window.localStorage.setItem(storageKey(variantId), JSON.stringify(pins));
 	} catch {
@@ -41,7 +41,7 @@ export const writeStoredPins = (variantId: string, pins: Array<FeedbackPin>): vo
 	}
 };
 
-export const pinsToMarkdown = (variantId: string, pins: Array<FeedbackPin>): string => {
+export const pinsToMarkdown = (variantId: string, pins: Array<FeedbackPin>) => {
 	if (pins.length === 0) {
 		return `## Design feedback — ${variantId}\n\nNo pins. Looks good.`;
 	}

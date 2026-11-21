@@ -29,7 +29,7 @@ export const getRecipe = (id: number) => recipes.find((row) => row.id === id);
 
 export const getLog = (id: number) => logs.find((row) => row.id === id);
 
-export const buildRecipeGraph = (id: number): RecipeGraph | undefined => {
+export const buildRecipeGraph = (id: number) => {
 	const recipe = getRecipe(id);
 	if (!recipe) {
 		return undefined;
@@ -38,10 +38,10 @@ export const buildRecipeGraph = (id: number): RecipeGraph | undefined => {
 	if (!snapshot) {
 		return undefined;
 	}
-	return { ...recipe, snapshot, logs: getRecipeLogs(recipe.id) };
+	return { ...recipe, snapshot, logs: getRecipeLogs(recipe.id) } satisfies RecipeGraph;
 };
 
-export const buildLogGraph = (id: number): LogGraph | undefined => {
+export const buildLogGraph = (id: number) => {
 	const log = getLog(id);
 	if (!log) {
 		return undefined;
@@ -50,7 +50,7 @@ export const buildLogGraph = (id: number): LogGraph | undefined => {
 	if (!snapshot) {
 		return undefined;
 	}
-	return { ...log, snapshot };
+	return { ...log, snapshot } satisfies LogGraph;
 };
 
 export const METHOD_OPTIONS = [
@@ -83,14 +83,17 @@ type BrewValuesInput = Partial<BrewValues> &
 		"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
 	>;
 
-const brewValues = (seed: BrewValuesInput): BrewValues => ({
-	method: "espresso",
-	temperature: 93,
-	temperatureUnit: "C",
-	pressure: 9,
-	notes: null,
-	...seed,
-});
+const brewValues = (seed: BrewValuesInput) => {
+	const values: BrewValues = {
+		method: "espresso",
+		temperature: 93,
+		temperatureUnit: "C",
+		pressure: 9,
+		notes: null,
+		...seed,
+	};
+	return values;
+};
 
 const applyOverrides = (values: BrewValues, overrides: Partial<BrewValues>) => ({
 	...values,

@@ -6,7 +6,7 @@ export type FieldErrorItem = { message?: string } | string | undefined;
  * `{ message }` object, null, or undefined). Values outside the
  * {@link FieldErrorItem} contract yield no message.
  */
-export const toErrorMessage = (error: FieldErrorItem | null): string | undefined => {
+export const toErrorMessage = (error: FieldErrorItem | null) => {
 	if (error === undefined || error === null) {
 		return undefined;
 	}

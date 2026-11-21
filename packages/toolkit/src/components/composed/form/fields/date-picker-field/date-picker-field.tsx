@@ -221,13 +221,13 @@ const useFormDatePickerState = <TFieldValue,>(
 	return { field, isInvalid, resolvedErrors };
 };
 
-const identityDateCodec = <TValue extends DateValue>(): DatePickerValueCodec<
-	TValue,
-	TValue | null
-> => ({
-	parse: (value) => value,
-	format: (value) => value,
-});
+const identityDateCodec = <TValue extends DateValue>() => {
+	const codec: DatePickerValueCodec<TValue, TValue | null> = {
+		parse: (value) => value,
+		format: (value) => value,
+	};
+	return codec;
+};
 
 const FormDatePickerFieldInner = <
 	TValue extends DateValue = CalendarDateTime,

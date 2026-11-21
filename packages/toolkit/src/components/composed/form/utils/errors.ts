@@ -18,10 +18,7 @@ export const defaultErrorFormatter: ErrorFormatter = (errors) => {
  * Resolves the error items displayed by a field: explicit validation `errors`
  * take precedence, otherwise a single `errorMessage` string is wrapped.
  */
-export const resolveFieldErrors = (
-	errors?: Array<FieldErrorItem>,
-	errorMessage?: string,
-): Array<FieldErrorItem> | undefined =>
+export const resolveFieldErrors = (errors?: Array<FieldErrorItem>, errorMessage?: string) =>
 	errors ??
 	(errorMessage !== undefined && errorMessage !== "" ? [{ message: errorMessage }] : undefined);
 
@@ -38,7 +35,7 @@ export const resolveFormFieldErrors = <TError = unknown>(
 		errorMessage?: string;
 		formatErrors?: ErrorFormatter<TError>;
 	},
-): Array<FieldErrorItem> | undefined =>
+) =>
 	errorMessage !== undefined
 		? [{ message: errorMessage }]
 		: normalizeFormErrors(errors, formatErrors);
@@ -47,7 +44,7 @@ export const resolveFormFieldErrors = <TError = unknown>(
 export const normalizeFormErrors = <TError = unknown>(
 	errors: Array<TError>,
 	formatErrors?: ErrorFormatter<TError>,
-): Array<FieldErrorItem> | undefined => {
+) => {
 	if (!formatErrors) {
 		// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- SAFETY: without a formatter the caller passes displayable errors; FieldError normalizes each entry via toErrorMessage.
 		return errors as Array<FieldErrorItem> | undefined;
