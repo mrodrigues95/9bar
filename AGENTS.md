@@ -18,10 +18,11 @@ Before editing files for a substantial task:
 
 9bar is a specialty espresso recipe and brew logging web app. TypeScript monorepo:
 
-| Package         | Path                | Description                                                           |
-| --------------- | ------------------- | --------------------------------------------------------------------- |
-| `@9bar/web`     | `apps/web/`         | Full-stack app: TanStack Start, TanStack Router, React 19             |
-| `@9bar/toolkit` | `packages/toolkit/` | Design system: React Aria Components, Tailwind Variants, Storybook 10 |
+| Package         | Path                | Description                                                             |
+| --------------- | ------------------- | ----------------------------------------------------------------------- |
+| `@9bar/web`     | `apps/web/`         | Full-stack app: TanStack Start, TanStack Router, React 19               |
+| `@9bar/toolkit` | `packages/toolkit/` | Design system: React Aria Components, Tailwind Variants, Storybook 10   |
+| `@9bar/tools`   | `tools/`            | Repo tooling: custom oxlint rules, `check:structure`, the `control` CLI |
 
 ## Tooling
 
