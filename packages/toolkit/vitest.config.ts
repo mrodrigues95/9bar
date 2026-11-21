@@ -1,12 +1,12 @@
 import { fileURLToPath } from "node:url";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
-import { defineProject, mergeConfig } from "vitest/config";
+import { defineConfig, mergeConfig } from "vitest/config";
 import viteConfig from "./vite.config";
 
 export default mergeConfig(
 	viteConfig,
-	defineProject({
+	defineConfig({
 		plugins: [storybookTest({ configDir: fileURLToPath(new URL(".storybook", import.meta.url)) })],
 		test: {
 			name: "storybook",

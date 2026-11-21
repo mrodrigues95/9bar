@@ -28,6 +28,7 @@
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
+		"test": "vitest run",
 		"typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
 	},
 	"dependencies": {
