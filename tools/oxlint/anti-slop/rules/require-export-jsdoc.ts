@@ -10,7 +10,9 @@ function isJsDoc(comment: Comment) {
 function declaredNames(node: ESTree.Node): Array<ESTree.Node> {
   switch (node.type) {
     case "VariableDeclaration":
-      return node.declarations.map((declarator) => declarator.id);
+      return node.declarations
+        .map((declarator) => declarator.id)
+        .filter((id) => id.type === "Identifier");
     case "FunctionDeclaration":
     case "ClassDeclaration":
     case "TSInterfaceDeclaration":
