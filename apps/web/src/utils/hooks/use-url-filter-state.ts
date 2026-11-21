@@ -14,6 +14,11 @@ export interface QueryDraft {
 	baseKey: string;
 }
 
+export type UrlFilterChange =
+	| { type: "filters"; filters: Array<FilterBarFilterState> }
+	| { type: "page"; page: number }
+	| { type: "clear" };
+
 export const reconcileDraft = (draft: QueryDraft | null, urlKey: string) =>
 	draft !== null && draft.baseKey === urlKey ? draft : null;
 
@@ -22,6 +27,20 @@ export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null) =>
 
 export const applyDraft = (draft: QueryDraft, current: UrlFilterIntent, currentKey: string) =>
 	currentKey === draft.baseKey ? { ...current, q: draft.q, page: 1 } : null;
+
+export const settleDraft = (draft: QueryDraft | null, written: QueryDraft) =>
+	draft === written ? null : draft;
+
+export const applyChange = (view: UrlFilterIntent, change: UrlFilterChange) => {
+	switch (change.type) {
+		case "filters":
+			return { ...view, filters: change.filters, page: 1 };
+		case "page":
+			return { ...view, page: change.page };
+		case "clear":
+			return { q: "", filters: [], page: 1 };
+	}
+};
 
 interface DecodedUrlFilters {
 	q?: string;
@@ -56,8 +75,8 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 	}
 	const view = resolveView(url, draft);
 
-	const write = (intent: UrlFilterIntent) =>
-		void navigate({ search: (prev) => ({ ...prev, ...encode(intent) }) });
+	const write = (change: UrlFilterChange) =>
+		void navigate({ search: (prev) => ({ ...prev, ...encode(applyChange(view, change)) }) });
 
 	const writeDraft = useDebouncedCallback(
 		(pending: QueryDraft) =>
@@ -68,7 +87,7 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 					return next === null ? prev : { ...prev, ...encode(next) };
 				},
 				replace: true,
-			}),
+			}).then(() => setDraft((current) => settleDraft(current, pending))),
 		{ wait: debounceMs },
 	);
 
@@ -82,8 +101,8 @@ export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSe
 			setDraft(next);
 			writeDraft(next);
 		},
-		setFilters: (filters: Array<FilterBarFilterState>) => write({ ...view, filters, page: 1 }),
-		setPage: (page: number) => write({ ...view, page }),
-		clear: () => write({ q: "", filters: [], page: 1 }),
+		setFilters: (filters: Array<FilterBarFilterState>) => write({ type: "filters", filters }),
+		setPage: (page: number) => write({ type: "page", page }),
+		clear: () => write({ type: "clear" }),
 	};
 };

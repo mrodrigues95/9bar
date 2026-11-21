@@ -31,10 +31,11 @@ const config: StorybookConfig = {
 		{
 			name: getAbsolutePath("@storybook/addon-mcp"),
 			options: {
-				toolsets: { dev: true, docs: false, test: false },
+				toolsets: { dev: true, docs: false, test: true },
 			},
 		},
 		getAbsolutePath("@storybook/addon-themes"),
+		getAbsolutePath("@storybook/addon-vitest"),
 	],
 	framework: {
 		name: getAbsolutePath("@storybook/react-vite"),

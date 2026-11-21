@@ -26,6 +26,7 @@
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
 		"typecheck": "pnpm -r typecheck",
+		"test": "pnpm -r test",
 		"react-doctor": "react-doctor . --include-untracked",
 		"react-doctor:full": "react-doctor . --scope full"
 	},

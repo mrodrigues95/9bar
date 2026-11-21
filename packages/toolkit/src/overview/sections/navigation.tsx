@@ -40,7 +40,7 @@ export const NavigationSection = () => (
 			</TabsContent>
 		</Tabs>
 		<div className="flex flex-wrap items-center justify-between gap-4">
-			<Breadcrumb>
+			<Breadcrumb aria-label="Example breadcrumb">
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink href="#">Recipes</BreadcrumbLink>

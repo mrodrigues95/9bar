@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: CI
+  check:
+    name: Check
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
@@ -44,3 +44,29 @@ jobs:
 
       - name: Check
         run: pnpm check
+
+  test:
+    name: Test
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm toolkit exec playwright install --with-deps chromium
+
+      - name: Test
+        run: pnpm test
