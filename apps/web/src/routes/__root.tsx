@@ -41,7 +41,6 @@ const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
 	);
 };
 
-// TODO: Look into code splitting routes.
 export const Route = createRootRoute({
 	head: () => ({
 		meta: [

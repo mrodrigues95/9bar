@@ -113,7 +113,6 @@ export const FilterBarChip = ({ filter, definition, onUpdate, onRemove }: Filter
 	);
 };
 
-/** Hides the inapplicable half of each operator pair for the current selection count. */
 const getVisibleOperators = (
 	operators: ReadonlyArray<{ id: string; label: string }>,
 	valueCount: number,
@@ -133,7 +132,6 @@ const getVisibleOperators = (
 	});
 };
 
-/** Chip label: the option label for one value, `"N <pluralLabel>"` for several. */
 const formatValues = (
 	values: ReadonlyArray<string>,
 	options: ReadonlyArray<FilterBarOption>,

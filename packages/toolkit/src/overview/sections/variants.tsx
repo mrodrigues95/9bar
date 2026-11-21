@@ -25,15 +25,11 @@ import {
 } from "../../components";
 import { TextField } from "../../components/composed";
 
-/** Properties for the {@link Strip} component. */
 interface StripProps {
-	/** Caption naming the strip. */
 	label: string;
-	/** The demoed elements laid out in a wrapping row. */
 	children: React.ReactNode;
 }
 
-/** A single variant strip: a labeled row of related demo elements. */
 const Strip = ({ label, children }: StripProps) => (
 	<div className="flex flex-col gap-3">
 		<Text variant="label" color="secondary">
@@ -43,7 +39,6 @@ const Strip = ({ label, children }: StripProps) => (
 	</div>
 );
 
-/** A calendar demo showing either the heading or the month/year dropdown caption. */
 const CalendarDemo = ({ captionLayout = "label" }: { captionLayout?: "label" | "dropdown" }) => (
 	<Calendar aria-label="Shot date">
 		<CalendarHeader>

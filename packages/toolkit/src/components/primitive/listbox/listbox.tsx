@@ -110,10 +110,6 @@ export interface ListboxSectionHeaderProps extends ComponentProps<"header"> {
 	title: string;
 }
 
-/**
- * Shared styles for collection section headers, reused by {@link ListboxSectionHeader}
- * and other list-based primitives (such as select and menu labels) to avoid duplication.
- */
 /** A styled header rendered above a {@link ListboxSection}. */
 export const ListboxSectionHeader = ({ title, ...props }: ListboxSectionHeaderProps) => {
 	return (

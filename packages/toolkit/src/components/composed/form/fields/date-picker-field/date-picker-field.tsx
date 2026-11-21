@@ -221,7 +221,6 @@ const useFormDatePickerState = <TFieldValue,>(
 	return { field, isInvalid, resolvedErrors };
 };
 
-/** The pass-through codec used when a form field's value already is a `DateValue`. */
 const identityDateCodec = <TValue extends DateValue>(): DatePickerValueCodec<
 	TValue,
 	TValue | null

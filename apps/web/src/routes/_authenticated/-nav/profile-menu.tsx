@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@9bar/toolkit/components";
 
-// TODO: Replace with actual profile menu component.
 export const ProfileMenu = () => {
 	return (
 		<Avatar size="sm">

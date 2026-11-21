@@ -5,7 +5,6 @@ import { useConfirmDialogAction, type OpenConfirmDialog } from "../../../utils/h
 import { resolveActionDefinitions, type ActionDefinition } from "./action-definitions";
 import { ActionsMenu } from "./actions-menu";
 
-// TODO: wire up once the flow is decided.
 const notImplemented = () => undefined;
 
 type ActionRecipe = Pick<Recipe, "id" | "name">;
@@ -41,10 +40,6 @@ const actions = {
 			label: "Log again",
 			icon: RotateCcw,
 			onAction: () => {
-				// TODO(log-again): replace this stub with a server fn that copies the recipe's current
-				// snapshot into a new log (recipeId set, verdict null, shotAt now) and calls the API.
-				// The Recipes list then re-renders with the new "· Logged <time>" dose line, announces
-				// "Logged at <time>" in a polite live region, and keeps focus on the menu trigger.
 				console.log("Log again:", { recipeId: recipe.id, shotAt: new Date().toISOString() });
 			},
 		}),

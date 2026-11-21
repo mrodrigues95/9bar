@@ -51,19 +51,6 @@ const getLoaderBreadcrumb = (match?: AnyRouteMatch): RouterBreadcrumb | null => 
 	return isRouterBreadcrumb(data?.breadcrumb) ? data.breadcrumb : null;
 };
 
-/**
- * Finds the logical parent routes for matches with the `_` suffix convention and
- * injects their breadcrumbs into the trail.
- *
- * In TanStack Router, a folder suffixed with `_` (e.g., `recipes_/`) breaks out
- * of the parent layout while sharing the same URL path. This function finds
- * those suffixed segments and resolves the corresponding non-suffixed parent
- * route to inject its breadcrumb.
- *
- * For example, `/_authenticated/recipes_/$recipeId` contains the segment
- * `recipes_`, which resolves to the parent route `/_authenticated/recipes`.
- * If that parent has a breadcrumb label, it gets injected into the trail.
- */
 const resolveSuffixParentBreadcrumbs = (
 	match: AnyRouteMatch,
 	matchesById: Map<string, AnyRouteMatch>,
@@ -79,8 +66,6 @@ const resolveSuffixParentBreadcrumbs = (
 			continue;
 		}
 
-		// Build the parent route ID by replacing the suffixed segment with its
-		// non-suffixed counterpart (e.g., `recipes_` -> `recipes`).
 		const parentSegments = segments.slice(0, i + 1);
 		parentSegments[i] = segment.slice(0, -1);
 

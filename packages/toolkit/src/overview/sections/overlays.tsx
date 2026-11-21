@@ -32,7 +32,6 @@ import {
 	Text,
 } from "../../components";
 
-/** A recipe row action trigger with its menu, opened and closed by interaction. */
 const MenuDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">
@@ -65,7 +64,6 @@ const MenuDemo = () => (
 	</div>
 );
 
-/** A brew-parameters popover anchored to an icon button trigger. */
 const PopoverDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">
@@ -91,7 +89,6 @@ const PopoverDemo = () => (
 	</div>
 );
 
-/** A select over grind-size options, with a selected value shown in the trigger. */
 const SelectDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">
@@ -114,7 +111,6 @@ const SelectDemo = () => (
 	</div>
 );
 
-/** A multi-selection listbox for tagging flavor notes. */
 const ListboxDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">
@@ -135,7 +131,6 @@ const ListboxDemo = () => (
 	</div>
 );
 
-/** A log-shot dialog opened from a button trigger. */
 const DialogDemo = () => (
 	<div className="flex flex-col items-start gap-3">
 		<Text variant="label" color="secondary">

@@ -123,7 +123,6 @@ interface FormErrors<TFormValues> {
 	fields: { [K in keyof TFormValues]?: string };
 }
 
-/** Form values for the {@link ComposedForm} story. */
 interface ComposedFormValues {
 	firstName: string;
 	lastName: string;
@@ -473,7 +472,6 @@ export const WithZodValidation: Story = {
 	},
 };
 
-/** Form values shared by the contact form and the {@link ReusableContactForm} story. */
 interface ContactFormValues {
 	name: string;
 	email: string;
