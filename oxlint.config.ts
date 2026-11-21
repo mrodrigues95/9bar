@@ -96,11 +96,5 @@ export default defineConfig({
 			files: ["tools/checks/**", "tools/control/**"],
 			rules: { "eslint/no-console": "off" },
 		},
-		{
-			files: ["**/*"],
-			rules: {
-				"quality/no-array-filter-map": "off",
-			},
-		},
 	],
 });

@@ -103,9 +103,10 @@ const toAriaRole = (role: string) => {
 
 const describeLocator = (flags: Flags) =>
 	["role", "name", "label", "text", "placeholder", "testid", "selector"]
-		.map((name) => [name, stringFlag(flags, name)] as const)
-		.filter(([, value]) => value !== undefined)
-		.map(([name, value]) => `${name}=${JSON.stringify(value)}`)
+		.flatMap((name) => {
+			const value = stringFlag(flags, name);
+			return value === undefined ? [] : [`${name}=${JSON.stringify(value)}`];
+		})
 		.join(" ");
 
 export const buildLocator = (page: Page, flags: Flags) => {
