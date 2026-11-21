@@ -95,8 +95,6 @@ export default defineConfig({
 		{
 			files: ["**/*"],
 			rules: {
-				"react/rules-of-hooks": "off",
-				"react/no-unescaped-entities": "off",
 				"eslint/eqeqeq": "off",
 				"eslint/no-console": "off",
 				"import/no-namespace": "off",

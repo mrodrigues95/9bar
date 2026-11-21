@@ -212,7 +212,7 @@ export const AttachToRecipeDialog = ({ log, onOpenChange }: AttachToRecipeDialog
 						<Alert variant="warning" aria-labelledby={mismatchTitleId}>
 							<Info />
 							<AlertTitle id={mismatchTitleId}>
-								This log doesn't match the recipe's setup
+								This log doesn’t match the recipe’s setup
 							</AlertTitle>
 							<AlertDescription>
 								It was brewed with a different method, beans, or gear, marked below. You can still

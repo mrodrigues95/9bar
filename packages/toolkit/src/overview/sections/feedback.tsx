@@ -31,7 +31,7 @@ export const FeedbackSection = () => (
 		<Alert variant="destructive">
 			<CloudOff />
 			<AlertTitle>Sync failed</AlertTitle>
-			<AlertDescription>Shot log couldn't be uploaded. Retrying in 5 minutes.</AlertDescription>
+			<AlertDescription>Shot log couldn’t be uploaded. Retrying in 5 minutes.</AlertDescription>
 		</Alert>
 	</div>
 );

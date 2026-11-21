@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CircleAlert, Search } from "lucide-react";
+import type { ComponentProps } from "react";
 import { useId } from "react";
 import { Field } from "../field/field";
 import { Label } from "../label/label";
@@ -44,30 +45,32 @@ export const Default: Story = {
 	),
 };
 
+const WithVisibleLabelExample = (props: ComponentProps<typeof InputGroup>) => {
+	const id = useId();
+	return (
+		<Field data-slot="input-group-field">
+			<Label data-slot="input-group-label" id={id}>
+				Weight
+			</Label>
+			<InputGroup aria-labelledby={id} {...props}>
+				<InputGroupInput
+					aria-label="Weight value"
+					type="number"
+					step="0.01"
+					min="0"
+					placeholder="0.00"
+				/>
+				<InputGroupAddon align="inline-end">
+					<InputGroupText>grams</InputGroupText>
+				</InputGroupAddon>
+			</InputGroup>
+		</Field>
+	);
+};
+
 /** Pairs the input group with a visible Field and Label, plus a trailing text addon showing the unit. */
 export const WithVisibleLabel: Story = {
-	render: (props) => {
-		const id = useId();
-		return (
-			<Field data-slot="input-group-field">
-				<Label data-slot="input-group-label" id={id}>
-					Weight
-				</Label>
-				<InputGroup aria-labelledby={id} {...props}>
-					<InputGroupInput
-						aria-label="Weight value"
-						type="number"
-						step="0.01"
-						min="0"
-						placeholder="0.00"
-					/>
-					<InputGroupAddon align="inline-end">
-						<InputGroupText>grams</InputGroupText>
-					</InputGroupAddon>
-				</InputGroup>
-			</Field>
-		);
-	},
+	render: (props) => <WithVisibleLabelExample {...props} />,
 };
 
 /** Shows multiple InputGroupInput elements in a single group, useful for segmented inputs like serial numbers. */
