@@ -50,7 +50,7 @@ Write it in `docs/todo.md`, never as a code comment. Delete the entry in the com
 
 ## Rules and their enforcers
 
-When the user corrects you, run `/correct`. A rule with no enforcer is the next candidate for `/correct`.
+When the user corrects you, run `/correct`. A rule with no enforcer is the next candidate for `/correct`. Before adding a rule, lint, check, or skill, read `docs/agent-quality-principles.md`: it says which layer the fix belongs in.
 
 | Rule                                                                                                                  | Enforcer                                                                                      |
 | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
