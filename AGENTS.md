@@ -50,7 +50,7 @@ Write it in `docs/todo.md`, never as a code comment. Delete the entry in the com
 
 ## Rules and their enforcers
 
-When the user corrects you, run `/correct`. Before a PR that adds `SAFETY:`, `EXTERNAL(<url>):`, directive, or toolkit JSDoc comments, run `/no-comments`. A rule with no enforcer is the next candidate for `/correct`.
+When the user corrects you, run `/correct`. A rule with no enforcer is the next candidate for `/correct`.
 
 | Rule                                                                                                                  | Enforcer                                                                                      |
 | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
