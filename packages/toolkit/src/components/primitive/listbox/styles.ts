@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority";
 
+/** Styles for a listbox option, reused by select and menu items. */
 export const listboxItemVariants = cva(
 	[
 		"group relative flex min-h-7 w-full cursor-default items-center gap-2 select-none",
@@ -10,7 +11,8 @@ export const listboxItemVariants = cva(
 		"not-data-[variant=destructive]:focus:**:text-accent-foreground",
 		"data-focused:bg-foreground/10 data-focused:text-accent-foreground",
 		"data-disabled:pointer-events-none data-disabled:opacity-50",
-		"data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive",
+		"data-[variant=destructive]:focus:bg-destructive/10",
+		"data-[variant=destructive]:focus:text-destructive",
 		"dark:data-[variant=destructive]:focus:bg-destructive/20",
 		"data-[variant=destructive]:*:[svg]:text-destructive",
 		"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
@@ -28,4 +30,5 @@ export const listboxItemVariants = cva(
 	},
 );
 
+/** Styles for collection section headers, reused by listbox, select, and menu labels. */
 export const listboxSectionHeaderVariants = cva("px-2 py-1.5 text-xs text-muted-foreground");

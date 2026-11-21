@@ -18,6 +18,7 @@ const headingVariants = cva("text-primary", {
 	},
 });
 
+/** Props for the {@link Heading} component. */
 export interface HeadingProps
 	extends Omit<TextProps, "elementType">, VariantProps<typeof headingVariants> {
 	/** The HTML element type to render. Defaults to `"h1"`. */

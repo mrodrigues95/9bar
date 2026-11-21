@@ -60,8 +60,67 @@
 		"typescript/no-unsafe-type-assertion": "error",
 		"typescript/strict-boolean-expressions": ["error", { "allowNullableBoolean": true }],
 		"unicorn/explicit-length-check": "error",
-		"import/no-cycle": "error"
+		"import/no-cycle": "error",
+		"anti-slop/type-naming": "error"
 	},
+	"overrides": [
+		{
+			"files": ["packages/toolkit/src/**"],
+			"rules": {
+				"anti-slop/react-aria-import-alias": "error",
+				"anti-slop/max-class-string-length": "error",
+				"anti-slop/require-export-jsdoc": "error"
+			}
+		},
+		{
+			"files": ["apps/web/src/components/**", "apps/web/src/utils/**"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["**/routes/**", "**/routeTree.gen"],
+								"message": "Shared code never imports route code. Move the shared piece into src/components or src/utils."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["packages/toolkit/src/components/primitive/**"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["#composed/*", "**/composed/**"],
+								"message": "Primitives never import composed components. Move the shared piece into a primitive."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["packages/toolkit/src/components/composed/**"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["#composed/*"],
+								"message": "Inside composed, import sibling composed components relatively."
+							}
+						]
+					}
+				]
+			}
+		}
+	],
 	"ignorePatterns": [
 		".agents/**",
 		"**/*.gen.*",
