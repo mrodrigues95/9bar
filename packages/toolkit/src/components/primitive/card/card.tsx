@@ -7,112 +7,98 @@ export type CardProps = React.ComponentProps<"div"> & {
 };
 
 /** A surface for grouping related content. Combine with {@link CardHeader}, {@link CardContent}, and {@link CardFooter}. */
-export const Card = ({ className, size = "default", ...props }: CardProps) => {
-	return (
-		<div
-			data-slot="card"
-			data-size={size}
-			className={cn(
-				[
-					"group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]",
-					"data-[size=sm]:[--card-spacing:--spacing(3)]",
-					"has-[>img:first-child]:pt-0",
-					"*:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const Card = ({ className, size = "default", ...props }: CardProps) => (
+	<div
+		data-slot="card"
+		data-size={size}
+		className={cn(
+			[
+				"group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]",
+				"data-[size=sm]:[--card-spacing:--spacing(3)]",
+				"has-[>img:first-child]:pt-0",
+				"*:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link CardHeader} component. */
 export type CardHeaderProps = React.ComponentProps<"div">;
 
 /** The top section of a {@link Card}, containing its title, description, and optional action. */
-export const CardHeader = ({ className, ...props }: CardHeaderProps) => {
-	return (
-		<div
-			data-slot="card-header"
-			className={cn(
-				[
-					"group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-lg px-(--card-spacing)",
-					"has-data-[slot=card-action]:grid-cols-[1fr_auto]",
-					"has-data-[slot=card-description]:grid-rows-[auto_auto]",
-					"[.border-b]:pb-(--card-spacing)",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const CardHeader = ({ className, ...props }: CardHeaderProps) => (
+	<div
+		data-slot="card-header"
+		className={cn(
+			[
+				"group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-lg px-(--card-spacing)",
+				"has-data-[slot=card-action]:grid-cols-[1fr_auto]",
+				"has-data-[slot=card-description]:grid-rows-[auto_auto]",
+				"[.border-b]:pb-(--card-spacing)",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link CardTitle} component. */
 export type CardTitleProps = React.ComponentProps<"div">;
 
 /** A short heading for a {@link Card}. */
-export const CardTitle = ({ className, ...props }: CardTitleProps) => {
-	return (
-		<div
-			data-slot="card-title"
-			className={cn("font-heading text-sm font-medium", className)}
-			{...props}
-		/>
-	);
-};
+export const CardTitle = ({ className, ...props }: CardTitleProps) => (
+	<div
+		data-slot="card-title"
+		className={cn("font-heading text-sm font-medium", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link CardDescription} component. */
 export type CardDescriptionProps = React.ComponentProps<"div">;
 
 /** Supporting text displayed beneath a {@link CardTitle}. */
-export const CardDescription = ({ className, ...props }: CardDescriptionProps) => {
-	return (
-		<div
-			data-slot="card-description"
-			className={cn("text-xs/relaxed text-muted-foreground", className)}
-			{...props}
-		/>
-	);
-};
+export const CardDescription = ({ className, ...props }: CardDescriptionProps) => (
+	<div
+		data-slot="card-description"
+		className={cn("text-xs/relaxed text-muted-foreground", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link CardAction} component. */
 export type CardActionProps = React.ComponentProps<"div">;
 
 /** An action (such as a button or menu) aligned to the end of a {@link CardHeader}. */
-export const CardAction = ({ className, ...props }: CardActionProps) => {
-	return (
-		<div
-			data-slot="card-action"
-			className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
-			{...props}
-		/>
-	);
-};
+export const CardAction = ({ className, ...props }: CardActionProps) => (
+	<div
+		data-slot="card-action"
+		className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link CardContent} component. */
 export type CardContentProps = React.ComponentProps<"div">;
 
 /** The main body of a {@link Card}. */
-export const CardContent = ({ className, ...props }: CardContentProps) => {
-	return (
-		<div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />
-	);
-};
+export const CardContent = ({ className, ...props }: CardContentProps) => (
+	<div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />
+);
 
 /** Props for the {@link CardFooter} component. */
 export type CardFooterProps = React.ComponentProps<"div">;
 
 /** The bottom section of a {@link Card}, typically holding actions. */
-export const CardFooter = ({ className, ...props }: CardFooterProps) => {
-	return (
-		<div
-			data-slot="card-footer"
-			className={cn(
-				"flex items-center rounded-b-lg px-(--card-spacing) [.border-t]:pt-(--card-spacing)",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const CardFooter = ({ className, ...props }: CardFooterProps) => (
+	<div
+		data-slot="card-footer"
+		className={cn(
+			"flex items-center rounded-b-lg px-(--card-spacing) [.border-t]:pt-(--card-spacing)",
+			className,
+		)}
+		{...props}
+	/>
+);

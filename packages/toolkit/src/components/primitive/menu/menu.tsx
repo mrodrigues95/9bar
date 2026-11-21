@@ -27,9 +27,9 @@ import {
 export type MenuTriggerProps = React.ComponentProps<typeof AriaMenuTrigger>;
 
 /** The trigger that opens the {@link Menu}, wrapping the element that receives the interaction. */
-export const MenuTrigger = ({ ...props }: MenuTriggerProps) => {
-	return <AriaMenuTrigger data-slot="menu-trigger" {...props} />;
-};
+export const MenuTrigger = ({ ...props }: MenuTriggerProps) => (
+	<AriaMenuTrigger data-slot="menu-trigger" {...props} />
+);
 
 /** Props for the {@link Menu} component. */
 export type MenuProps<T extends object> = Omit<
@@ -58,40 +58,38 @@ export const Menu = <T extends object>({
 	className,
 	children,
 	...props
-}: MenuProps<T>) => {
-	return (
-		<AriaPopover
-			data-slot={dataSlot}
-			placement={placement}
-			offset={offset}
-			crossOffset={crossOffset}
-			className={composeTailwindRenderProps(className, [
-				popoverVariants(),
-				[
-					width === "content" ? "w-max min-w-32" : "w-(--trigger-width) min-w-32",
-					"overflow-x-hidden overflow-y-auto p-1",
-					"data-exiting:overflow-hidden",
-					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
-				],
-			])}
+}: MenuProps<T>) => (
+	<AriaPopover
+		data-slot={dataSlot}
+		placement={placement}
+		offset={offset}
+		crossOffset={crossOffset}
+		className={composeTailwindRenderProps(className, [
+			popoverVariants(),
+			[
+				width === "content" ? "w-max min-w-32" : "w-(--trigger-width) min-w-32",
+				"overflow-x-hidden overflow-y-auto p-1",
+				"data-exiting:overflow-hidden",
+				"**:data-[slot$=-item]:data-focused:bg-foreground/10",
+			],
+		])}
+	>
+		<AriaMenu<T>
+			className="max-h-[inherit] overflow-x-hidden overflow-y-auto outline-hidden"
+			{...props}
 		>
-			<AriaMenu<T>
-				className="max-h-[inherit] overflow-x-hidden overflow-y-auto outline-hidden"
-				{...props}
-			>
-				{children}
-			</AriaMenu>
-		</AriaPopover>
-	);
-};
+			{children}
+		</AriaMenu>
+	</AriaPopover>
+);
 
 /** Props for the {@link MenuGroup} component. */
 export type MenuGroupProps<T extends object> = AriaMenuSectionProps<T>;
 
 /** A semantic group of related {@link MenuItem} elements. */
-export const MenuGroup = <T extends object>({ ...props }: MenuGroupProps<T>) => {
-	return <AriaMenuSection<T> data-slot="menu-group" {...props} />;
-};
+export const MenuGroup = <T extends object>({ ...props }: MenuGroupProps<T>) => (
+	<AriaMenuSection<T> data-slot="menu-group" {...props} />
+);
 
 /** Props for the {@link MenuLabel} component. */
 export type MenuLabelProps = React.ComponentProps<typeof AriaHeader> & {
@@ -99,16 +97,14 @@ export type MenuLabelProps = React.ComponentProps<typeof AriaHeader> & {
 };
 
 /** A heading that labels a {@link MenuGroup}. */
-export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => {
-	return (
-		<AriaHeader
-			data-slot="menu-label"
-			data-inset={inset}
-			className={cn(listboxSectionHeaderVariants(), "data-inset:pl-7.5", className)}
-			{...props}
-		/>
-	);
-};
+export const MenuLabel = ({ className, inset, ...props }: MenuLabelProps) => (
+	<AriaHeader
+		data-slot="menu-label"
+		data-inset={inset}
+		className={cn(listboxSectionHeaderVariants(), "data-inset:pl-7.5", className)}
+		{...props}
+	/>
+);
 
 const menuItemVariants = cva(
 	[
@@ -202,9 +198,9 @@ export const MenuItem = <T extends object>({
 export type MenuSubProps = React.ComponentProps<typeof AriaSubmenuTrigger>;
 
 /** A nested submenu within a {@link Menu}, pairing a {@link MenuSubTrigger} with a {@link MenuSubContent}. */
-export const MenuSub = ({ ...props }: MenuSubProps) => {
-	return <AriaSubmenuTrigger data-slot="menu-sub" {...props} />;
-};
+export const MenuSub = ({ ...props }: MenuSubProps) => (
+	<AriaSubmenuTrigger data-slot="menu-sub" {...props} />
+);
 
 /** Props for the {@link MenuSubTrigger} component. */
 export type MenuSubTriggerProps<T extends object> = Omit<
@@ -258,49 +254,43 @@ export const MenuSubContent = <T extends object>({
 	offset = 0,
 	className,
 	...props
-}: MenuSubContentProps<T>) => {
-	return (
-		<Menu<T>
-			data-slot="menu-sub-content"
-			className={composeTailwindRenderProps(className, "w-auto min-w-32")}
-			placement={placement}
-			crossOffset={crossOffset}
-			offset={offset}
-			{...props}
-		/>
-	);
-};
+}: MenuSubContentProps<T>) => (
+	<Menu<T>
+		data-slot="menu-sub-content"
+		className={composeTailwindRenderProps(className, "w-auto min-w-32")}
+		placement={placement}
+		crossOffset={crossOffset}
+		offset={offset}
+		{...props}
+	/>
+);
 
 /** Props for the {@link MenuSeparator} component. */
 export type MenuSeparatorProps = React.ComponentProps<typeof Separator>;
 
 /** A divider between {@link MenuItem} elements or groups. */
-export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => {
-	return (
-		<Separator
-			data-slot="menu-separator"
-			className={cn("-mx-1 my-1 bg-border/50", className)}
-			{...props}
-		/>
-	);
-};
+export const MenuSeparator = ({ className, ...props }: MenuSeparatorProps) => (
+	<Separator
+		data-slot="menu-separator"
+		className={cn("-mx-1 my-1 bg-border/50", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link MenuShortcut} component. */
 export type MenuShortcutProps = React.ComponentProps<"span">;
 
 /** A keyboard shortcut hint aligned to the end of a {@link MenuItem}. */
-export const MenuShortcut = ({ className, ...props }: MenuShortcutProps) => {
-	return (
-		<span
-			data-slot="menu-shortcut"
-			className={cn(
-				[
-					"ml-auto text-[0.625rem] tracking-widest text-muted-foreground",
-					"group-focus/menu-item:text-accent-foreground",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const MenuShortcut = ({ className, ...props }: MenuShortcutProps) => (
+	<span
+		data-slot="menu-shortcut"
+		className={cn(
+			[
+				"ml-auto text-[0.625rem] tracking-widest text-muted-foreground",
+				"group-focus/menu-item:text-accent-foreground",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);

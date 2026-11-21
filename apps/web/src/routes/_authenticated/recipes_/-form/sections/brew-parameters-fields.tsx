@@ -37,17 +37,11 @@ const brewParametersProps: BrewParametersFieldsProps = {
 	isGrindSizeRequired: false,
 };
 
-const isImmersionOrPourOver = (method: Method) => {
-	return method === "pour-over" || method === "immersion";
-};
+const isImmersionOrPourOver = (method: Method) => method === "pour-over" || method === "immersion";
 
-const doseLabel = (method: Method) => {
-	return isImmersionOrPourOver(method) ? "Coffee (g)" : "Dose (g)";
-};
+const doseLabel = (method: Method) => (isImmersionOrPourOver(method) ? "Coffee (g)" : "Dose (g)");
 
-const yieldLabel = (method: Method) => {
-	return isImmersionOrPourOver(method) ? "Water (g)" : "Yield (g)";
-};
+const yieldLabel = (method: Method) => (isImmersionOrPourOver(method) ? "Water (g)" : "Yield (g)");
 
 export const BrewParametersFields = withFieldGroup({
 	defaultValues: brewParametersDefaults,

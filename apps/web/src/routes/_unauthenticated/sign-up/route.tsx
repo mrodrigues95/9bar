@@ -2,36 +2,28 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Button, Heading } from "@9bar/toolkit/components";
 import { Form, TextField } from "@9bar/toolkit/components/composed";
 
-const SignUp = () => {
-	return (
-		<>
-			<Heading as="h1" variant="heading" className="mb-8 text-center">
-				Sign Up
-			</Heading>
-			<Form className="w-full">
-				<TextField name="name" label="Name" inputProps={{ maxLength: 70 }} isRequired />
-				<TextField
-					name="email"
-					type="email"
-					label="Email address"
-					autoComplete="email"
-					isRequired
-				/>
-				<TextField
-					name="password"
-					type="password"
-					label="Password"
-					autoComplete="current-password"
-					inputProps={{ minLength: 6 }}
-					isRequired
-				/>
-				<Button type="submit" variant="default" size="default" className="w-full">
-					Create your account
-				</Button>
-			</Form>
-		</>
-	);
-};
+const SignUp = () => (
+	<>
+		<Heading as="h1" variant="heading" className="mb-8 text-center">
+			Sign Up
+		</Heading>
+		<Form className="w-full">
+			<TextField name="name" label="Name" inputProps={{ maxLength: 70 }} isRequired />
+			<TextField name="email" type="email" label="Email address" autoComplete="email" isRequired />
+			<TextField
+				name="password"
+				type="password"
+				label="Password"
+				autoComplete="current-password"
+				inputProps={{ minLength: 6 }}
+				isRequired
+			/>
+			<Button type="submit" variant="default" size="default" className="w-full">
+				Create your account
+			</Button>
+		</Form>
+	</>
+);
 
 export const Route = createFileRoute("/_unauthenticated/sign-up")({
 	component: SignUp,

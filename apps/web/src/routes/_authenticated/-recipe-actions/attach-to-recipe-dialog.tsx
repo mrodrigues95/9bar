@@ -119,49 +119,47 @@ interface ComparisonTableProps {
 	shotRows: Array<ComparisonRow>;
 }
 
-const ComparisonTable = ({ setupRows, shotRows }: ComparisonTableProps) => {
-	return (
-		<div className="shrink-0 overflow-hidden rounded-lg border border-border">
-			<table className="w-full table-fixed">
-				<caption className="sr-only">Recipe compared with this log</caption>
-				<colgroup>
-					<col className="w-28" />
-					<col />
-					<col />
-				</colgroup>
-				<thead className="bg-muted/50">
-					<tr className="border-b border-border">
-						<th scope="col" className="px-2 py-1.5">
-							<span className="sr-only">Field</span>
+const ComparisonTable = ({ setupRows, shotRows }: ComparisonTableProps) => (
+	<div className="shrink-0 overflow-hidden rounded-lg border border-border">
+		<table className="w-full table-fixed">
+			<caption className="sr-only">Recipe compared with this log</caption>
+			<colgroup>
+				<col className="w-28" />
+				<col />
+				<col />
+			</colgroup>
+			<thead className="bg-muted/50">
+				<tr className="border-b border-border">
+					<th scope="col" className="px-2 py-1.5">
+						<span className="sr-only">Field</span>
+					</th>
+					{["Recipe", "Log"].map((heading) => (
+						<th key={heading} scope="col" className="px-2 py-1.5 text-left">
+							<Text
+								as="span"
+								variant="caption"
+								color="muted"
+								className="font-medium tracking-wide uppercase"
+							>
+								{heading}
+							</Text>
 						</th>
-						{["Recipe", "Log"].map((heading) => (
-							<th key={heading} scope="col" className="px-2 py-1.5 text-left">
-								<Text
-									as="span"
-									variant="caption"
-									color="muted"
-									className="font-medium tracking-wide uppercase"
-								>
-									{heading}
-								</Text>
-							</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{setupRows.map((row) => (
-						<ComparisonRowItem key={row.field} row={row} />
 					))}
-				</tbody>
-				<tbody className="border-t border-border">
-					{shotRows.map((row) => (
-						<ComparisonRowItem key={row.field} row={row} />
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
-};
+				</tr>
+			</thead>
+			<tbody>
+				{setupRows.map((row) => (
+					<ComparisonRowItem key={row.field} row={row} />
+				))}
+			</tbody>
+			<tbody className="border-t border-border">
+				{shotRows.map((row) => (
+					<ComparisonRowItem key={row.field} row={row} />
+				))}
+			</tbody>
+		</table>
+	</div>
+);
 
 interface AttachToRecipeDialogProps {
 	log: LogGraph;

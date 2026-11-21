@@ -13,11 +13,8 @@ const searchSchema = z.object({
 	annotate: z.boolean().optional(),
 });
 
-const findVariant = (variantId: string) => {
-	return designGroups
-		.flatMap((group) => group.variants)
-		.find((variant) => variant.id === variantId);
-};
+const findVariant = (variantId: string) =>
+	designGroups.flatMap((group) => group.variants).find((variant) => variant.id === variantId);
 
 const VariantView = () => {
 	const { variantId } = Route.useParams();

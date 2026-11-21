@@ -6,19 +6,17 @@ const LOOP_STEPS = [
 	"Hit “Copy for agent”, paste the Markdown back here. The agent revises the variant; old versions stay for diffing.",
 ];
 
-export const HowTheLoopWorks = () => {
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>How the loop works</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<ol className="list-decimal space-y-1.5 pl-5 text-sm">
-					{LOOP_STEPS.map((step) => {
-						return <li key={step}>{step}</li>;
-					})}
-				</ol>
-			</CardContent>
-		</Card>
-	);
-};
+export const HowTheLoopWorks = () => (
+	<Card>
+		<CardHeader>
+			<CardTitle>How the loop works</CardTitle>
+		</CardHeader>
+		<CardContent>
+			<ol className="list-decimal space-y-1.5 pl-5 text-sm">
+				{LOOP_STEPS.map((step) => (
+					<li key={step}>{step}</li>
+				))}
+			</ol>
+		</CardContent>
+	</Card>
+);

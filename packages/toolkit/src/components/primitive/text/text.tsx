@@ -31,13 +31,11 @@ export interface TextProps
 }
 
 /** A typographic primitive for body copy, labels, captions, and other running text. */
-export const Text = ({ as = "p", variant, color, className, ...props }: TextProps) => {
-	return (
-		<AriaText
-			data-slot="text"
-			{...props}
-			elementType={as}
-			className={cn(textVariants({ variant, color, className }))}
-		/>
-	);
-};
+export const Text = ({ as = "p", variant, color, className, ...props }: TextProps) => (
+	<AriaText
+		data-slot="text"
+		{...props}
+		elementType={as}
+		className={cn(textVariants({ variant, color, className }))}
+	/>
+);

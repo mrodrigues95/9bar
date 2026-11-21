@@ -52,6 +52,6 @@ export function Breadcrumb({
 
 export interface BreadcrumbsProps<T extends object> extends ToolkitBreadcrumbsProps<T> {}
 
-export const Breadcrumbs = <T extends object>(props: BreadcrumbsProps<T>) => {
-	return <ToolkitBreadcrumbList {...props} />;
-};
+export const Breadcrumbs = <T extends object>(props: BreadcrumbsProps<T>) => (
+	<ToolkitBreadcrumbList {...props} />
+);

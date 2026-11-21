@@ -22,36 +22,34 @@ export const FilterBarPanel = ({
 	onFiltersChange,
 	label,
 	leading,
-}: FilterBarPanelProps) => {
-	return (
-		<>
-			<div className="flex flex-wrap items-center justify-end gap-2">
-				{leading}
-				<FilterBarAddTrigger
+}: FilterBarPanelProps) => (
+	<>
+		<div className="flex flex-wrap items-center justify-end gap-2">
+			{leading}
+			<FilterBarAddTrigger
+				definitions={definitions}
+				filters={filters}
+				onFiltersChange={onFiltersChange}
+				aria-label={`Add ${label} filter`}
+			/>
+		</div>
+		{filters.length > 0 && (
+			<div className="rounded-md bg-muted/50 px-2.5 py-2">
+				<FilterBar
 					definitions={definitions}
 					filters={filters}
 					onFiltersChange={onFiltersChange}
-					aria-label={`Add ${label} filter`}
-				/>
+					aria-label={`Active ${label} filters`}
+				>
+					{({ clearAll }) => (
+						<FilterBarActions>
+							<Button variant="ghost" size="xs" onPress={clearAll}>
+								Clear
+							</Button>
+						</FilterBarActions>
+					)}
+				</FilterBar>
 			</div>
-			{filters.length > 0 && (
-				<div className="rounded-md bg-muted/50 px-2.5 py-2">
-					<FilterBar
-						definitions={definitions}
-						filters={filters}
-						onFiltersChange={onFiltersChange}
-						aria-label={`Active ${label} filters`}
-					>
-						{({ clearAll }) => (
-							<FilterBarActions>
-								<Button variant="ghost" size="xs" onPress={clearAll}>
-									Clear
-								</Button>
-							</FilterBarActions>
-						)}
-					</FilterBar>
-				</div>
-			)}
-		</>
-	);
-};
+		)}
+	</>
+);

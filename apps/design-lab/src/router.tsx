@@ -7,16 +7,14 @@ export const createRouter = () => {
 	const router = createTanStackRouter({
 		routeTree,
 		defaultPreload: "intent",
-		defaultNotFoundComponent: () => {
-			return (
-				<EmptyState
-					as="h1"
-					title="404! Page not found!"
-					body="That route does not exist in the lab."
-					action={<Link to="/">Back to the gallery</Link>}
-				/>
-			);
-		},
+		defaultNotFoundComponent: () => (
+			<EmptyState
+				as="h1"
+				title="404! Page not found!"
+				body="That route does not exist in the lab."
+				action={<Link to="/">Back to the gallery</Link>}
+			/>
+		),
 		scrollRestoration: true,
 	});
 

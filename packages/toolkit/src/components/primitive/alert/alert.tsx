@@ -54,69 +54,57 @@ const alertVariants = cva(
 export type AlertProps = React.ComponentProps<"div"> & VariantProps<typeof alertVariants>;
 
 /** An alert displays a brief, important message in a way that attracts the user's attention without interrupting their task. Combine with {@link AlertTitle} and {@link AlertDescription}. */
-export const Alert = ({ className, variant, ...props }: AlertProps) => {
-	return (
-		<div
-			data-slot="alert"
-			role="alert"
-			className={cn(alertVariants({ variant }), className)}
-			{...props}
-		/>
-	);
-};
+export const Alert = ({ className, variant, ...props }: AlertProps) => (
+	<div
+		data-slot="alert"
+		role="alert"
+		className={cn(alertVariants({ variant }), className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link AlertTitle} component. */
 export type AlertTitleProps = React.ComponentProps<"div">;
 
 /** A short heading that labels the {@link Alert}. */
-export const AlertTitle = ({ className, ...props }: AlertTitleProps) => {
-	return (
-		<div
-			data-slot="alert-title"
-			className={cn(
-				[
-					"text-sm font-medium group-has-[>svg]/alert:col-start-2",
-					"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const AlertTitle = ({ className, ...props }: AlertTitleProps) => (
+	<div
+		data-slot="alert-title"
+		className={cn(
+			[
+				"text-sm font-medium group-has-[>svg]/alert:col-start-2",
+				"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link AlertDescription} component. */
 export type AlertDescriptionProps = React.ComponentProps<"div">;
 
 /** Supplementary text that provides additional context for the {@link Alert}. */
-export const AlertDescription = ({ className, ...props }: AlertDescriptionProps) => {
-	return (
-		<div
-			data-slot="alert-description"
-			className={cn(
-				[
-					"text-sm text-balance text-muted-foreground",
-					"md:text-pretty",
-					"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
-					"[&_p:not(:last-child)]:mb-4",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const AlertDescription = ({ className, ...props }: AlertDescriptionProps) => (
+	<div
+		data-slot="alert-description"
+		className={cn(
+			[
+				"text-sm text-balance text-muted-foreground",
+				"md:text-pretty",
+				"[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
+				"[&_p:not(:last-child)]:mb-4",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link AlertAction} component. */
 export type AlertActionProps = React.ComponentProps<"div">;
 
 /** A container for interactive elements (such as a dismiss button) placed at the end of an {@link Alert}. */
-export const AlertAction = ({ className, ...props }: AlertActionProps) => {
-	return (
-		<div
-			data-slot="alert-action"
-			className={cn("absolute top-1.5 right-2", className)}
-			{...props}
-		/>
-	);
-};
+export const AlertAction = ({ className, ...props }: AlertActionProps) => (
+	<div data-slot="alert-action" className={cn("absolute top-1.5 right-2", className)} {...props} />
+);

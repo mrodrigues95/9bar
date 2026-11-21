@@ -15,29 +15,19 @@ const brewSnapshots: Array<BrewSnapshot> = [];
 export const recipes: Array<Recipe> = [];
 export const logs: Array<Log> = [];
 
-export const getBrewSnapshot = (id: number) => {
-	return brewSnapshots.find((snapshot) => snapshot.id === id);
-};
+export const getBrewSnapshot = (id: number) => brewSnapshots.find((snapshot) => snapshot.id === id);
 
-export const getRecipeSnapshots = (recipeId: number) => {
-	return brewSnapshots
+export const getRecipeSnapshots = (recipeId: number) =>
+	brewSnapshots
 		.filter((snapshot) => snapshot.recipeId === recipeId)
 		.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-};
 
-export const getRecipeLogs = (recipeId: number) => {
-	return logs
-		.filter((log) => log.recipeId === recipeId)
-		.sort((a, b) => b.shotAt.localeCompare(a.shotAt));
-};
+export const getRecipeLogs = (recipeId: number) =>
+	logs.filter((log) => log.recipeId === recipeId).sort((a, b) => b.shotAt.localeCompare(a.shotAt));
 
-export const getRecipe = (id: number) => {
-	return recipes.find((row) => row.id === id);
-};
+export const getRecipe = (id: number) => recipes.find((row) => row.id === id);
 
-export const getLog = (id: number) => {
-	return logs.find((row) => row.id === id);
-};
+export const getLog = (id: number) => logs.find((row) => row.id === id);
 
 export const buildRecipeGraph = (id: number): RecipeGraph | undefined => {
 	const recipe = getRecipe(id);
@@ -93,20 +83,19 @@ type BrewValuesInput = Partial<BrewValues> &
 		"beans" | "machine" | "grinder" | "grindSize" | "dose" | "yield" | "brewTime" | "brewTimeUnit"
 	>;
 
-const brewValues = (seed: BrewValuesInput): BrewValues => {
-	return {
-		method: "espresso",
-		temperature: 93,
-		temperatureUnit: "C",
-		pressure: 9,
-		notes: null,
-		...seed,
-	};
-};
+const brewValues = (seed: BrewValuesInput): BrewValues => ({
+	method: "espresso",
+	temperature: 93,
+	temperatureUnit: "C",
+	pressure: 9,
+	notes: null,
+	...seed,
+});
 
-const applyOverrides = (values: BrewValues, overrides: Partial<BrewValues>) => {
-	return { ...values, ...overrides };
-};
+const applyOverrides = (values: BrewValues, overrides: Partial<BrewValues>) => ({
+	...values,
+	...overrides,
+});
 
 interface RecipeSeed {
 	name: string;
@@ -830,10 +819,8 @@ export const GRINDER_OPTIONS = [
 	{ id: "other", name: "Other" },
 ] as const;
 
-export const machineName = (id: string) => {
-	return MACHINE_OPTIONS.find((option) => option.id === id)?.name ?? id;
-};
+export const machineName = (id: string) =>
+	MACHINE_OPTIONS.find((option) => option.id === id)?.name ?? id;
 
-export const grinderName = (id: string) => {
-	return GRINDER_OPTIONS.find((option) => option.id === id)?.name ?? id;
-};
+export const grinderName = (id: string) =>
+	GRINDER_OPTIONS.find((option) => option.id === id)?.name ?? id;

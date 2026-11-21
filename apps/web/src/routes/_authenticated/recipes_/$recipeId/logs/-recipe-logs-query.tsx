@@ -24,9 +24,8 @@ import { simulateLatency } from "../../../../../utils/simulate-latency";
 
 export const LOGS_PAGE_SIZE = 10;
 
-const toFilterOptions = (options: ReadonlyArray<{ id: string; name: string }>) => {
-	return options.map((option) => ({ id: option.id, label: option.name }));
-};
+const toFilterOptions = (options: ReadonlyArray<{ id: string; name: string }>) =>
+	options.map((option) => ({ id: option.id, label: option.name }));
 
 export const LOG_FILTER_DEFINITIONS = [
 	{
@@ -60,13 +59,11 @@ export const LOG_FILTER_PARAM_SCHEMA = {
 	verdict: filterParamSchema,
 } satisfies Record<LogFilterId, typeof filterParamSchema>;
 
-export const decodeLogFilters = (params: LogFilterSearchParams) => {
-	return decodeFilters(LOG_FILTER_DEFINITIONS, params);
-};
+export const decodeLogFilters = (params: LogFilterSearchParams) =>
+	decodeFilters(LOG_FILTER_DEFINITIONS, params);
 
-export const encodeLogFilters = (filters: Array<FilterBarFilterState>) => {
-	return encodeFilters(LOG_FILTER_DEFINITIONS, filters);
-};
+export const encodeLogFilters = (filters: Array<FilterBarFilterState>) =>
+	encodeFilters(LOG_FILTER_DEFINITIONS, filters);
 
 export interface RecipeLogRow {
 	log: Log;
@@ -74,8 +71,8 @@ export interface RecipeLogRow {
 	pinned: boolean;
 }
 
-const matchesLogFilters = (row: RecipeLogRow, filters: ReadonlyArray<FilterBarFilterState>) => {
-	return filters.every((filter) => {
+const matchesLogFilters = (row: RecipeLogRow, filters: ReadonlyArray<FilterBarFilterState>) =>
+	filters.every((filter) => {
 		if (filter.filterId === "method") {
 			return matchesOperator(filter.operatorId, filter.values, row.snapshot.method);
 		}
@@ -84,7 +81,6 @@ const matchesLogFilters = (row: RecipeLogRow, filters: ReadonlyArray<FilterBarFi
 		}
 		return true;
 	});
-};
 
 interface ListRecipeLogsInput {
 	recipeId: number;

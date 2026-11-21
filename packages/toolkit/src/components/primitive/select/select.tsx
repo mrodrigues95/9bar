@@ -35,29 +35,25 @@ export type { SelectProps };
 export const Select = <T extends object, M extends "single" | "multiple" = "single">({
 	className,
 	...props
-}: SelectProps<T, M>) => {
-	return (
-		<AriaSelect
-			data-slot="select"
-			className={composeTailwindRenderProps(className, "w-fit")}
-			{...props}
-		/>
-	);
-};
+}: SelectProps<T, M>) => (
+	<AriaSelect
+		data-slot="select"
+		className={composeTailwindRenderProps(className, "w-fit")}
+		{...props}
+	/>
+);
 
 /** Props for the {@link SelectGroup} component. */
 export type { SelectGroupProps };
 
 /** A semantic group of related {@link SelectItem} elements within a {@link SelectList}. */
-export const SelectGroup = <T extends object>({ className, ...props }: SelectGroupProps<T>) => {
-	return (
-		<AriaListBoxSection
-			data-slot="select-group"
-			className={cn("scroll-my-1", className)}
-			{...props}
-		/>
-	);
-};
+export const SelectGroup = <T extends object>({ className, ...props }: SelectGroupProps<T>) => (
+	<AriaListBoxSection
+		data-slot="select-group"
+		className={cn("scroll-my-1", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link SelectValue} component. */
 export type { SelectValueProps };
@@ -67,23 +63,21 @@ export const SelectValue = <T extends object>({
 	className,
 	children,
 	...props
-}: SelectValueProps<T>) => {
-	return (
-		<AriaSelectValue
-			data-slot="select-value"
-			className={composeTailwindRenderProps(
-				className,
-				"flex flex-1 text-left data-placeholder:text-muted-foreground",
-			)}
-			{...props}
-		>
-			{children instanceof Function
-				? children
-				: ({ selectedItems, selectedText, defaultChildren }) =>
-						selectedItems.length > 1 ? selectedText : defaultChildren}
-		</AriaSelectValue>
-	);
-};
+}: SelectValueProps<T>) => (
+	<AriaSelectValue
+		data-slot="select-value"
+		className={composeTailwindRenderProps(
+			className,
+			"flex flex-1 text-left data-placeholder:text-muted-foreground",
+		)}
+		{...props}
+	>
+		{children instanceof Function
+			? children
+			: ({ selectedItems, selectedText, defaultChildren }) =>
+					selectedItems.length > 1 ? selectedText : defaultChildren}
+	</AriaSelectValue>
+);
 
 /** Props for the {@link SelectTrigger} component. */
 export type SelectTriggerProps = Omit<ButtonProps, "children" | "size"> & {
@@ -98,30 +92,28 @@ export const SelectTrigger = ({
 	variant = "outline",
 	children,
 	...props
-}: SelectTriggerProps) => {
-	return (
-		<Button
-			data-slot="select-trigger"
-			data-size={size}
-			variant={variant}
-			size={size}
-			className={composeTailwindRenderProps(className, [
-				[
-					"w-full justify-between gap-1.5 bg-input/20",
-					"data-placeholder:text-muted-foreground",
-					"*:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex",
-					"*:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
-					"dark:bg-input/30",
-					"[&_svg:not([class*='size-'])]:size-3.5",
-				],
-			])}
-			{...props}
-		>
-			{children}
-			<ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground" />
-		</Button>
-	);
-};
+}: SelectTriggerProps) => (
+	<Button
+		data-slot="select-trigger"
+		data-size={size}
+		variant={variant}
+		size={size}
+		className={composeTailwindRenderProps(className, [
+			[
+				"w-full justify-between gap-1.5 bg-input/20",
+				"data-placeholder:text-muted-foreground",
+				"*:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex",
+				"*:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
+				"dark:bg-input/30",
+				"[&_svg:not([class*='size-'])]:size-3.5",
+			],
+		])}
+		{...props}
+	>
+		{children}
+		<ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground" />
+	</Button>
+);
 
 /** Props for the {@link SelectContent} component. */
 export type SelectContentProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
@@ -136,19 +128,17 @@ export const SelectContent = ({
 	offset = 4,
 	crossOffset = 0,
 	...props
-}: SelectContentProps) => {
-	return (
-		<SelectPopover
-			className={className}
-			placement={placement}
-			offset={offset}
-			crossOffset={crossOffset}
-			{...props}
-		>
-			{children}
-		</SelectPopover>
-	);
-};
+}: SelectContentProps) => (
+	<SelectPopover
+		className={className}
+		placement={placement}
+		offset={offset}
+		crossOffset={crossOffset}
+		{...props}
+	>
+		{children}
+	</SelectPopover>
+);
 
 /** Props for the {@link SelectPopover} component. */
 export type SelectPopoverProps = Omit<React.ComponentProps<typeof AriaPopover>, "children"> & {
@@ -163,83 +153,75 @@ export const SelectPopover = ({
 	offset = 4,
 	crossOffset = 0,
 	...props
-}: SelectPopoverProps) => {
-	return (
-		<AriaPopover
-			data-slot="select-content"
-			placement={placement}
-			offset={offset}
-			crossOffset={crossOffset}
-			className={composeTailwindRenderProps(className, [
-				popoverVariants(),
-				[
-					"relative isolate w-(--trigger-width) min-w-32",
-					"overflow-hidden",
-					"**:data-[slot$=-item]:data-focused:bg-foreground/10",
-				],
-			])}
-			{...props}
-		>
-			{children}
-		</AriaPopover>
-	);
-};
+}: SelectPopoverProps) => (
+	<AriaPopover
+		data-slot="select-content"
+		placement={placement}
+		offset={offset}
+		crossOffset={crossOffset}
+		className={composeTailwindRenderProps(className, [
+			popoverVariants(),
+			[
+				"relative isolate w-(--trigger-width) min-w-32",
+				"overflow-hidden",
+				"**:data-[slot$=-item]:data-focused:bg-foreground/10",
+			],
+		])}
+		{...props}
+	>
+		{children}
+	</AriaPopover>
+);
 
 /** Props for the {@link SelectList} component. */
 export type { ListBoxProps };
 
 /** The scrollable list of options rendered inside a {@link SelectContent}. */
-export const SelectList = <T extends object>({ className, ...props }: ListBoxProps<T>) => {
-	return (
-		<AriaListBox
-			data-slot="select-list"
-			className={composeTailwindRenderProps(className, [
-				"group/select-list max-h-[inherit] overflow-x-hidden overflow-y-auto p-1 outline-hidden",
-			])}
-			{...props}
-		/>
-	);
-};
+export const SelectList = <T extends object>({ className, ...props }: ListBoxProps<T>) => (
+	<AriaListBox
+		data-slot="select-list"
+		className={composeTailwindRenderProps(className, [
+			"group/select-list max-h-[inherit] overflow-x-hidden overflow-y-auto p-1 outline-hidden",
+		])}
+		{...props}
+	/>
+);
 
 /** Props for the {@link SelectInput} component. */
 export type { SearchFieldProps };
 
 /** A search input rendered above the {@link SelectList}, enabling filtered selection for large option sets. */
-export const SelectInput = ({ className, ...props }: SearchFieldProps) => {
-	return (
-		<SearchField
-			{...props}
-			// eslint-disable-next-line jsx-a11y/no-autofocus -- Search input in an open select menu must take focus for keyboard filtering
-			autoFocus
-			data-slot="select-input-wrapper"
-			className={composeTailwindRenderProps(className, "p-1 pb-0")}
-		>
-			<InputGroup>
-				<InputGroupInput
-					data-slot="select-input"
-					className="[&::-webkit-search-cancel-button]:hidden"
-				/>
-				<InputGroupAddon>
-					<SearchIcon className="size-3.5 shrink-0 opacity-50" />
-				</InputGroupAddon>
-			</InputGroup>
-		</SearchField>
-	);
-};
+export const SelectInput = ({ className, ...props }: SearchFieldProps) => (
+	<SearchField
+		{...props}
+		// eslint-disable-next-line jsx-a11y/no-autofocus -- Search input in an open select menu must take focus for keyboard filtering
+		autoFocus
+		data-slot="select-input-wrapper"
+		className={composeTailwindRenderProps(className, "p-1 pb-0")}
+	>
+		<InputGroup>
+			<InputGroupInput
+				data-slot="select-input"
+				className="[&::-webkit-search-cancel-button]:hidden"
+			/>
+			<InputGroupAddon>
+				<SearchIcon className="size-3.5 shrink-0 opacity-50" />
+			</InputGroupAddon>
+		</InputGroup>
+	</SearchField>
+);
 
 /** Props for the {@link SelectLabel} component. */
 export type SelectLabelProps = React.ComponentProps<typeof AriaHeader>;
 
 /** A heading rendered above a group of {@link SelectItem} elements. */
-export const SelectLabel = ({ className, ...props }: SelectLabelProps) => {
-	return (
-		<AriaHeader
-			data-slot="select-label"
-			className={cn(listboxSectionHeaderVariants(), className)}
-			{...props}
-		/>
-	);
-};
+export const SelectLabel = ({ className, ...props }: SelectLabelProps) => (
+	<AriaHeader
+		data-slot="select-label"
+		className={cn(listboxSectionHeaderVariants(), className)}
+		{...props}
+	/>
+);
 
 type SelectItemBaseProps = React.ComponentProps<typeof AriaListBoxItem>;
 
@@ -285,32 +267,28 @@ export const SelectItem = ({ className, children, ...props }: SelectItemProps) =
 export type SelectSeparatorProps = React.ComponentProps<typeof Separator>;
 
 /** A divider between {@link SelectGroup} sections within a {@link SelectList}. */
-export const SelectSeparator = ({ className, ...props }: SelectSeparatorProps) => {
-	return (
-		<Separator
-			data-slot="select-separator"
-			className={cn("pointer-events-none -mx-1 my-1 bg-border/50", className)}
-			{...props}
-		/>
-	);
-};
+export const SelectSeparator = ({ className, ...props }: SelectSeparatorProps) => (
+	<Separator
+		data-slot="select-separator"
+		className={cn("pointer-events-none -mx-1 my-1 bg-border/50", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link SelectEmpty} component. */
 export type SelectEmptyProps = React.ComponentProps<"div">;
 
 /** A message displayed when a filtered {@link SelectList} has no matching options. */
-export const SelectEmpty = ({ className, ...props }: SelectEmptyProps) => {
-	return (
-		<div
-			data-slot="select-empty"
-			className={cn(
-				[
-					"hidden w-full justify-center py-2 text-center text-muted-foreground",
-					"text-xs/relaxed group-data-empty/select-list:flex",
-				],
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const SelectEmpty = ({ className, ...props }: SelectEmptyProps) => (
+	<div
+		data-slot="select-empty"
+		className={cn(
+			[
+				"hidden w-full justify-center py-2 text-center text-muted-foreground",
+				"text-xs/relaxed group-data-empty/select-list:flex",
+			],
+			className,
+		)}
+		{...props}
+	/>
+);

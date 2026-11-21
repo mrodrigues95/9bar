@@ -40,19 +40,14 @@ export const HISTORY_FILTER_PARAM_SCHEMA = {
 	field: filterParamSchema,
 } satisfies Record<HistoryFilterId, typeof filterParamSchema>;
 
-export const decodeHistoryFilters = (params: HistoryFilterSearchParams) => {
-	return decodeFilters(HISTORY_FILTER_DEFINITIONS, params);
-};
+export const decodeHistoryFilters = (params: HistoryFilterSearchParams) =>
+	decodeFilters(HISTORY_FILTER_DEFINITIONS, params);
 
-export const encodeHistoryFilters = (filters: Array<FilterBarFilterState>) => {
-	return encodeFilters(HISTORY_FILTER_DEFINITIONS, filters);
-};
+export const encodeHistoryFilters = (filters: Array<FilterBarFilterState>) =>
+	encodeFilters(HISTORY_FILTER_DEFINITIONS, filters);
 
-const matchesHistoryFilters = (
-	event: HistoryEvent,
-	filters: ReadonlyArray<FilterBarFilterState>,
-) => {
-	return filters.every((filter) => {
+const matchesHistoryFilters = (event: HistoryEvent, filters: ReadonlyArray<FilterBarFilterState>) =>
+	filters.every((filter) => {
 		if (filter.filterId !== "field") {
 			return true;
 		}
@@ -62,7 +57,6 @@ const matchesHistoryFilters = (
 		}
 		return isSelected;
 	});
-};
 
 interface ListRecipeHistoryInput {
 	recipeId: number;

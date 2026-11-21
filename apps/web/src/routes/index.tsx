@@ -6,15 +6,12 @@ import { Link } from "../components";
 
 const filePath = "count.txt";
 
-async function readCount() {
-	return parseInt(await fs.promises.readFile(filePath, "utf-8").catch(() => "0"), 10);
-}
+const readCount = async () =>
+	parseInt(await fs.promises.readFile(filePath, "utf-8").catch(() => "0"), 10);
 
 const getCount = createServerFn({
 	method: "GET",
-}).handler(() => {
-	return readCount();
-});
+}).handler(() => readCount());
 
 const updateCount = createServerFn({ method: "POST" })
 	.validator((d: number) => d)
@@ -23,12 +20,7 @@ const updateCount = createServerFn({ method: "POST" })
 		await fs.promises.writeFile(filePath, `${count + data}`);
 	});
 
-export const Route = createFileRoute("/")({
-	component: Home,
-	loader: async () => await getCount(),
-});
-
-function Home() {
+const Home = () => {
 	const router = useRouter();
 	const state = Route.useLoaderData();
 
@@ -59,4 +51,9 @@ function Home() {
 			<Link to="/recipes">Go to Recipes</Link>
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute("/")({
+	component: Home,
+	loader: async () => await getCount(),
+});

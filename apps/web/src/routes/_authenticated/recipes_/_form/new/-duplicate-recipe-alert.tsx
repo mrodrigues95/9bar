@@ -7,25 +7,23 @@ interface DuplicateRecipeAlertProps {
 	recipe: RecipeGraph;
 }
 
-export const DuplicateRecipeAlert = ({ recipe }: DuplicateRecipeAlertProps) => {
-	return (
-		<Alert variant="info">
-			<Info />
-			<AlertTitle className="[&_a]:no-underline [&_a]:hover:underline">
-				Duplicating{" "}
-				<Link
-					to="/recipes/$recipeId"
-					params={{ recipeId: String(recipe.id) }}
-					target="_blank"
-					rel="noreferrer"
-					className="h-auto p-0 font-[inherit] text-[length:inherit] text-inherit italic"
-				>
-					{recipe.name}
-				</Link>
-			</AlertTitle>
-			<AlertDescription>
-				Everything below is copied from that recipe. Adjust it, then save it as a new recipe.
-			</AlertDescription>
-		</Alert>
-	);
-};
+export const DuplicateRecipeAlert = ({ recipe }: DuplicateRecipeAlertProps) => (
+	<Alert variant="info">
+		<Info />
+		<AlertTitle className="[&_a]:no-underline [&_a]:hover:underline">
+			Duplicating{" "}
+			<Link
+				to="/recipes/$recipeId"
+				params={{ recipeId: String(recipe.id) }}
+				target="_blank"
+				rel="noreferrer"
+				className="h-auto p-0 font-[inherit] text-[length:inherit] text-inherit italic"
+			>
+				{recipe.name}
+			</Link>
+		</AlertTitle>
+		<AlertDescription>
+			Everything below is copied from that recipe. Adjust it, then save it as a new recipe.
+		</AlertDescription>
+	</Alert>
+);

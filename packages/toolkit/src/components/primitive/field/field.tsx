@@ -9,19 +9,17 @@ import { toErrorMessage, type FieldErrorItem } from "./utils";
 export type FieldSetProps = React.ComponentProps<"fieldset">;
 
 /** A fieldset that groups related form fields (such as a checkbox or radio group) under a shared legend. */
-export const FieldSet = ({ className, ...props }: FieldSetProps) => {
-	return (
-		<fieldset
-			data-slot="field-set"
-			className={cn(
-				"flex flex-col gap-4",
-				"has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldSet = ({ className, ...props }: FieldSetProps) => (
+	<fieldset
+		data-slot="field-set"
+		className={cn(
+			"flex flex-col gap-4",
+			"has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldLegend} component. */
 export type FieldLegendProps = React.ComponentProps<"legend"> & {
@@ -29,129 +27,115 @@ export type FieldLegendProps = React.ComponentProps<"legend"> & {
 };
 
 /** A caption for a {@link FieldSet}, rendered as a `<legend>`. */
-export const FieldLegend = ({ className, variant = "legend", ...props }: FieldLegendProps) => {
-	return (
-		<legend
-			data-slot="field-legend"
-			data-variant={variant}
-			className={cn(
-				"mb-2 font-medium data-[variant=label]:text-xs/relaxed data-[variant=legend]:text-sm",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldLegend = ({ className, variant = "legend", ...props }: FieldLegendProps) => (
+	<legend
+		data-slot="field-legend"
+		data-variant={variant}
+		className={cn(
+			"mb-2 font-medium data-[variant=label]:text-xs/relaxed data-[variant=legend]:text-sm",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldGroup} component. */
 export type FieldGroupProps = React.ComponentProps<"div">;
 
 /** A vertical stack of fields, used to group related inputs or checkboxes with consistent spacing. */
-export const FieldGroup = ({ className, ...props }: FieldGroupProps) => {
-	return (
-		<div
-			data-slot="field-group"
-			className={cn(
-				"group/field-group @container/field-group flex w-full flex-col gap-4",
-				"data-[slot=checkbox-group]:gap-3",
-				"*:data-[slot=field-group]:gap-4",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldGroup = ({ className, ...props }: FieldGroupProps) => (
+	<div
+		data-slot="field-group"
+		className={cn(
+			"group/field-group @container/field-group flex w-full flex-col gap-4",
+			"data-[slot=checkbox-group]:gap-3",
+			"*:data-[slot=field-group]:gap-4",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link Field} component. */
 export type FieldProps = React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>;
 
 /** A layout wrapper that associates a label, control, description, and error message for a single form field. */
-export const Field = ({ className, orientation = "vertical", ...props }: FieldProps) => {
-	return (
-		<div
-			data-slot="field"
-			data-orientation={orientation}
-			className={cn(fieldVariants({ orientation }), className)}
-			{...props}
-		/>
-	);
-};
+export const Field = ({ className, orientation = "vertical", ...props }: FieldProps) => (
+	<div
+		data-slot="field"
+		data-orientation={orientation}
+		className={cn(fieldVariants({ orientation }), className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldContent} component. */
 export type FieldContentProps = React.ComponentProps<"div">;
 
 /** A wrapper for the label and description side of a horizontally-oriented {@link Field}. */
-export const FieldContent = ({ className, ...props }: FieldContentProps) => {
-	return (
-		<div
-			data-slot="field-content"
-			className={cn("group/field-content flex flex-1 flex-col gap-0.5 leading-snug", className)}
-			{...props}
-		/>
-	);
-};
+export const FieldContent = ({ className, ...props }: FieldContentProps) => (
+	<div
+		data-slot="field-content"
+		className={cn("group/field-content flex flex-1 flex-col gap-0.5 leading-snug", className)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldLabel} component. */
 export type FieldLabelProps = React.ComponentProps<typeof Label>;
 
 /** A label rendered for a {@link Field}, visually distinct from a standalone {@link Label}. */
-export const FieldLabel = ({ className, ...props }: FieldLabelProps) => {
-	return (
-		<Label
-			data-slot="field-label"
-			className={cn(
-				"group/field-label peer/field-label flex w-fit gap-2 leading-snug",
-				"has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border",
-				"has-data-selected:bg-primary/5",
-				"*:data-[slot=field]:p-2",
-				"group-data-[disabled=true]/field:opacity-50",
-				"dark:has-data-selected:bg-primary/10",
-				"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldLabel = ({ className, ...props }: FieldLabelProps) => (
+	<Label
+		data-slot="field-label"
+		className={cn(
+			"group/field-label peer/field-label flex w-fit gap-2 leading-snug",
+			"has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border",
+			"has-data-selected:bg-primary/5",
+			"*:data-[slot=field]:p-2",
+			"group-data-[disabled=true]/field:opacity-50",
+			"dark:has-data-selected:bg-primary/10",
+			"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldTitle} component. */
 export type FieldTitleProps = React.ComponentProps<"div">;
 
 /** A plain-text heading used to label a {@link Field} when the label is not interactive. */
-export const FieldTitle = ({ className, ...props }: FieldTitleProps) => {
-	return (
-		<div
-			data-slot="field-label"
-			className={cn(
-				"flex w-fit items-center gap-2 text-xs/relaxed font-medium",
-				"group-data-[disabled=true]/field:opacity-50",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldTitle = ({ className, ...props }: FieldTitleProps) => (
+	<div
+		data-slot="field-label"
+		className={cn(
+			"flex w-fit items-center gap-2 text-xs/relaxed font-medium",
+			"group-data-[disabled=true]/field:opacity-50",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldDescription} component. */
 export type FieldDescriptionProps = React.ComponentProps<"p">;
 
 /** Help text that describes a field, displayed below the control. */
-export const FieldDescription = ({ className, ...props }: FieldDescriptionProps) => {
-	return (
-		<p
-			data-slot="field-description"
-			className={cn(
-				"text-left text-xs/relaxed leading-normal font-normal text-muted-foreground",
-				"group-has-data-horizontal/field:text-balance",
-				"[[data-variant=legend]+&]:-mt-1.5",
-				"last:mt-0 nth-last-2:-mt-1",
-				"[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
-				className,
-			)}
-			{...props}
-		/>
-	);
-};
+export const FieldDescription = ({ className, ...props }: FieldDescriptionProps) => (
+	<p
+		data-slot="field-description"
+		className={cn(
+			"text-left text-xs/relaxed leading-normal font-normal text-muted-foreground",
+			"group-has-data-horizontal/field:text-balance",
+			"[[data-variant=legend]+&]:-mt-1.5",
+			"last:mt-0 nth-last-2:-mt-1",
+			"[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+			className,
+		)}
+		{...props}
+	/>
+);
 
 /** Props for the {@link FieldSeparator} component. */
 export type FieldSeparatorProps = React.ComponentProps<"div"> & {
@@ -159,29 +143,27 @@ export type FieldSeparatorProps = React.ComponentProps<"div"> & {
 };
 
 /** A horizontal divider with optional centered text, used to split groups of fields. */
-export const FieldSeparator = ({ children, className, ...props }: FieldSeparatorProps) => {
-	return (
-		<div
-			data-slot="field-separator"
-			data-content={children !== undefined}
-			className={cn(
-				"relative -my-2 h-5 text-xs/relaxed group-data-[variant=outline]/field-group:-mb-2",
-				className,
-			)}
-			{...props}
-		>
-			<Separator className="absolute inset-0 top-1/2" />
-			{children !== undefined && (
-				<span
-					className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
-					data-slot="field-separator-content"
-				>
-					{children}
-				</span>
-			)}
-		</div>
-	);
-};
+export const FieldSeparator = ({ children, className, ...props }: FieldSeparatorProps) => (
+	<div
+		data-slot="field-separator"
+		data-content={children !== undefined}
+		className={cn(
+			"relative -my-2 h-5 text-xs/relaxed group-data-[variant=outline]/field-group:-mb-2",
+			className,
+		)}
+		{...props}
+	>
+		<Separator className="absolute inset-0 top-1/2" />
+		{children !== undefined && (
+			<span
+				className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
+				data-slot="field-separator-content"
+			>
+				{children}
+			</span>
+		)}
+	</div>
+);
 
 /** Props for the {@link FieldError} component. */
 export type FieldErrorProps = React.ComponentProps<"div"> & {
