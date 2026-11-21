@@ -1,4 +1,4 @@
-import type { Context, ESTree, VisitorObject } from "@oxlint/plugins";
+import type { Context, ESTree, Visitor } from "@oxlint/plugins";
 
 const REACT_MODULES = new Set(["react"]);
 
@@ -14,7 +14,7 @@ export function createReactApiVisitor(
   context: Context,
   names: ReadonlySet<string>,
   messageId: string,
-): VisitorObject {
+): Visitor {
   const reactBindings = new Set<string>();
   const report = (node: ESTree.Node, name: string) =>
     context.report({ node, messageId, data: { name } });
