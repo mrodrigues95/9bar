@@ -16,7 +16,7 @@ Each layer is less reliable than the one above it. Fix a problem at the highest 
 | 2. Static       | Make the wrong thing fail in CI, with an error that names the fix. | oxlint + `anti-slop` + `landmines`, type-aware lint (tsrs), tsc, `check:structure` |
 | 3. Verification | Make the agent prove the change on the running thing.              | Vitest + fast-check, Storybook story tests with axe, `pnpm control`, verify skills |
 | 4. Prose        | Judgment calls only, phrased without "unless" or "only when".      | `AGENTS.md` rule table, skills                                                     |
-| 5. Human review | The exception path.                                                | `/correct`, `/no-comments`                                                         |
+| 5. Human review | The exception path.                                                | `/correct`                                                                         |
 
 ## Principles by layer
 
