@@ -39,8 +39,8 @@ const isRouterBreadcrumb = (value: unknown): value is RouterBreadcrumb =>
 	routerBreadcrumbSchema.safeParse(value).success;
 
 const getLoaderBreadcrumb = (match?: AnyRouteMatch) => {
-	const data = match?.loaderData;
-	return isRouterBreadcrumb(data?.breadcrumb) ? data.breadcrumb : null;
+	const breadcrumb: unknown = match?.loaderData?.breadcrumb;
+	return isRouterBreadcrumb(breadcrumb) ? breadcrumb : null;
 };
 
 const resolveSuffixParentBreadcrumbs = (
