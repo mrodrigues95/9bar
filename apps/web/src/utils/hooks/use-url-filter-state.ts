@@ -1,107 +1,94 @@
+import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useRouterState } from "@tanstack/react-router";
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useState } from "react";
 import type { FilterBarFilterState } from "@9bar/toolkit/components/composed";
-import { useDebouncedValue } from "./use-debounced-value";
 
-interface UrlFilterIntent {
+export interface UrlFilterIntent {
+	q: string;
+	filters: Array<FilterBarFilterState>;
+	page: number;
+}
+
+export interface QueryDraft {
+	q: string;
+	baseKey: string;
+}
+
+export const reconcileDraft = (draft: QueryDraft | null, urlKey: string) =>
+	draft !== null && draft.baseKey === urlKey ? draft : null;
+
+export const resolveView = (url: UrlFilterIntent, draft: QueryDraft | null): UrlFilterIntent =>
+	draft === null ? url : { ...url, q: draft.q, page: 1 };
+
+export const applyDraft = (draft: QueryDraft, current: UrlFilterIntent, currentKey: string) =>
+	currentKey === draft.baseKey ? { ...current, q: draft.q, page: 1 } : null;
+
+interface DecodedUrlFilters {
 	q?: string;
 	filters: Array<FilterBarFilterState>;
 	page: number;
 }
 
-interface VersionedIntent extends UrlFilterIntent {
-	version: number;
-	replace: boolean;
-}
-
 interface UseUrlFilterStateOptions<TSearch> {
 	search: TSearch;
 	navigate: (options: { search: (prev: TSearch) => TSearch; replace?: boolean }) => Promise<void>;
-	decode: (search: TSearch) => UrlFilterIntent;
+	decode: (search: TSearch) => DecodedUrlFilters;
 	encode: (intent: UrlFilterIntent) => Partial<TSearch>;
 	debounceMs?: number;
 }
 
-const intentKey = <TSearch>(
-	encode: (intent: UrlFilterIntent) => Partial<TSearch>,
-	value: UrlFilterIntent,
-) => {
-	return JSON.stringify(encode(value));
-};
-
 /**
- * Syncs debounced query/filter/page state with the route's URL search params.
- * Typing/search input updates replace the URL; filter and page updates push entries.
- * Back/forward navigation and hand-edited URLs are adopted over pending intents.
+ * Exposes query/filter/page state whose single source of truth is the route's URL search params.
+ * Filter and page changes push a history entry at once. Typing is held as a draft and written
+ * with `replace` after `debounceMs`. Any URL change the draft was not based on discards it.
  */
 export const useUrlFilterState = <TSearch>(options: UseUrlFilterStateOptions<TSearch>) => {
 	const { search, navigate, decode, encode, debounceMs = 250 } = options;
 	const isRouteLoading = useRouterState({ select: (state) => state.isLoading });
-	const [intent, setIntent] = useState<VersionedIntent>(() => ({
-		...decode(search),
-		version: 0,
-		replace: true,
-	}));
-	const debouncedIntent = useDebouncedValue(intent, debounceMs);
 
-	const urlIntent = decode(search);
-	const urlKey = intentKey(encode, urlIntent);
-
-	const lastWrittenKeyRef = useRef(urlKey);
-	const lastUrlKeyRef = useRef(urlKey);
-
-	const writeToUrl = useEffectEvent((next: VersionedIntent) => {
-		void navigate({
-			search: (prev) => ({ ...prev, ...encode(next) }),
-			replace: next.replace,
-		});
-	});
-
-	useEffect(() => {
-		const isNewUrl = urlKey !== lastUrlKeyRef.current;
-		lastUrlKeyRef.current = urlKey;
-
-		// Back/forward, a link, or a hand-edited URL: adopt it and drop a pending intent instead of
-		// writing back over the user's navigation. The version bump makes the drop stick.
-		if (isNewUrl && urlKey !== lastWrittenKeyRef.current) {
-			lastWrittenKeyRef.current = urlKey;
-			setIntent((prev) =>
-				intentKey(encode, prev) === urlKey
-					? prev
-					: { ...urlIntent, version: prev.version + 1, replace: true },
-			);
-			return;
-		}
-
-		const debouncedKey = intentKey(encode, debouncedIntent);
-		if (debouncedKey === urlKey || debouncedIntent.version !== intent.version) {
-			return;
-		}
-
-		writeToUrl(debouncedIntent);
-		lastWrittenKeyRef.current = debouncedKey;
-	}, [urlKey, urlIntent, debouncedIntent, intent.version, decode, encode]);
-
-	const updateIntent = (patch: Partial<Omit<VersionedIntent, "version">>) => {
-		setIntent((prev) => ({ ...prev, ...patch, version: prev.version + 1 }));
+	const read = (value: TSearch): UrlFilterIntent => {
+		const decoded = decode(value);
+		return { q: decoded.q ?? "", filters: decoded.filters, page: decoded.page };
 	};
+	const keyOf = (intent: UrlFilterIntent) => JSON.stringify(encode(intent));
+
+	const url = read(search);
+	const urlKey = keyOf(url);
+	const [storedDraft, setDraft] = useState<QueryDraft | null>(null);
+	const draft = reconcileDraft(storedDraft, urlKey);
+	if (draft !== storedDraft) {
+		setDraft(draft);
+	}
+	const view = resolveView(url, draft);
+
+	const write = (intent: UrlFilterIntent) =>
+		void navigate({ search: (prev) => ({ ...prev, ...encode(intent) }) });
+
+	const writeDraft = useDebouncedCallback(
+		(pending: QueryDraft) =>
+			void navigate({
+				search: (prev) => {
+					const current = read(prev);
+					const next = applyDraft(pending, current, keyOf(current));
+					return next === null ? prev : { ...prev, ...encode(next) };
+				},
+				replace: true,
+			}),
+		{ wait: debounceMs },
+	);
 
 	return {
-		q: intent.q ?? "",
-		filters: intent.filters,
-		page: intent.page,
-		isStale: isRouteLoading || intentKey(encode, intent) !== urlKey,
+		q: view.q,
+		filters: view.filters,
+		page: view.page,
+		isStale: isRouteLoading || draft !== null,
 		setQuery: (q: string) => {
-			updateIntent({ q, page: 1, replace: true });
+			const next = { q, baseKey: urlKey };
+			setDraft(next);
+			writeDraft(next);
 		},
-		setFilters: (filters: Array<FilterBarFilterState>) => {
-			updateIntent({ filters, page: 1, replace: false });
-		},
-		setPage: (page: number) => {
-			updateIntent({ page, replace: false });
-		},
-		clear: () => {
-			updateIntent({ q: "", filters: [], page: 1, replace: false });
-		},
+		setFilters: (filters: Array<FilterBarFilterState>) => write({ ...view, filters, page: 1 }),
+		setPage: (page: number) => write({ ...view, page }),
+		clear: () => write({ q: "", filters: [], page: 1 }),
 	};
 };

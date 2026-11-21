@@ -1,5 +1,4 @@
 import { type VariantProps } from "class-variance-authority";
-import { useMemo } from "react";
 import { Label } from "#components/label";
 import { Separator } from "#components/separator";
 import { cn } from "#lib/utils";
@@ -213,38 +212,43 @@ export interface FieldComponentProps {
 	fieldErrorProps?: FieldErrorProps;
 }
 
+const resolveErrorContent = (
+	children: React.ReactNode,
+	errors: Array<FieldErrorItem> | undefined,
+) => {
+	if (children !== undefined) {
+		return children;
+	}
+
+	if (errors === undefined || errors.length === 0) {
+		return null;
+	}
+
+	const uniqueErrors = [
+		...new Map(
+			errors
+				.map((error) => toErrorMessage(error))
+				.filter((message): message is string => message !== undefined)
+				.map((message) => [message, message] as const),
+		).values(),
+	];
+
+	if (uniqueErrors.length === 1) {
+		return uniqueErrors[0];
+	}
+
+	return (
+		<ul className="ml-4 flex list-disc flex-col gap-1">
+			{uniqueErrors.map((message) => (
+				<li key={message}>{message}</li>
+			))}
+		</ul>
+	);
+};
+
 /** An error message for a form field, rendered when validation fails. Accepts an `errors` array from a form library such as TanStack Form. */
 export const FieldError = ({ className, children, errors, ...props }: FieldErrorProps) => {
-	const content = useMemo(() => {
-		if (children !== undefined) {
-			return children;
-		}
-
-		if (errors === undefined || errors.length === 0) {
-			return null;
-		}
-
-		const uniqueErrors = [
-			...new Map(
-				errors
-					.map((error) => toErrorMessage(error))
-					.filter((message): message is string => message !== undefined)
-					.map((message) => [message, message] as const),
-			).values(),
-		];
-
-		if (uniqueErrors.length === 1) {
-			return uniqueErrors[0];
-		}
-
-		return (
-			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map((message) => (
-					<li key={message}>{message}</li>
-				))}
-			</ul>
-		);
-	}, [children, errors]);
+	const content = resolveErrorContent(children, errors);
 
 	if (content === null || content === undefined) {
 		return null;
