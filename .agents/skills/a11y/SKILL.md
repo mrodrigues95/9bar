@@ -1,125 +1,33 @@
 ---
 name: a11y
-description: Accessibility guidelines for building UI in this repo, on top of React Aria Components. Use when creating or reviewing any UI, interactive elements, form fields, or components; when handling focus rings, keyboard navigation, screen reader semantics, labels, or accessible names; or when checking Storybook stories for a11y violations. Covers labeling conventions, focus ring systems, disabled states, and the new-component checklist.
+description: Accessibility judgment for building UI in this repo on top of React Aria Components. Use when creating or reviewing UI, interactive elements, form fields, or components; when choosing accessible names, labels, landmarks, or live regions; or when wiring ARIA by hand for a compound field. Axe runs on every story (`pnpm test`) and on app pages (`pnpm control web a11y`), so this skill covers what axe cannot judge.
 ---
 
-# Accessibility Guidelines
+# Accessibility
 
-This project uses [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) as its accessibility foundation. These guidelines cover project-specific conventions for building on top of that foundation.
+[React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) is the foundation. Axe fails a story test on any violation it can detect (`a11y.test: "error"`), and `pnpm control <target> a11y` audits a live page. These rules cover what a machine can't check.
 
-## Core Principles
+## Principles
 
-1. **Lean on React Aria.** Don't manually add ARIA roles, states, or keyboard handlers that React Aria already provides.
-2. **Every interactive element needs an accessible name.** Use visible text, `aria-label`, or `aria-labelledby`.
-3. **Every form field needs a visible label.** The toolkit's form field components enforce `label` as a required prop -- do not circumvent this.
-4. **Decorative elements must be hidden.** Use `aria-hidden="true"` on icons, SVGs, and other visual-only content.
-5. **Use semantic HTML.** Prefer `<button>`, `<a>`, `<nav>`, `<main>`, `<header>`, `<fieldset>` over generic `<div>` and `<span>`.
+- **Lean on React Aria.** Don't add ARIA roles, states, or keyboard handlers it already provides, and don't override its keyboard patterns. For custom widgets, follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/patterns/).
+- **Names make sense out of context.** A button that reads "Edit" in a row of recipes gets `aria-label="Edit recipe"` or names the row ("Actions for House Espresso").
+- **Every form field has a visible label.** Toolkit form fields take `label`; pass one even though the type allows leaving it out. Put help text in the field's description so it is linked through `aria-describedby`.
+- **Hide what is decorative, label what carries meaning.** lucide icons are `aria-hidden` by default; an icon that is the only content of a control needs the control's `aria-label`. Layout-only wrappers get `role="presentation"`.
+- **Color is never the only signal.** Pair it with text, an icon, or a pattern (verdict badges carry their label).
+- **Use semantic elements** (`button`, `a`, `nav`, `main`, `header`, `fieldset`) over generic `div`s.
 
-## Labeling
+## Compound fields
 
-### Buttons and Icon Buttons
+When a field doesn't map to one React Aria field context (e.g. `InputGroupSelectField`), wire it by hand: `useId()` for stable ids, `aria-labelledby` on the group pointing at the visible label, `aria-describedby` for description and error.
 
-- `Button` with visible text is self-labeling.
-- `IconButton` requires `aria-label` (enforced by TypeScript -- it's a required prop).
-- If a button's visible text is ambiguous out of context (e.g. "Edit"), add `aria-label` with more detail (e.g. `aria-label="Edit recipe"`).
+## Grouped content
 
-### Form Fields
+- `fieldset` + `legend` for related fields. If a visible heading already names the group, make the `legend` `sr-only` and the heading `aria-hidden="true"`.
+- Give `Alert` an `aria-labelledby` when it has a title element.
 
-- All form field components (`FormTextField`, `FormTextareaField`, `FormSelectField`, etc.) require a `label` prop, which renders a visible `<Label>`.
-- Use `<Description>` for supplementary help text (linked via `aria-describedby`).
-- `<FieldError>` is automatically linked via `aria-describedby` when validation fails, and React Aria sets `aria-invalid="true"`.
+## Announcements and structure
 
-### Compound Fields
-
-For compound fields that don't map to a single React Aria field context (e.g. `InputGroupSelectField`), you need manual ARIA wiring:
-
-- Use `useId()` to generate stable IDs.
-- Apply `aria-labelledby` to the group element, pointing to the visible label's ID.
-- Apply `aria-describedby` to link description and error elements.
-
-### Grouped Content
-
-- Use `<fieldset>` + `<legend>` for groups of related form fields. Use `sr-only` on `<legend>` if there's already a visible heading, and mark the visible heading with `aria-hidden="true"`.
-- Use `aria-labelledby` on `Alert` components when they have a title element.
-
-## Keyboard and Focus
-
-### Focus Rings
-
-The toolkit provides two reusable focus ring systems:
-
-- **`buttonFocusRing`** -- used on buttons, icon buttons, links, tabs, and pagination controls. Shows a ring on `:focus-visible` only (keyboard navigation, not mouse clicks).
-- **`inputFocusRing`** -- used on inputs with three variants:
-  - `focused` (default) -- ring on any focus (`data-[focused]`)
-  - `focusVisible` -- ring on keyboard focus only (`data-[focus-visible]`), used by selects and checkboxes
-  - `focusWithin` -- ring when any child is focused (`data-[focus-within]`), used by `InputGroup`
-
-All input focus ring variants include destructive (error) state styling. When building new interactive components, use one of these existing systems rather than writing custom focus styles.
-
-### Keyboard Navigation
-
-React Aria handles keyboard navigation patterns automatically. Do not override these patterns. For custom components, follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/patterns/).
-
-### Disabled States
-
-- Use `isDisabled` on React Aria components (not the native `disabled` attribute directly).
-- The toolkit's `inputDisabled` variant applies consistent disabled styling (`bg-slate-50`, `opacity-50`).
-- Buttons use `disabled:pointer-events-none disabled:opacity-50`.
-- `FormSubmitButton` automatically disables when `canSubmit` is false.
-
-## Screen Readers
-
-### Hiding Decorative Content
-
-- Use `aria-hidden="true"` on icons, SVGs, decorative images, and visual-only elements.
-- Use `role="presentation"` or `role="none"` on wrapper elements that exist only for layout (e.g. `Badge`, `InputGroupAddon`).
-- Pagination ellipsis (`...`) should be `aria-hidden="true"`.
-
-### Providing Text Alternatives
-
-- Use the `textValue` prop on `ListboxItem` and `MenuItem` when children are not plain strings (e.g. items with icons). The toolkit auto-derives this from string children, but complex children need it explicitly.
-- `Avatar` falls back to `alt={name || "Avatar"}` -- always provide a meaningful `name` or `alt` prop.
-
-### Live Regions
-
-- The `Alert` component uses `role="alert"` (implicit `aria-live="assertive"`). Content inside an Alert is announced immediately.
-- For less urgent announcements (loading states, status updates), use `aria-live="polite"` on the container element.
-
-### Navigation and Page Structure
-
-- Use proper landmark elements: `<header>`, `<nav>`, `<main>`, `<footer>`.
-- Set `aria-current="page"` on the active navigation link (the toolkit's `Link` component supports this) and active pagination button.
-- The root `<html>` element must have a `lang` attribute (currently `lang="en"`).
-
-## Styling Accessibility States
-
-The `tailwindcss-react-aria-components` plugin maps React Aria's data attributes to Tailwind variants:
-
-| Data Attribute | Tailwind Variant | Used For |
-|----------------|-----------------|----------|
-| `data-focused` | `focused:` | Element has focus |
-| `data-focus-visible` | `focus-visible:` | Keyboard focus only |
-| `data-selected` | `selected:` | Selected state |
-| `data-pressed` | `pressed:` | Active/pressed state |
-| `data-disabled` | `disabled:` | Disabled state |
-| `data-invalid` | `invalid:` | Validation error state |
-| `data-focus-within` | `focus-within:` | Child has focus |
-
-Use these variants to style interactive states. They ensure visual feedback aligns with the underlying ARIA state.
-
-## Linting
-
-- Oxlint's `jsx-a11y` plugin runs at `error` severity across the whole repo (root `.oxlintrc.json`).
-- The Storybook `@storybook/addon-a11y` addon runs [axe-core](https://github.com/dequelabs/axe-core) audits on every story in the toolkit.
-
-## Checklist for New Components
-
-When adding a new component, verify:
-
-- [ ] Interactive elements have an accessible name (visible text, `aria-label`, or `aria-labelledby`)
-- [ ] Decorative elements are hidden with `aria-hidden="true"`
-- [ ] Focus is visible and uses the appropriate ring system (`buttonFocusRing` or `inputFocusRing`)
-- [ ] Keyboard navigation works without a mouse
-- [ ] Disabled states use `isDisabled` and appropriate styling
-- [ ] Color is not the only means of conveying information (pair with icons, text, or patterns)
-- [ ] A Storybook story exists and the a11y addon panel shows no violations
+- `Alert` is `role="alert"` (assertive): use it for errors that need attention now.
+- Status updates and confirmations ("Logged at 8:50 PM") go in a polite live region (`<output>` or `aria-live="polite"`).
+- One `main` per page, a labelled `nav` for each navigation (unique labels when there are several), `aria-current="page"` on the active link (toolkit `Link`, breadcrumb, and pagination support it).
+- Focus follows the spec's Feedback rules after save, delete, and validation (`docs/recipes-and-logs-flows.md#feedback`); verify it with `focused` in `pnpm control` output.
