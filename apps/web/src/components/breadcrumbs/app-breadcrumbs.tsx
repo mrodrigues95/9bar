@@ -101,7 +101,7 @@ const resolveSuffixParentBreadcrumbs = (
 				id: parentId,
 				pathname: parentMatch?.pathname ?? route.fullPath,
 				label: parentBreadcrumb.label,
-				...(parentBreadcrumb.disabled === true && { disabled: true }),
+				...(parentBreadcrumb.disabled && { disabled: true }),
 			});
 		}
 	}

@@ -15,7 +15,7 @@ type CompareActionsProps = {
 
 export const CompareActions = ({ a, b, groupId, search }: CompareActionsProps) => {
 	const [copied, setCopied] = useState(false);
-	const annotate = search.annotate === true;
+	const annotate = !!search.annotate;
 
 	const copyPair = async () => {
 		const text = [a.id, b.id]

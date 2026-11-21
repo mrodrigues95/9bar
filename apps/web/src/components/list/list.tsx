@@ -54,7 +54,7 @@ export const ListLine = ({ icon: Icon, mono, children }: ListLineProps) => {
 	return (
 		<Text
 			variant="caption"
-			className={cn("mt-0.5 flex min-w-0 items-center gap-1", mono === true && "font-mono")}
+			className={cn("mt-0.5 flex min-w-0 items-center gap-1", !!mono && "font-mono")}
 		>
 			<Icon className="size-3 shrink-0" />
 			<span className="truncate">{children}</span>

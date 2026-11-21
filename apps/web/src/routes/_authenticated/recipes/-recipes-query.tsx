@@ -262,7 +262,7 @@ const isRetiredHidden = (
 		return false;
 	}
 	const statusFilter = filters.find((filter) => filter.filterId === "status");
-	if (statusFilter?.values.includes("retired") === true) {
+	if (statusFilter?.values.includes("retired")) {
 		return false;
 	}
 	return !query;

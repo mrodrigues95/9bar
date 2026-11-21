@@ -39,7 +39,7 @@ export function Breadcrumb({
 					<BreadcrumbLink
 						to={to}
 						activeOptions={{ exact: true, ...activeOptions }}
-						{...(isDisabled === true && { isDisabled: true })}
+						{...(isDisabled && { isDisabled: true })}
 						className={className}
 					>
 						{children}

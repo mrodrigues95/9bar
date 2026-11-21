@@ -60,10 +60,10 @@ export const PaginationLink = ({
 }: PaginationLinkProps) => {
 	return (
 		<Link
-			variant={isActive === true ? "outline" : "ghost"}
+			variant={isActive ? "outline" : "ghost"}
 			size={size}
 			className={cn(className)}
-			aria-current={isActive === true ? "page" : undefined}
+			aria-current={isActive ? "page" : undefined}
 			data-slot="pagination-link"
 			data-active={isActive}
 			{...props}

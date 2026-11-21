@@ -40,7 +40,7 @@
 		"typescript/no-misused-promises": "error",
 		"typescript/no-unnecessary-condition": "error",
 		"typescript/no-unsafe-type-assertion": "error",
-		"typescript/strict-boolean-expressions": "error",
+		"typescript/strict-boolean-expressions": ["error", { "allowNullableBoolean": true }],
 		"unicorn/explicit-length-check": "error",
 		"import/no-cycle": "error"
 	},

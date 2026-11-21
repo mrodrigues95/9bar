@@ -40,7 +40,7 @@ export const TabLink = <
 		<TabsTrigger
 			{...(id !== undefined ? { id } : {})}
 			{...(className !== undefined ? { className } : {})}
-			{...(isDisabled === true ? { isDisabled } : {})}
+			{...(isDisabled ? { isDisabled } : {})}
 			{...(href !== undefined ? { href } : {})}
 			onMouseEnter={preload}
 			onFocus={preload}
