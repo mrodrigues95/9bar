@@ -50,7 +50,7 @@ pnpm control web wait-settle
 
 ## Evidence
 
-- `pnpm control web screenshot [path] [--full]`: PNG, default `.control/artifacts/web/<time>.png`.
+- `pnpm control web screenshot [path] [--full]`: PNG, default `tools/control/.runtime/artifacts/web/<time>.png`.
 - `pnpm control web snapshot --path <file>`: ARIA tree as text.
 - `pnpm control web console [--errors] [--clear]`: console messages and page errors recorded while commands ran, with logged values in `args`. This is the proof for stubbed saves.
 - `pnpm control web network [--failed] [--clear]`: document and fetch responses, and failures.
@@ -70,7 +70,7 @@ pnpm control web cleanup --dry-run   # lists what it will stop and remove
 pnpm control web cleanup
 ```
 
-Stops only the server and browser process groups that `launch` recorded, and removes `.control/web/` (state, logs, browser profile). Never kill by process name. Artifacts in `.control/artifacts/web/` are kept.
+Stops only the server and browser process groups that `launch` recorded, and removes `tools/control/.runtime/web/` (state, logs, browser profile). Never kill by process name. Artifacts in `tools/control/.runtime/artifacts/web/` are kept.
 
 ## Feature map
 

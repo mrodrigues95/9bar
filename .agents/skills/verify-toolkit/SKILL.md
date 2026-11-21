@@ -31,7 +31,7 @@ pnpm control toolkit launch                         # storybook dev on :6106, Ch
 pnpm control toolkit doctor
 pnpm control toolkit stories --filter select        # ids, titles, names from /index.json
 pnpm control toolkit story composed-form-selectfield--with-placeholder
-pnpm control toolkit screenshot                     # .control/artifacts/toolkit/<time>.png
+pnpm control toolkit screenshot                     # tools/control/.runtime/artifacts/toolkit/<time>.png
 pnpm control toolkit screenshot --theme dark        # reloads the open story in dark first
 pnpm control toolkit click --role button --name "Favorite Fruit"
 pnpm control toolkit snapshot | jq -r .snapshot
@@ -42,7 +42,7 @@ pnpm control toolkit cleanup
 - `screenshot --theme` reloads the story, which resets interaction state. To capture an interacted state in dark, open it with `story <id> --theme dark`, drive it, then `screenshot` without `--theme`.
 - `story <id>` waits for Storybook to finish rendering and fails with the error if the story throws. Use ids from `stories`; the filter ignores case and punctuation.
 - Driving commands (`click`, `type`, `press`, `count`, `snapshot`, `console`, `network`) work as in the verify-web skill: JSON out, `--role` + `--name` handles, `focused` in every action result. `pnpm control toolkit --help` lists them.
-- Control uses its own ports, separate from `pnpm toolkit storybook` (:6006), and refuses to start on a port it did not open. `cleanup` stops only what `launch` started and keeps `.control/artifacts/toolkit/`.
+- Control uses its own ports, separate from `pnpm toolkit storybook` (:6006), and refuses to start on a port it did not open. `cleanup` stops only what `launch` started and keeps `tools/control/.runtime/artifacts/toolkit/`.
 
 ## Proof
 

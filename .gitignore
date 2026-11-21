@@ -9,4 +9,4 @@ build/
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
-.control/
+tools/control/.runtime/

@@ -22,7 +22,7 @@ const waitForHydration = async (page: Page) => {
 	} catch {
 		fail(
 			"The page did not finish hydrating in 30s.",
-			"Run `pnpm control web console --errors` and read .control/web/server.log for the render error.",
+			"Run `pnpm control web console --errors` and read tools/control/.runtime/web/server.log for the render error.",
 		);
 	}
 };

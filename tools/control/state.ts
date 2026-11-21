@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const repoRoot = resolve(import.meta.dirname, "../..");
 
-const controlRoot = join(repoRoot, ".control");
+const controlRoot = join(import.meta.dirname, ".runtime");
 
 export const targetDir = (target: string) => join(controlRoot, target);
 
