@@ -7,7 +7,7 @@ description: Drive the 9bar web app (apps/web) in a real headless browser to pro
 
 `pnpm control web` launches its own dev server and headless Chromium, then drives them one command at a time. Every command prints JSON on stdout (`ok`, plus results or `error` and `hint`) and exits 1 on failure. `pnpm control web --help` lists commands; `<command> --help` lists flags.
 
-Logic bugs start with a failing unit or property test (`pnpm test --project web`). This skill is for what only a browser shows: rendering, focus, URL state, dialogs, keyboard.
+Logic bugs start with a failing unit or property test (`pnpm web test`). This skill is for what only a browser shows: rendering, focus, URL state, dialogs, keyboard.
 
 ## Launch
 

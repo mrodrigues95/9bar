@@ -26,7 +26,7 @@ Only edit the verification skill's own directory (its SKILL.md, references/featu
 
 0. **Locate the target.** Find the verification skill to maintain: the project-local skill whose body has launch/drive sections and a feature map (`.agents/skills/verify-*/`). Several candidates → ask which one; none → stop and point at `/create-verification-skill` instead of inventing a target.
 
-1. **Index hygiene.** Read the feature map README and glob its sibling files. A Storybook target has no hand-written map: check instead that every component directory has a story (`pnpm check:structure` does this) and that story tests pass (`pnpm test --project storybook`). Fix missing, extra, duplicate, or dead entries. Lightweight; no generated inventory.
+1. **Index hygiene.** Read the feature map README and glob its sibling files. A Storybook target has no hand-written map: check instead that every component directory has a story (`pnpm check:structure` does this) and that story tests pass (`pnpm toolkit test`). Fix missing, extra, duplicate, or dead entries. Lightweight; no generated inventory.
 
 2. **Source wave.** One read-only reader per feature file: a concurrent subagent each if your harness has them, otherwise read the feature files one at a time in a fresh context. Each explains "how does this user-facing feature work?" from source, flags likely doc drift with citations, and returns one concise live-verification recipe. Readers never drive the app and never edit files. Return shape: feature summary / source entry points / likely drift or none / one recipe.
 

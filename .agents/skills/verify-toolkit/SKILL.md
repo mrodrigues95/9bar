@@ -16,8 +16,8 @@ The toolkit's map is Storybook's story index. It is generated from the stories, 
 ## 2. Story tests pass
 
 ```sh
-pnpm test --project storybook                       # every story, in Chromium, ~45s
-pnpm test --project storybook primitive/select      # only files whose path matches
+pnpm toolkit test                     # every story, in Chromium, ~45s
+pnpm toolkit test primitive/select    # only files whose path matches
 ```
 
 Each story renders in Chromium, runs its `play` function, then runs axe with `a11y.test: "error"`, so a render error, a failed assertion, or an accessibility violation fails the test. Agents with the Storybook MCP can call `run-story-tests` for the same results. Fix violations in the component. Do not turn a rule off for a story unless the violation is in the story's demo markup and not in the component.
