@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
+import type { ReactNode } from "react";
 import type { DialogCloseButtonProps } from "@9bar/toolkit/components";
 
 export interface ConfirmDialogRequest {

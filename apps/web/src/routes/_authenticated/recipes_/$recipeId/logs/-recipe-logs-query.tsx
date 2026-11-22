@@ -7,9 +7,8 @@ import {
 	getBrewSnapshot,
 	getRecipe,
 	getRecipeLogs,
-	type BrewSnapshot,
-	type Log,
 } from "../../../../../utils/data";
+import type { BrewSnapshot, Log } from "../../../../../utils/data";
 import {
 	DEFAULT_FILTER_OPERATOR_ID,
 	FILTER_OPERATOR_PAIRS,

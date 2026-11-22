@@ -1,11 +1,12 @@
-import type * as React from "react";
-import { Button, type ButtonProps } from "#components/button";
+import type { ReactNode } from "react";
+import { Button } from "#components/button";
+import type { ButtonProps } from "#components/button";
 import { useFormContext } from "./utils/form-context";
 
 /** Props for the {@link FormSubmitButton} component. */
 export interface FormSubmitButtonProps extends Omit<ButtonProps, "type"> {
 	/** The button label content. */
-	children: React.ReactNode;
+	children: ReactNode;
 	/** Text displayed while the form is submitting. */
 	loadingText?: string;
 }

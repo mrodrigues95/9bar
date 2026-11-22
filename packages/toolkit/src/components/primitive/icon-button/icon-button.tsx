@@ -1,5 +1,6 @@
-import type * as React from "react";
-import { Button, type ButtonProps } from "../button/button";
+import type { ReactNode } from "react";
+import { Button } from "../button/button";
+import type { ButtonProps } from "../button/button";
 
 const iconButtonSizeMap = {
 	xs: "icon-xs",
@@ -14,7 +15,7 @@ type IconButtonSize = keyof typeof iconButtonSizeMap;
 export interface IconButtonProps extends Omit<ButtonProps, "size" | "children"> {
 	size?: IconButtonSize;
 	/** The icon element to render inside the button. */
-	children: React.ReactNode;
+	children: ReactNode;
 	/** An accessible label describing the button's action. Required because the button has no visible text. */
 	"aria-label": string;
 }

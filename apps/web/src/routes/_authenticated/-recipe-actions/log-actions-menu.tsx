@@ -1,10 +1,14 @@
 import { BookmarkPlus, Paperclip, Pencil, Pin, Repeat, Trash2, Unlink } from "lucide-react";
 import { useState } from "react";
 import { ConfirmDialog } from "../../../components";
-import { buildLogGraph, getLog, type Log, type Recipe } from "../../../utils/data";
+import { buildLogGraph, getLog } from "../../../utils/data";
+import type { Log, Recipe } from "../../../utils/data";
 import { formatShotAt } from "../../../utils/format";
-import { useConfirmDialogAction, type OpenConfirmDialog } from "../../../utils/hooks";
-import { resolveActionDefinitions, type ActionDefinition } from "./action-definitions";
+import { useConfirmDialogAction } from "../../../utils/hooks";
+import type { OpenConfirmDialog } from "../../../utils/hooks";
+import { logStubSave } from "../../../utils/stub-save";
+import { resolveActionDefinitions } from "./action-definitions";
+import type { ActionDefinition } from "./action-definitions";
 import { ActionsMenu } from "./actions-menu";
 import { AttachToRecipeDialog } from "./attach-to-recipe-dialog";
 
@@ -83,7 +87,7 @@ const actions = {
 					description: `Your ${formatShotAt(log.shotAt)} shot becomes the reference for ${recipe.name}${replacing}. The recipe overview will show its values.`,
 					confirmButtonProps: { variant: "default", children: "Set as reference" },
 					onConfirm: () =>
-						console.log("Set as reference shot:", { logId: log.id, recipeId: recipe.id }),
+						logStubSave("Set as reference shot:", { logId: log.id, recipeId: recipe.id }),
 				});
 			},
 		}),
@@ -101,7 +105,7 @@ const actions = {
 					description: `Your ${formatShotAt(log.shotAt)} shot moves to quick logs and keeps its values, verdict, and notes.${reference}`,
 					confirmButtonProps: { variant: "default", children: "Detach" },
 					onConfirm: () =>
-						console.log("Detached from recipe:", { logId: log.id, recipeId: recipe.id }),
+						logStubSave("Detached from recipe:", { logId: log.id, recipeId: recipe.id }),
 				});
 			},
 		}),

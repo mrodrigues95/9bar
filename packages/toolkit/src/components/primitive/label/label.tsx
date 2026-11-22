@@ -1,6 +1,7 @@
 "use client";
 
-import { Label as AriaLabel, LabelContext, type LabelProps } from "react-aria-components";
+import { Label as AriaLabel, LabelContext } from "react-aria-components";
+import type { LabelProps } from "react-aria-components";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Label} component. */

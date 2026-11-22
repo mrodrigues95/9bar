@@ -31,20 +31,18 @@
 		"react-doctor": "react-doctor . --include-untracked",
 		"react-doctor:full": "react-doctor . --scope full"
 	},
-	"dependencies": {
-		"zod": "^4.4.3"
-	},
 	"devDependencies": {
+		"@cloudflare/oxlint-config": "0.1.0",
 		"@commitlint/cli": "^21.2.1",
 		"@commitlint/config-conventional": "^21.2.0",
-		"@interfere/landmines": "0.1.0",
-		"@types/node": "^24.13.3",
-		"@typescript/native": "npm:typescript@^7.0.2",
+		"@interfere/landmines": "0.1.1",
+		"@types/node": "catalog:",
+		"@typescript/native": "catalog:",
 		"oxfmt": "^0.66.0",
 		"oxlint": "^1.94.0",
 		"react-doctor": "0.9.14",
 		"tsrs": "0.25.0-ts7.1.0-beta",
-		"typescript": "npm:@typescript/typescript6@^6.0.2"
+		"typescript": "catalog:"
 	},
 	"engines": {
 		"node": ">=24.0.0",

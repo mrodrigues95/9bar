@@ -8,5 +8,12 @@
 		"allowImportingTsExtensions": true,
 		"lib": ["ESNext", "DOM"]
 	},
-	"include": ["checks/**/*.ts", "control/**/*.ts", "oxlint/**/*.ts"]
+	"include": [
+		"checks/**/*.ts",
+		"config/**/*.ts",
+		"control/**/*.ts",
+		"oxlint/**/*.ts",
+		"../oxlint.config.ts",
+		"../oxfmt.config.ts"
+	]
 }

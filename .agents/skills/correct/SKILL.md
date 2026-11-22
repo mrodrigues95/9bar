@@ -28,13 +28,13 @@ Read `docs/agent-quality-principles.md` before picking a fix. Its pyramid sets t
 
 1. **Eliminate it with architecture.** Apply the codebase principles. Replace hand-synced lists with one source of truth, and delete the old way and any dead code an agent would copy.
 2. **Enforce it with types so the bad state can't be written.** Example: `cn` rejects React Aria render-prop classNames, so the only way to pass one compiles through `composeTailwindRenderProps`.
-3. **Catch it with a lint or check whose error names the fix.** Use an oxlint rule (built-in, landmines, or a new `anti-slop` rule in `tools/oxlint/anti-slop/`), an `.oxlintrc.json` override, or a `tools/checks/` structure check. The message names the file, type, or function to use instead. Land the rule with every fix it needs.
+3. **Catch it with a lint or check whose error names the fix.** Use an oxlint rule (built-in, landmines, or a new `anti-slop` rule in `tools/oxlint/anti-slop/`), an `oxlint.config.ts` override, or a `tools/checks/` structure check. The message names the file, type, or function to use instead. Land the rule with every fix it needs.
 4. **Test the behavior.** A property test for pure logic (`pnpm web test`), a story with a `play` function for a component. Fix or delete any test that still passes when the behavior it checks breaks, or that fails when only the internals change.
 5. **Write docs or agent rules last, only for judgment calls.** Nothing fails when an agent skips them. Put them in the skill that owns the code, not a general list.
 
 ## Propose, then stop
 
-Present each class with its evidence (the operator's exact words or the commit), the level you picked, why a higher level didn't work, and the change. Stop and wait for approval. Changes to `.oxlintrc.json`, `tools/oxlint/`, `tools/checks/`, or `.github/` also need the owner's `approved:checks` label on the PR, which agents never apply.
+Present each class with its evidence (the operator's exact words or the commit), the level you picked, why a higher level didn't work, and the change. Stop and wait for approval. Changes to `oxlint.config.ts`, `oxfmt.config.ts`, `tools/config/`, `tools/oxlint/`, `tools/checks/`, or `.github/` also need the owner's `approved:checks` label on the PR, which agents never apply.
 
 ## Fix and prove
 

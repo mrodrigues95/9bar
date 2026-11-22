@@ -1,5 +1,6 @@
 import { CalendarDateTime } from "@internationalized/date";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ComponentProps } from "react";
 import z from "zod";
 import { Button } from "#components/button";
 import { Checkbox } from "#components/checkbox";
@@ -135,171 +136,173 @@ interface ComposedFormValues {
 	acceptTerms: boolean;
 }
 
+const ComposedFormExample = (props: ComponentProps<typeof Form>) => {
+	const defaultValues: ComposedFormValues = {
+		firstName: "",
+		lastName: "",
+		email: "",
+		age: "",
+		bio: "",
+		country: "",
+		preferredDate: null,
+		newsletter: [],
+		acceptTerms: false,
+	};
+	const form = useAppForm({
+		defaultValues,
+		validators: {
+			onChange: ({ value }) => {
+				const errors: FormErrors<ComposedFormValues> = { fields: {} };
+
+				if (!value.firstName) {
+					errors.fields.firstName = "First name is required";
+				}
+
+				if (!value.lastName) {
+					errors.fields.lastName = "Last name is required";
+				}
+
+				const age = Number(value.age);
+				if (!age) {
+					errors.fields.age = "Age is required";
+				} else if (age < 18) {
+					errors.fields.age = "Must be at least 18 years old";
+				} else if (age > 120) {
+					errors.fields.age = "Must be under 120 years old";
+				}
+
+				const email = value.email;
+				if (!email) {
+					errors.fields.email = "Email is required";
+				} else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+					errors.fields.email = "Please enter a valid email";
+				}
+
+				if (!value.bio) {
+					errors.fields.bio = "Bio is required";
+				} else if (value.bio.length < 10) {
+					errors.fields.bio = "Bio must be at least 10 characters";
+				}
+
+				if (!value.country) {
+					errors.fields.country = "Country is required";
+				}
+
+				if (!value.preferredDate) {
+					errors.fields.preferredDate = "Preferred date is required";
+				}
+
+				if (value.newsletter.length === 0) {
+					errors.fields.newsletter = "You must subscribe to receive updates";
+				}
+
+				return errors;
+			},
+		},
+		onSubmit: async ({ value }) => {
+			alert(`Form submitted with: ${JSON.stringify(value, null, 2)}`);
+		},
+	});
+
+	return (
+		<Form
+			{...props}
+			onSubmit={(e) => {
+				e.preventDefault();
+				void form.handleSubmit();
+			}}
+			validationBehavior="aria"
+		>
+			<form.AppForm>
+				<form.AppField name="firstName">
+					{(field) => (
+						<field.Input label="First Name" description="Enter your first name" isRequired />
+					)}
+				</form.AppField>
+				<form.AppField name="lastName">
+					{(field) => (
+						<field.Input label="Last Name" description="Enter your last name" isRequired />
+					)}
+				</form.AppField>
+				<form.AppField name="age">
+					{(field) => (
+						<field.Input
+							label="Age"
+							description="Must be 18 or older"
+							isRequired
+							inputProps={{ type: "number", min: 18, max: 120 }}
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="bio">
+					{(field) => (
+						<field.Textarea
+							label="Bio"
+							description="Tell us about yourself (min 10 characters)"
+							isRequired
+							textareaProps={{ minLength: 10 }}
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="country">
+					{(field) => (
+						<field.Select
+							label="Country"
+							description="Select your country"
+							isRequired
+							placeholder="Choose a country..."
+							items={[
+								{ id: "us", name: "United States" },
+								{ id: "ca", name: "Canada" },
+								{ id: "uk", name: "United Kingdom" },
+								{ id: "au", name: "Australia" },
+								{ id: "de", name: "Germany" },
+							]}
+						>
+							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+						</field.Select>
+					)}
+				</form.AppField>
+				<form.AppField name="preferredDate">
+					{(field) => (
+						<field.DatePicker
+							label="Preferred Date"
+							description="Pick a date and time for a callback"
+							granularity="minute"
+							isRequired
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="email">
+					{(field) => (
+						<field.Input
+							label="Email"
+							description="Enter a valid email address"
+							isRequired
+							inputProps={{ type: "email" }}
+						/>
+					)}
+				</form.AppField>
+				<form.AppField name="newsletter">
+					{(field) => (
+						<field.CheckboxGroup
+							label="Newsletter"
+							description="Receive updates about new features"
+							isRequired
+						>
+							<Checkbox value="subscribe">Subscribe to newsletter</Checkbox>
+						</field.CheckboxGroup>
+					)}
+				</form.AppField>
+				<form.SubmitButton variant="default">Submit</form.SubmitButton>
+			</form.AppForm>
+		</Form>
+	);
+};
+
 /** A form using TanStack Form's `useAppForm` hook with inline `onChange` validators for client-side validation. */
 export const ComposedForm: Story = {
-	render: (props) => {
-		const defaultValues: ComposedFormValues = {
-			firstName: "",
-			lastName: "",
-			email: "",
-			age: "",
-			bio: "",
-			country: "",
-			preferredDate: null,
-			newsletter: [],
-			acceptTerms: false,
-		};
-		const form = useAppForm({
-			defaultValues,
-			validators: {
-				onChange: ({ value }) => {
-					const errors: FormErrors<ComposedFormValues> = { fields: {} };
-
-					if (!value.firstName) {
-						errors.fields.firstName = "First name is required";
-					}
-
-					if (!value.lastName) {
-						errors.fields.lastName = "Last name is required";
-					}
-
-					const age = Number(value.age);
-					if (!age) {
-						errors.fields.age = "Age is required";
-					} else if (age < 18) {
-						errors.fields.age = "Must be at least 18 years old";
-					} else if (age > 120) {
-						errors.fields.age = "Must be under 120 years old";
-					}
-
-					const email = value.email;
-					if (!email) {
-						errors.fields.email = "Email is required";
-					} else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-						errors.fields.email = "Please enter a valid email";
-					}
-
-					if (!value.bio) {
-						errors.fields.bio = "Bio is required";
-					} else if (value.bio.length < 10) {
-						errors.fields.bio = "Bio must be at least 10 characters";
-					}
-
-					if (!value.country) {
-						errors.fields.country = "Country is required";
-					}
-
-					if (!value.preferredDate) {
-						errors.fields.preferredDate = "Preferred date is required";
-					}
-
-					if (value.newsletter.length === 0) {
-						errors.fields.newsletter = "You must subscribe to receive updates";
-					}
-
-					return errors;
-				},
-			},
-			onSubmit: async ({ value }) => {
-				alert(`Form submitted with: ${JSON.stringify(value, null, 2)}`);
-			},
-		});
-
-		return (
-			<Form
-				{...props}
-				onSubmit={(e) => {
-					e.preventDefault();
-					void form.handleSubmit();
-				}}
-				validationBehavior="aria"
-			>
-				<form.AppForm>
-					<form.AppField name="firstName">
-						{(field) => (
-							<field.Input label="First Name" description="Enter your first name" isRequired />
-						)}
-					</form.AppField>
-					<form.AppField name="lastName">
-						{(field) => (
-							<field.Input label="Last Name" description="Enter your last name" isRequired />
-						)}
-					</form.AppField>
-					<form.AppField name="age">
-						{(field) => (
-							<field.Input
-								label="Age"
-								description="Must be 18 or older"
-								isRequired
-								inputProps={{ type: "number", min: 18, max: 120 }}
-							/>
-						)}
-					</form.AppField>
-					<form.AppField name="bio">
-						{(field) => (
-							<field.Textarea
-								label="Bio"
-								description="Tell us about yourself (min 10 characters)"
-								isRequired
-								textareaProps={{ minLength: 10 }}
-							/>
-						)}
-					</form.AppField>
-					<form.AppField name="country">
-						{(field) => (
-							<field.Select
-								label="Country"
-								description="Select your country"
-								isRequired
-								placeholder="Choose a country..."
-								items={[
-									{ id: "us", name: "United States" },
-									{ id: "ca", name: "Canada" },
-									{ id: "uk", name: "United Kingdom" },
-									{ id: "au", name: "Australia" },
-									{ id: "de", name: "Germany" },
-								]}
-							>
-								{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
-							</field.Select>
-						)}
-					</form.AppField>
-					<form.AppField name="preferredDate">
-						{(field) => (
-							<field.DatePicker
-								label="Preferred Date"
-								description="Pick a date and time for a callback"
-								granularity="minute"
-								isRequired
-							/>
-						)}
-					</form.AppField>
-					<form.AppField name="email">
-						{(field) => (
-							<field.Input
-								label="Email"
-								description="Enter a valid email address"
-								isRequired
-								inputProps={{ type: "email" }}
-							/>
-						)}
-					</form.AppField>
-					<form.AppField name="newsletter">
-						{(field) => (
-							<field.CheckboxGroup
-								label="Newsletter"
-								description="Receive updates about new features"
-								isRequired
-							>
-								<Checkbox value="subscribe">Subscribe to newsletter</Checkbox>
-							</field.CheckboxGroup>
-						)}
-					</form.AppField>
-					<form.SubmitButton variant="default">Submit</form.SubmitButton>
-				</form.AppForm>
-			</Form>
-		);
-	},
+	render: (props) => <ComposedFormExample {...props} />,
 };
 
 const schema = z.object({
@@ -317,10 +320,10 @@ const schema = z.object({
 		.refine(({ inputValue }) => !!inputValue && Number(inputValue) > 0, {
 			message: "[Zod] Brew time must be greater than 0",
 		}),
-	preferredDate: z.custom<CalendarDateTime | null>(
-		(value) => value instanceof CalendarDateTime,
-		"[Zod] Preferred date is required",
-	),
+	preferredDate: z
+		.instanceof(CalendarDateTime)
+		.nullable()
+		.refine(Boolean, "[Zod] Preferred date is required"),
 	bio: z
 		.string()
 		.min(20, "[Zod] Bio must be at least 20 characters")
@@ -332,144 +335,146 @@ const schema = z.object({
 		.max(3, "[Zod] You can only select up to 3 preferences"),
 });
 
+const WithZodValidationExample = (props: ComponentProps<typeof Form>) => {
+	const defaultValues: z.infer<typeof schema> = {
+		username: "",
+		email: "",
+		password: "",
+		notificationFrequency: { inputValue: "", selectValue: "day" },
+		preferredDate: null,
+		bio: "",
+		role: "",
+		preferences: [],
+	};
+	const form = useAppForm({
+		defaultValues,
+		validators: {
+			onChange: schema,
+		},
+		onSubmit: async ({ value }) => {
+			alert(`Form submitted with: ${JSON.stringify(value, null, 2)}`);
+		},
+	});
+
+	return (
+		<Form
+			{...props}
+			onSubmit={(e) => {
+				e.preventDefault();
+				void form.handleSubmit();
+			}}
+			validationBehavior="aria"
+		>
+			<form.AppField name="username">
+				{(field) => (
+					<field.Input
+						label="Username"
+						description="Choose a unique username"
+						inputProps={{ autoComplete: "username" }}
+						isRequired
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="email">
+				{(field) => (
+					<field.Input
+						label="Email"
+						description="Enter a valid email address"
+						isRequired
+						inputProps={{ type: "email", autoComplete: "email" }}
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="password">
+				{(field) => (
+					<field.Input
+						label="Password"
+						description="Minimum 8 characters"
+						isRequired
+						inputProps={{ type: "password", autoComplete: "new-password" }}
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="notificationFrequency">
+				{(field) => (
+					<field.InputGroupSelect
+						label="Email Frequency"
+						description="How often you want to receive email notifications"
+						items={[
+							{ id: "day", label: "Days (d)" },
+							{ id: "week", label: "Weeks (w)" },
+							{ id: "month", label: "Months (m)" },
+						]}
+						inputProps={{
+							type: "number",
+							step: "1",
+							min: "1",
+							"aria-label": "Email frequency value",
+						}}
+						selectProps={{ "aria-label": "Email frequency unit" }}
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="preferredDate">
+				{(field) => (
+					<field.DatePicker
+						label="Preferred Date"
+						description="Pick a date and time for a callback"
+						granularity="minute"
+						isRequired
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="bio">
+				{(field) => (
+					<field.Textarea
+						label="Bio"
+						description="Tell us about yourself (20-500 characters)"
+						isRequired
+					/>
+				)}
+			</form.AppField>
+			<form.AppField name="role">
+				{(field) => (
+					<field.Select
+						label="Role"
+						description="Select your account type"
+						isRequired
+						placeholder="Choose a role..."
+						items={[
+							{ id: "user", name: "User" },
+							{ id: "admin", name: "Administrator" },
+							{ id: "moderator", name: "Moderator" },
+						]}
+					>
+						{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+					</field.Select>
+				)}
+			</form.AppField>
+			<form.AppField name="preferences">
+				{(field) => (
+					<field.CheckboxGroup
+						label="Preferences"
+						description="Select between 2 and 3 options"
+						isRequired
+					>
+						<Checkbox value="notifications">Email Notifications</Checkbox>
+						<Checkbox value="newsletter">Weekly Newsletter</Checkbox>
+						<Checkbox value="updates">Product Updates</Checkbox>
+						<Checkbox value="promotions">Special Promotions</Checkbox>
+					</field.CheckboxGroup>
+				)}
+			</form.AppField>
+			<form.AppForm>
+				<form.SubmitButton variant="default">Register</form.SubmitButton>
+			</form.AppForm>
+		</Form>
+	);
+};
+
 /** A form using a Zod schema as the `onChange` validator, demonstrating structured schema-driven validation. */
 export const WithZodValidation: Story = {
-	render: (props) => {
-		const defaultValues: z.infer<typeof schema> = {
-			username: "",
-			email: "",
-			password: "",
-			notificationFrequency: { inputValue: "", selectValue: "day" },
-			preferredDate: null,
-			bio: "",
-			role: "",
-			preferences: [],
-		};
-		const form = useAppForm({
-			defaultValues,
-			validators: {
-				onChange: schema,
-			},
-			onSubmit: async ({ value }) => {
-				alert(`Form submitted with: ${JSON.stringify(value, null, 2)}`);
-			},
-		});
-
-		return (
-			<Form
-				{...props}
-				onSubmit={(e) => {
-					e.preventDefault();
-					void form.handleSubmit();
-				}}
-				validationBehavior="aria"
-			>
-				<form.AppField name="username">
-					{(field) => (
-						<field.Input
-							label="Username"
-							description="Choose a unique username"
-							inputProps={{ autoComplete: "username" }}
-							isRequired
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="email">
-					{(field) => (
-						<field.Input
-							label="Email"
-							description="Enter a valid email address"
-							isRequired
-							inputProps={{ type: "email", autoComplete: "email" }}
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="password">
-					{(field) => (
-						<field.Input
-							label="Password"
-							description="Minimum 8 characters"
-							isRequired
-							inputProps={{ type: "password", autoComplete: "new-password" }}
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="notificationFrequency">
-					{(field) => (
-						<field.InputGroupSelect
-							label="Email Frequency"
-							description="How often you want to receive email notifications"
-							items={[
-								{ id: "day", label: "Days (d)" },
-								{ id: "week", label: "Weeks (w)" },
-								{ id: "month", label: "Months (m)" },
-							]}
-							inputProps={{
-								type: "number",
-								step: "1",
-								min: "1",
-								"aria-label": "Email frequency value",
-							}}
-							selectProps={{ "aria-label": "Email frequency unit" }}
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="preferredDate">
-					{(field) => (
-						<field.DatePicker
-							label="Preferred Date"
-							description="Pick a date and time for a callback"
-							granularity="minute"
-							isRequired
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="bio">
-					{(field) => (
-						<field.Textarea
-							label="Bio"
-							description="Tell us about yourself (20-500 characters)"
-							isRequired
-						/>
-					)}
-				</form.AppField>
-				<form.AppField name="role">
-					{(field) => (
-						<field.Select
-							label="Role"
-							description="Select your account type"
-							isRequired
-							placeholder="Choose a role..."
-							items={[
-								{ id: "user", name: "User" },
-								{ id: "admin", name: "Administrator" },
-								{ id: "moderator", name: "Moderator" },
-							]}
-						>
-							{(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
-						</field.Select>
-					)}
-				</form.AppField>
-				<form.AppField name="preferences">
-					{(field) => (
-						<field.CheckboxGroup
-							label="Preferences"
-							description="Select between 2 and 3 options"
-							isRequired
-						>
-							<Checkbox value="notifications">Email Notifications</Checkbox>
-							<Checkbox value="newsletter">Weekly Newsletter</Checkbox>
-							<Checkbox value="updates">Product Updates</Checkbox>
-							<Checkbox value="promotions">Special Promotions</Checkbox>
-						</field.CheckboxGroup>
-					)}
-				</form.AppField>
-				<form.AppForm>
-					<form.SubmitButton variant="default">Register</form.SubmitButton>
-				</form.AppForm>
-			</Form>
-		);
-	},
+	render: (props) => <WithZodValidationExample {...props} />,
 };
 
 interface ContactFormValues {
@@ -617,27 +622,29 @@ const ContactFormComponent = withForm({
 	},
 });
 
+const ReusableContactFormExample = (props: ComponentProps<typeof Form>) => {
+	const form = useAppForm({
+		defaultValues: contactFormDefaultValues,
+		onSubmit: async ({ value }) => {
+			alert(`Contact form submitted: ${JSON.stringify(value, null, 2)}`);
+		},
+	});
+
+	return (
+		<Form
+			{...props}
+			onSubmit={(e) => {
+				e.preventDefault();
+				void form.handleSubmit();
+			}}
+			validationBehavior="aria"
+		>
+			<ContactFormComponent form={form} title="Get in Touch" />
+		</Form>
+	);
+};
+
 /** A form built with the `withForm` higher-order component pattern for creating reusable, composable form sections. */
 export const ReusableContactForm: Story = {
-	render: (props) => {
-		const form = useAppForm({
-			defaultValues: contactFormDefaultValues,
-			onSubmit: async ({ value }) => {
-				alert(`Contact form submitted: ${JSON.stringify(value, null, 2)}`);
-			},
-		});
-
-		return (
-			<Form
-				{...props}
-				onSubmit={(e) => {
-					e.preventDefault();
-					void form.handleSubmit();
-				}}
-				validationBehavior="aria"
-			>
-				<ContactFormComponent form={form} title="Get in Touch" />
-			</Form>
-		);
-	},
+	render: (props) => <ReusableContactFormExample {...props} />,
 };

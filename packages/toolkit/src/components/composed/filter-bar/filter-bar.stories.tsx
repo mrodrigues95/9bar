@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CircleDot, Flag } from "lucide-react";
+import type { ComponentProps } from "react";
 import { useState } from "react";
 import { Button } from "#components/button";
 import { FilterBar } from "./filter-bar";
@@ -72,29 +73,31 @@ export const WithDefaultFilter: Story = {
 	},
 };
 
+const ControlledExample = (props: ComponentProps<typeof FilterBar>) => {
+	const [filters, setFilters] = useState<Array<FilterBarFilterState>>([]);
+	return (
+		<div className="flex flex-col gap-2">
+			<FilterBar {...props} filters={filters} onFiltersChange={setFilters}>
+				{(state) =>
+					state.filters.length > 0 && (
+						<FilterBarActions>
+							<Button variant="ghost" size="xs" onPress={state.clearAll}>
+								Clear all
+							</Button>
+						</FilterBarActions>
+					)
+				}
+			</FilterBar>
+			<pre className="text-xs text-muted-foreground">{JSON.stringify(filters, null, 2)}</pre>
+		</div>
+	);
+};
+
 /** A controlled filter bar with a clear-all action, syncing state to the parent. */
 export const Controlled: Story = {
 	args: {
 		definitions: DEFINITIONS,
 		"aria-label": "Example filters",
 	},
-	render: (props) => {
-		const [filters, setFilters] = useState<Array<FilterBarFilterState>>([]);
-		return (
-			<div className="flex flex-col gap-2">
-				<FilterBar {...props} filters={filters} onFiltersChange={setFilters}>
-					{(state) =>
-						state.filters.length > 0 && (
-							<FilterBarActions>
-								<Button variant="ghost" size="xs" onPress={state.clearAll}>
-									Clear all
-								</Button>
-							</FilterBarActions>
-						)
-					}
-				</FilterBar>
-				<pre className="text-xs text-muted-foreground">{JSON.stringify(filters, null, 2)}</pre>
-			</div>
-		);
-	},
+	render: (props) => <ControlledExample {...props} />,
 };

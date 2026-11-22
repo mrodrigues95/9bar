@@ -1,11 +1,6 @@
-import type * as React from "react";
-import {
-	Popover as AriaPopover,
-	type PopoverProps as AriaPopoverProps,
-	DialogTrigger,
-	type DialogTriggerProps,
-	Heading,
-} from "react-aria-components";
+import type { ComponentProps } from "react";
+import { Popover as AriaPopover, DialogTrigger, Heading } from "react-aria-components";
+import type { PopoverProps as AriaPopoverProps, DialogTriggerProps } from "react-aria-components";
 import { cn, composeTailwindRenderProps } from "#lib/utils";
 import { popoverVariants } from "./styles";
 
@@ -44,7 +39,7 @@ export const Popover = ({
 );
 
 /** Props for the {@link PopoverHeader} component. */
-export type PopoverHeaderProps = React.ComponentProps<"div">;
+export type PopoverHeaderProps = ComponentProps<"div">;
 
 /** The header section of a {@link Popover}, containing its {@link PopoverTitle} and {@link PopoverDescription}. */
 export const PopoverHeader = ({ className, ...props }: PopoverHeaderProps) => (
@@ -56,7 +51,7 @@ export const PopoverHeader = ({ className, ...props }: PopoverHeaderProps) => (
 );
 
 /** Props for the {@link PopoverTitle} component. */
-export type PopoverTitleProps = React.ComponentProps<typeof Heading>;
+export type PopoverTitleProps = ComponentProps<typeof Heading>;
 
 /** A short heading for a {@link Popover}. */
 export const PopoverTitle = ({ className, ...props }: PopoverTitleProps) => (
@@ -64,7 +59,7 @@ export const PopoverTitle = ({ className, ...props }: PopoverTitleProps) => (
 );
 
 /** Props for the {@link PopoverDescription} component. */
-export type PopoverDescriptionProps = React.ComponentProps<"div">;
+export type PopoverDescriptionProps = ComponentProps<"div">;
 
 /** Supporting text that explains a {@link Popover}'s purpose or content. */
 export const PopoverDescription = ({ className, ...props }: PopoverDescriptionProps) => (

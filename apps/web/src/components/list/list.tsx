@@ -1,4 +1,4 @@
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { Text } from "@9bar/toolkit/components";
 import { cn } from "@9bar/toolkit/utils";

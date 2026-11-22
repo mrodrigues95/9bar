@@ -1,11 +1,8 @@
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Badge, Text } from "@9bar/toolkit/components";
-import {
-	readStoredPins,
-	writeStoredPins,
-	type FeedbackPin,
-	type PinnedTarget,
-} from "../../utils/pins";
+import { readStoredPins, writeStoredPins } from "../../utils/pins";
+import type { FeedbackPin, PinnedTarget } from "../../utils/pins";
 import { PinComposer } from "./pin-composer";
 import { PinList } from "./pin-list";
 
@@ -18,17 +15,27 @@ type AnnotateScopeProps = {
 const HOVER_OUTLINE = "2px solid var(--color-ring, #6366f1)";
 const SELECTED_OUTLINE = "2px dashed var(--color-ring, #6366f1)";
 
+const toElement = (node: EventTarget | null) =>
+	// oxlint-disable-next-line @nkzw/no-instanceof -- DOM event targets are typed EventTarget, and instanceof is the narrowing the DOM provides.
+	node instanceof Element ? node : null;
+
+const toStyledElement = (el: Element) =>
+	// oxlint-disable-next-line @nkzw/no-instanceof -- only HTML and SVG elements carry an inline style declaration.
+	el instanceof HTMLElement || el instanceof SVGElement ? el : null;
+
 const paint = (el: Element, outline: string) => {
-	if (el instanceof HTMLElement || el instanceof SVGElement) {
-		el.style.outline = outline;
-		el.style.outlineOffset = "2px";
+	const styled = toStyledElement(el);
+	if (styled) {
+		styled.style.outline = outline;
+		styled.style.outlineOffset = "2px";
 	}
 };
 
 const unpaint = (el: Element) => {
-	if (el instanceof HTMLElement || el instanceof SVGElement) {
-		el.style.outline = "";
-		el.style.outlineOffset = "";
+	const styled = toStyledElement(el);
+	if (styled) {
+		styled.style.outline = "";
+		styled.style.outlineOffset = "";
 	}
 };
 
@@ -66,7 +73,7 @@ const buildSelector = (el: Element, root: Element) => {
 };
 
 const getTargetInfo = (el: Element, root: Element) => {
-	const rawText = el.textContent.replace(/\s+/g, " ").trim();
+	const rawText = el.textContent.replaceAll(/\s+/g, " ").trim();
 	const dataSlot = el.closest("[data-slot]")?.getAttribute("data-slot") ?? null;
 	return {
 		selector: buildSelector(el, root),
@@ -77,7 +84,7 @@ const getTargetInfo = (el: Element, root: Element) => {
 };
 
 const inAnnotateUi = (node: EventTarget | null) =>
-	node instanceof Element && node.closest("[data-annotate-ui]") !== null;
+	(toElement(node)?.closest("[data-annotate-ui]") ?? null) !== null;
 
 const findElement = (root: Element, selector: string) => {
 	try {
@@ -120,8 +127,8 @@ const useAnnotatePicker = () => {
 	};
 
 	const highlight = (event: React.MouseEvent | React.FocusEvent) => {
-		const candidate = event.target;
-		if (!(candidate instanceof Element) || inAnnotateUi(candidate)) {
+		const candidate = toElement(event.target);
+		if (!candidate || inAnnotateUi(candidate)) {
 			return;
 		}
 		if (candidate === hoveredRef.current || candidate === selectedRef.current) {
@@ -135,8 +142,8 @@ const useAnnotatePicker = () => {
 	};
 
 	const unhighlight = (event: React.MouseEvent | React.FocusEvent) => {
-		const candidate = event.target;
-		if (!(candidate instanceof Element)) {
+		const candidate = toElement(event.target);
+		if (!candidate) {
 			return;
 		}
 		if (candidate === hoveredRef.current && candidate !== selectedRef.current) {
@@ -151,8 +158,8 @@ const useAnnotatePicker = () => {
 		}
 		event.preventDefault();
 		event.stopPropagation();
-		const el = event.target;
-		if (!(el instanceof Element) || !rootRef.current) {
+		const el = toElement(event.target);
+		if (!el || !rootRef.current) {
 			return;
 		}
 		if (selectedRef.current) {

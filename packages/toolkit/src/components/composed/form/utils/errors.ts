@@ -1,4 +1,5 @@
-import { type FieldErrorItem, toErrorMessage } from "#components/field";
+import { toErrorMessage } from "#components/field";
+import type { FieldErrorItem } from "#components/field";
 
 /** Converts raw form-library errors into field error items, a single message, or nothing. */
 export type ErrorFormatter<TError = unknown> = (

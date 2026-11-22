@@ -3,29 +3,16 @@ import { useId } from "react";
 import type { Key } from "react-aria-components";
 import {
 	Field,
-	type FieldComponentProps,
 	FieldDescription,
 	FieldError,
 	FieldLabel,
-	type FieldLabelProps,
 	getFieldDescribedBy,
 } from "#components/field";
-import {
-	Select,
-	SelectContent,
-	SelectList,
-	type SelectProps,
-	SelectTrigger,
-	type SelectTriggerProps,
-	SelectValue,
-	type SelectValueProps,
-} from "#components/select";
-import {
-	getFieldErrorState,
-	resolveFieldErrors,
-	resolveFormFieldErrors,
-	type ErrorFormatter,
-} from "../../utils/errors";
+import type { FieldComponentProps, FieldLabelProps } from "#components/field";
+import { Select, SelectContent, SelectList, SelectTrigger, SelectValue } from "#components/select";
+import type { SelectProps, SelectTriggerProps, SelectValueProps } from "#components/select";
+import { getFieldErrorState, resolveFieldErrors, resolveFormFieldErrors } from "../../utils/errors";
+import type { ErrorFormatter } from "../../utils/errors";
 import { useFieldContext } from "../../utils/form-context";
 
 /** Props for the {@link SelectField} component. */

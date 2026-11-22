@@ -8,9 +8,11 @@ import {
 } from "@9bar/toolkit/components";
 import { useAppForm } from "@9bar/toolkit/components/composed";
 import { formatTimeOfDay } from "../../../../utils/format";
+import { logStubSave } from "../../../../utils/stub-save";
 import { LogForm } from "./log-form";
 import { nowAsCalendarDateTime } from "./schemas/field-schema";
-import { logFormOpts, type LogFormValues } from "./schemas/log-schema";
+import { logFormOpts } from "./schemas/log-schema";
+import type { LogFormValues } from "./schemas/log-schema";
 import { grindSizeFieldName } from "./sections/brew-parameters-fields";
 
 interface LogFormDialogProps {
@@ -27,7 +29,7 @@ export const LogFormDialog = ({ defaultValues, mode, onDone }: LogFormDialogProp
 		...logFormOpts,
 		defaultValues,
 		onSubmit: async ({ value, meta }) => {
-			console.log(mode === "create" ? "Log created:" : "Log updated:", value);
+			logStubSave(mode === "create" ? "Log created:" : "Log updated:", value);
 			if (meta.intent === "log-another") {
 				setLoggedAt(formatTimeOfDay(value.shotAt));
 				form.reset({ ...value, shotAt: nowAsCalendarDateTime() });

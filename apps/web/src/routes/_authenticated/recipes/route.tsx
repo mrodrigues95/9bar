@@ -13,8 +13,8 @@ import {
 	FILTER_PARAM_SCHEMA,
 	listRecipes,
 	PAGE_SIZE,
-	type FilterSearchParams,
 } from "./-recipes-query";
+import type { FilterSearchParams } from "./-recipes-query";
 
 interface RecipesSearch extends FilterSearchParams {
 	q: string;

@@ -1,9 +1,10 @@
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import { Label } from "#components/label";
 import { Separator } from "#components/separator";
 import { cn } from "#lib/utils";
 import { fieldVariants } from "./styles";
-import { toErrorMessage, type FieldErrorItem } from "./utils";
+import { toErrorMessage } from "./utils";
+import type { FieldErrorItem } from "./utils";
 
 /** Props for the {@link FieldSet} component. */
 export type FieldSetProps = React.ComponentProps<"fieldset">;

@@ -23,8 +23,8 @@ import {
 	DatePickerPopover,
 	DatePickerSegment,
 	DatePickerTrigger,
-	type DatePickerProps,
 } from "./date-picker";
+import type { DatePickerProps } from "./date-picker";
 
 const meta = {
 	component: DatePicker,

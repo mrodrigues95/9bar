@@ -25,7 +25,7 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'approved:checks') }}
         run: |
-          pattern='(^|/)\.oxlintrc\.json$|^tools/oxlint/|^tools/checks/|^\.github/'
+          pattern='^oxlint\.config\.ts$|^oxfmt\.config\.ts$|^tools/config/|^tools/oxlint/|^tools/checks/|^\.github/'
           changed=$(gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename' | grep -E "$pattern" || true)
           if [ -z "$changed" ]; then
             echo "No protected paths changed."

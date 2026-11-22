@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowRightLeft, EllipsisVertical, Eye, Pencil, Trash2 } from "lucide-react";
+import type { ComponentProps } from "react";
 import { useState } from "react";
 import type { Key } from "react-aria-components";
 import { Button } from "../button/button";
@@ -145,64 +146,68 @@ export const WithSubmenu: Story = {
 	),
 };
 
+const SingleSelectionExample = (props: ComponentProps<typeof Menu>) => {
+	const [selected, setSelected] = useState<Set<Key>>(new Set(["espresso"]));
+
+	return (
+		<MenuTrigger>
+			<Button variant="outline" size="sm">
+				Brew method
+			</Button>
+			<Menu
+				{...props}
+				selectionMode="single"
+				selectedKeys={selected}
+				onSelectionChange={(keys) => {
+					if (keys !== "all") {
+						setSelected(keys);
+					}
+				}}
+			>
+				<MenuLabel>Brew method</MenuLabel>
+				<MenuItem id="espresso">Espresso</MenuItem>
+				<MenuItem id="pour-over">Pour Over</MenuItem>
+				<MenuItem id="french-press">French Press</MenuItem>
+			</Menu>
+		</MenuTrigger>
+	);
+};
+
 /** A single-select menu where the current selection is indicated with a checkmark. */
 export const SingleSelection: Story = {
-	render: (props) => {
-		const [selected, setSelected] = useState<Set<Key>>(new Set(["espresso"]));
+	render: (props) => <SingleSelectionExample {...props} />,
+};
 
-		return (
-			<MenuTrigger>
-				<Button variant="outline" size="sm">
-					Brew method
-				</Button>
-				<Menu
-					{...props}
-					selectionMode="single"
-					selectedKeys={selected}
-					onSelectionChange={(keys) => {
-						if (keys !== "all") {
-							setSelected(keys);
-						}
-					}}
-				>
-					<MenuLabel>Brew method</MenuLabel>
-					<MenuItem id="espresso">Espresso</MenuItem>
-					<MenuItem id="pour-over">Pour Over</MenuItem>
-					<MenuItem id="french-press">French Press</MenuItem>
-				</Menu>
-			</MenuTrigger>
-		);
-	},
+const MultipleSelectionExample = (props: ComponentProps<typeof Menu>) => {
+	const [selected, setSelected] = useState<Set<Key>>(new Set(["espresso", "pour-over"]));
+
+	return (
+		<MenuTrigger>
+			<Button variant="outline" size="sm">
+				Brew methods
+			</Button>
+			<Menu
+				{...props}
+				selectionMode="multiple"
+				selectedKeys={selected}
+				onSelectionChange={(keys) => {
+					if (keys !== "all") {
+						setSelected(keys);
+					}
+				}}
+			>
+				<MenuLabel>Brew methods</MenuLabel>
+				<MenuItem id="espresso">Espresso</MenuItem>
+				<MenuItem id="pour-over">Pour Over</MenuItem>
+				<MenuItem id="french-press">French Press</MenuItem>
+			</Menu>
+		</MenuTrigger>
+	);
 };
 
 /** A multi-select menu with independent toggleable items. */
 export const MultipleSelection: Story = {
-	render: (props) => {
-		const [selected, setSelected] = useState<Set<Key>>(new Set(["espresso", "pour-over"]));
-
-		return (
-			<MenuTrigger>
-				<Button variant="outline" size="sm">
-					Brew methods
-				</Button>
-				<Menu
-					{...props}
-					selectionMode="multiple"
-					selectedKeys={selected}
-					onSelectionChange={(keys) => {
-						if (keys !== "all") {
-							setSelected(keys);
-						}
-					}}
-				>
-					<MenuLabel>Brew methods</MenuLabel>
-					<MenuItem id="espresso">Espresso</MenuItem>
-					<MenuItem id="pour-over">Pour Over</MenuItem>
-					<MenuItem id="french-press">French Press</MenuItem>
-				</Menu>
-			</MenuTrigger>
-		);
-	},
+	render: (props) => <MultipleSelectionExample {...props} />,
 };
 
 /** A menu rendered from a dynamic `items` collection with a render function child. */

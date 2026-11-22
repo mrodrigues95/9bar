@@ -56,7 +56,7 @@ export const Horizontal: Story = {
 			<Checkbox aria-describedby="field-story-pin-help">Pin as reference</Checkbox>
 			<FieldContent>
 				<FieldDescription id="field-story-pin-help">
-					The recipe overview shows this shot's values.
+					The recipe overview shows this shot’s values.
 				</FieldDescription>
 			</FieldContent>
 		</Field>

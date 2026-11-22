@@ -28,10 +28,7 @@ export type BrewFormFields = BasicInformationValues &
 	AdditionalDetailsValues;
 
 export const coercedNumber = (checks: (n: z.ZodNumber) => z.ZodNumber = (n) => n) =>
-	z.pipe(
-		z.transform<number, number>((val) => Number(val)),
-		checks(z.number()),
-	);
+	z.pipe(z.transform<number, number>(Number), checks(z.number()));
 
 export const inputGroupSelectValue = <const T extends readonly [string, ...Array<string>]>(
 	selectValue: T,

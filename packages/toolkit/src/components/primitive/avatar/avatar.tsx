@@ -1,9 +1,9 @@
-import type * as React from "react";
+import type { ComponentProps } from "react";
 import { useState } from "react";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Avatar} component. */
-export type AvatarProps = React.ComponentProps<"div"> & {
+export type AvatarProps = ComponentProps<"div"> & {
 	size?: "default" | "sm" | "lg";
 };
 
@@ -29,7 +29,7 @@ export const Avatar = ({ className, size = "default", ...props }: AvatarProps) =
 type ImageState = "loading" | "loaded" | "error";
 
 /** Props for the {@link AvatarImage} component. */
-export type AvatarImageProps = React.ComponentProps<"img">;
+export type AvatarImageProps = ComponentProps<"img">;
 
 /** The image displayed inside an {@link Avatar}. Tracks its own load state to show or hide the fallback. */
 export const AvatarImage = ({ className, ...props }: AvatarImageProps) => {
@@ -53,7 +53,7 @@ export const AvatarImage = ({ className, ...props }: AvatarImageProps) => {
 };
 
 /** Props for the {@link AvatarFallback} component. */
-export type AvatarFallbackProps = React.ComponentProps<"div">;
+export type AvatarFallbackProps = ComponentProps<"div">;
 
 /** A placeholder rendered inside an {@link Avatar} while the image loads or when it fails. */
 export const AvatarFallback = ({ className, ...props }: AvatarFallbackProps) => (
@@ -72,7 +72,7 @@ export const AvatarFallback = ({ className, ...props }: AvatarFallbackProps) => 
 );
 
 /** Props for the {@link AvatarBadge} component. */
-export type AvatarBadgeProps = React.ComponentProps<"span">;
+export type AvatarBadgeProps = ComponentProps<"span">;
 
 /** A status badge anchored to the corner of an {@link Avatar}. */
 export const AvatarBadge = ({ className, ...props }: AvatarBadgeProps) => (
@@ -93,7 +93,7 @@ export const AvatarBadge = ({ className, ...props }: AvatarBadgeProps) => (
 );
 
 /** Props for the {@link AvatarGroup} component. */
-export type AvatarGroupProps = React.ComponentProps<"div">;
+export type AvatarGroupProps = ComponentProps<"div">;
 
 /** A cluster of overlapping {@link Avatar} elements. */
 export const AvatarGroup = ({ className, ...props }: AvatarGroupProps) => (
@@ -111,7 +111,7 @@ export const AvatarGroup = ({ className, ...props }: AvatarGroupProps) => (
 );
 
 /** Props for the {@link AvatarGroupCount} component. */
-export type AvatarGroupCountProps = React.ComponentProps<"div">;
+export type AvatarGroupCountProps = ComponentProps<"div">;
 
 /** A count chip rendered at the end of an {@link AvatarGroup}, sized to match the avatars. */
 export const AvatarGroupCount = ({ className, ...props }: AvatarGroupCountProps) => (

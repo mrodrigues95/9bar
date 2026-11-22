@@ -1,9 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import type * as React from "react";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "react";
 import { cn } from "#lib/utils";
 
 /** Props for the {@link Empty} component. */
-export type EmptyProps = React.ComponentProps<"div">;
+export type EmptyProps = ComponentProps<"div">;
 
 /** A full-width container used for empty states. Combine with {@link EmptyMedia}, {@link EmptyTitle}, and {@link EmptyDescription}. */
 export const Empty = ({ className, ...props }: EmptyProps) => (
@@ -21,7 +22,7 @@ export const Empty = ({ className, ...props }: EmptyProps) => (
 );
 
 /** Props for the {@link EmptyHeader} component. */
-export type EmptyHeaderProps = React.ComponentProps<"div">;
+export type EmptyHeaderProps = ComponentProps<"div">;
 
 /** A centered column for the title and description within an {@link Empty} state. */
 export const EmptyHeader = ({ className, ...props }: EmptyHeaderProps) => (
@@ -54,7 +55,7 @@ const emptyMediaVariants = cva(
 );
 
 /** Props for the {@link EmptyMedia} component. */
-export type EmptyMediaProps = React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>;
+export type EmptyMediaProps = ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>;
 
 /** The visual (icon or illustration) displayed above an {@link Empty} state. */
 export const EmptyMedia = ({ className, variant = "default", ...props }: EmptyMediaProps) => (
@@ -67,7 +68,7 @@ export const EmptyMedia = ({ className, variant = "default", ...props }: EmptyMe
 );
 
 /** Props for the {@link EmptyTitle} component. */
-export type EmptyTitleProps = React.ComponentProps<"div">;
+export type EmptyTitleProps = ComponentProps<"div">;
 
 /** A short heading for an {@link Empty} state. */
 export const EmptyTitle = ({ className, ...props }: EmptyTitleProps) => (
@@ -79,7 +80,7 @@ export const EmptyTitle = ({ className, ...props }: EmptyTitleProps) => (
 );
 
 /** Props for the {@link EmptyDescription} component. */
-export type EmptyDescriptionProps = React.ComponentProps<"p">;
+export type EmptyDescriptionProps = ComponentProps<"p">;
 
 /** Supporting text that explains an {@link Empty} state. */
 export const EmptyDescription = ({ className, ...props }: EmptyDescriptionProps) => (
@@ -97,7 +98,7 @@ export const EmptyDescription = ({ className, ...props }: EmptyDescriptionProps)
 );
 
 /** Props for the {@link EmptyContent} component. */
-export type EmptyContentProps = React.ComponentProps<"div">;
+export type EmptyContentProps = ComponentProps<"div">;
 
 /** A wrapper for arbitrary content (such as actions) within an {@link Empty} state. */
 export const EmptyContent = ({ className, ...props }: EmptyContentProps) => (
