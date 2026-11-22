@@ -42,7 +42,7 @@ Before editing files for a substantial task:
 
 ## Checks are owner-approved
 
-Never edit `oxlint.config.ts`, `oxfmt.config.ts`, `tools/config/`, `tools/oxlint/`, `tools/checks/`, or `.github/` to make a change pass. Propose the change instead. A PR touching those paths fails the Protected paths check until the owner applies the `approved:checks` label. Agents never apply that label.
+Never edit `oxlint.config.ts`, `oxfmt.config.ts`, `tools/config/`, `tools/oxlint/`, `tools/checks/`, or `.github/` to make a change pass. Propose the change instead. `.github/CODEOWNERS` assigns those paths to the owner, and the `default-main` ruleset requires a code owner review before a PR touching them merges. Agents never approve those PRs or merge them with `gh pr merge --admin`.
 
 ## Deferred work
 
@@ -84,7 +84,7 @@ When the user corrects you, run `/correct`. A rule with no enforcer is the next 
 | Pure web logic keeps its properties                                                                                                       | `pnpm web test`, CI Test job                                                                                        |
 | Forked skills carry a `Forked from` header                                                                                                | `check:structure` skills                                                                                            |
 | Each package declares every package it imports; shared versions live in the `pnpm-workspace.yaml` catalog; the root has no `dependencies` | `check:structure` dependencies                                                                                      |
-| Lint, check, and CI changes are owner-approved                                                                                            | Protected paths workflow + `approved:checks` label                                                                  |
+| Lint, check, and CI changes are owner-approved                                                                                            | `CODEOWNERS` + `require_code_owner_review` in the `default-main` ruleset                                            |
 | Add dependencies at a version older than pnpm's `minimumReleaseAge`, not with an exclusion                                                | none: `pnpm add` writes `minimumReleaseAgeExclude` itself; review `pnpm-workspace.yaml` diffs                       |
 | UI changes are proven in a browser                                                                                                        | none: the `verify-web` and `verify-toolkit` skills                                                                  |
 

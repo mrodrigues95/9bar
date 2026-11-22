@@ -34,7 +34,7 @@ Read `docs/agent-quality-principles.md` before picking a fix. Its pyramid sets t
 
 ## Propose, then stop
 
-Present each class with its evidence (the operator's exact words or the commit), the level you picked, why a higher level didn't work, and the change. Stop and wait for approval. Changes to `oxlint.config.ts`, `oxfmt.config.ts`, `tools/config/`, `tools/oxlint/`, `tools/checks/`, or `.github/` also need the owner's `approved:checks` label on the PR, which agents never apply.
+Present each class with its evidence (the operator's exact words or the commit), the level you picked, why a higher level didn't work, and the change. Stop and wait for approval. Changes to `oxlint.config.ts`, `oxfmt.config.ts`, `tools/config/`, `tools/oxlint/`, `tools/checks/`, or `.github/` also need the owner's code owner review on the PR. Agents never approve it or merge it with `gh pr merge --admin`.
 
 ## Fix and prove
 
